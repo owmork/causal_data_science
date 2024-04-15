@@ -16,6 +16,13 @@ editor:
 ---
 ### Schedule
 
+::: {.grid}
+
+::: {.g-col-2}
+:::
+
+
+::: {.g-col-8}
 
 | Session | Date | Topic |
 | --- | --- | --- |
@@ -32,3 +39,11 @@ editor:
 | 10 | June 24 & 25 | Regression Discontinuity |
 | 11 | July 1 & 2 | Causal Mediation  |
 | 12 | July 8 & 9 | Further Topics in Causal Machine Learning |
+
+:::
+
+::: {.g-col-2}
+:::
+
+:::
+

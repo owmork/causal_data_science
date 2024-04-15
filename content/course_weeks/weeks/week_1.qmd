@@ -45,9 +45,13 @@ ggthemr::ggthemr(cds_theme, type = "outer")
 source(paste0(here::here(), "/code/dag_theme.R"))
 ```
 
+::: callout-important
+Please make sure to read and follow the instructions in **[Organization](../../organization/mattermost.qmd)** before reading this section.
+:::
+
 ## Slides & Recap
 
-TODO: Link to slides.
+**[Slides - Week 1](../../../lecture/01.pdf)**
 
 ## Practical example
 
@@ -123,7 +127,7 @@ ctr_yng_rur - ctr_old_rur
 And, surprisingly, you see the difference is again negative, indicating more reaction among old people.
 
 ::: callout-note
-To neatly format variables in a desired manner, use `sprintf()``. Simply furnish a string template with placeholders for variables or expressions. These can encompass strings, integers, floats, and more.
+To neatly format variables in a desired manner, use `sprintf()``. Simply furnish a string template with placeholders for variables or expressions. These can encompass strings, integers, floats, and more.
 :::
 
 ```{r}

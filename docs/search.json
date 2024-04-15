@@ -1,31 +1,31 @@
 [
   {
-    "objectID": "index.html#course-description",
-    "href": "index.html#course-description",
+    "objectID": "index.html#overview",
+    "href": "index.html#overview",
     "title": "Literature",
-    "section": "Course description",
-    "text": "Course description\n\nDistinguishing causal relationships from simple correlation is what commonly used approaches in business analytics often fall short of. In this course, we will provide you with the skill set to answer questions like\n\n\nwhat happens to \\(Y\\) if we do \\(X\\)?\n\n\nwas it \\(X\\) that caused \\(Y\\) to change?\n\n\nIntroducing you to causal inference with the help of data science will allow you to carry out state-of-the-art causal analyses by yourself and extrapolate causal knowledge across different business contexts and various management areas."
+    "section": "Overview",
+    "text": "Overview\nDistinguishing causal relationships from simple correlation is what commonly used approaches in business analytics often fall short of. In this course, we will provide you with the skill set to answer questions like\n\n\nwhat happens to \\(Y\\) if we do \\(X\\)?\n\n\nwas it \\(X\\) that caused \\(Y\\) to change?\n\n\nIntroducing you to causal inference with the help of data science will allow you to carry out state-of-the-art causal analyses by yourself and extrapolate causal knowledge across different business contexts and various management areas."
   },
   {
-    "objectID": "index.html#website-structure",
-    "href": "index.html#website-structure",
+    "objectID": "index.html#objectives",
+    "href": "index.html#objectives",
     "title": "Literature",
-    "section": "Website Structure",
-    "text": "Website Structure\n\nBrowse all the class content, assignments and examples by going to Content. For instruction how to pass the course go to Submission. If you have problems regarding the content, solving the assignments or any other questions, use the chat icon to directly go to our Mattermost discussion channel."
+    "section": "Objectives",
+    "text": "Objectives\nAfter completing this module, students will be able to:\n\nUnderstand the difference between “correlation” and “causation”\nUnderstand the shortcomings of current correlation-based approaches\nDevelop causal knowledge relevant for specific data-driven decisions\nDiscuss the conceptual ideas behind various causal data science tools and algorithms\nCarry out state-of-the-art causal data analyses"
   },
   {
-    "objectID": "index.html#instructor",
-    "href": "index.html#instructor",
+    "objectID": "index.html#instructors",
+    "href": "index.html#instructors",
     "title": "Literature",
-    "section": "Instructor",
-    "text": "Instructor\n   Oliver Mork\n   oliver.mork@tuhh.de\n   StartupEngineer"
+    "section": "Instructors",
+    "text": "Instructors\n   Lecture: Christoph Ihl\n   Tutorial: Oliver Mork"
   },
   {
-    "objectID": "index.html#course-details",
-    "href": "index.html#course-details",
+    "objectID": "index.html#details",
+    "href": "index.html#details",
     "title": "Literature",
-    "section": "Course Details",
-    "text": "Course Details\n   06.11. / 27.11. / 18.12.\n   09:00 - 17:00\n   Q - 1.121"
+    "section": "Details",
+    "text": "Details\n   Lecture: Monday, 11.30 - 13.00\n   Tutorial: Tuesday, 15.00 - 16.30"
   },
   {
     "objectID": "index.html#primary",
@@ -286,7 +286,7 @@
     "href": "content/course_weeks/overview.html",
     "title": "Overview",
     "section": "",
-    "text": "Schedule\n\n\n\nSession\nDate\nTopic\n\n\n\n\n1\nApril 15 & 16\nIntroduction to Causal Inference\n\n\n2\nApril 22 & 21\nGraphical Causal Models\n\n\n3\nApril 29 & 30\nRandomized Experiments & Linear Regression\n\n\n4\nMay 6 & 7\nMatching\n\n\n5\nMay 13 & 14\nDouble Machine Learning\n\n\n-\nMay 20 & 21\nHoliday\n\n\n6\nMay 27 & 28\nEffect Heterogeneity\n\n\n7\nJune 3 & 4\nUnobserved Confounding & Instrumental Variables\n\n\n8\nJune 10 & 11\nDifference-in-Difference\n\n\n9\nJune 17 & 18\nSynthetic Control\n\n\n10\nJune 24 & 25\nRegression Discontinuity\n\n\n11\nJuly 1 & 2\nCausal Mediation\n\n\n12\nJuly 8 & 9\nFurther Topics in Causal Machine Learning",
+    "text": "Schedule\n\n\n\n\n\n\n\n\nSession\nDate\nTopic\n\n\n\n\n1\nApril 15 & 16\nIntroduction to Causal Inference\n\n\n2\nApril 22 & 21\nGraphical Causal Models\n\n\n3\nApril 29 & 30\nRandomized Experiments & Linear Regression\n\n\n4\nMay 6 & 7\nMatching\n\n\n5\nMay 13 & 14\nDouble Machine Learning\n\n\n-\nMay 20 & 21\nHoliday\n\n\n6\nMay 27 & 28\nEffect Heterogeneity\n\n\n7\nJune 3 & 4\nUnobserved Confounding & Instrumental Variables\n\n\n8\nJune 10 & 11\nDifference-in-Difference\n\n\n9\nJune 17 & 18\nSynthetic Control\n\n\n10\nJune 24 & 25\nRegression Discontinuity\n\n\n11\nJuly 1 & 2\nCausal Mediation\n\n\n12\nJuly 8 & 9\nFurther Topics in Causal Machine Learning",
     "crumbs": [
       "Content",
       "Overview"
@@ -725,7 +725,7 @@
     "href": "content/course_weeks/weeks/week_1.html",
     "title": "1 - Introduction to Causal Inference",
     "section": "",
-    "text": "TODO: Link to slides.",
+    "text": "Important\n\n\n\nPlease make sure to read and follow the instructions in Organization before reading this section.",
     "crumbs": [
       "Content",
       "<b>Weekly content</b>",
@@ -736,8 +736,8 @@
     "objectID": "content/course_weeks/weeks/week_1.html#slides-recap",
     "href": "content/course_weeks/weeks/week_1.html#slides-recap",
     "title": "1 - Introduction to Causal Inference",
-    "section": "",
-    "text": "TODO: Link to slides.",
+    "section": "Slides & Recap",
+    "text": "Slides & Recap\nSlides - Week 1",
     "crumbs": [
       "Content",
       "<b>Weekly content</b>",

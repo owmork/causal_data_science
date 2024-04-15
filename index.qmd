@@ -18,100 +18,61 @@ knitr::include_graphics(here::here("images/icon_cds_full.svg"), error = FALSE)
 
 ------------------------------------------------------------------------
 
-## Course description
+## Overview
 
-::: {style="background-color: #0F2231; border-radius: .25rem; padding: 15px"}
 **Distinguishing causal relationships from simple correlation** is what commonly used approaches in business analytics often fall short of. In this course, we will provide you with the **skill set to answer questions like**
 
 -   *what happens to* $Y$ *if we do* $X$*?*
 -   *was it* $X$ *that caused* $Y$ *to change?*
 
 Introducing you to **causal inference with the help of data science** will allow you to **carry out state-of-the-art causal analyses** by yourself and **extrapolate causal knowledge** **across different business contexts and various management areas.**
-:::
 
-## Website Structure
+## Objectives
 
-::: {style="background-color: #0F2231; border-radius: .25rem; padding: 15px"}
-Browse all the class content, assignments and examples by going to [**Content**](content/). For instruction how to pass the course go to [**Submission**](content/organization/submission.qmd). If you have problems regarding the content, solving the assignments or any other questions, use the chat icon to directly go to our [**Mattermost discussion channel**](https://communicating.tuhh.de/w-11-students/channels/cdsba_ss24).
-:::
+After completing this module, students will be able to:
+
+- Understand the difference between “correlation” and “causation”
+- Understand the shortcomings of current correlation-based approaches
+- Develop causal knowledge relevant for specific data-driven decisions
+- Discuss the conceptual ideas behind various causal data science tools and algorithms
+- Carry out state-of-the-art causal data analyses
 
 ::: grid
 ::: {.g-col-6 style="border-radius: .25rem; padding: 15px; line-height: 2px;"}
-## Instructor
+## Instructors
 
-{{< fa user >}}   Oliver Mork
+{{< fa user >}}   Lecture: Christoph Ihl
 
-{{< fa envelope >}}   oliver.mork\@tuhh.de
-
-{{< fa university >}}   [StartupEngineer](https://www.startupengineer.io/)
+{{< fa user >}}   Tutorial: Oliver Mork
 :::
 
 ::: {.g-col-6 style="border-radius: .25rem; padding: 15px; line-height: 2px;"}
-## Course Details
+## Details
 
-{{< fa calendar-alt >}}   06.11. / 27.11. / 18.12.
+{{< fa calendar-alt >}}   Lecture: Monday, 11.30 - 13.00
 
-{{< fa clock >}}   09:00 - 17:00
-
-{{< fa location-dot >}}   Q - 1.121
+{{< fa calendar-alt >}}   Tutorial: Tuesday, 15.00 - 16.30
 :::
 :::
-
-### Preliminary Schedule
-
-
-| Session | Date | Topic |
-| --- | --- | --- |
-| 1 | April 15 & 16 | Introduction to Causal Inference |
-| 2 | April 22 & 21 | Graphical Causal Models |
-| 3 | April 29 & 30 | Randomized Experiments & Linear Regression |
-| 4 | May 6 & 7 | Matching |
-| 5 | May 13 & 14 | Double Machine Learning | 
-| - | May 20 & 21 | Holiday |
-| 6 | May 27 & 28 | Effect Heterogeneity |
-| 7 | June 3 & 4 | Unobserved Confounding & Instrumental Variables |
-| 8 | June 10 & 11 | Difference-in-Difference |
-| 9 | June 17 & 18 | Synthetic Control |
-| 10 | June 24 & 25 | Regression Discontinuity |
-| 11 | July 1 & 2 | Causal Mediation  |
-| 12 | July 8 & 9 | Further Topics in Causal Machine Learning |
-
-### Time & Location
-
-<br>
-
-* `Causal Data Science (Lecture)`: Monday, 11.30 - 13.00, Building D, Room D - 1.023
-* `Business Analytics with Causal Data Science (PBL)`: Tuesday, 15.00 - 16.30, Building O, Room O - 0.007
-
-### Grading
-
-<br>
-
-* Students are evaluated based on their solutions of challenges assigned in each session, which they continuously document in their lab journals.
-
-***
-
 
 # Literature
 
 ## Primary
 
-- Ding, Peng (2023). A First Course in Causal Inference. arXiv preprint arXiv:2305.18793.
-- Facure, Matheus (2023). Causal Inference in Python - Applying Causal Inference in the Tech Industry. O’Reilly Media.
-- Huber, Martin (2023). Causal analysis: Impact evaluation and Causal Machine Learning with applications in R. MIT Press, 2023.
-- Neal, Brady (2020). Introduction to causal inference from a Machine Learning Perspective. Course Lecture Notes (draft).
+-   Ding, Peng (2023). A First Course in Causal Inference. arXiv preprint arXiv:2305.18793.
+-   Facure, Matheus (2023). Causal Inference in Python - Applying Causal Inference in the Tech Industry. O'Reilly Media.
+-   Huber, Martin (2023). Causal analysis: Impact evaluation and Causal Machine Learning with applications in R. MIT Press, 2023.
+-   Neal, Brady (2020). Introduction to causal inference from a Machine Learning Perspective. Course Lecture Notes (draft).
 
 ## Secondary
 
-- Angrist, J. D., & Pischke, J. S. (2014). Mastering metrics: The path from cause to effect. Princeton university press.
-- Cunningham, Scott (2021). Causal Inference: The Mixtape, New Haven: Yale University Press.
-- Gertler, Paul J., et al. (2016). Impact evaluation in practice. World Bank Publications.
-- Hernán Miguel A., and Robins James M. (2020). Causal Inference: What If. Boca Raton: Chapman & Hall/CRC.
-- Huntington-Klein, Nick (2021). The effect: An introduction to research design and causality. Chapman and Hall/CRC.
-- Imbens, G. W., & Rubin, D. B. (2015). Causal inference in statistics, social, and biomedical sciences. Cambridge University Press.
-- Mullainathan, Sendhil, and Jann Spiess. (2017). Machine Learning: An Applied Econometric Approach. Journal of Economic Perspectives, 31(2): 87–106.
-- Pearl, Judea, and Dana Mackenzie (2018). The Book of Why. Basic Books, New York, NY.
-- Pearl, Judea, Madelyn Glymour, and Nicholas P. Jewell (2016). Causal Inference in Statistics: A Primer. John Wiley & Sons, Inc., New York, NY.
-- Peters, Jonas, Dominik Janzing, and Bernhard Schölkopf (2017). Elements of causal inference: foundations and learning algorithms. The MIT Press.
-
-
+-   Angrist, J. D., & Pischke, J. S. (2014). Mastering metrics: The path from cause to effect. Princeton university press.
+-   Cunningham, Scott (2021). Causal Inference: The Mixtape, New Haven: Yale University Press.
+-   Gertler, Paul J., et al. (2016). Impact evaluation in practice. World Bank Publications.
+-   Hernán Miguel A., and Robins James M. (2020). Causal Inference: What If. Boca Raton: Chapman & Hall/CRC.
+-   Huntington-Klein, Nick (2021). The effect: An introduction to research design and causality. Chapman and Hall/CRC.
+-   Imbens, G. W., & Rubin, D. B. (2015). Causal inference in statistics, social, and biomedical sciences. Cambridge University Press.
+-   Mullainathan, Sendhil, and Jann Spiess. (2017). Machine Learning: An Applied Econometric Approach. Journal of Economic Perspectives, 31(2): 87--106.
+-   Pearl, Judea, and Dana Mackenzie (2018). The Book of Why. Basic Books, New York, NY.
+-   Pearl, Judea, Madelyn Glymour, and Nicholas P. Jewell (2016). Causal Inference in Statistics: A Primer. John Wiley & Sons, Inc., New York, NY.
+-   Peters, Jonas, Dominik Janzing, and Bernhard Schölkopf (2017). Elements of causal inference: foundations and learning algorithms. The MIT Press.
