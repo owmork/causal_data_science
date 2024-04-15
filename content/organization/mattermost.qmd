@@ -1,0 +1,48 @@
+---
+title: "Mattermost"
+---
+
+## Mattermost
+
+In the course of the next chapters, we will do a lot of coding and errors will occur all the time. That is nothing you should be afraid of and in fact, dealing with errors is an elementary component in programming in data science.
+
+In most cases, other people from around the world have had similar problems and you will find the right solution to your problem by just googling it. Two great resources to help you are [StackOverflow](https://stackoverflow.com/) and [RStudio Community](https://community.rstudio.com/). Please try to do that as a first step when you run into an error.
+
+If you have any questions about the class content, coding problems and other challenges, please use our Mattermost channel, so that everyone can benefit from the discussions. Please help each other, try to answer emerging questions and actively engage in the channel. Questions, that are not directly related to the class content, can be sent to me.
+
+Follow these steps to join the channel:
+
+1.  Go on <https://communicating.tuhh.de/>
+2.  Click **Click here to sign in**
+3.  Click the Button **GitLab**
+4.  *You may need to login to GitLab with your Kerberos/LDAP data (e.g. cba1020 and your password) on the following page and/or authorize once for Mattermost to access GitLab. You may also need to accept the terms.*
+5.  After accessing Mattermost, join the [team W-11 students](https://communicating.tuhh.de/signup_user_complete/?id=8f44fef8tifj5rripq8zya4s7w)
+6.  Join [Causal Data Science Channel](https://communicating.tuhh.de/w-11-students/channels/cdsba_ss24) (you might need to wait a bit, as I first have to add you)
+
+There, and in the sessions, I will try to help you as much as possible.
+
+In order to keep the discussion efficient and manageable it is necessary that we all follow some basic rules:
+
+-   Post error message: if you run into an error it is necessary that I know what the error is. Often reading the error message very carefully can also help you to understand where the problem comes from.
+-   Post the code that caused the error: in order to reproduce the error I need the last command that caused the error. If we need more context we will ask you for that.
+-   Use the formatting guidelines of Mattermost when you post code. That makes a huge difference in terms of readability. They will also be linked in the channel description. Most important is that using \`\`\` one line above and one line below your code will make it easy to read.
+-   Use thread function to reply to a discussion. This way a discussion can be easier read. You find the reply button on the right side of a message.
+
+Playing by these rules makes it a lot easier for everyone to follow the discussion and learn from similar problems and everyone can benefit from the discussions.
+
+See in this minimalistic example how little formatting makes your code and error easy to read.
+
+<!-- CODE (show) -->
+
+````{=html}
+<pre><code class="r"> 
+```r
+x %>% sum()
+```
+
+**Error:**
+Error in x %>% sum() : could not find function "%>%"
+</code></pre>
+````
+
+![How to format your code and error when you ask for help.](/images/00_mattermost.png){width="400"}

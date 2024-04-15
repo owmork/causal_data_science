@@ -1,0 +1,80 @@
+project:
+  type: website
+  output-dir: docs
+
+website:
+  title: "<b>CAUSAL DATA SCIENCE FOR BUSINESS ANALYTICS</b>"
+  page-navigation: true
+  favicon: images/favicon_cds_16x16.png
+  navbar:
+    background: "#323e4dE6"
+    pinned: false
+    logo: images/icon_cds.svg
+    right:
+      - href: index.qmd
+        text: Home
+      - text: Content
+        file: content/course_weeks/overview.qmd
+      - text: Organization
+        file: content/organization/mattermost.qmd
+      - text: "{{< iconify cib mattermost size=lg >}}"
+        href: https://communicating.tuhh.de/w-11-students/channels/cdsba_ss24
+
+  sidebar:
+    - id: "course_weeks"
+      title: "SIDEBAR_TITLE"
+      collapse-level: 2
+      style: "docked"
+      background: "#112030"
+      contents:
+        - content/course_weeks/overview.qmd
+        - text: "---"
+        - section: "<b>Weekly content</b>"
+          contents:
+          - content/course_weeks/weeks/week_1.qmd
+          - content/course_weeks/weeks/week_2.qmd
+          - content/course_weeks/weeks/week_3.qmd
+          - content/course_weeks/weeks/week_4.qmd
+          - content/course_weeks/weeks/week_5.qmd
+          - content/course_weeks/weeks/week_6.qmd
+          - content/course_weeks/weeks/week_7.qmd
+          - content/course_weeks/weeks/week_8.qmd
+          - content/course_weeks/weeks/week_9.qmd
+          - content/course_weeks/weeks/week_10.qmd
+          - content/course_weeks/weeks/week_11.qmd
+          - section: "<b>Optional reads</b>"
+            contents: 
+            - content/optional_read/motivation.qmd
+            - content/optional_read/prob.qmd
+            - content/optional_read/stats.qmd
+          
+    - id: "organization"
+      title: "SIDEBAR_TITLE"
+      style: "docked"
+      background: "#112030"
+      contents:
+        - content/organization/mattermost.qmd
+        - content/organization/intro_R.qmd
+        - content/organization/submission.qmd
+        - content/organization/quarto.qmd
+
+  page-footer: 
+    left: "lv3095_s24: Causal Data Science for Business Analytics" 
+
+format:
+  html:
+    theme: [darkly, theme-darkly.scss]
+    mainfont: arial
+    linestretch: 1.7
+    css: styles.css
+    toc: true
+    df-print: paged
+    code-link: true
+
+filters:
+ - lightbox
+lightbox:
+  match: auto
+
+editor: source
+

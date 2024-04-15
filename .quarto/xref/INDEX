@@ -1,0 +1,167 @@
+{
+  "index.qmd": {
+    "index.html": "6de49e27"
+  },
+  "about.qmd": {
+    "about.html": "0b3981b8"
+  },
+  "content/part_i/01_prob.qmd": {
+    "01_prob.html": "24d77a2f"
+  },
+  "content/fundamentals/01_prob.qmd": {
+    "01_prob.html": "3809567f"
+  },
+  "content/fundamentals/04_dag.qmd": {
+    "04_dag.html": "828be2cc"
+  },
+  "content/index.qmd": {
+    "index.html": "9a1b7157"
+  },
+  "content/fundamentals/03_caus.qmd": {
+    "03_caus.html": "17db9c00"
+  },
+  "content/fundamentals/02_reg.qmd": {
+    "02_reg.html": "94b49562"
+  },
+  "content/toolbox/05_rct.qmd": {
+    "05_rct.html": "1521f610"
+  },
+  "content/toolbox/09_rdd.qmd": {
+    "09_rdd.html": "860a6caf"
+  },
+  "content/toolbox/06_match.qmd": {
+    "06_match.html": "eec8e04a"
+  },
+  "content/toolbox/07_did.qmd": {
+    "07_did.html": "afe4d1fd"
+  },
+  "content/toolbox/08_iv.qmd": {
+    "08_iv.html": "e3ec8b0b"
+  },
+  "content/fundamentals/01_prob.knit.md": {
+    "01_prob.knit.html": "0c932057"
+  },
+  "content/fundamentals/02_reg.knit.md": {
+    "02_reg.knit.html": "9f22f500"
+  },
+  "content/fundamentals/01_b_stats.qmd": {
+    "01_b_stats.html": "a0a707b0"
+  },
+  "content/fundamentals/01_a_prob.qmd": {
+    "01_a_prob.html": "3001e5ff"
+  },
+  "submission/submission.qmd": {
+    "submission.html": "b8b18557"
+  },
+  "submission/submission_new.qmd": {
+    "submission_new.html": "58348b5d"
+  },
+  "submission/submission_old.qmd": {
+    "submission_old.html": "727e2667"
+  },
+  "data/data.qmd": {
+    "data.html": "82246397"
+  },
+  "content/course_weeks/week_1/week_1.qmd": {
+    "week_1.html": "b5fd16a6"
+  },
+  "organization/submission.qmd": {
+    "submission.html": "1483d4d0"
+  },
+  "content/organization/submission.qmd": {
+    "submission.html": "41d8f2d7"
+  },
+  "content/course_weeks/index.qmd": {
+    "index.html": "cef1092b"
+  },
+  "content/organization/setup.qmd": {
+    "setup.html": "ce68a134"
+  },
+  "content/course_weeks/welcome.qmd": {
+    "welcome.html": "01eaef60"
+  },
+  "content/organization/intro_R.qmd": {
+    "intro_R.html": "82fd5d32"
+  },
+  "content/organization/mattermost.qmd": {
+    "mattermost.html": "401a1c3b"
+  },
+  "content/organization/quarto.qmd": {
+    "quarto.html": "a26f0117"
+  },
+  "content/course_weeks/week_1/week_4.qmd": {
+    "week_4.html": "2d14cf57"
+  },
+  "content/course_weeks/week_1/week_5.qmd": {
+    "week_5.html": "9255cce0"
+  },
+  "content/course_weeks/week_1/week_7.qmd": {
+    "week_7.html": "8753da45"
+  },
+  "content/course_weeks/week_1/week_6.qmd": {
+    "week_6.html": "f7cacdd3"
+  },
+  "content/course_weeks/week_1/week_2.qmd": {
+    "week_2.html": "3ab47ecd"
+  },
+  "content/course_weeks/week_1/week_3.qmd": {
+    "week_3.html": "7ae78097"
+  },
+  "content/course_weeks/week_1/week_10.qmd": {
+    "week_10.html": "272dd461"
+  },
+  "content/course_weeks/week_1/week_11.qmd": {
+    "week_11.html": "de7cbf1e"
+  },
+  "content/course_weeks/week_1/week_8.qmd": {
+    "week_8.html": "5e8b020c"
+  },
+  "content/course_weeks/week_1/week_9.qmd": {
+    "week_9.html": "c7f85b09"
+  },
+  "content/optional_read/stats.qmd": {
+    "stats.html": "355b42e1"
+  },
+  "content/optional_read/prob.qmd": {
+    "prob.html": "01062062"
+  },
+  "content/optional_read/motivation.qmd": {
+    "motivation.html": "b666e559"
+  },
+  "content/course_weeks/overview.qmd": {
+    "overview.html": "98a04fba"
+  },
+  "content/course_weeks/weeks/week_4.qmd": {
+    "week_4.html": "e216c6af"
+  },
+  "content/course_weeks/weeks/week_5.qmd": {
+    "week_5.html": "8ee45d46"
+  },
+  "content/course_weeks/weeks/week_7.qmd": {
+    "week_7.html": "5aca7cac"
+  },
+  "content/course_weeks/weeks/week_6.qmd": {
+    "week_6.html": "b7689ffa"
+  },
+  "content/course_weeks/weeks/week_2.qmd": {
+    "week_2.html": "e2ad2c21"
+  },
+  "content/course_weeks/weeks/week_3.qmd": {
+    "week_3.html": "fb6f9e66"
+  },
+  "content/course_weeks/weeks/week_1.qmd": {
+    "week_1.html": "d15e8f93"
+  },
+  "content/course_weeks/weeks/week_10.qmd": {
+    "week_10.html": "f3b99d89"
+  },
+  "content/course_weeks/weeks/week_11.qmd": {
+    "week_11.html": "bf6cc2cb"
+  },
+  "content/course_weeks/weeks/week_8.qmd": {
+    "week_8.html": "4d07fc76"
+  },
+  "content/course_weeks/weeks/week_9.qmd": {
+    "week_9.html": "4b110254"
+  }
+}

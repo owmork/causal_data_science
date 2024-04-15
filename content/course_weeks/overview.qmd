@@ -1,0 +1,34 @@
+---
+title: "Overview"
+output:
+  blogdown::html_page:
+    toc: true
+menu:
+  example:
+    parent: Course content
+    weight: 1
+type: docs
+editor_options: 
+  chunk_output_type: console
+editor: 
+  markdown: 
+    wrap: 72
+---
+### Schedule
+
+
+| Session | Date | Topic |
+| --- | --- | --- |
+| 1 | April 15 & 16 | Introduction to Causal Inference |
+| 2 | April 22 & 21 | Graphical Causal Models |
+| 3 | April 29 & 30 | Randomized Experiments & Linear Regression |
+| 4 | May 6 & 7 | Matching |
+| 5 | May 13 & 14 | Double Machine Learning | 
+| - | May 20 & 21 | Holiday |
+| 6 | May 27 & 28 | Effect Heterogeneity |
+| 7 | June 3 & 4 | Unobserved Confounding & Instrumental Variables |
+| 8 | June 10 & 11 | Difference-in-Difference |
+| 9 | June 17 & 18 | Synthetic Control |
+| 10 | June 24 & 25 | Regression Discontinuity |
+| 11 | July 1 & 2 | Causal Mediation  |
+| 12 | July 8 & 9 | Further Topics in Causal Machine Learning |

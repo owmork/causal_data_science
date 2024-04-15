@@ -1,0 +1,450 @@
+---
+title: "Statistical Concepts"
+linktitle: "Statistical Concepts"
+output:
+  blogdown::html_page:
+    toc: true
+menu:
+  example:
+    parent: Optional read
+    weight: 2
+type: docs
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(fig.width = 6, fig.asp = 0.618, fig.align = "center", fig.retina = 3, out.width = "75%")
+set.seed(11)
+options("digits" = 2, "width" = 150)
+options(dplyr.summarise.inform = FALSE)
+
+# custom ggplot theme
+# colors from TUHH brand identitiy
+tuhh_colors <- c("#D0D0CE", "#00C1D4", "#FF4F4F", "#5AFFC5",
+                 "#FFDE36", "#143BFF", "#FF7E15", "#FFAEA2")
+
+# initialise theme
+cds_theme <- ggthemr::define_palette(
+  swatch = tuhh_colors,
+  gradient = c(lower = "#FFAEA2", upper = "#00C1D4"),
+  background = "#0F2231",
+  line = c("#FFFFFF", "#FFFFFF"),
+  text = c("#FFFFFF", "#FFFFFF"),
+  gridline = c(ggplot2::alpha("#D0D0CE", 0.2), 
+               ggplot2::alpha("#D0D0CE", 0.4))
+)
+
+# set theme
+ggthemr::ggthemr(cds_theme, type = "outer")
+
+# source custom DAG theme
+source("../../code/dag_theme.R")
+```
+
+Now we will delve into some statistical concepts, that are the foundation for statistical modeling processes used in causal inference. If you sometimes prefer to see additional visual explanations, I can also recommend you to read [here](https://seeing-theory.brown.edu/basic-probability/index.html).
+
+# Random Variable
+
+We already touched random variables in the last chapter but for starters, let's again define what it is. Often represented by a letter such as $X$, a random variable has a set of values, also called sample space, of which any could be the outcome if we draw a random sample from this random variable. Think for example about a die (six possible outcomes). The likelihood of outcomes are defined by a probability distribution that assigns each outcome a probability (for a die, 1/6 for each outcome). Because there is randomness and chance in the outcome, we call it a **random** variable.
+
+A random variable can either take on discrete (e.g. die) or continuous values (e.g. average height of individuals).
+
+-   **Discrete Random Variable**: it can take on a countable number of distinct values.
+
+    -   $X \in \{1, 2, 3, 4, 5, 6\}$
+
+    -   $P(X=1) = P(X=2) = … = P(X=6) = \frac{1}{6}$
+
+-   **Continuous Random Variable**: it can take on any value within a certain range or interval.
+
+    -   $X \in [10, 250]$ (size in centimeters)
+
+    -   Typically presented using cumulative distribution function returning the probability of a variable being less than or equal to a specific value: $P(X < b),$ where $b$ could be any value in the given interval.
+
+# Expected Value
+
+A random variable is a real-valued function and has more than one possible outcome. This is why we cannot represent it as a scalar. The expected value of random variable, however, is a scalar and represents something like a "summary" of the random variable. Knowing the possible values (from the sample space) and the probability distribution, we can compute the expected value.
+
+::: callout-important
+The *expected value*, also called *population mean*, of a variable $X$ is defined as the weighted average of possible values the random variable can take, where the weight is equal to the probability of the random variable taking on a specific value.
+:::
+
+If we want to compute it for a discrete random variable, we make use of the summation operator. Considering a finite list of potential values $x_1, x_2, …, x_k$ with probabilities $p_1, p_2, …, p_k$, the expectation of $X$ can be computed by
+
+$$
+E(X) = x_1*p_1 + x_2*p_2 + ... + x_k*p_k = \sum_{j}^{k} x_i*p_i
+$$
+
+::: callout-tip
+The summation operator $\sum$, denoted by the Greek capital Sigma is used to reduce the sum of a sequence of numbers, like sampled values from a random variable, $x_1, x_2, …, x_n$ to a shorter and more readable form
+
+$$
+\sum_{i=1}^nx_i \equiv x_1+x_2+\ldots+x_n
+$$
+
+with the arbitrary index of summation $i$ being the lower limit and $n$ the upper limit.
+
+By basic math rules, the following simplifications are possible, where $c$ is a constant:
+
+$$
+\sum_{i=1}^nc=nc
+$$
+
+and
+
+$$
+\sum_{i=1}^ncx_i=c\sum_{i=1}^nx_i  
+$$
+:::
+
+As an example, the expected value of a roll of a fair six-sided die, i.e. all outcomes are equally probable with probability of 1/6, is:
+
+$$
+E(X) = \frac{1}{6}*1 + \frac{1}{6}*2 + ... + \frac{1}{6}*6 = \frac{1}{6} \sum (1 + 2 + ... + 6)
+$$
+
+Probabilities could also be different, as long as they sum to 1. For continuous random variables, we need a function returning the probabilities for each value. We leave that out here as we are only interested in understanding the intuition behind the expected value. However, it is very similar.
+
+Let's type in the probabilities and outcomes of rolling a die and see what the expected value is.
+
+::: callout-note
+| To replicate values and create a vector `rep()` can be used. It takes the value and number of times it should be replicated.
+:::
+
+```{r}
+# Vector of probabilities (all equal)
+p <- rep(1/6, times = 6)
+
+# Vector of possible outcomes
+x <- 1:6
+
+# Expected value
+sum(p*x)
+```
+
+As you might have expected, it's 3.5. In this case, we know the probabilities, but if we had not known them beforehand, what we could have done to get an estimate of the expected value is to roll the die a lot of times, store the results in an object and use the `mean()` function. It would yield an expected value close to 3.5 (see simulation [here](https://seeing-theory.brown.edu/basic-probability/)).
+
+::: callout-tip
+Additional rules regarding the calculation of expected values that can be useful are:
+
+$$
+E(aW+b) = aE(W)+b\ \text{for any constants $a$, $b$} \\
+E(W+H) = E(W)+E(H) \\E\Big(W - E(W)\Big) = 0
+$$
+:::
+
+Knowing how to compute the expected value of a random variable is essential for computing other statistics such as variance, standard deviation, covariance, correlation etc.
+
+# Conditional Expected Value
+
+The conditional expected value is the expected value conditioned on some other value. Given the value $x$ for $X$, the expected value for $Y$ obtains as
+
+$$
+E[Y|X = x]
+$$
+
+and is a function of $x$. In other words, the conditional expected value is the best guess for $Y$ knowing only that $X=x$.
+
+As a simple example, consider we take a representative random sample from the world population and want to compute the expected value for $height$. Denoting height with $Y$, the expected value for the whole population is the expected value $E[Y]$ over all individuals in your sample.
+
+The conditional expected value, however, differs. For example, conditioned on individuals being younger than ten years or older than than that we expect different values.
+
+$$
+E[Y] \neq E[Y|age < 10] \neq E[Y|age >= 10]
+$$
+
+Instead of $age$, we can also choose another variable, e.g. $gender$. According to NCD[^1], the values in centimeter are as follows:
+
+[^1]: https://ourworldindata.org/human-height
+
+$$
+\begin{aligned}
+E[Y|male] &= 171 \\
+E[Y|female] &= 159
+\end{aligned}
+$$
+
+And the overall mean results as a (weighted) average between males and females.
+
+# Variance
+
+The variance of random variable tells us how much the values of that random variable tend to spread out or vary from the expected value. Low variance means that the values are closer to the expected value, while high variance indicates values are more spread out from the expected value.
+
+Mathematically, the *variance* is defined as the expectation of the squared deviation of a random variable from its population or sample mean. The *sample variance* indicates how far a set of observed values spread out from their average value and is an estimate of the full *population variance*, that in most cases cannot be directly observed due to lack of data of the whole population.
+
+Mathematically, the *population variance* is defined as
+
+$$
+Var(W)=\sigma^2=E\Big[\big(W-E(W)\big)^2\Big]\
+$$
+
+and the *sample variance* results as
+
+$$
+\widehat{\sigma}^2=(n-1)^{-1}\sum_{i=1}^n(x_i - \overline{x})^2
+$$
+
+You might have noticed the term $(n-1)^{-1}$ is different from what you probably expected ($n^{-1}$). This is due to a correction, which at this point you should not have to worry about. However, the larger the sample is, the less important this correction is.
+
+A related measure is the standard deviation, which does not have as many desirable properties for computational purposes but is often reported after all calculations to show the spread of distribution. The **standard deviation** obtains as the square root of the variance:
+
+$$
+\sigma = \sqrt{\sigma^2}
+$$Take a look at this interactive histogram of draws from the normal distribution. You can set the mean (or: expected value) and the standard deviation. See how a high standard deviation leads to larger proportions of the data being far away from the expected value.
+
+```{ojs}
+//| echo: false
+//| panel: input
+
+viewof mean = Inputs.range(
+  [-5, 5], 
+  {value: 1, step: 1, label: "Expected value:"}
+)
+
+viewof sd = Inputs.range(
+  [1, 20], 
+  {value: 1, step: 1, label: "Standard deviation:"}
+)
+
+```
+
+```{ojs}
+//| echo: false
+//| fig-align: center
+
+mutable xDomain = [-50, 50]
+mutable yDomain = [0, 1000]
+
+Plot.plot({
+  ...theme,
+  //marginRight: 0,
+  grid: true,
+  color: {legend: true},
+  marks: [
+    Plot.rectY({length: 10000}, Plot.binX({y: "count"}, {x: d3.randomNormal(mean, sd),  fill: "#00C1D4"})),
+  ],
+  x: {domain: xDomain},
+  y: {domain: yDomain}
+})
+
+```
+
+::: callout-note
+| `rnorm(n, mean, sd)` samples values from the normal distribution. `n` specifies the number of values, `mean` and `sd` define the parameters of the normal distribution.
+
+| To compute variance and standard deviation, use `var()` and `sd()`, respectively.
+:::
+
+```{r}
+X_low_var  <- rnorm(1e+4, mean = 0, sd = 1)   # low variance
+X_high_var <- rnorm(1e+4, mean = 0, sd = 10)  # high variance
+
+print(paste("Low variance case. Variance =", var(X_low_var), "Standard deviation =", sd(X_low_var)))
+print(paste("High variance case. Variance =", var(X_low_var), "Standard deviation =", sd(X_low_var)))
+```
+
+::: callout-tip
+A useful and convenient properties of the variance is that constants have a variance of 0. But if you want to scale a random variable by a constant factor of $a$, then the variance will increase by $a^2$.
+
+$$
+Var(aX+b)=a^2V(X)
+$$
+
+You can also conveniently compute a variance for the sum of two random variables
+
+$$
+Var(X+Y)=Var(X)+Var(Y)+2\Big(E(XY) - E(X)E(Y)\Big)
+$$
+
+which in case of independence reduces to the sum of the individual variances due to the fact that $E(XY) = E(X)E(Y)$.
+:::
+
+# Variance of a Conditional Expected Value
+
+Let's take another look at variance but now we'll see we focus on the case of a conditional expected value - to be precise, the value of Y conditional on values of X. Playing with different values for the standard deviation in the graph below, you should notice that while the line that fits the data best (the line that is on average the closest to all data points - we will talk about it more extensively in the next chapter) stays very similar, the dispersion of the data points significantly changes.
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+
+library(tidyverse)
+
+# Create a data frame with correlated X and Y values
+create_corr_df <- function(n = 3e+3, correlation = .3, sd = 1) {
+  # Generate random X and Y data
+  X <- rnorm(n)
+  Y <- correlation * X + sqrt(1 - correlation^2) * rnorm(n, mean = 0, sd = sd)
+  
+  # Create a data frame
+  df <- data.frame(x = X, y = Y) %>%
+    add_column(
+      sigma = correlation,
+      sd = sd)
+  
+  # Return data frame
+  return(df)
+}
+
+# Generate data for sequence of different levels of standard deviation
+sd_range <- seq(0, 1, .05)
+sd_tbl <- map(sd_range, function(sd) create_corr_df(sd = sd)) %>% bind_rows()
+
+# Define as Observable JS data
+ojs_define(sd_data = sd_tbl)
+```
+
+```{ojs}
+//| echo: false
+//| panel: input
+
+viewof std = Inputs.range(
+  [0, 1], 
+  {value: 0.5, step: 0.05, label: "Standard deviation:"}
+)
+
+```
+
+```{ojs}
+//| echo: false
+//| panel: center
+
+theme = ({
+  style: "background-color: #0F2231",
+  fill: "#00C1D4"
+})
+
+mutable xDomain_sd = [-3, 3]
+mutable yDomain_sd = [-3, 3]
+
+Plot.plot({
+  ...theme,
+  //marginRight: 0,
+  grid: true,
+  color: {legend: true},
+  marks: [
+    Plot.dot(sd_filtered, {x: "x", y: "y", fill: "#00C1D4", fillOpacity: .4}),
+    Plot.linearRegressionY(sd_filtered, {x: "x", y: "y", stroke: "#FF4F4F"})
+  ],
+  x: {domain: xDomain_sd},
+  y: {domain: yDomain_sd}
+})
+
+```
+
+```{ojs}
+//| echo: false
+sd_filtered = transpose(sd_data).filter(function(sd_tbl) {
+  return std == sd_tbl.sd;
+})
+```
+
+# Covariance and Correlation
+
+Two more important concepts to understand variability in data are the related concepts of covariance and correlation. Covariance determines the relationship between two or more random variables, i.e. how they behave to each other. For example, when the weather is hot, there are more ice cream sales, so these two random variables move in the same direction. Others do not have any statistical association or move into opposite direction. A high, positive covariance indicates that two random variables move into the same direction, a high, negative covariance means that two random variables move in opposite directions.
+
+If you remember the rules of probability theory from the previous chapter, you won't be surprised that if the equality $E(XY) = E(X)E(Y)$ holds, it implies a *covariance* of 0 between the variables $X$ and $Y$. *Covariance* is a measure of linear dependency and hence, independence implies a covariance of 0. Looking back at the formula of the variance of the sum of two random variables, we can define the variance of a sum of two random variables as sum of the individual variances of both random variables plus two times their covariance.
+
+As a matter of form, the formula for the covariance of the random variables $X$ and $Y$ is
+
+$$
+Cov(X,Y) = E(XY) - E(X)E(Y) = E[(X-\bar{X})(Y - \bar{Y})]
+$$
+
+But, similar to variance, the interpretation of a covariance is not very easy and in most cases, for the purpose of interpretation, it is preferred to look at the *correlation* which can be derived from the covariance if the individual variances are known.
+
+$$
+\text{Corr}(X,Y) = \dfrac{Cov(X,Y)}{\sqrt{Var(X)Var(Y)}}
+$$ The *correlation* is a standardized measure and is by construction bound between -1 and 1. High values in magnitude (close to 1 or -1) indicate a very strong linear relationship, while the direction of this relationship is represented by the algebraic sign.
+
+```{r}
+#| echo: false
+
+# Generate data for sequence of different degrees of correlation
+correlation_range <- seq(-1, 1, .1)
+corr_tbl <- map(correlation_range, function(c) create_corr_df(correlation = c)) %>% bind_rows()
+
+# Define as Observable JS data
+ojs_define(data = corr_tbl)
+```
+
+Set the degree of correlation to understand how that changes the relationship between both variables.
+
+```{ojs}
+//| echo: false
+//| panel: input
+
+viewof sigma = Inputs.range(
+  [-1, 1], 
+  {value: 0, step: 0.1, label: "Degree of correlation:"}
+)
+
+```
+
+```{ojs}
+//| echo: false
+//| panel: center
+
+Plot.plot({
+  ...theme,
+  //marginRight: 0,
+  grid: true,
+  color: {legend: true},
+  marks: [
+    Plot.dot(filtered, {x: "x", y: "y", fill: "#00C1D4", fillOpacity: .4}),
+    Plot.linearRegressionY(filtered, {x: "x", y: "y", stroke: "#FF4F4F"})
+  ]
+})
+
+```
+
+```{ojs}
+//| echo: false
+filtered = transpose(data).filter(function(corr_tbl) {
+  return sigma == corr_tbl.sigma;
+})
+```
+
+::: callout-note
+| To compute correlation, variance and covariance, respectively, you can use `cor(X, Y)`, and `cov(X, Y)`.
+:::
+
+# Conclusion
+
+Many of the rules and concepts that you have just learned will play a crucial in the upcoming chapters. Their understanding will guide you through and let you understand why we need to put a particular emphasis on causality, how we can isolate causal effects and build the foundation for many methods from our toolbox.
+
+# Assignments
+
+::: assignment
+Load the table `random_vars.rds`. You can either
+
+-   run the command: `random_vars <- readRDS("your_download_folder/random_vars.rds")`
+-   or find the file in the `Files` pane and select it.
+
+After you load the table, get an overview of what it contains with `View(random_vars)`.
+
+1.  For each variable, compute the following values. You can use the built-in functions or use the mathematical formulas.
+    1.  expected value
+    2.  variance
+    3.  standard deviation
+2.  Explain, if it makes sense to compare the standard deviations.
+3.  Then, examine the relationship between both variables and compute:
+    1.  covariance
+    2.  correlation
+4.  What measure is easier to interpret? Please discuss your interpretation.
+5.  Compute the conditional expected value for:
+    1.  $E[income|age <= 18]$
+    2.  $E[income|age \in [18, 65)]$
+    3.  $E[income|age >= 65]$
+:::
+
+::: callout-tip
+In the introduction you learned how to filter data. There are different ways, you could either use base R or `tidyverse`.
+:::
+
+::: callout-warning
+## Optional assignments!
+
+As this is part of the optional section, you do not have to submit any solutions. But feel free to test your knowledge and understandy by solving the assignments. 
+:::

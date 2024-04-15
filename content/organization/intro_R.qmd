@@ -1,0 +1,102 @@
+---
+title: "Introduction to R & RStudio IDE"
+---
+
+## Installing R & RStudio IDE
+
+Before we dive deep into the methods that help us to make critical data-driven business decisions, we start with a **brief introduction to R**, the programming language most suited to solve problems of causality. Don't worry, if you have never heard of it! We'll go through some very concise courses that will familiarize you with its functions very quickly. Essentially, you have to tell R what to do for you in a specific language. But step by step, first, we have to do the installation.
+
+R is only fun to use in combination with RStudio, a graphical integrated development environment (IDE) that makes the use of R more convenient and interactive. Please follow the steps as outlined in the [instructions](https://rstudio-education.github.io/hopr/starting.html) (note, that you have to install both R and RStudio):
+
+When you have successfully installed R and RStudio, open RStudio and you should see a screen similar to this one. By the way, if you want to change the default withe theme to something else, you can do that by going to `Tools` -\> `Global options` -\> `Appearance` and switch theme in -\> `Editor theme`.
+
+![](/images/00_rstudio.png)\
+RStudio is split into four panes that have the following functions:
+
+[**Source Editor**]{style="background-color: #4BE806"}: here, you open, edit and execute programs/scripts that you have written. Code is not run immediately. If you want to run the current line of code, you just press `Run` or `Ctrl`+`Enter/CMD`+`Return`. You can also run several lines of code by highlighting them. Please note that every line starting with `#` will not be run. The use of `#` is to write comments and annotations in your code that won't be executed.
+
+[**Console**]{style="background-color: #E02809"}: here, you can enter commands directly and run code. Just type in your code and press Enter.
+
+[**Environment**]{style="background-color: #2738E4"}: here, you can see what objects (dataframes, arrays, values, functions) you have in your workspace/environment. 
+
+[**Miscellaneous**]{style="background-color: #9F7443"}: here, you have for example a file manager, an overview of installed and loaded packages, a plot viewer and a help tab.
+
+## Introduction to R
+
+Before you begin coding, it's important to remember this final point: do not let the errors, warnings, and other messages that you, like everyone else, are bound to encounter intimidate you. There is no reason to panic just because you see red text in your console and in fact, what is returned will often times already help you to solve the problem and lead you onto the right track.
+
+There are [three different types]{.underline} of texts that communicate issues or information about the code execution:
+
+-   **Errors**: this is a legitimate error and most likely your code did not run due to the error. Many of the error messages are very concise and you will directly see what was wrong, what is missing etc. If you do not see what you did wrong at first glance, you can copy the error message and google it. It is very likely someone else has run into the same error before.
+
+-   **Warnings**: opposed to an error, your code did probably run but there could be something off. However, it is just a warning. You can check it and if you think the warning does not apply to your specific scenario, you can go on.
+
+-   **Messages**: these are just friendly texts that provide you with useful information. They do not need immediate attention but can provide useful supplementary information.
+
+[**Interactive Tutorials**]{.underline}**:**
+
+But let's no more talk about it but instead start coding because the best way to get familiar with R and to code is to just start.
+
+In the following chapters, you will learn to code along the way, but to start you will go through some very concise tutorials from the R package `swirl`. The package provides a [whole bunch of tutorials](http://swirlstats.com/scn/title.html) in the console.
+
+Feel free to complete as many tutorials as you want, but for this class, the following tutorial is of particular use: **The R Programming Environment** (Chapter 2-12)
+
+`swirl()` does not come with R by default but is an optional package. **R packages** are extensions of the base functionality implemented by default when you download R. Written by users around the world, packages provide additional features and are crucial for data science tasks in practice as you will later see.
+
+You need to follow two steps to use an R package:
+
+1.  **Once: install the package**. As already mentioned, packages are not installed by default and you have to download it and add it to your library. Once you've installed it, you don't have to repeat this step.
+
+2.  **Always: load the package**. By default, just the base R functionality is loaded and when you want to make use of the additional features provided by a specific package, you have to load it every time you start RStudio.
+
+So let's do it for the package `swirl`:
+
+First, we install the package. This has to be done only once. You can either choose to write your code into the source editor or directly into the console
+
+```{r}
+#| eval: false
+
+install.packages("swirl")
+```
+
+Then, we load the library into our current our R session.
+
+```{r}
+#| eval: false
+
+library(swirl)
+```
+
+Now, the package is loaded and we can start making use of it.
+
+```{r}
+#| eval: false
+
+install_course("The R Programming Environment")
+```
+
+You just have to type `swirl()` into your console and follow the instructions! Please make sure to always use the same name. This way, you can leave the tutorial and start at the same position again later. It's best to write it down so that you do not forget it.
+
+```{r}
+#| eval: false
+
+swirl()
+```
+
+Select the course you just installed: `The R Programming Environment` and start with Chapter 2. You should skip Chapter 1 because its irrelevant for you. If you accidentally selected Chapter 1, just quickly go through it and choose `No` at the last question.
+
+swirl will ask you to install packages for you that are needed for the tutorial. Please confirm when asked. If you computer is struggling with installing a package named "vctrs", please type in the following command. If you don't get such an error, you can ignore it.
+
+```{r}
+#| eval: false
+
+install.packages("vctrs", repos = "https://packagemanager.rstudio.com/cran/latest")
+```
+
+If, at some point, you want to take a break, you can leave the `swirl` course by typing `bye()` or the `Esc` key. You can return to the course by typing `swirl()` and hitting `Enter`. And remember, to use the same name you used the first time.
+
+You don't need to submit anything from this step. Just focus on getting familiar with `R` by completing the tutorial (I recommend to solve chapter 2-12)!
+
+::: callout-note
+Whenever you want to find out more about a command or you have difficulties understanding what it does, you can click on it and a help page will show up.
+:::

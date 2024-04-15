@@ -1,0 +1,51 @@
+---
+title: "Motivation"
+---
+
+In this course, you will learn about causality in data science with a particular emphasis on business applications. Causal data science methods are increasingly recognized and developed to understand causes and effects. Moving beyond a prediction-based approach in data science, the purpose of causal methods is to understand underlying processes and mechanisms to guide strategic decision-making. Causal methods allow us to answer questions that otherwise could not be addressed.
+
+A large global survey[^1] conducted among data science practitioners in the industry in 2020 states the importance of causal data science. 83% of the respondents consider causal inference in data-driven decisions making increasingly important and 44% state that, in their data science project, causal inference already plays an important role. Additionally,
+
+[^1]: <https://www.causalscience.org/blog/causal-data-science-in-practice/>
+
+-   45% recognize the necessity to invest into causal inference in the future
+-   42% plan to intensify the training of their workforce in causal inference
+-   36% intend to hire talent in the field of causal inference
+
+While the primary goal of machine learning is typically the development of algorithms for a high prediction and classification accuracy, causal inference aims to understand and establish cause-and-effect relationships between variables.
+
+Typical applications in business therefore aim to answer questions like:
+
+-   Does a customer loyalty program actually bind customers? Or do only customers sign up that are loyal anyways?
+-   Does discount a product lead to more revenue? Or do only customers who would have bought anyways buy?
+
+Many successful companies have already recognized the advantages of causal data science. Click on the link to get more details how these companies are using tools from causal inference to generate value within their organizations.
+
+![Sample of companies involved in causal data science](/images/00_companies.png){fig-align="center"}
+
+-   **Uber** provides a [Python package](https://github.com/uber/causalml) accompanied by a [white paper](https://ieeexplore.ieee.org/document/8964199) suited for use cases such as campaign targeting optimization (identify customers most likely to respond to ad) and personalized engagement (find optimal personalized recommendation systems).
+
+-   Lacking the possibility to measure the benefit of a new tool, **AirBnB** developed a method to mimic a randomized experiment called [Artificial Counterfactual Estimation (ACE)](https://diff.blog/post/artificial-counterfactual-estimation-ace-machine-learning-based-causal-inference-at-airbnb-89562/) leveraging causal inference and machine learning.
+
+-   Data scientists at **booking.com** make use of [encouragement design and instrumental variables](https://booking.ai/encouraged-to-comply-3cd95b447a20) to examine whether property partners can be reactivated by contacting.
+
+-   At **LinkedIn**, methods from causal inference are used to extract effect estimates from observational data as randomized experiments are often not feasible. Four case studies dealing with job postings, free trials, user contributions and marketing campaigns are presented [here](https://hdsr.mitpress.mit.edu/pub/wjhth9tr/release/3).
+
+-   **Netflix** often uses A/B testing but sometimes refrains from its use in order to provide the same value to all customers. Then data scientists need to [draw on observational data](https://netflixtechblog.com/a-survey-of-causal-inference-applications-at-netflix-b62d25175e6f) and e.g. use double machine learning to study the impact of localized content (through subtitles and dubs) or introduce causal inference into recommendation models to overcome the purely associative nature.
+
+-   **Google** provides an [R package](https://cran.r-project.org/web/packages/CausalImpact/index.html) to help [inferring causal impact](https://research.google/pubs/pub41854/) from marketing campaigns on e.g. web searches, product installs or sales.
+
+-   **Meta** runs experiments to improve the user experience and reduce resource usage. [Applying methods from causal inference and machine learning](https://engineering.fb.com/2022/10/31/ml-applications/instagram-notification-management-machine-learning/), Instagram users are provided with better notifications.
+
+-   **Microsoft** brings together state-of-the-art machine learning techniques and statistics to tackle causal inference problems in its [open source ecosystem for causal machine learning](https://www.pywhy.org/).
+
+-   **Zalando** puts a focus on [experimentation and A/B-testing](https://engineering.zalando.com/posts/2021/01/experimentation-platform-part1.html) in their business decision-making.
+
+-   Data science teams at **Lyft** rely on [large causal models](https://eng.lyft.com/causal-forecasting-at-lyft-part-1-14cca6ff3d6d) to model customer decisions and driver incentives in order to manage their marketplace.
+
+```{=html}
+<!--
+-   https://causal-machine-learning.github.io/kdd2021-tutorial/
+-   https://papers.ssrn.com/sol3/papers.cfm?abstract_id=3867326
+-->
+```

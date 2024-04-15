@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.1.189">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2022-10-01">
+
+<title>Causal Data Science for Business Analytics - Instrumental Variables</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark.min.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Causal Data Science for Business Analytics</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../index.html">Home</a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../content/index.html">Content</a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html">About</a>
+  </li>  
+</ul>
+              <div class="quarto-toggle-container">
+                  <a href="" class="quarto-color-scheme-toggle nav-link" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+              </div>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
+  <li><a href="#application" id="toc-application" class="nav-link" data-scroll-target="#application">Application</a>
+  <ul class="collapse">
+  <li><a href="#exploration" id="toc-exploration" class="nav-link" data-scroll-target="#exploration">Exploration</a></li>
+  <li><a href="#modeling" id="toc-modeling" class="nav-link" data-scroll-target="#modeling">Modeling</a>
+  <ul class="collapse">
+  <li><a href="#confounding" id="toc-confounding" class="nav-link" data-scroll-target="#confounding">Confounding</a></li>
+  <li><a href="#sls" id="toc-sls" class="nav-link" data-scroll-target="#sls">2SLS</a></li>
+  </ul></li>
+  </ul></li>
+  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a></li>
+  <li><a href="#assignment" id="toc-assignment" class="nav-link" data-scroll-target="#assignment">Assignment</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Instrumental Variables</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">October 1, 2022</p>
+    </div>
+  </div>
+    
+  </div>
+  
+
+</header>
+
+<section id="introduction" class="level1">
+<h1>Introduction</h1>
+<p>The method we introduce in this chapter is called <strong>instrumental variables estimation (IV)</strong> and is a non-experimental methods used to identify causal effects in observational studies with unobserved confounders.</p>
+<p>Heavily used in economics and probably one of the most important research designs, it controls for omitted variable bias. Not being able to close the backdoor path through the omitted variable between treatment and outcome due to the omitted variable not being measured, IV introduces an additional variable, the so called <strong>instrument or instrumental variable</strong>,which <strong>affects the outcome only through the treatment variable</strong>.</p>
+<p>The instrumental variable is exogenous, i.e.&nbsp;there is no other variable in the mode influencing the value of the instrument. Thus, it mimics an experiment by exploiting the exogenous variation in treatment due to the instrument and disregarding endogenous variation from unobserved confounders.</p>
+<p>IV can be illustrated using DAGs. On the left, there is a potential initial situation you could find yourself in: you want to examine the effect of <span class="math inline">\(D\)</span> on $Y$, but unfortunately, there is an unobserved confounder (=omitted variable) that you would have to adjust for to identify the direct effect. As <span class="math inline">\(U\)</span> is unobserved, there is no way to close the backdoor path by methods like matching, regression etc. This is where IV comes to rescue.</p>
+<p>As you can see on the right, now <span class="math inline">\(D\)</span> mediates between an instrument <span class="math inline">\(Z\)</span> and outcome <span class="math inline">\(Y\)</span>. There is no direct path between <span class="math inline">\(Z\)</span> and <span class="math inline">\(Y\)</span> and therefore <span class="math inline">\(Z\)</span> affects <span class="math inline">\(Y\)</span> <strong>only through</strong> <span class="math inline">\(D\)</span>. For the instrument validity, there are a few assumptions that need to be fulfilled, which we discuss later in detail but summarizing, we need</p>
+<ul>
+<li><p><strong>Relevance</strong>: <span class="math inline">\(Z \rightarrow D, \,\,\, Cor(Z,D) \neq 0\)</span> (testable)</p></li>
+<li><p><strong>Excludability</strong>: <span class="math inline">\(Z \rightarrow D \rightarrow Y,\,\, Z \not\to Y, \,\,\, Cor(Z, Y|D) =0\)</span> (partly testable)</p></li>
+<li><p><strong>Exogeneity:</strong> <span class="math inline">\(U \not\to Z, \,\,\, Cor(Z, U)=0\)</span> (not testable)</p></li>
+</ul>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="08_iv_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" style="width:75.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>That are the main requirements of IV. To go through them in-depth and also explain how to estimate the effects, we’ll go through an example in the following section..</p>
+</section>
+<section id="application" class="level1">
+<h1>Application</h1>
+<p>Let us imagine the following situation. You are manager of a company that allows its workers to work remotely from any location. Now you want to implement a <strong>voluntary training program to improve the skills of your workforce</strong>. Other than the general work, trainings are held in a number of locations on-site. To measure the effect of your training program on a worker’s output, you are able to collect</p>
+<ul>
+<li><span class="math inline">\(D\)</span>: whether an individual worker has participated in the training program</li>
+<li><span class="math inline">\(Y\)</span>: his/her work output (something like a key performance indicator (KPI))</li>
+</ul>
+<p>Under what circumstances can we estimate the causal effect from <span class="math inline">\(D\)</span> to <span class="math inline">\(Y\)</span> knowing only this information?</p>
+<details>
+<summary>
+Click for Answer
+</summary>
+<p>If we can assume no selection on unobservables, estimating a causal effect is possible. That means, that no other unmeasured variable confounds the relationship between treatment and outcome.</p>
+</details>
+<p>A major factor <span class="math inline">\(U\)</span> influencing both treatment <span class="math inline">\(D\)</span> and outcome <span class="math inline">\(Y\)</span> as motivation as more more motivated workers are more likely to participate in a training program to improve their skills and also more likely to be more productive. Unfortunately, motivation is variable that is very hard to measure. Workers with a low level of motivation will try to hide it while workers with a high level of motivation might not be able to show it.</p>
+<p>Therefore, motivation <span class="math inline">\(U\)</span> opens a backdoor path between <span class="math inline">\(D\)</span> (= program participation) and <span class="math inline">\(Y\)</span> (worker output) which cannot be closed. To eliminate the bias caused by an omitted variable, the strategy is to use an instrument.</p>
+<p>However, we can exploit the fact that the distance to training location is known. At first glance, distance could serve as an instrument <span class="math inline">\(Z\)</span> as it related to <span class="math inline">\(D\)</span> (close distance to training location might increase participation likelihood) and is not otherwise related to outcome <span class="math inline">\(Y\)</span>.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Instrumental Variable Estimation - Application</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>iv_expl <span class="ot">&lt;-</span> <span class="fu">dagify</span>(</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  D <span class="sc">~</span> Y,</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  U <span class="sc">~</span> Y,</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  U <span class="sc">~</span> D,</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  Z <span class="sc">~</span> D,</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">exposure =</span> <span class="st">"D"</span>,</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">latent =</span> <span class="st">"U"</span>,</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">outcome =</span> <span class="st">"Y"</span>,</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">coords =</span> <span class="fu">list</span>(<span class="at">x =</span> <span class="fu">c</span>(<span class="at">U =</span> <span class="dv">1</span>, <span class="at">D =</span> <span class="dv">0</span>, <span class="at">Y =</span> <span class="dv">2</span>, <span class="at">Z =</span> <span class="sc">-</span><span class="dv">1</span>),</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>                <span class="at">y =</span> <span class="fu">c</span>(<span class="at">U =</span> <span class="dv">1</span>, <span class="at">D =</span> <span class="dv">0</span>, <span class="at">Y =</span> <span class="dv">0</span>, <span class="at">Z =</span> <span class="dv">0</span>)),</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"D"</span> <span class="ot">=</span> <span class="st">"Participation in training"</span>, </span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>             <span class="st">"Y"</span> <span class="ot">=</span> <span class="st">"KPI/Efficiency"</span>, </span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>             <span class="st">"U"</span> <span class="ot">=</span> <span class="st">"Motivation"</span>,</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>             <span class="st">"Z"</span> <span class="ot">=</span> <span class="st">"Distance to training location"</span>)</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="fu">ggdag_status</span>(iv_expl, <span class="at">use_labels =</span> <span class="st">"label"</span>, <span class="at">text =</span> T) <span class="sc">+</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">guides</span>(<span class="at">color =</span> <span class="st">"none"</span>) <span class="sc">+</span></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_dag</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="08_iv_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" style="width:75.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>For an instrument to be valid, there are five requirements that need to be met.</p>
+<ol type="1">
+<li><p><strong>Stable unit treatment value assumption</strong>: Potential outcomes for a unit do not vary with treatments assigned to other units. Note that it does not mean that treatment assignment is independent across units. For example, if a worker participates in training because his/her colleague does so, it is not a violation of the assumption.</p></li>
+<li><p><strong>Independence assumption</strong>: There is no confounding between instrument <span class="math inline">\(Z\)</span> and treatment <span class="math inline">\(D\)</span> and also no confounding between <span class="math inline">\(Z\)</span> and outcome <span class="math inline">\(Y\)</span>. In our application, it means there is no factor that both influences the proximity to the closest training location and program participation or worker efficiency. If we want to think of a potential violation, we could imagine more motivated workers living closer to a training location (e.g.&nbsp;if the headquarter is a training location) and thus, there would be confounding between <span class="math inline">\(Z\)</span> and both treatment assignment and outcome.</p></li>
+<li><p><strong>Exclusion restriction</strong>: As already mentioned above, the instrument does not directly affect outcome, but only through the treatment. Other than the consideration in 2), there is no obvious reason why living closer or further away from a training location would affect an individual worker’s efficiency. Please note that this assumption is not testable.</p></li>
+<li><p><strong>Instrument relevance</strong>: There should be a correlation of <span class="math inline">\(Z\)</span> and <span class="math inline">\(D\)</span>. The stronger the association, the more powerful an instrument is. We will later check the correlation between both variables (in the so called “first stage”).</p></li>
+<li><p><strong>Monotonicity assumption</strong>: Instrument (weakly) operates in same direction, i.e.&nbsp;it might be the case, that the instrument does not affect all units, but for all units that are affected are affected in the same direction.</p></li>
+</ol>
+<p>Using the framework below, monotonicity is satisfied, if there are no defiers. Let’s define what defiers are. In general, there are four types of observation units with regard to their value of <span class="math inline">\(Z\)</span> and <span class="math inline">\(D\)</span>.</p>
+<ul>
+<li><p>Compliers: <span class="math inline">\(D\)</span> is affected by <span class="math inline">\(Z\)</span> in “correct” direction.</p></li>
+<li><p>Defiers: <span class="math inline">\(D\)</span> is affected by <span class="math inline">\(Z\)</span> in “wrong” direction.</p></li>
+<li><p>Never takers: <span class="math inline">\(D = 0\)</span> in all cases, regardless of <span class="math inline">\(Z\)</span>.</p></li>
+<li><p>Always takers: <span class="math inline">\(D = 1\)</span> in all cases, regardless of <span class="math inline">\(Z\)</span>.</p></li>
+</ul>
+<p>If all of the assumptions are satisfied, we are able to estimate the average treatment effect for compliers, which is also known as local average treatment effect (LATE). With regard to our application, we estimate the average treatment effect for individuals whose decision to participate was affected by the their distance to the training location.</p>
+<section id="exploration" class="level2">
+<h2 class="anchored" data-anchor-id="exploration">Exploration</h2>
+<p>For the sake of explanation, we generate a synthetic data set with the variables <span class="math inline">\(Z\)</span>, <span class="math inline">\(D\)</span> and <span class="math inline">\(Y\)</span> as defined above. We also include the unobserved variable <span class="math inline">\(U\)</span>. This way, we can better explain where the bias comes from and how it affects the estimated treatment effect. The true treatment effect, which is the direct effect of <span class="math inline">\(D\)</span> on <span class="math inline">\(Y\)</span>, is set to 1. We also add some random noise, so relationships are not perfect and what you will see is close to practice.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 4
+  distance program motivation    kpi
+     &lt;dbl&gt;   &lt;dbl&gt;      &lt;dbl&gt;  &lt;dbl&gt;
+1    0.741       0      0.612 -0.626
+2    0.622       1      0.588  2.44 
+3    0.638       1      0.822  2.92 
+4    0.687       0      0.588  1.93 
+5    0.535       1      0.484  0.777
+6    0.622       0      0.611  0.386</code></pre>
+</div>
+</div>
+<p>From the table, you already have an idea what the data structure and types look like. But when developing our analysis strategy, we are mainly interested in relationships between the variables, so let’s have a look at the correlation matrix. Some requirements for a valid IV strategy can already be checked with it. Please also note, that we include <span class="math inline">\(U\)</span> here, but in general, you do not observe <span class="math inline">\(U\)</span>, which is the reason why researchers came up with the idea of IV in the first place. It is just for the purpose of explanation that we include it here.</p>
+<p>From the correlation matrix, we can take a few important insights. There is a significant negative correlation between distance and program participation, which is also called <strong>first-stage</strong> and confirms the <strong>relevance of our instrument</strong>. The distance to the next training location does affect decision to participate in a training. This is assumption (4) from above.</p>
+<p>Having a synthetic data set, we can also see that our instrument is uncorrelated with the unobserved variable motivation, which means there is no confounding as stated in assumption (2). Usually, however, we would not be able to test this assumption due to an unobservable variable not being observed. Moreover, there could be additional confounders. With merely statistical concepts, we cannot prove that the effect of <span class="math inline">\(Z\)</span> on <span class="math inline">\(Y\)</span> goes only through <span class="math inline">\(D\)</span>.</p>
+<p>Corresponding to our DAG, we also see that there both program participation and KPI are correlated with motivation, which thus opens another path between treatment and outcome. Being unable to close this path, we actually need an instrument in this situation.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Correlation matrix</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(df) <span class="sc">%&gt;%</span> <span class="fu">round</span>(<span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>           distance program motivation   kpi
+distance       1.00   -0.56      -0.02 -0.23
+program       -0.56    1.00       0.41  0.48
+motivation    -0.02    0.41       1.00  0.30
+kpi           -0.23    0.48       0.30  1.00</code></pre>
+</div>
+</div>
+<p>In general, it is very useful to also plot the data to check relationships between variables. It confirms what we have seen in the correlation matrix.</p>
+</section>
+<section id="modeling" class="level2">
+<h2 class="anchored" data-anchor-id="modeling">Modeling</h2>
+<section id="confounding" class="level3">
+<h3 class="anchored" data-anchor-id="confounding">Confounding</h3>
+<p>When you plausibly argued that your instrument is valid, you would usually perform <strong>2SLS</strong>, which is short for <strong>Two Stage Least Squares</strong>. We’ll come to that shortly, but because we have all the data, we can also check what the bias would be in case we would not use an instrument and ignore the confounder.</p>
+<p>Remember, the true treatment effect is 1 in this case. Therefore, when we regress <span class="math inline">\(Y\)</span> on <span class="math inline">\(D\)</span> and <span class="math inline">\(U\)</span>, we should be able to recover this effect. And when you look at the regression output, in fact, we do. It is not exactly equal 1, but that is due to sampling noise.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># First of all, let's look at the coefficients of the "full" (but unobservable)</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co"># model. It is unobservable, as it includes motivation, which in reality is </span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co"># a variable that is very hard to collect or measure.</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Coefficients are expected to be close to what he have defined in the data</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="co"># generation section.</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>model_full <span class="ot">&lt;-</span> <span class="fu">lm</span>(kpi <span class="sc">~</span> program <span class="sc">+</span> motivation, <span class="at">data =</span> df)</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model_full)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = kpi ~ program + motivation, data = df)
+
+Residuals:
+   Min     1Q Median     3Q    Max 
+-3.572 -0.680 -0.005  0.674  3.491 
+
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)  -0.0590     0.0564   -1.05      0.3    
+program       0.9898     0.0284   34.91   &lt;2e-16 ***
+motivation    1.1313     0.1086   10.41   &lt;2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 1 on 5997 degrees of freedom
+Multiple R-squared:  0.245, Adjusted R-squared:  0.245 
+F-statistic:  973 on 2 and 5997 DF,  p-value: &lt;2e-16</code></pre>
+</div>
+</div>
+<p>But what would happen if we ignored the confounder <span class="math inline">\(motivation\)</span> and only regress <span class="math inline">\(Y\)</span> on <span class="math inline">\(D\)</span>? We do not close the backdoor path and consequently, the effect is overestimated.</p>
+<p>We can see that the coefficient for program participation is higher than expected, i.e.&nbsp;it has an upward bias. This is because, it takes some of the variation that is actually attributable to motivation into the coefficient of program participation. This confirms the need to include an instrument to model causal effects when there is no way to include the confounder.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Modeling the data without the unobservable variable, i.e. only including </span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co"># program participation in this case, returns a biased coefficient as the </span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co"># relationship between program and the outcome is biased by a collider.</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>model_biased <span class="ot">&lt;-</span> <span class="fu">lm</span>(kpi <span class="sc">~</span> program, <span class="at">data =</span> df)</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model_biased)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = kpi ~ program, data = df)
+
+Residuals:
+   Min     1Q Median     3Q    Max 
+-3.631 -0.688 -0.007  0.688  3.658 
+
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)   0.4963     0.0185    26.9   &lt;2e-16 ***
+program       1.1101     0.0261    42.5   &lt;2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 1 on 5998 degrees of freedom
+Multiple R-squared:  0.231, Adjusted R-squared:  0.231 
+F-statistic: 1.8e+03 on 1 and 5998 DF,  p-value: &lt;2e-16</code></pre>
+</div>
+</div>
+</section>
+<section id="sls" class="level3">
+<h3 class="anchored" data-anchor-id="sls">2SLS</h3>
+<p>Two Stage Least Square is the estimation technique for IV and consists, as it names suggest, of two stages. In the first stage, the treatment variable is regressed on the instrument and in the second stage, the estimated values of the first stage are used as a regressors for the outcome. It sounds a little bit confusing, so let’s write it down. Remember, <span class="math inline">\(D\)</span> is our treatment, <span class="math inline">\(Z\)</span> the instrument and <span class="math inline">\(Y\)</span> the outcome.</p>
+<p><strong>First stage:</strong></p>
+<p><span class="math display">\[
+d_i = \gamma_0 + \gamma_1z_i + \nu_i
+\]</span></p>
+<p><strong>Second stage:</strong></p>
+<p><span class="math display">\[
+y_i = \beta_0 +\beta_1\widehat{d_i} +\epsilon_i
+\]</span></p>
+<p>Lower cases indicate single observations, so <span class="math inline">\(i\)</span> indicates for example the row in our data set. What is important to note, is that in the second stage, we do not use <span class="math inline">\(d_i\)</span>, but instead <span class="math inline">\(\widehat{d_i}\)</span>. The hat indicates, that these are fitted values from the first stage.</p>
+<p>We can do 2SLS manually in <code>R</code>, but for reasons I will get to later, it is recommended to use libraries built to run 2SLS. However, for purpose of explanation, we’ll do it also manually here.</p>
+<p><strong>First stage:</strong> As already discussed, regress treatment variable on instrument and obtain the fitted model. The model coefficient returned by the model summary should be significant, otherwise there is reason to doubt the relevance and validity of the instrument. You can also look at the F-statistic, which should be above 10.</p>
+<p>Here, the instrument is highly significant. The higher the distance, the lower the likelihood of participation.</p>
+<p>!!! log reg?</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># First stage</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>first_stage <span class="ot">&lt;-</span> <span class="fu">lm</span>(program <span class="sc">~</span> distance, <span class="at">data =</span> df)</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(first_stage)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = program ~ distance, data = df)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-1.2004 -0.3334 -0.0373  0.3509  1.0397 
+
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)   1.4553     0.0192    75.8   &lt;2e-16 ***
+distance     -1.5999     0.0309   -51.8   &lt;2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 0.42 on 5998 degrees of freedom
+Multiple R-squared:  0.309, Adjusted R-squared:  0.309 
+F-statistic: 2.68e+03 on 1 and 5998 DF,  p-value: &lt;2e-16</code></pre>
+</div>
+</div>
+<p>Let’s look at the fitted values from the first stage. The fitted values is what you get when you use the calculated coefficients and for each observation compute what the model predicts as an expected value. So, they are most likely a different from the actual values. How different they are depends on the goodness of fit of your model. This is why it is important that your instrument has a good explanatory value for the treatment variable.</p>
+<p>!!! Plot residuals?</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(first_stage<span class="sc">$</span>fitted.values)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="08_iv_files/figure-html/unnamed-chunk-18-1.png" class="img-fluid figure-img" style="width:75.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="fu">tibble</span>(<span class="at">first_stage_fitted =</span> first_stage<span class="sc">$</span>fitted.values), </span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> first_stage_fitted)) <span class="sc">+</span> </span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">color =</span> <span class="st">"white"</span>, <span class="at">alpha =</span> .<span class="dv">8</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+</div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="08_iv_files/figure-html/unnamed-chunk-20-1.png" class="img-fluid figure-img" style="width:75.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Now we continue to use the fitted values from the first stage and plug it in the second stage to get the local average treatment effect. We see that the coefficient for the effect is close to one as constructed and we were able to eliminate the omitted variable bias.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Second stage</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>second_stage <span class="ot">&lt;-</span> <span class="fu">lm</span>(df<span class="sc">$</span>kpi <span class="sc">~</span> first_stage<span class="sc">$</span>fitted.values)</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(second_stage)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = df$kpi ~ first_stage$fitted.values)
+
+Residuals:
+   Min     1Q Median     3Q    Max 
+-4.051 -0.757 -0.009  0.753  4.257 
+
+Coefficients:
+                          Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)                 0.5669     0.0298    19.0   &lt;2e-16 ***
+first_stage$fitted.values   0.9689     0.0521    18.6   &lt;2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 1.1 on 5998 degrees of freedom
+Multiple R-squared:  0.0545,    Adjusted R-squared:  0.0543 
+F-statistic:  345 on 1 and 5998 DF,  p-value: &lt;2e-16</code></pre>
+</div>
+</div>
+<p>However, it is recommended to use functions, like e.g.&nbsp;<em><code>iv_robust()</code></em> from the <em><code>estimatr</code></em> package, as it yields correct standard errors. You see that the coefficient is the same but the standard errors slightly differ.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Using our instrument (distance to training location), we try to eliminate the</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="co"># bias induced by the omitted variable. If all assumptions regarding the validity</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="co"># of our instrument are met, the resulting coefficient should be</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="co"># close to what we have defined above.</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(estimatr)</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>model_iv <span class="ot">&lt;-</span> <span class="fu">iv_robust</span>(kpi <span class="sc">~</span> program <span class="sc">|</span> distance, <span class="at">data =</span> df)</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model_iv)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+iv_robust(formula = kpi ~ program | distance, data = df)
+
+Standard error type:  HC2 
+
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|) CI Lower CI Upper   DF
+(Intercept)    0.567     0.0267    21.2 1.13e-96    0.515    0.619 5998
+program        0.969     0.0466    20.8 7.23e-93    0.878    1.060 5998
+
+Multiple R-squared:  0.228 ,    Adjusted R-squared:  0.227 
+F-statistic:  433 on 1 and 5998 DF,  p-value: &lt;2e-16</code></pre>
+</div>
+</div>
+</section>
+</section>
+</section>
+<section id="conclusion" class="level1">
+<h1>Conclusion</h1>
+<p>IV is an extremely popular research design but you have to be very careful when using it - particularly due to the fact that some of the necessary assumptions are untestable. This is why it is essential to have knowledge about the studied phenomenon to convincingly argue why the research design is valid and assumptions are plausible.</p>
+<p>Moreover you have to question yourself, whether you measure the effect you are actually interested in. As you only measure the effect for compliers, for people who are affected by the instrument, the treatment effect is a local average treatment effect (LATE). In case of heterogeneous treatment effects across the whole population, the LATE is different from the ATE.</p>
+<p>IV is still a very active research field and you can extend it in variety of ways like for example including multiple instruments.</p>
+</section>
+<section id="assignment" class="level1">
+<h1>Assignment</h1>
+<p>Imagine, you have developed an app and you are already having an active user base. Of course, some users are more active than other users and users might use the app for different purposes. In general user behavior likely depends on a lot of unobserved characteristics.</p>
+<p>Your goal is to keep users as long as possible on the app to maximize your ad revenues.</p>
+<p>Now you want to introduce a new feature and see how it affects the time spent on the app. Simply comparing users who use the newly introduced feature to users who don’t would result in a biased estimate due to the confounders regarding activity above.</p>
+<p>Therefore, you perform a so called <strong>randomized encouragement trial</strong>, where for a random selection of users, a popup appears when opening the app and encourages these users to test new feature.</p>
+<p>After a while you collect data on users’ activity, if they were encouraged and if they used the new feature. Try to think about how you could use the IV framework to find the causal effect. Also, compare what effect a naive comparison would yield and compare it to the IV estimate.</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  let localAlternateSentinel = 'alternate';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } 
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
