@@ -32,7 +32,7 @@ Introducing you to **causal inference with the help of data science** will allow
 ## Website Structure
 
 ::: {style="background-color: #0F2231; border-radius: .25rem; padding: 15px"}
-Browse all the class content, assignments and examples by going to [**Content**](content/). For instruction how to pass the course go to [**Submission**](content/organization/submission.qmd). If you have problems regarding the content, solving the assignments or any other questions, use the chat icon to directly go to our [**Mattermost discussion channel**](https://communicating.tuhh.de/w-11-students/channels/discussion-causal-data-science).
+Browse all the class content, assignments and examples by going to [**Content**](content/). For instruction how to pass the course go to [**Submission**](content/organization/submission.qmd). If you have problems regarding the content, solving the assignments or any other questions, use the chat icon to directly go to our [**Mattermost discussion channel**](https://communicating.tuhh.de/w-11-students/channels/cdsba_ss24).
 :::
 
 ::: grid
