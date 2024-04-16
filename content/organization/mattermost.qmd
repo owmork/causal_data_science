@@ -2,8 +2,6 @@
 title: "Mattermost"
 ---
 
-## Mattermost
-
 In the course of the next chapters, we will do a lot of coding and errors will occur all the time. That is nothing you should be afraid of and in fact, dealing with errors is an elementary component in programming in data science.
 
 In most cases, other people from around the world have had similar problems and you will find the right solution to your problem by just googling it. Two great resources to help you are [StackOverflow](https://stackoverflow.com/) and [RStudio Community](https://community.rstudio.com/). Please try to do that as a first step when you run into an error.

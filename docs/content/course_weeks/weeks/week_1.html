@@ -17,40 +17,6 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-/* CSS for syntax highlighting */
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-  }
-pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-}
 </style>
 
 <script src="../../../site_libs/quarto-nav/quarto-nav.js"></script>
@@ -272,12 +238,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
    
   <ul>
 <li><a href="#slides-recap" id="toc-slides-recap" class="nav-link active" data-scroll-target="#slides-recap">Slides &amp; Recap</a></li>
-  <li>
-<a href="#practical-example" id="toc-practical-example" class="nav-link" data-scroll-target="#practical-example">Practical example</a>
-  <ul class="collapse">
-<li><a href="#simpson-paradox" id="toc-simpson-paradox" class="nav-link" data-scroll-target="#simpson-paradox">Simpson paradox</a></li>
-  </ul>
-</li>
+  <li><a href="#practical-example" id="toc-practical-example" class="nav-link" data-scroll-target="#practical-example">Practical example</a></li>
   <li><a href="#assignment" id="toc-assignment" class="nav-link" data-scroll-target="#assignment">Assignment</a></li>
   </ul></nav>
     </div>
@@ -297,171 +258,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   
 
 
-</header><div class="callout callout-style-default callout-important callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Important
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>Please make sure to read and follow the instructions in <strong><a href="../../../content/organization/mattermost.html">Organization</a></strong> before reading this section.</p>
-</div>
-</div>
-<section id="slides-recap" class="level2"><h2 class="anchored" data-anchor-id="slides-recap">Slides &amp; Recap</h2>
-<p><strong><a href="../../../lecture/01.pdf">Slides - Week 1</a></strong></p>
+</header><section id="slides-recap" class="level2"><h2 class="anchored" data-anchor-id="slides-recap">Slides &amp; Recap</h2>
+<p>Coming soon.</p>
 </section><section id="practical-example" class="level2"><h2 class="anchored" data-anchor-id="practical-example">Practical example</h2>
-<section id="simpson-paradox" class="level3"><h3 class="anchored" data-anchor-id="simpson-paradox">Simpson paradox</h3>
-<p>Let’s go through a practical example of the Yule-Simpson paradox in a business context. Imagine the following situation: you have developed a new product that you want to advertise online. needed everywhere e.g.&nbsp;phone</p>
-<p>After running your ad campaign you are interested in the effectiveness of your ads by age group. For simplicity, we divide the age groups into young and old. You run the numbers and get the following results for whether a website visitor who was shown the ad clicks.</p>
-<table class="table">
-<thead><tr class="header">
-<th>OVERALL</th>
-<th>Click</th>
-<th>No click</th>
-</tr></thead>
-<tbody>
-<tr class="odd">
-<td>Young</td>
-<td>500</td>
-<td>10’000</td>
-</tr>
-<tr class="even">
-<td>Old</td>
-<td>300</td>
-<td>7’500</td>
-</tr>
-</tbody>
-</table>
-<p>From here, we can compute the click-through rate (CTR):</p>
-<div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Overall</span></span>
-<span><span class="va">ctr_yng</span> <span class="op">&lt;-</span> <span class="fl">500</span> <span class="op">/</span> <span class="op">(</span><span class="fl">500</span> <span class="op">+</span> <span class="fl">10000</span><span class="op">)</span> <span class="co"># young</span></span>
-<span><span class="va">ctr_old</span> <span class="op">&lt;-</span> <span class="fl">300</span> <span class="op">/</span> <span class="op">(</span><span class="fl">300</span> <span class="op">+</span> <span class="fl">7500</span><span class="op">)</span> <span class="co"># old</span></span>
-<span></span>
-<span><span class="co"># Difference</span></span>
-<span><span class="va">ctr_yng</span> <span class="op">-</span> <span class="va">ctr_old</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.0092</code></pre>
-</div>
-</div>
-<p>You draw the conclusion that ads on young people were more effective.</p>
-<p>However, you sense that this might be a case of the Simpson paradox and identify region as a potential confounder. Dividing your data by region, for simplicity only urban and rural, you get the numbers …</p>
-<p>for your advertising performance in <em>urban regions</em></p>
-<table class="table">
-<thead><tr class="header">
-<th>URBAN</th>
-<th>Click</th>
-<th>No click</th>
-</tr></thead>
-<tbody>
-<tr class="odd">
-<td>Young</td>
-<td>350</td>
-<td>4’000</td>
-</tr>
-<tr class="even">
-<td>Old</td>
-<td>80</td>
-<td>500</td>
-</tr>
-</tbody>
-</table>
-<p>and in <em>rural regions</em>.</p>
-<table class="table">
-<thead><tr class="header">
-<th>RURAL</th>
-<th>Click</th>
-<th>No click</th>
-</tr></thead>
-<tbody>
-<tr class="odd">
-<td>Young</td>
-<td>150</td>
-<td>6’000</td>
-</tr>
-<tr class="even">
-<td>Old</td>
-<td>220</td>
-<td>7’000</td>
-</tr>
-</tbody>
-</table>
-<p>As before, you compute the CTRs, but now by region. First for urban areas:</p>
-<div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Urban region</span></span>
-<span><span class="va">ctr_yng_urb</span> <span class="op">&lt;-</span> <span class="fl">350</span> <span class="op">/</span> <span class="op">(</span><span class="fl">350</span> <span class="op">+</span> <span class="fl">4000</span><span class="op">)</span> <span class="co"># young people</span></span>
-<span><span class="va">ctr_old_urb</span> <span class="op">&lt;-</span> <span class="fl">80</span> <span class="op">/</span> <span class="op">(</span><span class="fl">80</span> <span class="op">+</span> <span class="fl">500</span><span class="op">)</span> <span class="co"># old people</span></span>
-<span></span>
-<span><span class="co"># Difference</span></span>
-<span><span class="va">ctr_yng_urb</span> <span class="op">-</span> <span class="va">ctr_old_urb</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] -0.057</code></pre>
-</div>
-</div>
-<p>Other than for the overall effect, the effect of ads for old people is higher causing the difference to be negative. Now, intuitively, you would think that for rural areas, the effect for ads on young people would be substantially higher than for old people to explain the overall higher effect for young people. Let’check:</p>
-<div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Rural region</span></span>
-<span><span class="va">ctr_yng_rur</span> <span class="op">&lt;-</span> <span class="fl">150</span> <span class="op">/</span> <span class="op">(</span><span class="fl">150</span> <span class="op">+</span> <span class="fl">6000</span><span class="op">)</span> <span class="co"># young</span></span>
-<span><span class="va">ctr_old_rur</span> <span class="op">&lt;-</span> <span class="fl">220</span> <span class="op">/</span> <span class="op">(</span><span class="fl">220</span> <span class="op">+</span> <span class="fl">7000</span><span class="op">)</span> <span class="co"># old</span></span>
-<span></span>
-<span><span class="co"># Difference</span></span>
-<span><span class="va">ctr_yng_rur</span> <span class="op">-</span> <span class="va">ctr_old_rur</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] -0.0061</code></pre>
-</div>
-</div>
-<p>And, surprisingly, you see the difference is again negative, indicating more reaction among old people.</p>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Note
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>To neatly format variables in a desired manner, use `sprintf()``. Simply furnish a string template with placeholders for variables or expressions. These can encompass strings, integers, floats, and more.</p>
-</div>
-</div>
-<div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/sprintf.html">sprintf</a></span><span class="op">(</span><span class="st">"All areas: %.2f %%"</span>, <span class="fl">100</span> <span class="op">*</span> <span class="op">(</span><span class="va">ctr_yng</span> <span class="op">-</span> <span class="va">ctr_old</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] "All areas: 0.92 %"</code></pre>
-</div>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/sprintf.html">sprintf</a></span><span class="op">(</span><span class="st">"Urban area: %.2f %%"</span>, <span class="fl">100</span> <span class="op">*</span> <span class="op">(</span><span class="va">ctr_yng_urb</span> <span class="op">-</span> <span class="va">ctr_old_urb</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] "Urban area: -5.75 %"</code></pre>
-</div>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/sprintf.html">sprintf</a></span><span class="op">(</span><span class="st">"Rural area: %.2f %%"</span>, <span class="fl">100</span> <span class="op">*</span> <span class="op">(</span><span class="va">ctr_yng_rur</span> <span class="op">-</span> <span class="va">ctr_old_rur</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] "Rural area: -0.61 %"</code></pre>
-</div>
-</div>
-<p>Because the combination of two negative differences resulting in a positive difference is unexpected at first, this scenario is labelled a <strong>paradox</strong>. In the assignment, you will be asked to explain why it happens.</p>
-<!--
-"When less effective treatment applied more frequently to less severe cases, it 
-appears to be more effective."
-Translated to our scenario: 
-  - 'less effective treatment': young people because they are less reactive to 
-  ads.
-  - ' less severe cases': people in urban areas because they have a higher CTR.
-Because there are more young people in urban areas, treating young people 
-appears to be more effective in the overall analysis. However, when analyzed
-by region, it shows that in fact, older people are more likely to react to an 
-ad.
--->
-</section></section><section id="assignment" class="level2"><h2 class="anchored" data-anchor-id="assignment">Assignment</h2>
+<p>Coming soon.</p>
+</section><section id="assignment" class="level2"><h2 class="anchored" data-anchor-id="assignment">Assignment</h2>
+<p>Coming soon.</p>
 <div class="assignment">
-<p>Please go to <a href="https://classroom.github.com/a/qKNVakO4">Week 1 - Assignment</a> and solve the following questions. For the first week, there is only one actual question and we do not grade your solutions as the primary objective is to ensure you understand the workflow and submission process via GitHub, as well as to familiarize yourself with R.</p>
-<ol type="1">
-<li><p>What is 1+1 ?</p></li>
-<li><p>What is 2+2 ?</p></li>
-<li><p>Take a closer look at the numbers (outcome, sample sizes etc.) of the practical example of a Simpson paradox. Give an explanation why the Simpson paradox occurs (1-2 sentences).</p></li>
-</ol>
+<p>…</p>
 </div>
 
 

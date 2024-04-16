@@ -25,7 +25,7 @@
     "href": "index.html#details",
     "title": "Literature",
     "section": "Details",
-    "text": "Details\n   Lecture: Monday, 11.30 - 13.00\n   Tutorial: Tuesday, 15.00 - 16.30"
+    "text": "Details\n   Lecture: Monday, 11.30 - 13.00\n   Tutorial: Tuesday, 15.00 - 16.30 + 16.45 - 18.15"
   },
   {
     "objectID": "index.html#primary",
@@ -42,460 +42,291 @@
     "text": "Secondary\n\nAngrist, J. D., & Pischke, J. S. (2014). Mastering metrics: The path from cause to effect. Princeton university press.\nCunningham, Scott (2021). Causal Inference: The Mixtape, New Haven: Yale University Press.\nGertler, Paul J., et al. (2016). Impact evaluation in practice. World Bank Publications.\nHernán Miguel A., and Robins James M. (2020). Causal Inference: What If. Boca Raton: Chapman & Hall/CRC.\nHuntington-Klein, Nick (2021). The effect: An introduction to research design and causality. Chapman and Hall/CRC.\nImbens, G. W., & Rubin, D. B. (2015). Causal inference in statistics, social, and biomedical sciences. Cambridge University Press.\nMullainathan, Sendhil, and Jann Spiess. (2017). Machine Learning: An Applied Econometric Approach. Journal of Economic Perspectives, 31(2): 87–106.\nPearl, Judea, and Dana Mackenzie (2018). The Book of Why. Basic Books, New York, NY.\nPearl, Judea, Madelyn Glymour, and Nicholas P. Jewell (2016). Causal Inference in Statistics: A Primer. John Wiley & Sons, Inc., New York, NY.\nPeters, Jonas, Dominik Janzing, and Bernhard Schölkopf (2017). Elements of causal inference: foundations and learning algorithms. The MIT Press."
   },
   {
-    "objectID": "content/course_weeks/weeks/week_8.html",
-    "href": "content/course_weeks/weeks/week_8.html",
-    "title": "8 - Difference-in-Difference",
+    "objectID": "content/course_weeks/weeks/week_9.html",
+    "href": "content/course_weeks/weeks/week_9.html",
+    "title": "9 - Synthetic Control",
     "section": "",
     "text": "Coming soon.",
     "crumbs": [
       "Content",
       "<b>Weekly content</b>",
-      "8 - Difference-in-Difference"
+      "9 - Synthetic Control"
     ]
   },
   {
-    "objectID": "content/course_weeks/weeks/week_8.html#slides-recap",
-    "href": "content/course_weeks/weeks/week_8.html#slides-recap",
-    "title": "8 - Difference-in-Difference",
+    "objectID": "content/course_weeks/weeks/week_9.html#slides-recap",
+    "href": "content/course_weeks/weeks/week_9.html#slides-recap",
+    "title": "9 - Synthetic Control",
     "section": "",
     "text": "Coming soon.",
     "crumbs": [
       "Content",
       "<b>Weekly content</b>",
-      "8 - Difference-in-Difference"
+      "9 - Synthetic Control"
     ]
   },
   {
-    "objectID": "content/course_weeks/weeks/week_8.html#practical-example",
-    "href": "content/course_weeks/weeks/week_8.html#practical-example",
-    "title": "8 - Difference-in-Difference",
+    "objectID": "content/course_weeks/weeks/week_9.html#practical-example",
+    "href": "content/course_weeks/weeks/week_9.html#practical-example",
+    "title": "9 - Synthetic Control",
     "section": "Practical example",
     "text": "Practical example\nComing soon.",
     "crumbs": [
       "Content",
       "<b>Weekly content</b>",
-      "8 - Difference-in-Difference"
+      "9 - Synthetic Control"
     ]
   },
   {
-    "objectID": "content/course_weeks/weeks/week_8.html#assignment",
-    "href": "content/course_weeks/weeks/week_8.html#assignment",
-    "title": "8 - Difference-in-Difference",
+    "objectID": "content/course_weeks/weeks/week_9.html#assignment",
+    "href": "content/course_weeks/weeks/week_9.html#assignment",
+    "title": "9 - Synthetic Control",
     "section": "Assignment",
     "text": "Assignment\nComing soon.\n\n…",
     "crumbs": [
       "Content",
       "<b>Weekly content</b>",
-      "8 - Difference-in-Difference"
+      "9 - Synthetic Control"
     ]
   },
   {
-    "objectID": "content/course_weeks/weeks/week_10.html",
-    "href": "content/course_weeks/weeks/week_10.html",
-    "title": "10 - Regression Discontinuity",
+    "objectID": "content/course_weeks/weeks/week_11.html",
+    "href": "content/course_weeks/weeks/week_11.html",
+    "title": "11 - Causal Mediation",
     "section": "",
     "text": "Coming soon.",
     "crumbs": [
       "Content",
       "<b>Weekly content</b>",
-      "10 - Regression Discontinuity"
+      "11 - Causal Mediation"
     ]
   },
   {
-    "objectID": "content/course_weeks/weeks/week_10.html#slides-recap",
-    "href": "content/course_weeks/weeks/week_10.html#slides-recap",
-    "title": "10 - Regression Discontinuity",
+    "objectID": "content/course_weeks/weeks/week_11.html#slides-recap",
+    "href": "content/course_weeks/weeks/week_11.html#slides-recap",
+    "title": "11 - Causal Mediation",
     "section": "",
     "text": "Coming soon.",
     "crumbs": [
       "Content",
       "<b>Weekly content</b>",
-      "10 - Regression Discontinuity"
+      "11 - Causal Mediation"
     ]
   },
   {
-    "objectID": "content/course_weeks/weeks/week_10.html#practical-example",
-    "href": "content/course_weeks/weeks/week_10.html#practical-example",
-    "title": "10 - Regression Discontinuity",
+    "objectID": "content/course_weeks/weeks/week_11.html#practical-example",
+    "href": "content/course_weeks/weeks/week_11.html#practical-example",
+    "title": "11 - Causal Mediation",
     "section": "Practical example",
     "text": "Practical example\nComing soon.",
     "crumbs": [
       "Content",
       "<b>Weekly content</b>",
-      "10 - Regression Discontinuity"
+      "11 - Causal Mediation"
     ]
   },
   {
-    "objectID": "content/course_weeks/weeks/week_10.html#assignment",
-    "href": "content/course_weeks/weeks/week_10.html#assignment",
-    "title": "10 - Regression Discontinuity",
+    "objectID": "content/course_weeks/weeks/week_11.html#assignment",
+    "href": "content/course_weeks/weeks/week_11.html#assignment",
+    "title": "11 - Causal Mediation",
     "section": "Assignment",
     "text": "Assignment\nComing soon.\n\n…",
     "crumbs": [
       "Content",
       "<b>Weekly content</b>",
-      "10 - Regression Discontinuity"
+      "11 - Causal Mediation"
     ]
   },
   {
-    "objectID": "content/course_weeks/weeks/week_3.html",
-    "href": "content/course_weeks/weeks/week_3.html",
-    "title": "3 - Randomized Experiments & Linear Regression",
+    "objectID": "content/course_weeks/weeks/week_1.html",
+    "href": "content/course_weeks/weeks/week_1.html",
+    "title": "1 - Introduction to Causal Inference",
     "section": "",
     "text": "Coming soon.",
     "crumbs": [
       "Content",
       "<b>Weekly content</b>",
-      "3 - Randomized Experiments & Linear Regression"
+      "1 - Introduction to Causal Inference"
     ]
   },
   {
-    "objectID": "content/course_weeks/weeks/week_3.html#slides-recap",
-    "href": "content/course_weeks/weeks/week_3.html#slides-recap",
-    "title": "3 - Randomized Experiments & Linear Regression",
+    "objectID": "content/course_weeks/weeks/week_1.html#slides-recap",
+    "href": "content/course_weeks/weeks/week_1.html#slides-recap",
+    "title": "1 - Introduction to Causal Inference",
     "section": "",
     "text": "Coming soon.",
     "crumbs": [
       "Content",
       "<b>Weekly content</b>",
-      "3 - Randomized Experiments & Linear Regression"
+      "1 - Introduction to Causal Inference"
     ]
   },
   {
-    "objectID": "content/course_weeks/weeks/week_3.html#practical-example",
-    "href": "content/course_weeks/weeks/week_3.html#practical-example",
-    "title": "3 - Randomized Experiments & Linear Regression",
+    "objectID": "content/course_weeks/weeks/week_1.html#practical-example",
+    "href": "content/course_weeks/weeks/week_1.html#practical-example",
+    "title": "1 - Introduction to Causal Inference",
     "section": "Practical example",
     "text": "Practical example\nComing soon.",
     "crumbs": [
       "Content",
       "<b>Weekly content</b>",
-      "3 - Randomized Experiments & Linear Regression"
+      "1 - Introduction to Causal Inference"
     ]
   },
   {
-    "objectID": "content/course_weeks/weeks/week_3.html#assignment",
-    "href": "content/course_weeks/weeks/week_3.html#assignment",
-    "title": "3 - Randomized Experiments & Linear Regression",
+    "objectID": "content/course_weeks/weeks/week_1.html#assignment",
+    "href": "content/course_weeks/weeks/week_1.html#assignment",
+    "title": "1 - Introduction to Causal Inference",
     "section": "Assignment",
     "text": "Assignment\nComing soon.\n\n…",
     "crumbs": [
       "Content",
       "<b>Weekly content</b>",
-      "3 - Randomized Experiments & Linear Regression"
+      "1 - Introduction to Causal Inference"
     ]
   },
   {
-    "objectID": "content/course_weeks/weeks/week_6.html",
-    "href": "content/course_weeks/weeks/week_6.html",
-    "title": "6 - Effect Heterogeneity",
+    "objectID": "content/course_weeks/weeks/week_2.html",
+    "href": "content/course_weeks/weeks/week_2.html",
+    "title": "2 - Graphical Causal Models",
     "section": "",
     "text": "Coming soon.",
     "crumbs": [
       "Content",
       "<b>Weekly content</b>",
-      "6 - Effect Heterogeneity"
+      "2 - Graphical Causal Models"
     ]
   },
   {
-    "objectID": "content/course_weeks/weeks/week_6.html#slides-recap",
-    "href": "content/course_weeks/weeks/week_6.html#slides-recap",
-    "title": "6 - Effect Heterogeneity",
+    "objectID": "content/course_weeks/weeks/week_2.html#slides-recap",
+    "href": "content/course_weeks/weeks/week_2.html#slides-recap",
+    "title": "2 - Graphical Causal Models",
     "section": "",
     "text": "Coming soon.",
     "crumbs": [
       "Content",
       "<b>Weekly content</b>",
-      "6 - Effect Heterogeneity"
+      "2 - Graphical Causal Models"
     ]
   },
   {
-    "objectID": "content/course_weeks/weeks/week_6.html#practical-example",
-    "href": "content/course_weeks/weeks/week_6.html#practical-example",
-    "title": "6 - Effect Heterogeneity",
+    "objectID": "content/course_weeks/weeks/week_2.html#practical-example",
+    "href": "content/course_weeks/weeks/week_2.html#practical-example",
+    "title": "2 - Graphical Causal Models",
     "section": "Practical example",
     "text": "Practical example\nComing soon.",
     "crumbs": [
       "Content",
       "<b>Weekly content</b>",
-      "6 - Effect Heterogeneity"
+      "2 - Graphical Causal Models"
     ]
   },
   {
-    "objectID": "content/course_weeks/weeks/week_6.html#assignment",
-    "href": "content/course_weeks/weeks/week_6.html#assignment",
-    "title": "6 - Effect Heterogeneity",
+    "objectID": "content/course_weeks/weeks/week_2.html#assignment",
+    "href": "content/course_weeks/weeks/week_2.html#assignment",
+    "title": "2 - Graphical Causal Models",
     "section": "Assignment",
     "text": "Assignment\nComing soon.\n\n…",
     "crumbs": [
       "Content",
       "<b>Weekly content</b>",
-      "6 - Effect Heterogeneity"
+      "2 - Graphical Causal Models"
     ]
   },
   {
-    "objectID": "content/course_weeks/weeks/week_5.html",
-    "href": "content/course_weeks/weeks/week_5.html",
-    "title": "5 - Double Machine Learning",
+    "objectID": "content/course_weeks/weeks/week_7.html",
+    "href": "content/course_weeks/weeks/week_7.html",
+    "title": "7 - Unobserved Confounding & Instrumental Variables",
     "section": "",
     "text": "Coming soon.",
     "crumbs": [
       "Content",
       "<b>Weekly content</b>",
-      "5 - Double Machine Learning"
+      "7 - Unobserved Confounding & Instrumental Variables"
     ]
   },
   {
-    "objectID": "content/course_weeks/weeks/week_5.html#slides-recap",
-    "href": "content/course_weeks/weeks/week_5.html#slides-recap",
-    "title": "5 - Double Machine Learning",
+    "objectID": "content/course_weeks/weeks/week_7.html#slides-recap",
+    "href": "content/course_weeks/weeks/week_7.html#slides-recap",
+    "title": "7 - Unobserved Confounding & Instrumental Variables",
     "section": "",
     "text": "Coming soon.",
     "crumbs": [
       "Content",
       "<b>Weekly content</b>",
-      "5 - Double Machine Learning"
+      "7 - Unobserved Confounding & Instrumental Variables"
     ]
   },
   {
-    "objectID": "content/course_weeks/weeks/week_5.html#practical-example",
-    "href": "content/course_weeks/weeks/week_5.html#practical-example",
-    "title": "5 - Double Machine Learning",
+    "objectID": "content/course_weeks/weeks/week_7.html#practical-example",
+    "href": "content/course_weeks/weeks/week_7.html#practical-example",
+    "title": "7 - Unobserved Confounding & Instrumental Variables",
     "section": "Practical example",
     "text": "Practical example\nComing soon.",
     "crumbs": [
       "Content",
       "<b>Weekly content</b>",
-      "5 - Double Machine Learning"
+      "7 - Unobserved Confounding & Instrumental Variables"
     ]
   },
   {
-    "objectID": "content/course_weeks/weeks/week_5.html#assignment",
-    "href": "content/course_weeks/weeks/week_5.html#assignment",
-    "title": "5 - Double Machine Learning",
+    "objectID": "content/course_weeks/weeks/week_7.html#assignment",
+    "href": "content/course_weeks/weeks/week_7.html#assignment",
+    "title": "7 - Unobserved Confounding & Instrumental Variables",
     "section": "Assignment",
     "text": "Assignment\nComing soon.\n\n…",
     "crumbs": [
       "Content",
       "<b>Weekly content</b>",
-      "5 - Double Machine Learning"
+      "7 - Unobserved Confounding & Instrumental Variables"
     ]
   },
   {
-    "objectID": "content/course_weeks/overview.html",
-    "href": "content/course_weeks/overview.html",
-    "title": "Overview",
+    "objectID": "content/course_weeks/weeks/week_4.html",
+    "href": "content/course_weeks/weeks/week_4.html",
+    "title": "4 - Matching",
     "section": "",
-    "text": "Schedule\n\n\n\n\n\n\n\n\nSession\nDate\nTopic\n\n\n\n\n1\nApril 15 & 16\nIntroduction to Causal Inference\n\n\n2\nApril 22 & 21\nGraphical Causal Models\n\n\n3\nApril 29 & 30\nRandomized Experiments & Linear Regression\n\n\n4\nMay 6 & 7\nMatching\n\n\n5\nMay 13 & 14\nDouble Machine Learning\n\n\n-\nMay 20 & 21\nHoliday\n\n\n6\nMay 27 & 28\nEffect Heterogeneity\n\n\n7\nJune 3 & 4\nUnobserved Confounding & Instrumental Variables\n\n\n8\nJune 10 & 11\nDifference-in-Difference\n\n\n9\nJune 17 & 18\nSynthetic Control\n\n\n10\nJune 24 & 25\nRegression Discontinuity\n\n\n11\nJuly 1 & 2\nCausal Mediation\n\n\n12\nJuly 8 & 9\nFurther Topics in Causal Machine Learning",
-    "crumbs": [
-      "Content",
-      "Overview"
-    ]
-  },
-  {
-    "objectID": "content/optional_read/stats.html",
-    "href": "content/optional_read/stats.html",
-    "title": "Statistical Concepts",
-    "section": "",
-    "text": "Now we will delve into some statistical concepts, that are the foundation for statistical modeling processes used in causal inference. If you sometimes prefer to see additional visual explanations, I can also recommend you to read here.",
+    "text": "Coming soon.",
     "crumbs": [
       "Content",
       "<b>Weekly content</b>",
-      "<b>Optional reads</b>",
-      "Statistical Concepts"
+      "4 - Matching"
     ]
   },
   {
-    "objectID": "content/optional_read/stats.html#footnotes",
-    "href": "content/optional_read/stats.html#footnotes",
-    "title": "Statistical Concepts",
-    "section": "Footnotes",
-    "text": "Footnotes\n\nhttps://ourworldindata.org/human-height↩︎",
+    "objectID": "content/course_weeks/weeks/week_4.html#slides-recap",
+    "href": "content/course_weeks/weeks/week_4.html#slides-recap",
+    "title": "4 - Matching",
+    "section": "",
+    "text": "Coming soon.",
     "crumbs": [
       "Content",
       "<b>Weekly content</b>",
-      "<b>Optional reads</b>",
-      "Statistical Concepts"
+      "4 - Matching"
     ]
   },
   {
-    "objectID": "content/organization/submission.html",
-    "href": "content/organization/submission.html",
-    "title": "GitHub & Submission",
-    "section": "",
-    "text": "For each week, there will be assignments for you to solve writing and rendering R programming code in .qmd files using RStudio and uploading these files via GitHub1. We’ll go through it step by step, but briefly summarized, .qmd files allow writing text and code and rendering presentable .html files based on the Quarto2 infrastructure and GitHub is is a hosting platform for so called repositories, which typically consists of data and code. But don’t worry, after the instructions on this page, it will get a lot clearer.\n\n\n\n\n\n\nTip\n\n\n\nIn the following I will guide your through the necessary steps. Some details in the screenshot might not be identical and slightly deviate, but you should be able to follow the general workflow.",
-    "crumbs": [
-      "Organization",
-      "GitHub & Submission"
-    ]
-  },
-  {
-    "objectID": "content/organization/submission.html#instructions",
-    "href": "content/organization/submission.html#instructions",
-    "title": "GitHub & Submission",
-    "section": "",
-    "text": "For each week, there will be assignments for you to solve writing and rendering R programming code in .qmd files using RStudio and uploading these files via GitHub1. We’ll go through it step by step, but briefly summarized, .qmd files allow writing text and code and rendering presentable .html files based on the Quarto2 infrastructure and GitHub is is a hosting platform for so called repositories, which typically consists of data and code. But don’t worry, after the instructions on this page, it will get a lot clearer.\n\n\n\n\n\n\nTip\n\n\n\nIn the following I will guide your through the necessary steps. Some details in the screenshot might not be identical and slightly deviate, but you should be able to follow the general workflow.",
-    "crumbs": [
-      "Organization",
-      "GitHub & Submission"
-    ]
-  },
-  {
-    "objectID": "content/organization/submission.html#initializing-github-github-desktop",
-    "href": "content/organization/submission.html#initializing-github-github-desktop",
-    "title": "GitHub & Submission",
-    "section": "Initializing GitHub & GitHub Desktop",
-    "text": "Initializing GitHub & GitHub Desktop\n\nCreate a free GitHub account. If you already have a GitHub account, you can skip this step.\nDownload and install GitHub Desktop and connect it to your account (Sign into GitHub.com). GitHub Desktop is a graphical user interface, which allows you to sync your local code changes with your online repository.\nCheck if git is installed on your system. It should already be the case but you can check it by opening RStudio, going to the terminal pane and entering which git. It should output the file path to git on your system. If you don’t get the expected result, download and install git.\nAccept the assignment and follow through the steps to enter the virtual classroom. This is the assignment for the first week. For each week, you will be provided with a new assignment, which will be linked in the respective chapter. \nAfter a while (refresh your page), you will get the link to your repository, which is currently free of any content but contains the framework to publish your solutions at a later stage. Click on that link, which is highlighted in blue.\nClone your repository, i.e. you create a local version on your hard drive. Until now, your repository is online hosted on GitHub, but of course, you need a local version to open the files in RStudio and add your solutions and code to your repository. It will open GitHub Desktop (sign into your account if you haven’t done already) and lets you set the path on your local drive. \nAfter setting the path and confirming by clicking Clone, you will be asked how you are planning “to use the fork”. Please make sure to select For my own purposes. This is important, because you do not want to change the original repository, but have your own version of it that you will modify (if you look carefully, you see that the links for the two options differ). \nNow go into your previously specified path and check whether the local version of the repository exists. If not, please read the steps again and check what you missed out.",
-    "crumbs": [
-      "Organization",
-      "GitHub & Submission"
-    ]
-  },
-  {
-    "objectID": "content/organization/submission.html#implementing-your-solution",
-    "href": "content/organization/submission.html#implementing-your-solution",
-    "title": "GitHub & Submission",
-    "section": "Implementing your solution",
-    "text": "Implementing your solution\nYou will find five files in the repository. Let’s discuss what they are:\n\nss24_cds_week_1.Rproj: a R project file. It opens RStudio and mainly sets the correct working environment, which e.g. helps you load and save files.\nplayground.R : a classical R script. Use it to prototype your code and solutions.\nsubmission.qmd : a file that contains a combination of markdown and executable code cells. Here, you will type in your final solutions and render a .html that will be graded.\n\nThese files, that are typically found in GitHub repositories, you can ignore for now:\n\nREADME.md : to describe what the purpose of the repository is.\n.gitignore : to set what files should be excluded from pushing changes.\n\nNow, let’s simulate the workflow you will be going through to submit your solutions. We will just make a simple change and update the online version of the repository. But it is the exact workflow needed for all your submissions in the coming weeks.\n\nYou should be already in your local repository. Open the file ss24_cds_week_1.Rproj. This will automatically open RStudio, and your current working environment will be inside this project. That means everything you save will be auto saved to this folder (unless you tell RStudio to save something somewhere else. Have a look at the files tab in the bottom right hand corner. Most files you click will be opened up as text files in the RStudio editor.\nNow open submission.qmd and take a look at the assignments. The first one is already solved, so let’s take a look at the second one. Obviously, the questions are only for the purpose of demonstration, but let’s assume the question would be difficult.\nOpen playground.R to try to find the solution to the question. Here, you will probably quickly come up with the right solution, which is to simply type 2+2 and let R give you the result.\nTransfer the command to submission.qmd and paste it into an executable code chunk. At the top, you find a green C button with a plus to Insert a new code chunk (please also see the shortcut). Save the file.\nThen click on Render which will create the .html file which is your actual submission. On most devices, the file will automatically be opened. If not, find the file in your folder and open it. Check whether you see the intended output. It should look like this file, but with the new solution added. If it looks very different from the example, please check whether in the header of your .qmd file embed-resources: true is enabled.",
-    "crumbs": [
-      "Organization",
-      "GitHub & Submission"
-    ]
-  },
-  {
-    "objectID": "content/organization/submission.html#uploading-your-solution",
-    "href": "content/organization/submission.html#uploading-your-solution",
-    "title": "GitHub & Submission",
-    "section": "Uploading your solution",
-    "text": "Uploading your solution\n\nIf you are happy with your solution and the rendered file, you still have to upload it to GitHub. Otherwise, we can’t see it and are not able to grade it. Therefore, Go back to GitHub Desktop. You should see something similar to the image below. You can see what you changed in the .qmd and the accompanied html should be different as well. There might be a lot more changes that you expect because a lot of stuff ran in the background when rendering.\n\n\n\n\nCommit\n\n\n\nNow you still need to push your changes to GitHub. First, commit your changes at the left bottom by providing a short description of what you have changed and click on Commit to main. Now you can push to origin (you might have to Fetch origin beforehand).\n\n 3. Take a look at your online repository and check if everything was successfully uploaded.\n\n\n\n\n\n\nTip\n\n\n\nFor each assignment, there will be a deadline and you can only push changes to GitHub until that deadline. As long as it is before the deadline, you can make as many changes as you want.",
-    "crumbs": [
-      "Organization",
-      "GitHub & Submission"
-    ]
-  },
-  {
-    "objectID": "content/organization/submission.html#submission",
-    "href": "content/organization/submission.html#submission",
-    "title": "GitHub & Submission",
-    "section": "Submission",
-    "text": "Submission\nTODO UPDATE INFO\nSubmit your credentials and GitHub user name via the following form. If you do not submit your information, we won’t be able to evaluate your assignments. Please fill it out by WEEKDAY, DD-MM-YY.\nWird geladen…\n\n\n\n\n\n\nSummary: How to successfully submit\n\n\n\n\nWrite your solutions down in a .qmd file and render.\nCommit and push your changes to your GitHub\nFill out the form.\n\n\n\n\n\n\nCommit",
-    "crumbs": [
-      "Organization",
-      "GitHub & Submission"
-    ]
-  },
-  {
-    "objectID": "content/organization/submission.html#footnotes",
-    "href": "content/organization/submission.html#footnotes",
-    "title": "GitHub & Submission",
-    "section": "Footnotes",
-    "text": "Footnotes\n\n\nhttps://github.com/↩︎\nhttps://quarto.org/↩︎",
-    "crumbs": [
-      "Organization",
-      "GitHub & Submission"
-    ]
-  },
-  {
-    "objectID": "content/organization/mattermost.html",
-    "href": "content/organization/mattermost.html",
-    "title": "Mattermost",
-    "section": "",
-    "text": "In the course of the next chapters, we will do a lot of coding and errors will occur all the time. That is nothing you should be afraid of and in fact, dealing with errors is an elementary component in programming in data science.\nIn most cases, other people from around the world have had similar problems and you will find the right solution to your problem by just googling it. Two great resources to help you are StackOverflow and RStudio Community. Please try to do that as a first step when you run into an error.\nIf you have any questions about the class content, coding problems and other challenges, please use our Mattermost channel, so that everyone can benefit from the discussions. Please help each other, try to answer emerging questions and actively engage in the channel. Questions, that are not directly related to the class content, can be sent to me.\nFollow these steps to join the channel:\n\nGo on https://communicating.tuhh.de/\nClick Click here to sign in\nClick the Button GitLab\nYou may need to login to GitLab with your Kerberos/LDAP data (e.g. cba1020 and your password) on the following page and/or authorize once for Mattermost to access GitLab. You may also need to accept the terms.\nAfter accessing Mattermost, join the team W-11 students\nJoin Causal Data Science Channel (you might need to wait a bit, as I first have to add you)\n\nThere, and in the sessions, I will try to help you as much as possible.\nIn order to keep the discussion efficient and manageable it is necessary that we all follow some basic rules:\n\nPost error message: if you run into an error it is necessary that I know what the error is. Often reading the error message very carefully can also help you to understand where the problem comes from.\nPost the code that caused the error: in order to reproduce the error I need the last command that caused the error. If we need more context we will ask you for that.\nUse the formatting guidelines of Mattermost when you post code. That makes a huge difference in terms of readability. They will also be linked in the channel description. Most important is that using ``` one line above and one line below your code will make it easy to read.\nUse thread function to reply to a discussion. This way a discussion can be easier read. You find the reply button on the right side of a message.\n\nPlaying by these rules makes it a lot easier for everyone to follow the discussion and learn from similar problems and everyone can benefit from the discussions.\nSee in this minimalistic example how little formatting makes your code and error easy to read.\n\n \n```r\nx %&gt;% sum()\n```\n\n**Error:**\nError in x %&gt;% sum() : could not find function \"%&gt;%\"\n\n\n\n\nHow to format your code and error when you ask for help.\n\n\n\n\n\nHow to format your code and error when you ask for help.",
-    "crumbs": [
-      "Organization",
-      "Mattermost"
-    ]
-  },
-  {
-    "objectID": "content/organization/mattermost.html#mattermost",
-    "href": "content/organization/mattermost.html#mattermost",
-    "title": "Mattermost",
-    "section": "",
-    "text": "In the course of the next chapters, we will do a lot of coding and errors will occur all the time. That is nothing you should be afraid of and in fact, dealing with errors is an elementary component in programming in data science.\nIn most cases, other people from around the world have had similar problems and you will find the right solution to your problem by just googling it. Two great resources to help you are StackOverflow and RStudio Community. Please try to do that as a first step when you run into an error.\nIf you have any questions about the class content, coding problems and other challenges, please use our Mattermost channel, so that everyone can benefit from the discussions. Please help each other, try to answer emerging questions and actively engage in the channel. Questions, that are not directly related to the class content, can be sent to me.\nFollow these steps to join the channel:\n\nGo on https://communicating.tuhh.de/\nClick Click here to sign in\nClick the Button GitLab\nYou may need to login to GitLab with your Kerberos/LDAP data (e.g. cba1020 and your password) on the following page and/or authorize once for Mattermost to access GitLab. You may also need to accept the terms.\nAfter accessing Mattermost, join the team W-11 students\nJoin Causal Data Science Channel (you might need to wait a bit, as I first have to add you)\n\nThere, and in the sessions, I will try to help you as much as possible.\nIn order to keep the discussion efficient and manageable it is necessary that we all follow some basic rules:\n\nPost error message: if you run into an error it is necessary that I know what the error is. Often reading the error message very carefully can also help you to understand where the problem comes from.\nPost the code that caused the error: in order to reproduce the error I need the last command that caused the error. If we need more context we will ask you for that.\nUse the formatting guidelines of Mattermost when you post code. That makes a huge difference in terms of readability. They will also be linked in the channel description. Most important is that using ``` one line above and one line below your code will make it easy to read.\nUse thread function to reply to a discussion. This way a discussion can be easier read. You find the reply button on the right side of a message.\n\nPlaying by these rules makes it a lot easier for everyone to follow the discussion and learn from similar problems and everyone can benefit from the discussions.\nSee in this minimalistic example how little formatting makes your code and error easy to read.\n\n \n```r\nx %&gt;% sum()\n```\n\n**Error:**\nError in x %&gt;% sum() : could not find function \"%&gt;%\"\n\n\n\n\nHow to format your code and error when you ask for help.\n\n\n\n\n\nHow to format your code and error when you ask for help.",
-    "crumbs": [
-      "Organization",
-      "Mattermost"
-    ]
-  },
-  {
-    "objectID": "content/organization/intro_R.html",
-    "href": "content/organization/intro_R.html",
-    "title": "Introduction to R & RStudio IDE",
-    "section": "",
-    "text": "Before we dive deep into the methods that help us to make critical data-driven business decisions, we start with a brief introduction to R, the programming language most suited to solve problems of causality. Don’t worry, if you have never heard of it! We’ll go through some very concise courses that will familiarize you with its functions very quickly. Essentially, you have to tell R what to do for you in a specific language. But step by step, first, we have to do the installation.\nR is only fun to use in combination with RStudio, a graphical integrated development environment (IDE) that makes the use of R more convenient and interactive. Please follow the steps as outlined in the instructions (note, that you have to install both R and RStudio):\nWhen you have successfully installed R and RStudio, open RStudio and you should see a screen similar to this one. By the way, if you want to change the default withe theme to something else, you can do that by going to Tools -&gt; Global options -&gt; Appearance and switch theme in -&gt; Editor theme.\n\nRStudio is split into four panes that have the following functions:\nSource Editor: here, you open, edit and execute programs/scripts that you have written. Code is not run immediately. If you want to run the current line of code, you just press Run or Ctrl+Enter/CMD+Return. You can also run several lines of code by highlighting them. Please note that every line starting with # will not be run. The use of # is to write comments and annotations in your code that won’t be executed.\nConsole: here, you can enter commands directly and run code. Just type in your code and press Enter.\nEnvironment: here, you can see what objects (dataframes, arrays, values, functions) you have in your workspace/environment. \nMiscellaneous: here, you have for example a file manager, an overview of installed and loaded packages, a plot viewer and a help tab.",
-    "crumbs": [
-      "Organization",
-      "Introduction to R & RStudio IDE"
-    ]
-  },
-  {
-    "objectID": "content/organization/intro_R.html#installing-r-rstudio-ide",
-    "href": "content/organization/intro_R.html#installing-r-rstudio-ide",
-    "title": "Introduction to R & RStudio IDE",
-    "section": "",
-    "text": "Before we dive deep into the methods that help us to make critical data-driven business decisions, we start with a brief introduction to R, the programming language most suited to solve problems of causality. Don’t worry, if you have never heard of it! We’ll go through some very concise courses that will familiarize you with its functions very quickly. Essentially, you have to tell R what to do for you in a specific language. But step by step, first, we have to do the installation.\nR is only fun to use in combination with RStudio, a graphical integrated development environment (IDE) that makes the use of R more convenient and interactive. Please follow the steps as outlined in the instructions (note, that you have to install both R and RStudio):\nWhen you have successfully installed R and RStudio, open RStudio and you should see a screen similar to this one. By the way, if you want to change the default withe theme to something else, you can do that by going to Tools -&gt; Global options -&gt; Appearance and switch theme in -&gt; Editor theme.\n\nRStudio is split into four panes that have the following functions:\nSource Editor: here, you open, edit and execute programs/scripts that you have written. Code is not run immediately. If you want to run the current line of code, you just press Run or Ctrl+Enter/CMD+Return. You can also run several lines of code by highlighting them. Please note that every line starting with # will not be run. The use of # is to write comments and annotations in your code that won’t be executed.\nConsole: here, you can enter commands directly and run code. Just type in your code and press Enter.\nEnvironment: here, you can see what objects (dataframes, arrays, values, functions) you have in your workspace/environment. \nMiscellaneous: here, you have for example a file manager, an overview of installed and loaded packages, a plot viewer and a help tab.",
-    "crumbs": [
-      "Organization",
-      "Introduction to R & RStudio IDE"
-    ]
-  },
-  {
-    "objectID": "content/organization/intro_R.html#introduction-to-r",
-    "href": "content/organization/intro_R.html#introduction-to-r",
-    "title": "Introduction to R & RStudio IDE",
-    "section": "Introduction to R",
-    "text": "Introduction to R\nBefore you begin coding, it’s important to remember this final point: do not let the errors, warnings, and other messages that you, like everyone else, are bound to encounter intimidate you. There is no reason to panic just because you see red text in your console and in fact, what is returned will often times already help you to solve the problem and lead you onto the right track.\nThere are three different types of texts that communicate issues or information about the code execution:\n\nErrors: this is a legitimate error and most likely your code did not run due to the error. Many of the error messages are very concise and you will directly see what was wrong, what is missing etc. If you do not see what you did wrong at first glance, you can copy the error message and google it. It is very likely someone else has run into the same error before.\nWarnings: opposed to an error, your code did probably run but there could be something off. However, it is just a warning. You can check it and if you think the warning does not apply to your specific scenario, you can go on.\nMessages: these are just friendly texts that provide you with useful information. They do not need immediate attention but can provide useful supplementary information.\n\nInteractive Tutorials:\nBut let’s no more talk about it but instead start coding because the best way to get familiar with R and to code is to just start.\nIn the following chapters, you will learn to code along the way, but to start you will go through some very concise tutorials from the R package swirl. The package provides a whole bunch of tutorials in the console.\nFeel free to complete as many tutorials as you want, but for this class, the following tutorial is of particular use: The R Programming Environment (Chapter 2-12)\nswirl() does not come with R by default but is an optional package. R packages are extensions of the base functionality implemented by default when you download R. Written by users around the world, packages provide additional features and are crucial for data science tasks in practice as you will later see.\nYou need to follow two steps to use an R package:\n\nOnce: install the package. As already mentioned, packages are not installed by default and you have to download it and add it to your library. Once you’ve installed it, you don’t have to repeat this step.\nAlways: load the package. By default, just the base R functionality is loaded and when you want to make use of the additional features provided by a specific package, you have to load it every time you start RStudio.\n\nSo let’s do it for the package swirl:\nFirst, we install the package. This has to be done only once. You can either choose to write your code into the source editor or directly into the console\n\ninstall.packages(\"swirl\")\n\nThen, we load the library into our current our R session.\n\nlibrary(swirl)\n\nNow, the package is loaded and we can start making use of it.\n\ninstall_course(\"The R Programming Environment\")\n\nYou just have to type swirl() into your console and follow the instructions! Please make sure to always use the same name. This way, you can leave the tutorial and start at the same position again later. It’s best to write it down so that you do not forget it.\n\nswirl()\n\nSelect the course you just installed: The R Programming Environment and start with Chapter 2. You should skip Chapter 1 because its irrelevant for you. If you accidentally selected Chapter 1, just quickly go through it and choose No at the last question.\nswirl will ask you to install packages for you that are needed for the tutorial. Please confirm when asked. If you computer is struggling with installing a package named “vctrs”, please type in the following command. If you don’t get such an error, you can ignore it.\n\ninstall.packages(\"vctrs\", repos = \"https://packagemanager.rstudio.com/cran/latest\")\n\nIf, at some point, you want to take a break, you can leave the swirl course by typing bye() or the Esc key. You can return to the course by typing swirl() and hitting Enter. And remember, to use the same name you used the first time.\nYou don’t need to submit anything from this step. Just focus on getting familiar with R by completing the tutorial (I recommend to solve chapter 2-12)!\n\n\n\n\n\n\nNote\n\n\n\nWhenever you want to find out more about a command or you have difficulties understanding what it does, you can click on it and a help page will show up.",
-    "crumbs": [
-      "Organization",
-      "Introduction to R & RStudio IDE"
-    ]
-  },
-  {
-    "objectID": "content/organization/quarto.html",
-    "href": "content/organization/quarto.html",
-    "title": "Quarto [Optional Read]",
-    "section": "",
-    "text": "Quarto is a scientific publishing tool that allows R, Python, Julia and Observable JS users to create dynamic documents, websites, books and more. In fact, the whole course website is created using Quarto. In case you downloaded RStudio for this course, you do not need to install Quarto anymore. If you have an older RStudio version, you might have to download an install it or update to a new RStudio version. If you are familiar with Markdown or even RMarkdown you will see a lot of similarities.\nYou can explore Quarto’s documentation to learn more about creating documents, websites, blogs, books, slides, etc.\nEach page of your website is created by a q-Markdown file (.qmd). All website pages are plain text file that have the extension .qmd. Notice that the file contains three types of content:\nAn (optional) YAML header surrounded by - - - at the top (there is no need in the beginning to alter it)\nIn the code chunks, you can set different options with #|:\n\n#| eval: false prevents running the code and include its results\n#| include: false prevents code and results from appearing in the finished file. Quarto still runs the code in the chunk, and the results can be used by other chunks\n#| echo: false prevents code, but not the results from appearing in the finished file. This is a useful way to embed figures.\n#| message: false prevents messages that are generated by code from appearing in the finished file.\n#| warning: false prevents warnings that are generated by code from appearing in the finished.\n#| fig-cap: “…” adds a caption to graphical results.\n\nSee the Quarto Cheat Sheet or the official quarto documentation for further information regarding the markdown syntax. It is necessary, that your code is formatted correctly to be evaluated.",
-    "crumbs": [
-      "Organization",
-      "Quarto [Optional Read]"
-    ]
-  },
-  {
-    "objectID": "content/organization/quarto.html#quarto",
-    "href": "content/organization/quarto.html#quarto",
-    "title": "Quarto [Optional Read]",
-    "section": "",
-    "text": "Quarto is a scientific publishing tool that allows R, Python, Julia and Observable JS users to create dynamic documents, websites, books and more. In fact, the whole course website is created using Quarto. In case you downloaded RStudio for this course, you do not need to install Quarto anymore. If you have an older RStudio version, you might have to download an install it or update to a new RStudio version. If you are familiar with Markdown or even RMarkdown you will see a lot of similarities.\nYou can explore Quarto’s documentation to learn more about creating documents, websites, blogs, books, slides, etc.\nEach page of your website is created by a q-Markdown file (.qmd). All website pages are plain text file that have the extension .qmd. Notice that the file contains three types of content:\nAn (optional) YAML header surrounded by - - - at the top (there is no need in the beginning to alter it)\nIn the code chunks, you can set different options with #|:\n\n#| eval: false prevents running the code and include its results\n#| include: false prevents code and results from appearing in the finished file. Quarto still runs the code in the chunk, and the results can be used by other chunks\n#| echo: false prevents code, but not the results from appearing in the finished file. This is a useful way to embed figures.\n#| message: false prevents messages that are generated by code from appearing in the finished file.\n#| warning: false prevents warnings that are generated by code from appearing in the finished.\n#| fig-cap: “…” adds a caption to graphical results.\n\nSee the Quarto Cheat Sheet or the official quarto documentation for further information regarding the markdown syntax. It is necessary, that your code is formatted correctly to be evaluated.",
-    "crumbs": [
-      "Organization",
-      "Quarto [Optional Read]"
-    ]
-  },
-  {
-    "objectID": "content/optional_read/motivation.html",
-    "href": "content/optional_read/motivation.html",
-    "title": "Motivation",
-    "section": "",
-    "text": "In this course, you will learn about causality in data science with a particular emphasis on business applications. Causal data science methods are increasingly recognized and developed to understand causes and effects. Moving beyond a prediction-based approach in data science, the purpose of causal methods is to understand underlying processes and mechanisms to guide strategic decision-making. Causal methods allow us to answer questions that otherwise could not be addressed.\nA large global survey1 conducted among data science practitioners in the industry in 2020 states the importance of causal data science. 83% of the respondents consider causal inference in data-driven decisions making increasingly important and 44% state that, in their data science project, causal inference already plays an important role. Additionally,\nWhile the primary goal of machine learning is typically the development of algorithms for a high prediction and classification accuracy, causal inference aims to understand and establish cause-and-effect relationships between variables.\nTypical applications in business therefore aim to answer questions like:\nMany successful companies have already recognized the advantages of causal data science. Click on the link to get more details how these companies are using tools from causal inference to generate value within their organizations.",
+    "objectID": "content/course_weeks/weeks/week_4.html#practical-example",
+    "href": "content/course_weeks/weeks/week_4.html#practical-example",
+    "title": "4 - Matching",
+    "section": "Practical example",
+    "text": "Practical example\nComing soon.",
     "crumbs": [
       "Content",
       "<b>Weekly content</b>",
-      "<b>Optional reads</b>",
-      "Motivation"
+      "4 - Matching"
     ]
   },
   {
-    "objectID": "content/optional_read/motivation.html#footnotes",
-    "href": "content/optional_read/motivation.html#footnotes",
-    "title": "Motivation",
-    "section": "Footnotes",
-    "text": "Footnotes\n\n\nhttps://www.causalscience.org/blog/causal-data-science-in-practice/↩︎",
+    "objectID": "content/course_weeks/weeks/week_4.html#assignment",
+    "href": "content/course_weeks/weeks/week_4.html#assignment",
+    "title": "4 - Matching",
+    "section": "Assignment",
+    "text": "Assignment\nComing soon.\n\n…",
     "crumbs": [
       "Content",
       "<b>Weekly content</b>",
-      "<b>Optional reads</b>",
-      "Motivation"
+      "4 - Matching"
     ]
   },
   {
@@ -577,291 +408,484 @@
     ]
   },
   {
-    "objectID": "content/course_weeks/weeks/week_4.html",
-    "href": "content/course_weeks/weeks/week_4.html",
-    "title": "4 - Matching",
+    "objectID": "content/optional_read/motivation.html",
+    "href": "content/optional_read/motivation.html",
+    "title": "Motivation",
+    "section": "",
+    "text": "In this course, you will learn about causality in data science with a particular emphasis on business applications. Causal data science methods are increasingly recognized and developed to understand causes and effects. Moving beyond a prediction-based approach in data science, the purpose of causal methods is to understand underlying processes and mechanisms to guide strategic decision-making. Causal methods allow us to answer questions that otherwise could not be addressed.\nA large global survey1 conducted among data science practitioners in the industry in 2020 states the importance of causal data science. 83% of the respondents consider causal inference in data-driven decisions making increasingly important and 44% state that, in their data science project, causal inference already plays an important role. Additionally,\nWhile the primary goal of machine learning is typically the development of algorithms for a high prediction and classification accuracy, causal inference aims to understand and establish cause-and-effect relationships between variables.\nTypical applications in business therefore aim to answer questions like:\nMany successful companies have already recognized the advantages of causal data science. Click on the link to get more details how these companies are using tools from causal inference to generate value within their organizations.",
+    "crumbs": [
+      "Content",
+      "<b>Weekly content</b>",
+      "<b>Optional reads</b>",
+      "Motivation"
+    ]
+  },
+  {
+    "objectID": "content/optional_read/motivation.html#footnotes",
+    "href": "content/optional_read/motivation.html#footnotes",
+    "title": "Motivation",
+    "section": "Footnotes",
+    "text": "Footnotes\n\n\nhttps://www.causalscience.org/blog/causal-data-science-in-practice/↩︎",
+    "crumbs": [
+      "Content",
+      "<b>Weekly content</b>",
+      "<b>Optional reads</b>",
+      "Motivation"
+    ]
+  },
+  {
+    "objectID": "content/organization/quarto.html",
+    "href": "content/organization/quarto.html",
+    "title": "Quarto [Optional Read]",
+    "section": "",
+    "text": "Quarto is a scientific publishing tool that allows R, Python, Julia and Observable JS users to create dynamic documents, websites, books and more. In fact, the whole course website is created using Quarto. In case you downloaded RStudio for this course, you do not need to install Quarto anymore. If you have an older RStudio version, you might have to download an install it or update to a new RStudio version. If you are familiar with Markdown or even RMarkdown you will see a lot of similarities.\nYou can explore Quarto’s documentation to learn more about creating documents, websites, blogs, books, slides, etc.\nEach page of your website is created by a q-Markdown file (.qmd). All website pages are plain text file that have the extension .qmd. Notice that the file contains three types of content:\nAn (optional) YAML header surrounded by - - - at the top (there is no need in the beginning to alter it)\nIn the code chunks, you can set different options with #|:\n\n#| eval: false prevents running the code and include its results\n#| include: false prevents code and results from appearing in the finished file. Quarto still runs the code in the chunk, and the results can be used by other chunks\n#| echo: false prevents code, but not the results from appearing in the finished file. This is a useful way to embed figures.\n#| message: false prevents messages that are generated by code from appearing in the finished file.\n#| warning: false prevents warnings that are generated by code from appearing in the finished.\n#| fig-cap: “…” adds a caption to graphical results.\n\nSee the Quarto Cheat Sheet or the official quarto documentation for further information regarding the markdown syntax. It is necessary, that your code is formatted correctly to be evaluated.",
+    "crumbs": [
+      "Organization",
+      "Quarto [Optional Read]"
+    ]
+  },
+  {
+    "objectID": "content/organization/quarto.html#quarto",
+    "href": "content/organization/quarto.html#quarto",
+    "title": "Quarto [Optional Read]",
+    "section": "",
+    "text": "Quarto is a scientific publishing tool that allows R, Python, Julia and Observable JS users to create dynamic documents, websites, books and more. In fact, the whole course website is created using Quarto. In case you downloaded RStudio for this course, you do not need to install Quarto anymore. If you have an older RStudio version, you might have to download an install it or update to a new RStudio version. If you are familiar with Markdown or even RMarkdown you will see a lot of similarities.\nYou can explore Quarto’s documentation to learn more about creating documents, websites, blogs, books, slides, etc.\nEach page of your website is created by a q-Markdown file (.qmd). All website pages are plain text file that have the extension .qmd. Notice that the file contains three types of content:\nAn (optional) YAML header surrounded by - - - at the top (there is no need in the beginning to alter it)\nIn the code chunks, you can set different options with #|:\n\n#| eval: false prevents running the code and include its results\n#| include: false prevents code and results from appearing in the finished file. Quarto still runs the code in the chunk, and the results can be used by other chunks\n#| echo: false prevents code, but not the results from appearing in the finished file. This is a useful way to embed figures.\n#| message: false prevents messages that are generated by code from appearing in the finished file.\n#| warning: false prevents warnings that are generated by code from appearing in the finished.\n#| fig-cap: “…” adds a caption to graphical results.\n\nSee the Quarto Cheat Sheet or the official quarto documentation for further information regarding the markdown syntax. It is necessary, that your code is formatted correctly to be evaluated.",
+    "crumbs": [
+      "Organization",
+      "Quarto [Optional Read]"
+    ]
+  },
+  {
+    "objectID": "content/organization/intro_R.html",
+    "href": "content/organization/intro_R.html",
+    "title": "Introduction to R & RStudio IDE",
+    "section": "",
+    "text": "Before we dive deep into the methods that help us to make critical data-driven business decisions, we start with a brief introduction to R, the programming language most suited to solve problems of causality. Don’t worry, if you have never heard of it! We’ll go through some very concise courses that will familiarize you with its functions very quickly. Essentially, you have to tell R what to do for you in a specific language. But step by step, first, we have to do the installation.\nR is only fun to use in combination with RStudio, a graphical integrated development environment (IDE) that makes the use of R more convenient and interactive. Please follow the steps as outlined in the instructions (note, that you have to install both R and RStudio):\nWhen you have successfully installed R and RStudio, open RStudio and you should see a screen similar to this one. By the way, if you want to change the default withe theme to something else, you can do that by going to Tools -&gt; Global options -&gt; Appearance and switch theme in -&gt; Editor theme.\n\nRStudio is split into four panes that have the following functions:\nSource Editor: here, you open, edit and execute programs/scripts that you have written. Code is not run immediately. If you want to run the current line of code, you just press Run or Ctrl+Enter/CMD+Return. You can also run several lines of code by highlighting them. Please note that every line starting with # will not be run. The use of # is to write comments and annotations in your code that won’t be executed.\nConsole: here, you can enter commands directly and run code. Just type in your code and press Enter.\nEnvironment: here, you can see what objects (dataframes, arrays, values, functions) you have in your workspace/environment. \nMiscellaneous: here, you have for example a file manager, an overview of installed and loaded packages, a plot viewer and a help tab.",
+    "crumbs": [
+      "Organization",
+      "Introduction to R & RStudio IDE"
+    ]
+  },
+  {
+    "objectID": "content/organization/intro_R.html#installing-r-rstudio-ide",
+    "href": "content/organization/intro_R.html#installing-r-rstudio-ide",
+    "title": "Introduction to R & RStudio IDE",
+    "section": "",
+    "text": "Before we dive deep into the methods that help us to make critical data-driven business decisions, we start with a brief introduction to R, the programming language most suited to solve problems of causality. Don’t worry, if you have never heard of it! We’ll go through some very concise courses that will familiarize you with its functions very quickly. Essentially, you have to tell R what to do for you in a specific language. But step by step, first, we have to do the installation.\nR is only fun to use in combination with RStudio, a graphical integrated development environment (IDE) that makes the use of R more convenient and interactive. Please follow the steps as outlined in the instructions (note, that you have to install both R and RStudio):\nWhen you have successfully installed R and RStudio, open RStudio and you should see a screen similar to this one. By the way, if you want to change the default withe theme to something else, you can do that by going to Tools -&gt; Global options -&gt; Appearance and switch theme in -&gt; Editor theme.\n\nRStudio is split into four panes that have the following functions:\nSource Editor: here, you open, edit and execute programs/scripts that you have written. Code is not run immediately. If you want to run the current line of code, you just press Run or Ctrl+Enter/CMD+Return. You can also run several lines of code by highlighting them. Please note that every line starting with # will not be run. The use of # is to write comments and annotations in your code that won’t be executed.\nConsole: here, you can enter commands directly and run code. Just type in your code and press Enter.\nEnvironment: here, you can see what objects (dataframes, arrays, values, functions) you have in your workspace/environment. \nMiscellaneous: here, you have for example a file manager, an overview of installed and loaded packages, a plot viewer and a help tab.",
+    "crumbs": [
+      "Organization",
+      "Introduction to R & RStudio IDE"
+    ]
+  },
+  {
+    "objectID": "content/organization/intro_R.html#introduction-to-r",
+    "href": "content/organization/intro_R.html#introduction-to-r",
+    "title": "Introduction to R & RStudio IDE",
+    "section": "Introduction to R",
+    "text": "Introduction to R\nBefore you begin coding, it’s important to remember this final point: do not let the errors, warnings, and other messages that you, like everyone else, are bound to encounter intimidate you. There is no reason to panic just because you see red text in your console and in fact, what is returned will often times already help you to solve the problem and lead you onto the right track.\nThere are three different types of texts that communicate issues or information about the code execution:\n\n\nErrors: this is a legitimate error and most likely your code did not run due to the error. Many of the error messages are very concise and you will directly see what was wrong, what is missing etc. If you do not see what you did wrong at first glance, you can copy the error message and google it. It is very likely someone else has run into the same error before.\n\n\n# Example error\n1 + \"a\"\n\nError in 1 + \"a\": nicht-numerisches Argument für binären Operator\n\n#Error in 1 + \"a\" : non-numeric argument to binary operator\n\n\n\nWarnings: opposed to an error, your code did probably run but there could be something off. However, it is just a warning. You can check it and if you think the warning does not apply to your specific scenario, you can go on.\n\n\n# Example warning\nas.numeric(c(\"18\", \"30\", \"50+\", \"345,678\"))\n\nWarning: NAs durch Umwandlung erzeugt\n\n\n[1] 18 30 NA NA\n\n# Warning message: NAs introduced by coercion \n\n\n\nMessages: these are just friendly texts that provide you with useful information. They do not need immediate attention but can provide useful supplementary information.\n\n\n# Example message\nlibrary(tidyverse)\n\n── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──\n✔ dplyr     1.1.3     ✔ readr     2.1.4\n✔ forcats   1.0.0     ✔ stringr   1.5.0\n✔ ggplot2   3.4.3     ✔ tibble    3.2.1\n✔ lubridate 1.9.3     ✔ tidyr     1.3.0\n✔ purrr     1.0.2     \n── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──\n✖ dplyr::filter() masks stats::filter()\n✖ dplyr::lag()    masks stats::lag()\nℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors\n\n\nInteractive Tutorials:\nBut let’s no more talk about it but instead start coding because the best way to get familiar with R and to code is to just start.\nIn the following chapters, you will learn to code along the way, but to start you will go through some very concise tutorials from the R package swirl. The package provides a whole bunch of tutorials in the console.\nFeel free to complete as many tutorials as you want, but for this class, the following tutorial is of particular use: The R Programming Environment (Chapter 2-12)\nswirl() does not come with R by default but is an optional package. R packages are extensions of the base functionality implemented by default when you download R. Written by users around the world, packages provide additional features and are crucial for data science tasks in practice as you will later see.\nYou need to follow two steps to use an R package:\n\nOnce: install the package. As already mentioned, packages are not installed by default and you have to download it and add it to your library. Once you’ve installed it, you don’t have to repeat this step.\nAlways: load the package. By default, just the base R functionality is loaded and when you want to make use of the additional features provided by a specific package, you have to load it every time you start RStudio.\n\nSo let’s do it for the package swirl:\nFirst, we install the package. This has to be done only once. You can either choose to write your code into the source editor or directly into the console\n\ninstall.packages(\"swirl\")\n\nThen, we load the library into our current our R session.\n\nlibrary(swirl)\n\nNow, the package is loaded and we can start making use of it.\n\ninstall_course(\"The R Programming Environment\")\n\nYou just have to type swirl() into your console and follow the instructions! Please make sure to always use the same name. This way, you can leave the tutorial and start at the same position again later. It’s best to write it down so that you do not forget it.\n\nswirl()\n\nSelect the course you just installed: The R Programming Environment and start with Chapter 2. You should skip Chapter 1 because its irrelevant for you. If you accidentally selected Chapter 1, just quickly go through it and choose No at the last question.\nswirl will ask you to install packages for you that are needed for the tutorial. Please confirm when asked. If you computer is struggling with installing a package named “vctrs”, please type in the following command. If you don’t get such an error, you can ignore it.\n\ninstall.packages(\"vctrs\", repos = \"https://packagemanager.rstudio.com/cran/latest\")\n\nIf, at some point, you want to take a break, you can leave the swirl course by typing bye() or the Esc key. You can return to the course by typing swirl() and hitting Enter. And remember, to use the same name you used the first time.\nYou don’t need to submit anything from this step. Just focus on getting familiar with R by completing the tutorial (I recommend to solve chapter 2-12)!\n\n\n\n\n\n\nNote\n\n\n\nWhenever you want to find out more about a command or you have difficulties understanding what it does, you can click on it and a help page will show up.",
+    "crumbs": [
+      "Organization",
+      "Introduction to R & RStudio IDE"
+    ]
+  },
+  {
+    "objectID": "content/organization/mattermost.html",
+    "href": "content/organization/mattermost.html",
+    "title": "Mattermost",
+    "section": "",
+    "text": "In the course of the next chapters, we will do a lot of coding and errors will occur all the time. That is nothing you should be afraid of and in fact, dealing with errors is an elementary component in programming in data science.\nIn most cases, other people from around the world have had similar problems and you will find the right solution to your problem by just googling it. Two great resources to help you are StackOverflow and RStudio Community. Please try to do that as a first step when you run into an error.\nIf you have any questions about the class content, coding problems and other challenges, please use our Mattermost channel, so that everyone can benefit from the discussions. Please help each other, try to answer emerging questions and actively engage in the channel. Questions, that are not directly related to the class content, can be sent to me.\nFollow these steps to join the channel:\n\nGo on https://communicating.tuhh.de/\nClick Click here to sign in\nClick the Button GitLab\nYou may need to login to GitLab with your Kerberos/LDAP data (e.g. cba1020 and your password) on the following page and/or authorize once for Mattermost to access GitLab. You may also need to accept the terms.\nAfter accessing Mattermost, join the team W-11 students\nJoin Causal Data Science Channel (you might need to wait a bit, as I first have to add you)\n\nThere, and in the sessions, I will try to help you as much as possible.\nIn order to keep the discussion efficient and manageable it is necessary that we all follow some basic rules:\n\nPost error message: if you run into an error it is necessary that I know what the error is. Often reading the error message very carefully can also help you to understand where the problem comes from.\nPost the code that caused the error: in order to reproduce the error I need the last command that caused the error. If we need more context we will ask you for that.\nUse the formatting guidelines of Mattermost when you post code. That makes a huge difference in terms of readability. They will also be linked in the channel description. Most important is that using ``` one line above and one line below your code will make it easy to read.\nUse thread function to reply to a discussion. This way a discussion can be easier read. You find the reply button on the right side of a message.\n\nPlaying by these rules makes it a lot easier for everyone to follow the discussion and learn from similar problems and everyone can benefit from the discussions.\nSee in this minimalistic example how little formatting makes your code and error easy to read.\n\n \n```r\nx %&gt;% sum()\n```\n\n**Error:**\nError in x %&gt;% sum() : could not find function \"%&gt;%\"\n\n\n\n\nHow to format your code and error when you ask for help.\n\n\n\n\n\nHow to format your code and error when you ask for help.",
+    "crumbs": [
+      "Organization",
+      "Mattermost"
+    ]
+  },
+  {
+    "objectID": "content/organization/submission.html",
+    "href": "content/organization/submission.html",
+    "title": "GitHub & Submission",
+    "section": "",
+    "text": "For each week, there will be assignments for you to solve writing and rendering R programming code in .qmd files using RStudio and uploading these files via GitHub1. We’ll go through it step by step, but briefly summarized, .qmd files allow writing text and code and rendering presentable .html files based on the Quarto2 infrastructure and GitHub is is a hosting platform for so called repositories, which typically consists of data and code. But don’t worry, after the instructions on this page, it will get a lot clearer.\n\n\n\n\n\n\nTip\n\n\n\nIn the following I will guide your through the necessary steps. Some details in the screenshot might not be identical and slightly deviate, but you should be able to follow the general workflow.",
+    "crumbs": [
+      "Organization",
+      "GitHub & Submission"
+    ]
+  },
+  {
+    "objectID": "content/organization/submission.html#instructions",
+    "href": "content/organization/submission.html#instructions",
+    "title": "GitHub & Submission",
+    "section": "",
+    "text": "For each week, there will be assignments for you to solve writing and rendering R programming code in .qmd files using RStudio and uploading these files via GitHub1. We’ll go through it step by step, but briefly summarized, .qmd files allow writing text and code and rendering presentable .html files based on the Quarto2 infrastructure and GitHub is is a hosting platform for so called repositories, which typically consists of data and code. But don’t worry, after the instructions on this page, it will get a lot clearer.\n\n\n\n\n\n\nTip\n\n\n\nIn the following I will guide your through the necessary steps. Some details in the screenshot might not be identical and slightly deviate, but you should be able to follow the general workflow.",
+    "crumbs": [
+      "Organization",
+      "GitHub & Submission"
+    ]
+  },
+  {
+    "objectID": "content/organization/submission.html#initializing-github-github-desktop",
+    "href": "content/organization/submission.html#initializing-github-github-desktop",
+    "title": "GitHub & Submission",
+    "section": "Initializing GitHub & GitHub Desktop",
+    "text": "Initializing GitHub & GitHub Desktop\n\nCreate a free GitHub account. If you already have a GitHub account, you can skip this step.\nDownload and install GitHub Desktop and connect it to your account (Sign into GitHub.com). GitHub Desktop is a graphical user interface, which allows you to sync your local code changes with your online repository.\nCheck if git is installed on your system. It should already be the case but you can check it by opening RStudio, going to the terminal pane and entering which git. It should output the file path to git on your system. If you don’t get the expected result, download and install git.\nAccept the assignment and follow through the steps to enter the virtual classroom. This is the assignment for the first week. For each week, you will be provided with a new assignment, which will be linked in the respective chapter. \nAfter a while (refresh your page), you will get the link to your repository, which is currently free of any content but contains the framework to publish your solutions at a later stage. Click on that link, which is highlighted in blue.\nClone your repository, i.e. you create a local version on your hard drive. Until now, your repository is online hosted on GitHub, but of course, you need a local version to open the files in RStudio and add your solutions and code to your repository. It will open GitHub Desktop (sign into your account if you haven’t done already) and lets you set the path on your local drive. \nAfter setting the path and confirming by clicking Clone, you will be asked how you are planning “to use the fork”. Please make sure to select For my own purposes. This is important, because you do not want to change the original repository, but have your own version of it that you will modify (if you look carefully, you see that the links for the two options differ). \nNow go into your previously specified path and check whether the local version of the repository exists. If not, please read the steps again and check what you missed out.",
+    "crumbs": [
+      "Organization",
+      "GitHub & Submission"
+    ]
+  },
+  {
+    "objectID": "content/organization/submission.html#implementing-your-solution",
+    "href": "content/organization/submission.html#implementing-your-solution",
+    "title": "GitHub & Submission",
+    "section": "Implementing your solution",
+    "text": "Implementing your solution\nYou will find a couple of files in the repository. Let’s discuss some of them:\n\nss24_cds_week_1.Rproj: a R project file. It opens RStudio and mainly sets the correct working environment, which e.g. helps you load and save files.\nplayground.R : a classical R script. Use it to prototype your code and solutions.\nsubmission.qmd : a file that contains a combination of markdown and executable code cells. Here, you will type in your final solutions and render a .html that will be graded.\n.csv files: data you will need for the lab session and assignments\n\nThese files, that are typically found in GitHub repositories, you can ignore for now:\n\nREADME.md : to describe what the purpose of the repository is.\n.gitignore : to set what files should be excluded from pushing changes.\n\nNow, let’s simulate the workflow you will be going through to submit your solutions. We will just make a simple change and update the online version of the repository. But it is the exact workflow needed for all your submissions in the coming weeks.\n\nYou should be already in your local repository. Open the file ss24_cds_week_1.Rproj. This will automatically open RStudio, and your current working environment will be inside this project. That means everything you save will be auto saved to this folder (unless you tell RStudio to save something somewhere else. Have a look at the files tab in the bottom right hand corner. Most files you click will be opened up as text files in the RStudio editor.\nNow open submission.qmd and take a look at the assignments. The first one is already solved, so let’s take a look at the second one. Obviously, the questions are only for the purpose of demonstration, but let’s assume the question would be difficult.\nOpen playground.R to try to find the solution to the question. Here, you will probably quickly come up with the right solution, which is to simply type 2+2 and let R give you the result.\nTransfer the command to submission.qmd and paste it into an executable code chunk. At the top, you find a green C button with a plus to Insert a new code chunk (please also see the shortcut). Save the file.\nThen click on Render which will create the .html file which is your actual submission. On most devices, the file will automatically be opened. If not, find the file in your folder and open it. Check whether you see the intended output. It should look like this file, but with the new solution added. If it looks very different from the example, please check whether in the header of your .qmd file embed-resources: true is enabled.",
+    "crumbs": [
+      "Organization",
+      "GitHub & Submission"
+    ]
+  },
+  {
+    "objectID": "content/organization/submission.html#uploading-your-solution",
+    "href": "content/organization/submission.html#uploading-your-solution",
+    "title": "GitHub & Submission",
+    "section": "Uploading your solution",
+    "text": "Uploading your solution\n\nIf you are happy with your solution and the rendered file, you still have to upload it to GitHub. Otherwise, we can’t see it and are not able to grade it. Therefore, Go back to GitHub Desktop. You should see something similar to the image below. You can see what you changed in the .qmd and the accompanied html should be different as well. There might be a lot more changes that you expect because a lot of stuff ran in the background when rendering.\n\n\n\n\nCommit\n\n\n\nNow you still need to push your changes to GitHub. First, commit your changes at the left bottom by providing a short description of what you have changed and click on Commit to main. Now you can push to origin (you might have to Fetch origin beforehand).\n\n 3. Take a look at your online repository and check if everything was successfully uploaded.\n\n\n\n\n\n\nTip\n\n\n\nFor each assignment, there will be a deadline and you can only push changes to GitHub until that deadline. As long as it is before the deadline, you can make as many changes as you want.",
+    "crumbs": [
+      "Organization",
+      "GitHub & Submission"
+    ]
+  },
+  {
+    "objectID": "content/organization/submission.html#submission",
+    "href": "content/organization/submission.html#submission",
+    "title": "GitHub & Submission",
+    "section": "Submission",
+    "text": "Submission\nSubmit your credentials and GitHub user name via the following form. If you do not submit your information, we won’t be able to evaluate your assignments. Please fill it out by Monday, 22 April 2024.\nWird geladen…\n\n\n\n\n\n\nSummary: How to successfully submit\n\n\n\n\nFill out the form. (once)\nWrite your solutions down in a .qmd file and render.\nCommit and push your changes to your GitHub\n\n\n\n\n\n\nCommit",
+    "crumbs": [
+      "Organization",
+      "GitHub & Submission"
+    ]
+  },
+  {
+    "objectID": "content/organization/submission.html#footnotes",
+    "href": "content/organization/submission.html#footnotes",
+    "title": "GitHub & Submission",
+    "section": "Footnotes",
+    "text": "Footnotes\n\n\nhttps://github.com/↩︎\nhttps://quarto.org/↩︎",
+    "crumbs": [
+      "Organization",
+      "GitHub & Submission"
+    ]
+  },
+  {
+    "objectID": "content/optional_read/stats.html",
+    "href": "content/optional_read/stats.html",
+    "title": "Statistical Concepts",
+    "section": "",
+    "text": "Now we will delve into some statistical concepts, that are the foundation for statistical modeling processes used in causal inference. If you sometimes prefer to see additional visual explanations, I can also recommend you to read here.",
+    "crumbs": [
+      "Content",
+      "<b>Weekly content</b>",
+      "<b>Optional reads</b>",
+      "Statistical Concepts"
+    ]
+  },
+  {
+    "objectID": "content/optional_read/stats.html#footnotes",
+    "href": "content/optional_read/stats.html#footnotes",
+    "title": "Statistical Concepts",
+    "section": "Footnotes",
+    "text": "Footnotes\n\nhttps://ourworldindata.org/human-height↩︎",
+    "crumbs": [
+      "Content",
+      "<b>Weekly content</b>",
+      "<b>Optional reads</b>",
+      "Statistical Concepts"
+    ]
+  },
+  {
+    "objectID": "content/course_weeks/overview.html",
+    "href": "content/course_weeks/overview.html",
+    "title": "Overview",
+    "section": "",
+    "text": "Schedule\n\n\n\n\n\n\n\n\nSession\nDate\nTopic\n\n\n\n\n1\nApril 15 & 16\nIntroduction to Causal Inference\n\n\n2\nApril 22 & 21\nGraphical Causal Models\n\n\n3\nApril 29 & 30\nRandomized Experiments & Linear Regression\n\n\n4\nMay 6 & 7\nMatching\n\n\n5\nMay 13 & 14\nDouble Machine Learning\n\n\n-\nMay 20 & 21\nHoliday\n\n\n6\nMay 27 & 28\nEffect Heterogeneity\n\n\n7\nJune 3 & 4\nUnobserved Confounding & Instrumental Variables\n\n\n8\nJune 10 & 11\nDifference-in-Difference\n\n\n9\nJune 17 & 18\nSynthetic Control\n\n\n10\nJune 24 & 25\nRegression Discontinuity\n\n\n11\nJuly 1 & 2\nCausal Mediation\n\n\n12\nJuly 8 & 9\nFurther Topics in Causal Machine Learning",
+    "crumbs": [
+      "Content",
+      "Overview"
+    ]
+  },
+  {
+    "objectID": "content/course_weeks/weeks/week_5.html",
+    "href": "content/course_weeks/weeks/week_5.html",
+    "title": "5 - Double Machine Learning",
     "section": "",
     "text": "Coming soon.",
     "crumbs": [
       "Content",
       "<b>Weekly content</b>",
-      "4 - Matching"
+      "5 - Double Machine Learning"
     ]
   },
   {
-    "objectID": "content/course_weeks/weeks/week_4.html#slides-recap",
-    "href": "content/course_weeks/weeks/week_4.html#slides-recap",
-    "title": "4 - Matching",
+    "objectID": "content/course_weeks/weeks/week_5.html#slides-recap",
+    "href": "content/course_weeks/weeks/week_5.html#slides-recap",
+    "title": "5 - Double Machine Learning",
     "section": "",
     "text": "Coming soon.",
     "crumbs": [
       "Content",
       "<b>Weekly content</b>",
-      "4 - Matching"
+      "5 - Double Machine Learning"
     ]
   },
   {
-    "objectID": "content/course_weeks/weeks/week_4.html#practical-example",
-    "href": "content/course_weeks/weeks/week_4.html#practical-example",
-    "title": "4 - Matching",
+    "objectID": "content/course_weeks/weeks/week_5.html#practical-example",
+    "href": "content/course_weeks/weeks/week_5.html#practical-example",
+    "title": "5 - Double Machine Learning",
     "section": "Practical example",
     "text": "Practical example\nComing soon.",
     "crumbs": [
       "Content",
       "<b>Weekly content</b>",
-      "4 - Matching"
+      "5 - Double Machine Learning"
     ]
   },
   {
-    "objectID": "content/course_weeks/weeks/week_4.html#assignment",
-    "href": "content/course_weeks/weeks/week_4.html#assignment",
-    "title": "4 - Matching",
+    "objectID": "content/course_weeks/weeks/week_5.html#assignment",
+    "href": "content/course_weeks/weeks/week_5.html#assignment",
+    "title": "5 - Double Machine Learning",
     "section": "Assignment",
     "text": "Assignment\nComing soon.\n\n…",
     "crumbs": [
       "Content",
       "<b>Weekly content</b>",
-      "4 - Matching"
+      "5 - Double Machine Learning"
     ]
   },
   {
-    "objectID": "content/course_weeks/weeks/week_7.html",
-    "href": "content/course_weeks/weeks/week_7.html",
-    "title": "7 - Unobserved Confounding & Instrumental Variables",
+    "objectID": "content/course_weeks/weeks/week_6.html",
+    "href": "content/course_weeks/weeks/week_6.html",
+    "title": "6 - Effect Heterogeneity",
     "section": "",
     "text": "Coming soon.",
     "crumbs": [
       "Content",
       "<b>Weekly content</b>",
-      "7 - Unobserved Confounding & Instrumental Variables"
+      "6 - Effect Heterogeneity"
     ]
   },
   {
-    "objectID": "content/course_weeks/weeks/week_7.html#slides-recap",
-    "href": "content/course_weeks/weeks/week_7.html#slides-recap",
-    "title": "7 - Unobserved Confounding & Instrumental Variables",
+    "objectID": "content/course_weeks/weeks/week_6.html#slides-recap",
+    "href": "content/course_weeks/weeks/week_6.html#slides-recap",
+    "title": "6 - Effect Heterogeneity",
     "section": "",
     "text": "Coming soon.",
     "crumbs": [
       "Content",
       "<b>Weekly content</b>",
-      "7 - Unobserved Confounding & Instrumental Variables"
+      "6 - Effect Heterogeneity"
     ]
   },
   {
-    "objectID": "content/course_weeks/weeks/week_7.html#practical-example",
-    "href": "content/course_weeks/weeks/week_7.html#practical-example",
-    "title": "7 - Unobserved Confounding & Instrumental Variables",
+    "objectID": "content/course_weeks/weeks/week_6.html#practical-example",
+    "href": "content/course_weeks/weeks/week_6.html#practical-example",
+    "title": "6 - Effect Heterogeneity",
     "section": "Practical example",
     "text": "Practical example\nComing soon.",
     "crumbs": [
       "Content",
       "<b>Weekly content</b>",
-      "7 - Unobserved Confounding & Instrumental Variables"
+      "6 - Effect Heterogeneity"
     ]
   },
   {
-    "objectID": "content/course_weeks/weeks/week_7.html#assignment",
-    "href": "content/course_weeks/weeks/week_7.html#assignment",
-    "title": "7 - Unobserved Confounding & Instrumental Variables",
+    "objectID": "content/course_weeks/weeks/week_6.html#assignment",
+    "href": "content/course_weeks/weeks/week_6.html#assignment",
+    "title": "6 - Effect Heterogeneity",
     "section": "Assignment",
     "text": "Assignment\nComing soon.\n\n…",
     "crumbs": [
       "Content",
       "<b>Weekly content</b>",
-      "7 - Unobserved Confounding & Instrumental Variables"
+      "6 - Effect Heterogeneity"
     ]
   },
   {
-    "objectID": "content/course_weeks/weeks/week_2.html",
-    "href": "content/course_weeks/weeks/week_2.html",
-    "title": "2 - Graphical Causal Models",
+    "objectID": "content/course_weeks/weeks/week_3.html",
+    "href": "content/course_weeks/weeks/week_3.html",
+    "title": "3 - Randomized Experiments & Linear Regression",
     "section": "",
     "text": "Coming soon.",
     "crumbs": [
       "Content",
       "<b>Weekly content</b>",
-      "2 - Graphical Causal Models"
+      "3 - Randomized Experiments & Linear Regression"
     ]
   },
   {
-    "objectID": "content/course_weeks/weeks/week_2.html#slides-recap",
-    "href": "content/course_weeks/weeks/week_2.html#slides-recap",
-    "title": "2 - Graphical Causal Models",
+    "objectID": "content/course_weeks/weeks/week_3.html#slides-recap",
+    "href": "content/course_weeks/weeks/week_3.html#slides-recap",
+    "title": "3 - Randomized Experiments & Linear Regression",
     "section": "",
     "text": "Coming soon.",
     "crumbs": [
       "Content",
       "<b>Weekly content</b>",
-      "2 - Graphical Causal Models"
+      "3 - Randomized Experiments & Linear Regression"
     ]
   },
   {
-    "objectID": "content/course_weeks/weeks/week_2.html#practical-example",
-    "href": "content/course_weeks/weeks/week_2.html#practical-example",
-    "title": "2 - Graphical Causal Models",
+    "objectID": "content/course_weeks/weeks/week_3.html#practical-example",
+    "href": "content/course_weeks/weeks/week_3.html#practical-example",
+    "title": "3 - Randomized Experiments & Linear Regression",
     "section": "Practical example",
     "text": "Practical example\nComing soon.",
     "crumbs": [
       "Content",
       "<b>Weekly content</b>",
-      "2 - Graphical Causal Models"
+      "3 - Randomized Experiments & Linear Regression"
     ]
   },
   {
-    "objectID": "content/course_weeks/weeks/week_2.html#assignment",
-    "href": "content/course_weeks/weeks/week_2.html#assignment",
-    "title": "2 - Graphical Causal Models",
+    "objectID": "content/course_weeks/weeks/week_3.html#assignment",
+    "href": "content/course_weeks/weeks/week_3.html#assignment",
+    "title": "3 - Randomized Experiments & Linear Regression",
     "section": "Assignment",
     "text": "Assignment\nComing soon.\n\n…",
     "crumbs": [
       "Content",
       "<b>Weekly content</b>",
-      "2 - Graphical Causal Models"
+      "3 - Randomized Experiments & Linear Regression"
     ]
   },
   {
-    "objectID": "content/course_weeks/weeks/week_1.html",
-    "href": "content/course_weeks/weeks/week_1.html",
+    "objectID": "content/course_weeks/weeks/week_10.html",
+    "href": "content/course_weeks/weeks/week_10.html",
+    "title": "10 - Regression Discontinuity",
+    "section": "",
+    "text": "Coming soon.",
+    "crumbs": [
+      "Content",
+      "<b>Weekly content</b>",
+      "10 - Regression Discontinuity"
+    ]
+  },
+  {
+    "objectID": "content/course_weeks/weeks/week_10.html#slides-recap",
+    "href": "content/course_weeks/weeks/week_10.html#slides-recap",
+    "title": "10 - Regression Discontinuity",
+    "section": "",
+    "text": "Coming soon.",
+    "crumbs": [
+      "Content",
+      "<b>Weekly content</b>",
+      "10 - Regression Discontinuity"
+    ]
+  },
+  {
+    "objectID": "content/course_weeks/weeks/week_10.html#practical-example",
+    "href": "content/course_weeks/weeks/week_10.html#practical-example",
+    "title": "10 - Regression Discontinuity",
+    "section": "Practical example",
+    "text": "Practical example\nComing soon.",
+    "crumbs": [
+      "Content",
+      "<b>Weekly content</b>",
+      "10 - Regression Discontinuity"
+    ]
+  },
+  {
+    "objectID": "content/course_weeks/weeks/week_10.html#assignment",
+    "href": "content/course_weeks/weeks/week_10.html#assignment",
+    "title": "10 - Regression Discontinuity",
+    "section": "Assignment",
+    "text": "Assignment\nComing soon.\n\n…",
+    "crumbs": [
+      "Content",
+      "<b>Weekly content</b>",
+      "10 - Regression Discontinuity"
+    ]
+  },
+  {
+    "objectID": "content/course_weeks/weeks/week_8.html",
+    "href": "content/course_weeks/weeks/week_8.html",
+    "title": "8 - Difference-in-Difference",
+    "section": "",
+    "text": "Coming soon.",
+    "crumbs": [
+      "Content",
+      "<b>Weekly content</b>",
+      "8 - Difference-in-Difference"
+    ]
+  },
+  {
+    "objectID": "content/course_weeks/weeks/week_8.html#slides-recap",
+    "href": "content/course_weeks/weeks/week_8.html#slides-recap",
+    "title": "8 - Difference-in-Difference",
+    "section": "",
+    "text": "Coming soon.",
+    "crumbs": [
+      "Content",
+      "<b>Weekly content</b>",
+      "8 - Difference-in-Difference"
+    ]
+  },
+  {
+    "objectID": "content/course_weeks/weeks/week_8.html#practical-example",
+    "href": "content/course_weeks/weeks/week_8.html#practical-example",
+    "title": "8 - Difference-in-Difference",
+    "section": "Practical example",
+    "text": "Practical example\nComing soon.",
+    "crumbs": [
+      "Content",
+      "<b>Weekly content</b>",
+      "8 - Difference-in-Difference"
+    ]
+  },
+  {
+    "objectID": "content/course_weeks/weeks/week_8.html#assignment",
+    "href": "content/course_weeks/weeks/week_8.html#assignment",
+    "title": "8 - Difference-in-Difference",
+    "section": "Assignment",
+    "text": "Assignment\nComing soon.\n\n…",
+    "crumbs": [
+      "Content",
+      "<b>Weekly content</b>",
+      "8 - Difference-in-Difference"
+    ]
+  },
+  {
+    "objectID": "content/course_weeks/weeks/week_1_lock.html",
+    "href": "content/course_weeks/weeks/week_1_lock.html",
     "title": "1 - Introduction to Causal Inference",
     "section": "",
-    "text": "Important\n\n\n\nPlease make sure to read and follow the instructions in Organization before reading this section.",
-    "crumbs": [
-      "Content",
-      "<b>Weekly content</b>",
-      "1 - Introduction to Causal Inference"
-    ]
+    "text": "Important\n\n\n\nPlease make sure to read and follow the instructions in Organization before reading this section."
   },
   {
-    "objectID": "content/course_weeks/weeks/week_1.html#slides-recap",
-    "href": "content/course_weeks/weeks/week_1.html#slides-recap",
+    "objectID": "content/course_weeks/weeks/week_1_lock.html#simpson-paradox",
+    "href": "content/course_weeks/weeks/week_1_lock.html#simpson-paradox",
     "title": "1 - Introduction to Causal Inference",
-    "section": "Slides & Recap",
-    "text": "Slides & Recap\nSlides - Week 1",
-    "crumbs": [
-      "Content",
-      "<b>Weekly content</b>",
-      "1 - Introduction to Causal Inference"
-    ]
+    "section": "Simpson paradox",
+    "text": "Simpson paradox\nLet’s go through a practical example of the Yule-Simpson paradox in a business context. Imagine the following situation: you have developed a new everyday product that you want to advertise online.\nAfter running your ad campaign you are interested in the effectiveness of your ads by age group. For simplicity, we divide the age groups into young and old. You run the numbers and get the following results for whether a website visitor who was shown the ad clicks.\n\n\nOVERALL\nClick\nNo click\n\n\n\nYoung\n500\n10’000\n\n\nOld\n300\n7’500\n\n\n\nFrom here, we can compute the click-through rate (CTR):\n\n# Overall\nctr_yng &lt;- 500 / (500 + 10000) # young\nctr_old &lt;- 300 / (300 + 7500) # old\n\n# Difference\nctr_yng - ctr_old\n\n[1] 0.0092\n\n\nYou draw the conclusion that ads on young people were more effective.\nHowever, you sense that this might be a case of the Simpson paradox and identify region as a potential confounder. Dividing your data by region, for simplicity only urban and rural, you get the numbers …\nfor your advertising performance in urban regions\n\n\nURBAN\nClick\nNo click\n\n\n\nYoung\n350\n4’000\n\n\nOld\n80\n500\n\n\n\nand in rural regions.\n\n\nRURAL\nClick\nNo click\n\n\n\nYoung\n150\n6’000\n\n\nOld\n220\n7’000\n\n\n\nAs before, you compute the CTRs, but now by region. First for urban areas:\n\n# Urban region\nctr_yng_urb &lt;- 350 / (350 + 4000) # young people\nctr_old_urb &lt;- 80 / (80 + 500) # old people\n\n# Difference\nctr_yng_urb - ctr_old_urb\n\n[1] -0.057\n\n\nOther than for the overall effect, the effect of ads for old people is higher causing the difference to be negative. Now, intuitively, you would think that for rural areas, the effect for ads on young people would be substantially higher than for old people to explain the overall higher effect for young people. Let’check:\n\n# Rural region\nctr_yng_rur &lt;- 150 / (150 + 6000) # young\nctr_old_rur &lt;- 220 / (220 + 7000) # old\n\n# Difference\nctr_yng_rur - ctr_old_rur\n\n[1] -0.0061\n\n\nAnd, surprisingly, you see the difference is again negative, indicating more reaction among old people.\n\n\n\n\n\n\nNote\n\n\n\nTo neatly format variables in a desired manner, use `sprintf()``. Simply furnish a string template with placeholders for variables or expressions. These can encompass strings, integers, floats, and more.\n\n\n\nsprintf(\"All areas: %.2f %%\", 100 * (ctr_yng - ctr_old))\n\n[1] \"All areas: 0.92 %\"\n\nsprintf(\"Urban area: %.2f %%\", 100 * (ctr_yng_urb - ctr_old_urb))\n\n[1] \"Urban area: -5.75 %\"\n\nsprintf(\"Rural area: %.2f %%\", 100 * (ctr_yng_rur - ctr_old_rur))\n\n[1] \"Rural area: -0.61 %\"\n\n\nBecause the combination of two negative differences resulting in a positive difference is unexpected at first, this scenario is labelled a paradox. In the assignment, you will be asked to explain why it happens and what figures you should use for analysis."
   },
   {
-    "objectID": "content/course_weeks/weeks/week_1.html#practical-example",
-    "href": "content/course_weeks/weeks/week_1.html#practical-example",
+    "objectID": "content/course_weeks/weeks/week_1_lock.html#example-scenario",
+    "href": "content/course_weeks/weeks/week_1_lock.html#example-scenario",
     "title": "1 - Introduction to Causal Inference",
-    "section": "Practical example",
-    "text": "Practical example\nSimpson paradox\nLet’s go through a practical example of the Yule-Simpson paradox in a business context. Imagine the following situation: you have developed a new product that you want to advertise online. needed everywhere e.g. phone\nAfter running your ad campaign you are interested in the effectiveness of your ads by age group. For simplicity, we divide the age groups into young and old. You run the numbers and get the following results for whether a website visitor who was shown the ad clicks.\n\n\nOVERALL\nClick\nNo click\n\n\n\nYoung\n500\n10’000\n\n\nOld\n300\n7’500\n\n\n\nFrom here, we can compute the click-through rate (CTR):\n\n# Overall\nctr_yng &lt;- 500 / (500 + 10000) # young\nctr_old &lt;- 300 / (300 + 7500) # old\n\n# Difference\nctr_yng - ctr_old\n\n[1] 0.0092\n\n\nYou draw the conclusion that ads on young people were more effective.\nHowever, you sense that this might be a case of the Simpson paradox and identify region as a potential confounder. Dividing your data by region, for simplicity only urban and rural, you get the numbers …\nfor your advertising performance in urban regions\n\n\nURBAN\nClick\nNo click\n\n\n\nYoung\n350\n4’000\n\n\nOld\n80\n500\n\n\n\nand in rural regions.\n\n\nRURAL\nClick\nNo click\n\n\n\nYoung\n150\n6’000\n\n\nOld\n220\n7’000\n\n\n\nAs before, you compute the CTRs, but now by region. First for urban areas:\n\n# Urban region\nctr_yng_urb &lt;- 350 / (350 + 4000) # young people\nctr_old_urb &lt;- 80 / (80 + 500) # old people\n\n# Difference\nctr_yng_urb - ctr_old_urb\n\n[1] -0.057\n\n\nOther than for the overall effect, the effect of ads for old people is higher causing the difference to be negative. Now, intuitively, you would think that for rural areas, the effect for ads on young people would be substantially higher than for old people to explain the overall higher effect for young people. Let’check:\n\n# Rural region\nctr_yng_rur &lt;- 150 / (150 + 6000) # young\nctr_old_rur &lt;- 220 / (220 + 7000) # old\n\n# Difference\nctr_yng_rur - ctr_old_rur\n\n[1] -0.0061\n\n\nAnd, surprisingly, you see the difference is again negative, indicating more reaction among old people.\n\n\n\n\n\n\nNote\n\n\n\nTo neatly format variables in a desired manner, use `sprintf()``. Simply furnish a string template with placeholders for variables or expressions. These can encompass strings, integers, floats, and more.\n\n\n\nsprintf(\"All areas: %.2f %%\", 100 * (ctr_yng - ctr_old))\n\n[1] \"All areas: 0.92 %\"\n\nsprintf(\"Urban area: %.2f %%\", 100 * (ctr_yng_urb - ctr_old_urb))\n\n[1] \"Urban area: -5.75 %\"\n\nsprintf(\"Rural area: %.2f %%\", 100 * (ctr_yng_rur - ctr_old_rur))\n\n[1] \"Rural area: -0.61 %\"\n\n\nBecause the combination of two negative differences resulting in a positive difference is unexpected at first, this scenario is labelled a paradox. In the assignment, you will be asked to explain why it happens.",
-    "crumbs": [
-      "Content",
-      "<b>Weekly content</b>",
-      "1 - Introduction to Causal Inference"
-    ]
+    "section": "Example scenario",
+    "text": "Example scenario\nConsider this scenario: you’re the owner of an online marketplace company that small and medium-sized businesses use to sell advertise and sell their products. The businesses act autonomously regarding prices, advertising etc. Because your revenue depends on the prosperity of these businesses, you want to support them by offering guidance when to implement sales campaigns featuring temporary price drops. From a business perspective, a price drop is beneficial when the increase in number of sold units compensates for the lower price. Therefore,it is important to know the number of additional units sold after a price reduction. For simplicity, we only focus on one particular category, socks, and we examine the weeks leading up to and including Christmas week.\nQuestion: It helps to make oneself as clear as possible what the research question is. So, try to formulate a question that entails very clearly what effect we are interested in.\nAnswer\nWhat is the impact of a price reduction on the number of units sold?\nNow, let’s take a look at some data that you collected which could help you to answer your research question.\n\n\n\n\n\n\nNote\n\n\n\nlibrary() loads external packages/libraries containing functions that are not built in base R. Here, we load the library tidyverse, which is, in fact, a collection of many useful libraries specifically developed for data science tasks.\nIf you only need one particular function from a library, you can pick it by the following syntax: library::function().\nAll libraries/packages you want to use need to be installed first by running install.packages(\"library_to_install\").\n\n\n\n# Load packages from the tidyverse\n# install.packages(\"tidyverse\")\nlibrary(tidyverse)\n\n# Change the path if needed\nsales &lt;- read_csv(\"xmas_sales.csv\")\n# Currently coded as 0/1, we convert to FALSE/TRUE\nsales$is_on_sale &lt;- as.logical(sales$is_on_sale)\n\nThe data consists of the following columns:\n\n\nstore: unique identifier of store\n\nweeks_to_xmas: weekly data for each store leading up to Christmas\n\navg_week_sales: historical average of sales indicating business size\n\nis_on_sale: sale/price reduction indicator\n\nweekly_amount_sold: average weekly sales during that week\n\n\n\n\n\n\n\nNote\n\n\n\nThere are many other ways to get a first look at your data instead of simply entering the variable name or use print(). Often times you will see head(data, n) to see the first \\(n\\) lines. Just the same you can use tail(data, n) to see the \\(n\\) last lines. If it is mainly numeric data, summary() provides a good overview. If you have many columns, glimpse() from the dplyr package contained in the tidyverse helps you.\n\n\n\n# Simply enter the table name to show its content\nprint(sales)\n\n# A tibble: 2,000 × 5\n   store weeks_to_xmas avg_week_sales is_on_sale weekly_amount_sold\n   &lt;dbl&gt;         &lt;dbl&gt;          &lt;dbl&gt; &lt;lgl&gt;                   &lt;dbl&gt;\n 1     1             3           13.0 TRUE                    220. \n 2     1             2           13.0 TRUE                    185. \n 3     1             1           13.0 TRUE                    146. \n 4     1             0           13.0 FALSE                   102. \n 5     2             3           19.9 FALSE                   103. \n 6     2             2           19.9 FALSE                    53.7\n 7     2             1           19.9 FALSE                    13.8\n 8     2             0           19.9 FALSE                     0  \n 9     3             3           18.5 FALSE                    97.0\n10     3             2           18.5 FALSE                    54.7\n# ℹ 1,990 more rows\n\n\nLet’ connect the data from the table with the formula notation you have learned in the lecture. First of all, it is important to state that our units of analysis \\(i\\) are stores.\n\\(D_i\\) denotes the treatment for unit \\(i\\) and for our example it can take either one of the two values:\n\\[\nD_i=\\begin{cases}1 \\ \\text{if unit i received treatment}\\\\0 \\ \\text{otherwise}\\\\\\end{cases}\n\\]\nDon’t be confused by the term treatment, it is not a medical treatment (but can be) and other terms used are intervention or manipulation. Here, the treatment \\(D_i\\) is whether a store dropped its prices in a particular week.\n\n\n\n\n\n\nTip\n\n\n\nSometimes, you will encounter \\(T_i\\) instead of \\(D_i\\). But because in R, T is used to abbreviate the boolean value TRUE and in many other applications, \\(T\\) is reserved for time, we will use \\(D\\) instead.\n\n\nQuestion: What is the data equivalent for the outcome \\(Y_i\\)?\nAnswer\nIt is weekly_amount_sold.\nLet’s revisit the initial research question. We are interested in the effect a price reduction has on sales. We can express it as either\n\nthe effect of \\(T\\) on \\(Y\\)\n\nthe is_on_sale on weekly_amount_sold."
   },
   {
-    "objectID": "content/course_weeks/weeks/week_1.html#assignment",
-    "href": "content/course_weeks/weeks/week_1.html#assignment",
+    "objectID": "content/course_weeks/weeks/week_1_lock.html#fundamental-problem-of-causal-inference",
+    "href": "content/course_weeks/weeks/week_1_lock.html#fundamental-problem-of-causal-inference",
     "title": "1 - Introduction to Causal Inference",
-    "section": "Assignment",
-    "text": "Assignment\n\nPlease go to Week 1 - Assignment and solve the following questions. For the first week, there is only one actual question and we do not grade your solutions as the primary objective is to ensure you understand the workflow and submission process via GitHub, as well as to familiarize yourself with R.\n\nWhat is 1+1 ?\nWhat is 2+2 ?\nTake a closer look at the numbers (outcome, sample sizes etc.) of the practical example of a Simpson paradox. Give an explanation why the Simpson paradox occurs (1-2 sentences).",
-    "crumbs": [
-      "Content",
-      "<b>Weekly content</b>",
-      "1 - Introduction to Causal Inference"
-    ]
+    "section": "Fundamental problem of causal inference",
+    "text": "Fundamental problem of causal inference\nTo compute the effect, we would ideally know for each observation the counterfactual outcome, i.e. if it was on sale, how would have been sales if it was not on sales or if it was not on sale, how would have been sales if it was on sale? However, due to the fundamental problem of causal inference, it is impossible to observe both states.\nTherefore, at first, you are often tempted to compare the observations that were on sale (“treated”) with the observations that were not on sale (“control”). Because that’s easy to calculate, let’s plot the result. A good way to compare and plot observations of two groups is a box plot.\n\n\n\n\n\n\nNote\n\n\n\nFor plots, we make use of the package ggplot2 which is included in the tidyverse you already loaded. Both plots show the same data and convey the same message, but because ggplot2 is a package dedicated to data visualization it has some advantages regarding aesthetics and the efficiency in creating plots.\nIf you are interested in an introduction to ggplot2, I recommend this resource written by Megan Hall.\nBy the way, don’t be confused when your plot appears different in terms of colors, fonts etc. compared to the one shown here. It is adjusted to match the website theme.\n\n\n\n# Box plot in base R\n# boxplot(weekly_amount_sold ~ is_on_sale, data = sales)\n\n# Box plot in ggplot2\nggplot(\n  data = sales, # first, provide the data\n  aes( # then, provide the aesthetics (at least X and Y)\n    x = is_on_sale, \n    y = weekly_amount_sold\n    )) +\n  geom_boxplot() # with a \"+\" add what type of plot\n\n\n\n\n\n\n\nWhat do we see? Stores that dropped their prices sell more. It confirms our intuition that people buy more on sale. However, the difference seems very high. Let’s calculate it.\n\n\n\n\n\n\nNote\n\n\n\nTo access a data frame, there are several ways in R. In the following chapters, we will use other ways to extract data but here we use the following syntax: dataframe[condition, ]$column. First you take the data frame that contains the data you want to extract or subset. Then you provide a condition on how to subset. If you just want to have a specific column, you can extract it using the $ operator. Please note that if your condition refers to a column in the same data frame, you need to call the data frame another time like dataframe$filter_column.\nTo compute the average of a column (or more precise: a vector), we use the function mean().\nFor printing several variables, in notebooks, you can just collect them in a vector by c(var1, var2, ...). If you want to name the elements provide a name in quotation marks: c(\"name1\" = var1, ...).\n\n\n\n# Outcome for all observations on sale\nY1 &lt;- sales[sales$is_on_sale == TRUE, ]$weekly_amount_sold\nY1_mean &lt;- mean(Y1)\n# Outcome for all observations not on sale\nY0 &lt;- sales[sales$is_on_sale == FALSE, ]$weekly_amount_sold\nY0_mean &lt;- mean(Y0)\n\n# Show both outcomes and their difference\nc(\n  \"Avg. outcome on sale\" = Y1_mean,\n  \"Avg. outcome not on sale\" = Y0_mean,\n  \"Difference\" = Y1_mean  - Y0_mean\n)\n\n    Avg. outcome on sale Avg. outcome not on sale               Difference \n                     141                       63                       78 \n\n\nThe difference is even higher than the outcome for stores that did not implement a sales campaign. At this point, the alarm bells should ring - a simple comparison is very unlikely to yield a valid result.\nQuestion: What explanations can you think of that distort the relationship between the treatment variable and the outcome? Think back to what has been discussed in the lecture.\nAnswer\nThere might be one or several common causes (confounders). Two causes that affect both is_on_sale and weekly_amount_sold are the (1) business size (or: avg_week_sales) and the (2) time distance to Christmas (weeks_to_xmas). Because (1) larger businesses are more likely to implement sales campaigns and naturally sell more and because (2) sales are often implemented close to Christmas when customers buy anyway.\nSummarizing, there is no way to know the true causal effect of price cuts on units sold as we do not observe both worlds for all units: the world with price cuts and the world without price cuts. That’s what the fundamental problem of causal inference states. Throughout the whole course, we will come up with ways and methods to deal with this problem and get as close to the causal effect as possible."
   },
   {
-    "objectID": "content/course_weeks/weeks/week_11.html",
-    "href": "content/course_weeks/weeks/week_11.html",
-    "title": "11 - Causal Mediation",
-    "section": "",
-    "text": "Coming soon.",
-    "crumbs": [
-      "Content",
-      "<b>Weekly content</b>",
-      "11 - Causal Mediation"
-    ]
-  },
-  {
-    "objectID": "content/course_weeks/weeks/week_11.html#slides-recap",
-    "href": "content/course_weeks/weeks/week_11.html#slides-recap",
-    "title": "11 - Causal Mediation",
-    "section": "",
-    "text": "Coming soon.",
-    "crumbs": [
-      "Content",
-      "<b>Weekly content</b>",
-      "11 - Causal Mediation"
-    ]
-  },
-  {
-    "objectID": "content/course_weeks/weeks/week_11.html#practical-example",
-    "href": "content/course_weeks/weeks/week_11.html#practical-example",
-    "title": "11 - Causal Mediation",
-    "section": "Practical example",
-    "text": "Practical example\nComing soon.",
-    "crumbs": [
-      "Content",
-      "<b>Weekly content</b>",
-      "11 - Causal Mediation"
-    ]
-  },
-  {
-    "objectID": "content/course_weeks/weeks/week_11.html#assignment",
-    "href": "content/course_weeks/weeks/week_11.html#assignment",
-    "title": "11 - Causal Mediation",
-    "section": "Assignment",
-    "text": "Assignment\nComing soon.\n\n…",
-    "crumbs": [
-      "Content",
-      "<b>Weekly content</b>",
-      "11 - Causal Mediation"
-    ]
-  },
-  {
-    "objectID": "content/course_weeks/weeks/week_9.html",
-    "href": "content/course_weeks/weeks/week_9.html",
-    "title": "9 - Synthetic Control",
-    "section": "",
-    "text": "Coming soon.",
-    "crumbs": [
-      "Content",
-      "<b>Weekly content</b>",
-      "9 - Synthetic Control"
-    ]
-  },
-  {
-    "objectID": "content/course_weeks/weeks/week_9.html#slides-recap",
-    "href": "content/course_weeks/weeks/week_9.html#slides-recap",
-    "title": "9 - Synthetic Control",
-    "section": "",
-    "text": "Coming soon.",
-    "crumbs": [
-      "Content",
-      "<b>Weekly content</b>",
-      "9 - Synthetic Control"
-    ]
-  },
-  {
-    "objectID": "content/course_weeks/weeks/week_9.html#practical-example",
-    "href": "content/course_weeks/weeks/week_9.html#practical-example",
-    "title": "9 - Synthetic Control",
-    "section": "Practical example",
-    "text": "Practical example\nComing soon.",
-    "crumbs": [
-      "Content",
-      "<b>Weekly content</b>",
-      "9 - Synthetic Control"
-    ]
-  },
-  {
-    "objectID": "content/course_weeks/weeks/week_9.html#assignment",
-    "href": "content/course_weeks/weeks/week_9.html#assignment",
-    "title": "9 - Synthetic Control",
-    "section": "Assignment",
-    "text": "Assignment\nComing soon.\n\n…",
-    "crumbs": [
-      "Content",
-      "<b>Weekly content</b>",
-      "9 - Synthetic Control"
-    ]
+    "objectID": "content/course_weeks/weeks/week_1_lock.html#potential-outcomes-notation",
+    "href": "content/course_weeks/weeks/week_1_lock.html#potential-outcomes-notation",
+    "title": "1 - Introduction to Causal Inference",
+    "section": "Potential outcomes notation",
+    "text": "Potential outcomes notation\nFor now, let’s imagine the impossible and assume we can actually see both worlds and know both states for each observation. In potential outcomes (PO) notation, that means we can see both \\(Y_{i1}\\) and \\(Y_{i0}\\), where \\(0\\) and \\(1\\) refer to the treatment states for unit \\(i\\).\n\\[\nY_i=\\begin{cases}Y_{i1} \\ \\text{if unit i received treatment}\\\\Y_{i0} \\ \\text{otherwise}\\\\\\end{cases}\n\\]\nWhen you take a look at the table, you see the observed outcome y and both potential outcomes y0 and y1, one of which is the observed and the other one the counterfactual outcome. You also see a store identifier, the treatment status t, a covariate x and the individual treatment effect (\\(ITE\\)) te.\n\n# Read data  \"unrealistic\" scenario\nsales_unreal &lt;- read_csv(\"sales_unreal.csv\")\n\n# Print table\nprint(sales_unreal)\n\n# A tibble: 6 × 7\n      i    y0    y1     t     x     y    te\n  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;\n1     1   200   220     0     0   200    20\n2     2   120   140     0     0   120    20\n3     3   300   400     0     1   300   100\n4     4   450   500     1     0   500    50\n5     5   600   600     1     0   600     0\n6     6   600   800     1     1   800   200\n\n\nThe ITEs are computed as:\n\\[\n\\tau_i = \\text{ITE}_i = Y_{i1} - Y_{i0}\n\\]\nIn this unrealistic scenario, knowing all states, it is easy to compute the average treatment effect (\\(ATE\\)). For each unit, we subtract the untreated outcome from the treated outcome and take the average. Or even easier, because there are already computed ITEs in the data, we take the average of those.\n\nATE &lt;- mean(sales_unreal$y1 - sales_unreal$y0) # equivalent to: mean(sales_unreal$te)\nATE\n\n[1] 65\n\n\nThe true average causal treatment effect is 65. In formula notation, we calculated the sample equivalent of\n\\[\n\\text{ATE} = E[\\tau_i] = E[Y_i1 - Y_i0] \\,.\n\\]\nWithout any problems, you could also calculate the conditional average treatment effect (\\(CATE\\)), i.e. the average treatment effect for units where the \\(X\\) takes on the specified value \\(x\\).\n\\[\nCATE = E[Y_{i1} - Y_{i0} | X = x]\n\\]\nBut now let’s get back to the actual scenario: we just observe one outcome and we do not what would have happened in a different world. Consequently, the data looks like this:\n\n# Read \"realistic\" scenario\nsales_real &lt;- read_csv(\"sales_real.csv\")\n\n# Print table\nprint(sales_real)\n\n# A tibble: 6 × 7\n      i    y0    y1     t     x     y te   \n  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;lgl&gt;\n1     1   200    NA     0     0   200 NA   \n2     2   120    NA     0     0   120 NA   \n3     3   300    NA     0     1   300 NA   \n4     4    NA   500     1     0   500 NA   \n5     5    NA   600     1     0   600 NA   \n6     6    NA   800     1     1   800 NA   \n\n\nRemember, the true causal effect is 65. Let’s check, how close we get when we try to estimate the ATE by comparing the treated observations to the untreated observations.\n\n# Average outcome for treated observations\ny1 &lt;- mean(sales_real[sales_real$t == 1, ]$y)\n\n# Average outcome for not treated observations\ny0 &lt;- mean(sales_real[sales_real$t == 0, ]$y)\n\n# Show both outcomes and their difference\nc(\n  \"Avg. treated outcomes\" = y1,\n  \"Avg. not treated outcomes\" = y0,\n  \"Difference\" = y1 - y0\n)\n\n    Avg. treated outcomes Avg. not treated outcomes                Difference \n                      633                       207                       427 \n\n\nIt’s \\(426.667\\) and thus very far off. Again, it proves the danger of taking naive averages and the inequality of association and causation. The reason here is that businesses engaged in sales are different from those that did not and would have sold more regardless of price cut. The difference is also called bias and with full knowledge of all states can be calculated by:\n\\[\n\\begin{align}\nE[Y_1 - Y_0] &= E[Y|D=1] - E[Y|D=0] \\\\ &= E[Y_1|D=1] - E[Y_0|D=0] + E[Y_0|D=1] - E[Y_0|D=1] \\\\\n&= \\underbrace{E[Y_1 - Y_0|D=1]}_{ATT} + \\underbrace{\\{ E[Y_0|D=1] - E[Y_0|D=0] \\}}_{BIAS}\n\\end{align}\n\\]\nYou see that there is a bias when \\(E[Y_0|D=1]\\) is not equal to \\(E[Y_0|D=1]\\). That means, for no bias to occur, treated and untreated units only differ in their treatment status and is called the ignorability or exchangeability assumption.\nGoing back to the dataset with many observations, what can you infer from this plot? Does the plot indicate any violations of the assumptions?\n\n# Plot business size vs outcome\nggplot(\n  data = sales,\n  aes(x = avg_week_sales, \n      y = weekly_amount_sold, \n      color = is_on_sale) # different color depending on value of 'is_on_sale'\n  ) + geom_point(alpha = .5) # with alpha, we control point transparency"
   }
 ]

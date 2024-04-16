@@ -29,9 +29,29 @@ There are [three different types]{.underline} of texts that communicate issues o
 
 -   **Errors**: this is a legitimate error and most likely your code did not run due to the error. Many of the error messages are very concise and you will directly see what was wrong, what is missing etc. If you do not see what you did wrong at first glance, you can copy the error message and google it. It is very likely someone else has run into the same error before.
 
+```{r}
+#| error: true
+
+# Example error
+1 + "a"
+#Error in 1 + "a" : non-numeric argument to binary operator
+```
+
 -   **Warnings**: opposed to an error, your code did probably run but there could be something off. However, it is just a warning. You can check it and if you think the warning does not apply to your specific scenario, you can go on.
 
+```{r}
+# Example warning
+as.numeric(c("18", "30", "50+", "345,678"))
+# Warning message: NAs introduced by coercion 
+```
+
 -   **Messages**: these are just friendly texts that provide you with useful information. They do not need immediate attention but can provide useful supplementary information.
+
+```{r}
+# Example message
+library(tidyverse)
+```
+
 
 [**Interactive Tutorials**]{.underline}**:**
 

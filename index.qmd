@@ -51,7 +51,7 @@ After completing this module, students will be able to:
 
 {{< fa calendar-alt >}}   Lecture: Monday, 11.30 - 13.00
 
-{{< fa calendar-alt >}}   Tutorial: Tuesday, 15.00 - 16.30
+{{< fa calendar-alt >}}   Tutorial: Tuesday, 15.00 - 16.30 + 16.45 - 18.15
 :::
 :::
 

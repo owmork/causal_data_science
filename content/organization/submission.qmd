@@ -38,11 +38,12 @@ In the following I will guide your through the necessary steps. Some details in 
 
 ## Implementing your solution
 
-You will find five files in the repository. Let's discuss what they are:
+You will find a couple of files in the repository. Let's discuss some of them:
 
 - `ss24_cds_week_1.Rproj`: a R project file. It opens RStudio and mainly sets the correct working environment, which e.g. helps you load and save files.
 - `playground.R` : a classical R script. Use it to prototype your code and solutions.
 - `submission.qmd` : a file that contains a combination of markdown and executable code cells. Here, you will type in your final solutions and render a `.html` that will be graded.
+- `.csv` files: data you will need for the lab session and assignments
 
 These files, that are typically found in GitHub repositories, you can ignore for now:
 
@@ -78,9 +79,7 @@ For each assignment, there will be a deadline and you can only push changes to G
 
 ## Submission
 
-TODO UPDATE INFO
-
-Submit your credentials and GitHub user name via the following form. If you do not submit your information, we won't be able to evaluate your assignments. Please fill it **out by WEEKDAY, DD-MM-YY**.
+Submit your credentials and GitHub user name via the following form. If you do not submit your information, we won't be able to evaluate your assignments. Please fill it **out by Monday, 22 April 2024**.
 
 ```{=html}
 <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSdZxakqddD6tT_XpHuzvCAHD4S8s07pDJ4yMkv768wfGAvXYA/viewform?embedded=true" width="640" height="800" frameborder="0" marginheight="0" marginwidth="0">Wird geladen…</iframe>
@@ -89,7 +88,8 @@ Submit your credentials and GitHub user name via the following form. If you do n
 ::: callout-important
 ## Summary: How to successfully submit
 
-1.  Write your solutions down in a `.qmd` file and render.
-2.  Commit and push your changes to your GitHub
-3.  Fill out the form.
+1.  Fill out the form. (once)
+2.  Write your solutions down in a `.qmd` file and render.
+3.  Commit and push your changes to your GitHub
+
 :::
