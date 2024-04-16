@@ -1,0 +1,125 @@
+## Simpson paradox
+
+Let's go through a practical example of the Yule-Simpson paradox in a business context. Imagine the following situation: you have developed a new everyday product that you want to advertise online.
+
+After running your ad campaign you are interested in the effectiveness of your ads by age group. For simplicity, we divide the age groups into young and old. You run the numbers and get the following results for whether a website visitor who was shown the ad clicks.
+
+| OVERALL | Click | No click |
+|---------|-------|----------|
+| Young   | 500   | 10'000   |
+| Old     | 300   | 7'500    |
+
+From here, we can compute the click-through rate (CTR):
+
+```{r}
+# Overall
+ctr_yng <- 500 / (500 + 10000) # young
+ctr_old <- 300 / (300 + 7500) # old
+
+# Difference
+ctr_yng - ctr_old
+```
+
+You draw the conclusion that ads on young people were more effective.
+
+However, you sense that this might be a case of the Simpson paradox and identify region as a potential confounder. Dividing your data by region, for simplicity only urban and rural, you get the numbers ...
+
+for your advertising performance in *urban regions*
+
+| URBAN | Click | No click |
+|-------|-------|----------|
+| Young | 350   | 4'000    |
+| Old   | 80    | 500      |
+
+and in *rural regions*.
+
+| RURAL | Click | No click |
+|-------|-------|----------|
+| Young | 150   | 6'000    |
+| Old   | 220   | 7'000    |
+
+As before, you compute the CTRs, but now by region. First for urban areas:
+
+```{r}
+# Urban region
+ctr_yng_urb <- 350 / (350 + 4000) # young people
+ctr_old_urb <- 80 / (80 + 500) # old people
+
+# Difference
+ctr_yng_urb - ctr_old_urb
+```
+
+Other than for the overall effect, the effect of ads for old people is higher causing the difference to be negative. Now, intuitively, you would think that for rural areas, the effect for ads on young people would be substantially higher than for old people to explain the overall higher effect for young people. Let'check:
+
+```{r}
+# Rural region
+ctr_yng_rur <- 150 / (150 + 6000) # young
+ctr_old_rur <- 220 / (220 + 7000) # old
+
+# Difference
+ctr_yng_rur - ctr_old_rur
+```
+
+And, surprisingly, you see the difference is again negative, indicating more reaction among old people.
+
+::: callout-note
+To neatly format variables in a desired manner, use \`sprintf()\`\`. Simply furnish a string template with placeholders for variables or expressions. These can encompass strings, integers, floats, and more.
+:::
+
+```{r}
+sprintf("All areas: %.2f %%", 100 * (ctr_yng - ctr_old))
+sprintf("Urban area: %.2f %%", 100 * (ctr_yng_urb - ctr_old_urb))
+sprintf("Rural area: %.2f %%", 100 * (ctr_yng_rur - ctr_old_rur))
+```
+
+Because the combination of two negative differences resulting in a positive difference is unexpected at first, this scenario is labelled a **paradox**. In the assignment, you will be asked to explain why it happens and what figures you should use for analysis.
+
+```{=html}
+<!--
+"When less effective treatment applied more frequently to less severe cases, it 
+appears to be more effective."
+Translated to our scenario: 
+  - 'less effective treatment': young people because they are less reactive to 
+  ads.
+  - ' less severe cases': people in urban areas because they have a higher CTR.
+Because there are more young people in urban areas, treating young people 
+appears to be more effective in the overall analysis. However, when analyzed
+by region, it shows that in fact, older people are more likely to react to an 
+ad.
+-->
+```
+
+```{r}
+#| include: false
+
+# clicks
+yu1 <- 350
+yr1 <- 150
+ou1 <- 80
+or1 <- 220
+
+# no clicks
+yu0 <- 4000
+yr0 <- 6000
+ou0 <- 500
+or0 <- 7000
+
+# individal CTRs
+# urban region
+yu1 / (yu1 + yu0)
+ou1 / (ou1 + ou0)
+# rural region
+yr1 / (yr1 + yr0)
+or1 / (or1 + or0)
+
+# combined CTRs
+(yu1 + yr1) / (yu1 + yu0 + yr1 + yr0)
+(ou1 + or1) / (ou1 + ou0 + or1 + or0)
+
+#
+(yu1 + yr1)
+(yu0 + yr0)
+(ou1 + or1)
+(ou0 + or0)
+
+```
