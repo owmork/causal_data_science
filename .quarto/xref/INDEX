@@ -169,5 +169,44 @@
   },
   "content/course_weeks/weeks/week_1_lock.qmd": {
     "week_1_lock.html": "3910aae2"
+  },
+  "content/course_weeks/week_11/week_11.qmd": {
+    "week_11.html": "8c71fe16"
+  },
+  "content/course_weeks/week_10/week_10.qmd": {
+    "week_10.html": "98aab3b0"
+  },
+  "content/course_weeks/week_04/week_4.qmd": {
+    "week_4.html": "742524fa"
+  },
+  "content/course_weeks/week_03/week_3.qmd": {
+    "week_3.html": "7f1e6076"
+  },
+  "content/course_weeks/week_02/week_2.qmd": {
+    "week_2.html": "55c49d4a"
+  },
+  "content/course_weeks/week_05/week_5.qmd": {
+    "week_5.html": "05e85952"
+  },
+  "content/course_weeks/week_07/week_7.qmd": {
+    "week_7.html": "21746fec"
+  },
+  "content/course_weeks/week_09/week_9.qmd": {
+    "week_9.html": "a03e4d5c"
+  },
+  "content/course_weeks/week_08/week_8.qmd": {
+    "week_8.html": "dfa88b37"
+  },
+  "content/course_weeks/week_06/week_6.qmd": {
+    "week_6.html": "d4d028db"
+  },
+  "content/course_weeks/week_01/week_1.qmd": {
+    "week_1.html": "99f8c708"
+  },
+  "content/course_weeks/week_02/week_2_tut_1.qmd": {
+    "week_2_tut_1.html": "7168ce6a"
+  },
+  "content/course_weeks/week_02/week_2_tut_2.qmd": {
+    "week_2_tut_2.html": "55352c94"
   }
 }

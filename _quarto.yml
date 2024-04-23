@@ -31,17 +31,17 @@ website:
         - text: "---"
         - section: "<b>Weekly content</b>"
           contents:
-          - content/course_weeks/weeks/week_1.qmd
-          - content/course_weeks/weeks/week_2.qmd
-          - content/course_weeks/weeks/week_3.qmd
-          - content/course_weeks/weeks/week_4.qmd
-          - content/course_weeks/weeks/week_5.qmd
-          - content/course_weeks/weeks/week_6.qmd
-          - content/course_weeks/weeks/week_7.qmd
-          - content/course_weeks/weeks/week_8.qmd
-          - content/course_weeks/weeks/week_9.qmd
-          - content/course_weeks/weeks/week_10.qmd
-          - content/course_weeks/weeks/week_11.qmd
+          - content/course_weeks/week_01/week_1.qmd
+          - content/course_weeks/week_02/week_2.qmd
+          - content/course_weeks/week_03/week_3.qmd
+          - content/course_weeks/week_04/week_4.qmd
+          - content/course_weeks/week_05/week_5.qmd
+          - content/course_weeks/week_06/week_6.qmd
+          - content/course_weeks/week_07/week_7.qmd
+          - content/course_weeks/week_08/week_8.qmd
+          - content/course_weeks/week_09/week_9.qmd
+          - content/course_weeks/week_10/week_10.qmd
+          - content/course_weeks/week_11/week_11.qmd
           - section: "<b>Optional reads</b>"
             contents: 
             - content/optional_read/motivation.qmd
