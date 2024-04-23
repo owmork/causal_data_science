@@ -316,7 +316,7 @@ window.Quarto = {
 <a href="#practical-examples" id="toc-practical-examples" class="nav-link" data-scroll-target="#practical-examples">Practical examples</a>
   <ul class="collapse">
 <li><a href="#effect-of-hiring-consultants" id="toc-effect-of-hiring-consultants" class="nav-link" data-scroll-target="#effect-of-hiring-consultants">Effect of hiring consultants</a></li>
-  <li><a href="#effect-of-new-feature" id="toc-effect-of-new-feature" class="nav-link" data-scroll-target="#effect-of-new-feature">Effect of new feature</a></li>
+  <li><a href="#optional-read-effect-of-new-feature" id="toc-optional-read-effect-of-new-feature" class="nav-link" data-scroll-target="#optional-read-effect-of-new-feature">[Optional read] Effect of new feature</a></li>
   </ul>
 </li>
   <li><a href="#assignment" id="toc-assignment" class="nav-link" data-scroll-target="#assignment">Assignment</a></li>
@@ -382,23 +382,23 @@ Tip
 <p><strong>Question 1:</strong> What is/are the descendant(s) of <code>ability</code>?</p>
 <details><summary>
 Answer
-</summary><p>..</p>
+</summary><p><code>uni_degree</code> and <code>salary</code></p>
 </details><p><strong>Question 2:</strong> What is/are the parent(s) of <code>salary</code>?</p>
 <details><summary>
 Answer
-</summary><p>..</p>
+</summary><p><code>uni_degree</code> and <code>ability</code></p>
 </details><p><strong>Question 3:</strong> What is the treatment and what is the outcome?</p>
 <details><summary>
 Answer
-</summary><p>..</p>
+</summary><p><code>uni_degree</code> and <code>salary</code></p>
 </details><p><strong>Question 4:</strong> What does a node depict?</p>
 <details><summary>
 Answer
-</summary><p>..</p>
+</summary><p>A random variable</p>
 </details><p><strong>Question 5:</strong> What does an arrow depict?</p>
 <details><summary>
 Answer
-</summary><p>..</p>
+</summary><p>Flow of association</p>
 </details></section><section id="introduction-dagitty-dagitty-in-r" class="level2"><h2 class="anchored" data-anchor-id="introduction-dagitty-dagitty-in-r">Introduction dagitty, dagitty in R</h2>
 <p>Of course, it’s perfectly fine to first sketch DAGs on a sheet of paper, but at some point, when your analysis gets more complex, you are well advised to make use of computational resources. In the following paragraphs, you will be introduced to a few very useful resources.</p>
 <p>A well implemented application is <a href="http://dagitty.net/dags.html#">DAGitty</a>, a browser-based environment for creating and analyzing DAGs. Draw your DAG, define treatment and outcome, which variables are observed and unobserved and many other things. Afterwards, you will see what kind of adjustment is necessary to estimate the causal effect of interest. There is also an implementation in R, which is the R package <code>dagitty</code> complemented by <code>ggdag</code>, which provides improved plotting functionality.</p>
@@ -436,33 +436,79 @@ Note
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>When drawing the DAG yourself, you can leave out <code>theme_dag_cds()</code> as it is only a custom theme that I have defined for this website. Instead you could use other themes such as <code>theme_dag()</code>, <code>theme_dag_grey()</code>, <code>theme_dag_blank()</code> or proceed without any theme. The other modifications following the theme are also only for the purpose of matching the website theme and can be disregarded. However, you should set <code>text = TRUE</code> in <code>ggdag()</code> in this case.</p>
+<p>When drawing the DAG yourself, you can leave out <code>theme_dag_cds()</code> as it is only a custom theme that I have defined for this website. Instead you could use other themes such as <code><a href="https://r-causal.github.io/ggdag/reference/theme_dag_blank.html">theme_dag()</a></code>, <code><a href="https://r-causal.github.io/ggdag/reference/theme_dag_grey.html">theme_dag_grey()</a></code>, <code><a href="https://r-causal.github.io/ggdag/reference/theme_dag_blank.html">theme_dag_blank()</a></code> or proceed without any theme. The other modifications following the theme are also only for the purpose of matching the website theme and can be disregarded. However, you should set <code>text = TRUE</code> in <code><a href="https://r-causal.github.io/ggdag/reference/ggdag.html">ggdag()</a></code> in this case.</p>
 </div>
 </div>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Load packages</span></span>
-<span><span class="co">#...</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://www.dagitty.net">dagitty</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/r-causal/ggdag">ggdag</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Define dependencies and coordinates</span></span>
-<span><span class="co">#...</span></span>
+<span><span class="va">schooling_dag_1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-causal.github.io/ggdag/reference/dagify.html">dagify</a></span><span class="op">(</span></span>
+<span>  <span class="co"># Required arguments</span></span>
+<span>  <span class="va">uni_degree</span> <span class="op">~</span> <span class="va">ability</span>,</span>
+<span>  <span class="va">salary</span> <span class="op">~</span> <span class="va">ability</span>,</span>
+<span>  <span class="va">salary</span> <span class="op">~</span> <span class="va">uni_degree</span>,</span>
+<span>  <span class="co"># Optional arguments</span></span>
+<span>  exposure <span class="op">=</span> <span class="st">"uni_degree"</span>,</span>
+<span>  outcome <span class="op">=</span> <span class="st">"salary"</span>,</span>
+<span>  coords <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span></span>
+<span>    x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>uni_degree <span class="op">=</span> <span class="fl">1</span>, salary <span class="op">=</span> <span class="fl">3</span>, ability <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>,</span>
+<span>    y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>uni_degree <span class="op">=</span> <span class="fl">1</span>, salary <span class="op">=</span> <span class="fl">1</span>, ability <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
+<span>    <span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Plot DAG</span></span>
-<span><span class="co">#...</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co"># Plot DAG</span></span>
+<span><span class="fu"><a href="https://r-causal.github.io/ggdag/reference/ggdag.html">ggdag</a></span><span class="op">(</span><span class="va">schooling_dag_1</span>, text <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">theme_dag_cds</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> <span class="co"># custom theme, can be left out</span></span>
+<span>  <span class="fu"><a href="https://r-causal.github.io/ggdag/reference/node_point.html">geom_dag_point</a></span><span class="op">(</span>color <span class="op">=</span> <span class="fu">ggthemr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/ggthemr/man/swatch.html">swatch</a></span><span class="op">(</span><span class="op">)</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://r-causal.github.io/ggdag/reference/geom_dag_text.html">geom_dag_text</a></span><span class="op">(</span>color <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://r-causal.github.io/ggdag/reference/repel.html">geom_dag_label_repel</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>label <span class="op">=</span> <span class="va">name</span><span class="op">)</span>, size <span class="op">=</span> <span class="fl">4</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://r-causal.github.io/ggdag/reference/geom_dag_edges.html">geom_dag_edges</a></span><span class="op">(</span>edge_color <span class="op">=</span> <span class="fu">ggthemr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/ggthemr/man/swatch.html">swatch</a></span><span class="op">(</span><span class="op">)</span><span class="op">[</span><span class="fl">7</span><span class="op">]</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><a href="week_2_files/figure-html/unnamed-chunk-3-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2"><img src="week_2_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:75.0%"></a></p>
+</figure>
+</div>
+</div>
 </div>
 <p><strong>Option 3: Copy from dagitty.net to build graph in R</strong></p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Define DAG</span></span>
-<span><span class="co"># ...</span></span>
+<span><span class="va">schooling_dag_2</span> <span class="op">&lt;-</span> <span class="st">'dag {</span></span>
+<span><span class="st">ability [pos="0.5, 0.4"]</span></span>
+<span><span class="st">salary [outcome,pos="0.8, 0"]</span></span>
+<span><span class="st">uni_degree [exposure,pos="0.2, 0"]</span></span>
+<span><span class="st">ability -&gt; salary</span></span>
+<span><span class="st">ability -&gt; uni_degree</span></span>
+<span><span class="st">uni_degree -&gt; salary</span></span>
+<span><span class="st">}'</span></span>
 <span></span>
 <span><span class="co"># Plot DAG</span></span>
-<span><span class="co"># ...</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="fu"><a href="https://r-causal.github.io/ggdag/reference/ggdag.html">ggdag</a></span><span class="op">(</span><span class="va">schooling_dag_1</span>, text <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">theme_dag_cds</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> <span class="co"># custom theme, can be left out</span></span>
+<span>  <span class="fu"><a href="https://r-causal.github.io/ggdag/reference/node_point.html">geom_dag_point</a></span><span class="op">(</span>color <span class="op">=</span> <span class="fu">ggthemr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/ggthemr/man/swatch.html">swatch</a></span><span class="op">(</span><span class="op">)</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://r-causal.github.io/ggdag/reference/geom_dag_text.html">geom_dag_text</a></span><span class="op">(</span>color <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://r-causal.github.io/ggdag/reference/repel.html">geom_dag_label_repel</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>label <span class="op">=</span> <span class="va">name</span><span class="op">)</span>, size <span class="op">=</span> <span class="fl">4</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://r-causal.github.io/ggdag/reference/geom_dag_edges.html">geom_dag_edges</a></span><span class="op">(</span>edge_color <span class="op">=</span> <span class="fu">ggthemr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/ggthemr/man/swatch.html">swatch</a></span><span class="op">(</span><span class="op">)</span><span class="op">[</span><span class="fl">7</span><span class="op">]</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><a href="week_2_files/figure-html/unnamed-chunk-4-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-3"><img src="week_2_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:75.0%"></a></p>
+</figure>
 </div>
-<p>One great advantage of having our DAG coded into R or on DAGitty is the possibility to see what we have to adjust for. You can do that by running the command <code>adjustmentSets()</code> which returns all possible sets of variables that you can control for to retrieve a causal effect.</p>
+</div>
+</div>
+<p>One great advantage of having our DAG coded into R or on DAGitty is the possibility to see what we have to adjust for. You can do that by running the command <code><a href="https://rdrr.io/pkg/dagitty/man/adjustmentSets.html">adjustmentSets()</a></code> which returns all possible sets of variables that you can control for to retrieve a causal effect.</p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Get adjustment sets. Because we already specified exposure and outcome when</span></span>
 <span><span class="co"># constructing the DAG, we do not need to do again. If they were not specified,</span></span>
 <span><span class="co"># you could do so by explicitly providing arguments ("exposure", "outcome")</span></span>
-<span><span class="co"># ...</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/pkg/dagitty/man/adjustmentSets.html">adjustmentSets</a></span><span class="op">(</span><span class="va">schooling_dag_2</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>{ ability }</code></pre>
+</div>
 </div>
 </section><section id="types-of-association" class="level2"><h2 class="anchored" data-anchor-id="types-of-association">Types of association</h2>
 <p>Most of the time, DAGs are more complex than the example above. Even in that example, there are many more variables that could be included, like social environment, gender etc. But although in practice DAGs are more complex, they can be disassembled in building blocks that are easier to analyze.</p>
@@ -489,8 +535,8 @@ Note
 <section id="chain" class="level3"><h3 class="anchored" data-anchor-id="chain">Chain</h3>
 <p>One element is a chain of random variables where the causal effect flows in one direction.</p>
 <div class="cell" data-layout-align="center">
-<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Specify chain structure</span></span>
-<span><span class="va">chain</span> <span class="op">&lt;-</span> <span class="fu">dagify</span><span class="op">(</span></span>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Specify chain structure</span></span>
+<span><span class="va">chain</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-causal.github.io/ggdag/reference/dagify.html">dagify</a></span><span class="op">(</span></span>
 <span>  <span class="va">Y</span> <span class="op">~</span> <span class="va">Z</span>,</span>
 <span>  <span class="va">Z</span> <span class="op">~</span> <span class="va">X</span>,</span>
 <span>  coords <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>Y <span class="op">=</span> <span class="fl">3</span>, Z <span class="op">=</span> <span class="fl">2</span>, X <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>,</span>
@@ -498,14 +544,14 @@ Note
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Plot DAG</span></span>
-<span><span class="fu">ggdag</span><span class="op">(</span><span class="va">chain</span><span class="op">)</span> <span class="op">+</span></span>
+<span><span class="fu"><a href="https://r-causal.github.io/ggdag/reference/ggdag.html">ggdag</a></span><span class="op">(</span><span class="va">chain</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">theme_dag_cds</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> <span class="co"># custom theme, can be left out</span></span>
-<span>  <span class="fu">geom_dag_point</span><span class="op">(</span>color <span class="op">=</span> <span class="fu">ggthemr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/ggthemr/man/swatch.html">swatch</a></span><span class="op">(</span><span class="op">)</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">geom_dag_text</span><span class="op">(</span>color <span class="op">=</span> <span class="st">"white"</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">geom_dag_edges</span><span class="op">(</span>edge_color <span class="op">=</span> <span class="fu">ggthemr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/ggthemr/man/swatch.html">swatch</a></span><span class="op">(</span><span class="op">)</span><span class="op">[</span><span class="fl">7</span><span class="op">]</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span>  <span class="fu"><a href="https://r-causal.github.io/ggdag/reference/node_point.html">geom_dag_point</a></span><span class="op">(</span>color <span class="op">=</span> <span class="fu">ggthemr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/ggthemr/man/swatch.html">swatch</a></span><span class="op">(</span><span class="op">)</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://r-causal.github.io/ggdag/reference/geom_dag_text.html">geom_dag_text</a></span><span class="op">(</span>color <span class="op">=</span> <span class="st">"white"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://r-causal.github.io/ggdag/reference/geom_dag_edges.html">geom_dag_edges</a></span><span class="op">(</span>edge_color <span class="op">=</span> <span class="fu">ggthemr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/ggthemr/man/swatch.html">swatch</a></span><span class="op">(</span><span class="op">)</span><span class="op">[</span><span class="fl">7</span><span class="op">]</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><a href="week_2_files/figure-html/unnamed-chunk-6-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2"><img src="week_2_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:75.0%"></a></p>
+<figure class="figure"><p><a href="week_2_files/figure-html/unnamed-chunk-6-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-4"><img src="week_2_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:75.0%"></a></p>
 </figure>
 </div>
 </div>
@@ -525,28 +571,34 @@ Note
 Answer
 </summary><ul>
 <li>
-<span class="math inline">\(X\)</span> and <span class="math inline">\(Z\)</span>:</li>
+<span class="math inline">\(X\)</span> and <span class="math inline">\(Z\)</span>: dependent, as indicated by the arrow. If you invest more into R&amp;D, you develop more innovative products.</li>
 <li>
-<span class="math inline">\(Z\)</span> and <span class="math inline">\(Y\)</span>:</li>
+<span class="math inline">\(Z\)</span> and <span class="math inline">\(Y\)</span>: dependent, as indicated by the arrow. If you develop more innovative products, your market share increases.</li>
 <li>
-<span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span>:</li>
+<span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span>: dependent, as indicated by the arrow (going through <span class="math inline">\(Z\)</span>). More investment in R&amp;D leads to more innovative products and an increased market share.</li>
 <li>
-<span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> conditional on <span class="math inline">\(Z\)</span>:</li>
+<span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> conditional on <span class="math inline">\(Z\)</span>: independent, because when we condition on innovative products, that means we hold the quantity and quality of innovative products fixed at a particular level, then there is no effect from investment in R&amp;D to market share as there is no direct effect, but only an effect through the development of innovative products.</li>
 </ul></details><p><strong>Rule:</strong> <em>Two variables,</em> <span class="math inline">\(X\)</span> <em>and</em> <span class="math inline">\(Y\)</span><em>, are conditionally independent given</em> <span class="math inline">\(Z\)</span><em>, if there is only one unidirectional path between</em> <span class="math inline">\(X\)</span> <em>and</em> <span class="math inline">\(Y\)</span> <em>and</em> <span class="math inline">\(Z\)</span> <em>is any set of variables that intercepts that path.</em></p>
 <p>We can also check using the function <code>dseperated()</code>. It returns TRUE when two nodes are d-separated, which means that they are independent of each other. You need to provide <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span>, which are the focal nodes and <span class="math inline">\(Z\)</span>, your set that you condition on.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Check d-separation between X and Y</span></span>
-<span><span class="co"># ...</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Check d-separation between X and Y</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/dagitty/man/dconnected.html">dseparated</a></span><span class="op">(</span><span class="va">chain</span>, X <span class="op">=</span> <span class="st">"X"</span>, Y <span class="op">=</span> <span class="st">"Y"</span>, Z <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] FALSE</code></pre>
+</div>
 </div>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Check d-separation between X and Y conditional on Z</span></span>
-<span><span class="co"># ...</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Check d-separation between X and Y conditional on Z</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/dagitty/man/dconnected.html">dseparated</a></span><span class="op">(</span><span class="va">chain</span>, X <span class="op">=</span> <span class="st">"X"</span>, Y <span class="op">=</span> <span class="st">"Y"</span>, Z <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Z"</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] TRUE</code></pre>
+</div>
 </div>
 </section><section id="fork" class="level3"><h3 class="anchored" data-anchor-id="fork">Fork</h3>
 <p>Another mechanism is the fork, also called common cause.</p>
 <div class="cell" data-layout-align="center">
-<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Fork</span></span>
-<span><span class="va">fork</span> <span class="op">&lt;-</span> <span class="fu">dagify</span><span class="op">(</span></span>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Fork</span></span>
+<span><span class="va">fork</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-causal.github.io/ggdag/reference/dagify.html">dagify</a></span><span class="op">(</span></span>
 <span>  <span class="va">X</span> <span class="op">~</span> <span class="va">Z</span>,</span>
 <span>  <span class="va">Y</span> <span class="op">~</span> <span class="va">Z</span>,</span>
 <span>  coords <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>Y <span class="op">=</span> <span class="fl">3</span>, Z <span class="op">=</span> <span class="fl">2</span>, X <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>,</span>
@@ -554,14 +606,14 @@ Answer
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Plot DAG</span></span>
-<span><span class="fu">ggdag</span><span class="op">(</span><span class="va">fork</span><span class="op">)</span> <span class="op">+</span></span>
+<span><span class="fu"><a href="https://r-causal.github.io/ggdag/reference/ggdag.html">ggdag</a></span><span class="op">(</span><span class="va">fork</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">theme_dag_cds</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> <span class="co"># custom theme, can be left out</span></span>
-<span>  <span class="fu">geom_dag_point</span><span class="op">(</span>color <span class="op">=</span> <span class="fu">ggthemr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/ggthemr/man/swatch.html">swatch</a></span><span class="op">(</span><span class="op">)</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">geom_dag_text</span><span class="op">(</span>color <span class="op">=</span> <span class="st">"white"</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">geom_dag_edges</span><span class="op">(</span>edge_color <span class="op">=</span> <span class="fu">ggthemr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/ggthemr/man/swatch.html">swatch</a></span><span class="op">(</span><span class="op">)</span><span class="op">[</span><span class="fl">7</span><span class="op">]</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span>  <span class="fu"><a href="https://r-causal.github.io/ggdag/reference/node_point.html">geom_dag_point</a></span><span class="op">(</span>color <span class="op">=</span> <span class="fu">ggthemr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/ggthemr/man/swatch.html">swatch</a></span><span class="op">(</span><span class="op">)</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://r-causal.github.io/ggdag/reference/geom_dag_text.html">geom_dag_text</a></span><span class="op">(</span>color <span class="op">=</span> <span class="st">"white"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://r-causal.github.io/ggdag/reference/geom_dag_edges.html">geom_dag_edges</a></span><span class="op">(</span>edge_color <span class="op">=</span> <span class="fu">ggthemr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/ggthemr/man/swatch.html">swatch</a></span><span class="op">(</span><span class="op">)</span><span class="op">[</span><span class="fl">7</span><span class="op">]</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><a href="week_2_files/figure-html/unnamed-chunk-9-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-3"><img src="week_2_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:75.0%"></a></p>
+<figure class="figure"><p><a href="week_2_files/figure-html/unnamed-chunk-9-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-5"><img src="week_2_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:75.0%"></a></p>
 </figure>
 </div>
 </div>
@@ -583,28 +635,34 @@ Answer
 Answer
 </summary><ul>
 <li>
-<span class="math inline">\(Z\)</span> and <span class="math inline">\(X\)</span>:</li>
+<span class="math inline">\(Z\)</span> and <span class="math inline">\(X\)</span>: dependent, as indicated by arrow. Higher temperature leads to more ice cream sales.</li>
 <li>
-<span class="math inline">\(Z\)</span> and <span class="math inline">\(Y\)</span>:</li>
+<span class="math inline">\(Z\)</span> and <span class="math inline">\(Y\)</span>: dependent, as indicated by arrow. Higher temperature leads to more crimes.</li>
 <li>
-<span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span>:</li>
+<span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span>: dependent, as both are influenced by <span class="math inline">\(Z\)</span>. <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> change both with variation in <span class="math inline">\(Z\)</span>. Variation in temperature affects ice cream sales and number of crimes simultaneously.</li>
 <li>
-<span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> conditional on <span class="math inline">\(Z\)</span>:</li>
+<span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> conditional on <span class="math inline">\(Z\)</span>: independent, as for a fixed level of temperature, there is no association anymore.</li>
 </ul></details><p><strong>Rule:</strong> <em>If variable</em> <span class="math inline">\(Z\)</span> <em>is a common cause of variables</em> <span class="math inline">\(X\)</span> <em>and</em> <span class="math inline">\(Y\)</span>, and there is only one path between <span class="math inline">\(X\)</span> <em>and</em> <span class="math inline">\(Y\)</span>, then <span class="math inline">\(X\)</span> <em>and</em> <span class="math inline">\(Y\)</span><em>are independent conditional on X.</em></p>
 <p>Again, we also check using R.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Check d-separation between X and Y conditional on Z</span></span>
-<span><span class="co"># ...</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Check d-separation between X and Y conditional on Z</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/dagitty/man/dconnected.html">dseparated</a></span><span class="op">(</span><span class="va">fork</span>, X <span class="op">=</span> <span class="st">"X"</span>, Y <span class="op">=</span> <span class="st">"Y"</span>, Z <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Z"</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] TRUE</code></pre>
+</div>
 </div>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Check d-separation between X and Y</span></span>
-<span><span class="co"># ...</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Check d-separation between X and Y</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/dagitty/man/dconnected.html">dseparated</a></span><span class="op">(</span><span class="va">fork</span>, X <span class="op">=</span> <span class="st">"X"</span>, Y <span class="op">=</span> <span class="st">"Y"</span>, Z <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] FALSE</code></pre>
+</div>
 </div>
 </section><section id="collision" class="level3"><h3 class="anchored" data-anchor-id="collision">Collision</h3>
 <p>The last mechanism is the collision, which is also called common effect.</p>
 <div class="cell" data-layout-align="center">
-<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Collider</span></span>
-<span><span class="va">collider</span> <span class="op">&lt;-</span> <span class="fu">dagify</span><span class="op">(</span></span>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Collider</span></span>
+<span><span class="va">collider</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-causal.github.io/ggdag/reference/dagify.html">dagify</a></span><span class="op">(</span></span>
 <span>  <span class="va">Z</span> <span class="op">~</span> <span class="va">X</span>,</span>
 <span>  <span class="va">Z</span> <span class="op">~</span> <span class="va">Y</span>,</span>
 <span>  coords <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>Y <span class="op">=</span> <span class="fl">3</span>, Z <span class="op">=</span> <span class="fl">2</span>, X <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>,</span>
@@ -612,14 +670,14 @@ Answer
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Plot DAG</span></span>
-<span><span class="fu">ggdag</span><span class="op">(</span><span class="va">collider</span><span class="op">)</span> <span class="op">+</span></span>
+<span><span class="fu"><a href="https://r-causal.github.io/ggdag/reference/ggdag.html">ggdag</a></span><span class="op">(</span><span class="va">collider</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">theme_dag_cds</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> <span class="co"># custom theme, can be left out</span></span>
-<span>  <span class="fu">geom_dag_point</span><span class="op">(</span>color <span class="op">=</span> <span class="fu">ggthemr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/ggthemr/man/swatch.html">swatch</a></span><span class="op">(</span><span class="op">)</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">geom_dag_text</span><span class="op">(</span>color <span class="op">=</span> <span class="st">"white"</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">geom_dag_edges</span><span class="op">(</span>edge_color <span class="op">=</span> <span class="fu">ggthemr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/ggthemr/man/swatch.html">swatch</a></span><span class="op">(</span><span class="op">)</span><span class="op">[</span><span class="fl">7</span><span class="op">]</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span>  <span class="fu"><a href="https://r-causal.github.io/ggdag/reference/node_point.html">geom_dag_point</a></span><span class="op">(</span>color <span class="op">=</span> <span class="fu">ggthemr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/ggthemr/man/swatch.html">swatch</a></span><span class="op">(</span><span class="op">)</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://r-causal.github.io/ggdag/reference/geom_dag_text.html">geom_dag_text</a></span><span class="op">(</span>color <span class="op">=</span> <span class="st">"white"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://r-causal.github.io/ggdag/reference/geom_dag_edges.html">geom_dag_edges</a></span><span class="op">(</span>edge_color <span class="op">=</span> <span class="fu">ggthemr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/ggthemr/man/swatch.html">swatch</a></span><span class="op">(</span><span class="op">)</span><span class="op">[</span><span class="fl">7</span><span class="op">]</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><a href="week_2_files/figure-html/unnamed-chunk-12-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-4"><img src="week_2_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:75.0%"></a></p>
+<figure class="figure"><p><a href="week_2_files/figure-html/unnamed-chunk-12-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-6"><img src="week_2_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:75.0%"></a></p>
 </figure>
 </div>
 </div>
@@ -651,19 +709,25 @@ Answer
 <p><strong>Rule:</strong> <em>If a variable</em> <span class="math inline">\(Z\)</span> <em>is the collision node between two variables</em> <span class="math inline">\(X\)</span> <em>and</em> <span class="math inline">\(Y\)</span>, and there is only one path between <span class="math inline">\(X\)</span> <em>and</em> <span class="math inline">\(Y\)</span>, then <span class="math inline">\(X\)</span> <em>and</em> <span class="math inline">\(Y\)</span> <em>are unconditionally independent but are dependent conditional on</em> <span class="math inline">\(Z\)</span> <em>(and any descendants of</em> <span class="math inline">\(Z\)</span>)<em>.</em></p>
 <p>Same procedure as above, checking using R.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Check d-separation between X and Y</span></span>
-<span><span class="co"># ...</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Check d-separation between X and Y</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/dagitty/man/dconnected.html">dseparated</a></span><span class="op">(</span><span class="va">collider</span>, X <span class="op">=</span> <span class="st">"X"</span>, Y <span class="op">=</span> <span class="st">"Y"</span>, Z <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] TRUE</code></pre>
+</div>
 </div>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Check d-separation between X and Y conditional on Z</span></span>
-<span><span class="co"># ...</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Check d-separation between X and Y conditional on Z</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/dagitty/man/dconnected.html">dseparated</a></span><span class="op">(</span><span class="va">collider</span>, X <span class="op">=</span> <span class="st">"X"</span>, Y <span class="op">=</span> <span class="st">"Y"</span>, Z <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Z"</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] FALSE</code></pre>
+</div>
 </div>
 </section><section id="quiz" class="level3"><h3 class="anchored" data-anchor-id="quiz">Quiz</h3>
 <ol type="1">
 <li>Look at the following DAG and by hand, describe what nodes are d-separated and which ones are not.</li>
 </ol>
 <div class="cell" data-layout-align="center">
-<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># create DAG from dagitty</span></span>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb21"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># create DAG from dagitty</span></span>
 <span><span class="va">dag_model</span> <span class="op">&lt;-</span> <span class="st">'dag {</span></span>
 <span><span class="st">bb="0,0,1,1"</span></span>
 <span><span class="st">X [exposure,pos="0.075,0.4"]</span></span>
@@ -684,13 +748,13 @@ Answer
 <span><span class="st">}</span></span>
 <span><span class="st">'</span></span>
 <span><span class="co"># draw DAG</span></span>
-<span><span class="fu">ggdag_status</span><span class="op">(</span><span class="va">dag_model</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">guides</span><span class="op">(</span>fill <span class="op">=</span> <span class="st">"none"</span>, color <span class="op">=</span> <span class="st">"none"</span><span class="op">)</span> <span class="op">+</span>  <span class="co"># Disable the legend</span></span>
+<span><span class="fu"><a href="https://r-causal.github.io/ggdag/reference/status.html">ggdag_status</a></span><span class="op">(</span><span class="va">dag_model</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/guides.html">guides</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="st">"none"</span>, color <span class="op">=</span> <span class="st">"none"</span><span class="op">)</span> <span class="op">+</span>  <span class="co"># Disable the legend</span></span>
 <span>  <span class="fu">theme_dag_cds</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> <span class="co"># custom theme, can be left out</span></span>
-<span>  <span class="fu">geom_dag_edges</span><span class="op">(</span>edge_color <span class="op">=</span> <span class="fu">ggthemr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/ggthemr/man/swatch.html">swatch</a></span><span class="op">(</span><span class="op">)</span><span class="op">[</span><span class="fl">7</span><span class="op">]</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span>  <span class="fu"><a href="https://r-causal.github.io/ggdag/reference/geom_dag_edges.html">geom_dag_edges</a></span><span class="op">(</span>edge_color <span class="op">=</span> <span class="fu">ggthemr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/ggthemr/man/swatch.html">swatch</a></span><span class="op">(</span><span class="op">)</span><span class="op">[</span><span class="fl">7</span><span class="op">]</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><a href="week_2_files/figure-html/unnamed-chunk-15-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-5"><img src="week_2_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:75.0%"></a></p>
+<figure class="figure"><p><a href="week_2_files/figure-html/unnamed-chunk-15-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-7"><img src="week_2_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:75.0%"></a></p>
 </figure>
 </div>
 </div>
@@ -700,42 +764,75 @@ Answer
 <li>no conditioning</li>
 </ul>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># ...</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/dagitty/man/dconnected.html">dseparated</a></span><span class="op">(</span><span class="va">dag_model</span>, X <span class="op">=</span> <span class="st">"X"</span>, Y <span class="op">=</span> <span class="st">"Y"</span>, Z <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] FALSE</code></pre>
+</div>
 </div>
 <ul>
 <li>conditioning on <span class="math inline">\((M, Z1)\)</span>
 </li>
 </ul>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># ...</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/dagitty/man/dconnected.html">dseparated</a></span><span class="op">(</span><span class="va">dag_model</span>, X <span class="op">=</span> <span class="st">"X"</span>, Y <span class="op">=</span> <span class="st">"Y"</span>, Z <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"M"</span>, <span class="st">"Z1"</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] TRUE</code></pre>
+</div>
 </div>
 <ul>
 <li>conditioning on <span class="math inline">\((M, Z3)\)</span>
 </li>
 </ul>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># ...</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/dagitty/man/dconnected.html">dseparated</a></span><span class="op">(</span><span class="va">dag_model</span>, X <span class="op">=</span> <span class="st">"X"</span>, Y <span class="op">=</span> <span class="st">"Y"</span>, Z <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"M"</span>, <span class="st">"Z3"</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] FALSE</code></pre>
+</div>
 </div>
 <ul>
 <li>conditioning on <span class="math inline">\((M, Z1, Z4)\)</span>
 </li>
 </ul>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># ...</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/dagitty/man/dconnected.html">dseparated</a></span><span class="op">(</span><span class="va">dag_model</span>, X <span class="op">=</span> <span class="st">"X"</span>, Y <span class="op">=</span> <span class="st">"Y"</span>, Z <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"M"</span>, <span class="st">"Z1"</span>, <span class="st">"Z4"</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] FALSE</code></pre>
+</div>
 </div>
 <ul>
 <li>conditioning on <span class="math inline">\((M, Z1, Z2, Z4)\)</span>
 </li>
 </ul>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># ...</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/dagitty/man/dconnected.html">dseparated</a></span><span class="op">(</span><span class="va">dag_model</span>, X <span class="op">=</span> <span class="st">"X"</span>, Y <span class="op">=</span> <span class="st">"Y"</span>, Z <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"M"</span>, <span class="st">"Z1"</span>, <span class="st">"Z2"</span>, <span class="st">"Z4"</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] TRUE</code></pre>
+</div>
 </div>
 <ol start="2" type="1">
 <li>In R, draw a DAG of a randomized controlled trial. Assume the following variables: the treatment <span class="math inline">\(D\)</span> and a variable <span class="math inline">\(Z\)</span> that affects the outcome <span class="math inline">\(Y\)</span>.</li>
 </ol>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># RCT</span></span>
-<span><span class="co"># ...</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># RCT</span></span>
+<span><span class="va">rct</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-causal.github.io/ggdag/reference/dagify.html">dagify</a></span><span class="op">(</span></span>
+<span>  <span class="va">Y</span> <span class="op">~</span> <span class="va">X</span>,</span>
+<span>  <span class="va">Y</span> <span class="op">~</span> <span class="va">Z</span>,</span>
+<span>  coords <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>Y <span class="op">=</span> <span class="fl">3</span>, Z <span class="op">=</span> <span class="fl">2</span>, X <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>,</span>
+<span>                y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>Y <span class="op">=</span> <span class="fl">1</span>, Z <span class="op">=</span> <span class="fl">2</span>, X <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Plot DAG</span></span>
+<span><span class="fu"><a href="https://r-causal.github.io/ggdag/reference/ggdag.html">ggdag</a></span><span class="op">(</span><span class="va">rct</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">theme_dag_cds</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> <span class="co"># custom theme, can be left out</span></span>
+<span>  <span class="fu"><a href="https://r-causal.github.io/ggdag/reference/node_point.html">geom_dag_point</a></span><span class="op">(</span>color <span class="op">=</span> <span class="fu">ggthemr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/ggthemr/man/swatch.html">swatch</a></span><span class="op">(</span><span class="op">)</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://r-causal.github.io/ggdag/reference/geom_dag_text.html">geom_dag_text</a></span><span class="op">(</span>color <span class="op">=</span> <span class="st">"white"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://r-causal.github.io/ggdag/reference/geom_dag_edges.html">geom_dag_edges</a></span><span class="op">(</span>edge_color <span class="op">=</span> <span class="fu">ggthemr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/ggthemr/man/swatch.html">swatch</a></span><span class="op">(</span><span class="op">)</span><span class="op">[</span><span class="fl">7</span><span class="op">]</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><a href="week_2_files/figure-html/unnamed-chunk-21-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-8"><img src="week_2_files/figure-html/unnamed-chunk-21-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:75.0%"></a></p>
+</figure>
+</div>
+</div>
 </div>
 </section></section><section id="practical-examples" class="level2"><h2 class="anchored" data-anchor-id="practical-examples">Practical examples</h2>
 <section id="effect-of-hiring-consultants" class="level3"><h3 class="anchored" data-anchor-id="effect-of-hiring-consultants">Effect of hiring consultants</h3>
@@ -755,7 +852,7 @@ Note
 </div>
 </div>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Load the data</span></span>
+<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Load the data</span></span>
 <span><span class="va">profits</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html">readRDS</a></span><span class="op">(</span><span class="st">"profits.rds"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">profits</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -790,13 +887,36 @@ Note
 </li>
 </ul>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Construct DAG</span></span>
-<span><span class="co"># ...</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Construct DAG</span></span>
+<span><span class="va">profits_dag</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-causal.github.io/ggdag/reference/dagify.html">dagify</a></span><span class="op">(</span></span>
+<span>  <span class="va">consultant</span> <span class="op">~</span> <span class="va">previous_profit</span>,</span>
+<span>  <span class="va">profit</span> <span class="op">~</span> <span class="va">previous_profit</span>,</span>
+<span>  <span class="va">profit</span> <span class="op">~</span> <span class="va">consultant</span>,</span>
+<span>  coords <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>consultant <span class="op">=</span> <span class="fl">1</span>, profit <span class="op">=</span> <span class="fl">3</span>, previous_profit <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>,</span>
+<span>                y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>consultant <span class="op">=</span> <span class="fl">1</span>, profit <span class="op">=</span> <span class="fl">1</span>, previous_profit <span class="op">=</span> <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Plot DAG</span></span>
+<span><span class="fu"><a href="https://r-causal.github.io/ggdag/reference/ggdag.html">ggdag</a></span><span class="op">(</span><span class="va">profits_dag</span>, text <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">theme_dag_cds</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> <span class="co"># custom theme, can be left out</span></span>
+<span>  <span class="fu"><a href="https://r-causal.github.io/ggdag/reference/node_point.html">geom_dag_point</a></span><span class="op">(</span>color <span class="op">=</span> <span class="fu">ggthemr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/ggthemr/man/swatch.html">swatch</a></span><span class="op">(</span><span class="op">)</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://r-causal.github.io/ggdag/reference/geom_dag_text.html">geom_dag_text</a></span><span class="op">(</span>color <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://r-causal.github.io/ggdag/reference/repel.html">geom_dag_label_repel</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>label <span class="op">=</span> <span class="va">name</span><span class="op">)</span>, size <span class="op">=</span> <span class="fl">4</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://r-causal.github.io/ggdag/reference/geom_dag_edges.html">geom_dag_edges</a></span><span class="op">(</span>edge_color <span class="op">=</span> <span class="fu">ggthemr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/ggthemr/man/swatch.html">swatch</a></span><span class="op">(</span><span class="op">)</span><span class="op">[</span><span class="fl">7</span><span class="op">]</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><a href="week_2_files/figure-html/unnamed-chunk-24-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-9"><img src="week_2_files/figure-html/unnamed-chunk-24-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:75.0%"></a></p>
+</figure>
+</div>
+</div>
 </div>
 <p>By now, you are probably already able to see it on a first glance because you know what a confounder is and how to adjust for it. But for the purpose of demonstration, let’s <code>dagitty</code> tell us what we need to adjust for.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Adjustment set</span></span>
-<span><span class="co"># ...</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb36"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Adjustment set</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/dagitty/man/adjustmentSets.html">adjustmentSets</a></span><span class="op">(</span><span class="va">profits_dag</span>, exposure <span class="op">=</span> <span class="st">"consultant"</span>, outcome <span class="op">=</span> <span class="st">"profit"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>{ previous_profit }</code></pre>
+</div>
 </div>
 <p>As expected, it is the backdoor adjustment which we need to perform in our estimation. We need to control for the previous profits because more previously profitable companies are more likely to hire top consultants and are more likely to make profits again.</p>
 </section><section id="estimation" class="level4"><h4 class="anchored" data-anchor-id="estimation">Estimation</h4>
@@ -826,10 +946,14 @@ Note
 </div>
 </div>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Statistical summary of column of previous profits</span></span>
-<span><span class="co"># ...</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb38"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Statistical summary of column of previous profits</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">profits</span><span class="op">$</span><span class="va">previous_profit</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+   -1.0     4.0     5.6     5.6     7.1    13.5 </code></pre>
 </div>
-<p>In the following weeks, we will learn sophisticated methods to deal with continuous confounders, but today, we refer to a simpler method. We assign each company to a group determined by the value of previous profits. The function <code>ntile()</code> does the job: it splits the data into <span class="math inline">\(n\)</span> equally sized groups ordered by size.</p>
+</div>
+<p>In the following weeks, we will learn sophisticated methods to deal with continuous confounders, but today, we refer to a simpler method. We assign each company to a group determined by the value of previous profits. The function <code><a href="https://dplyr.tidyverse.org/reference/ntile.html">ntile()</a></code> does the job: it splits the data into <span class="math inline">\(n\)</span> equally sized groups ordered by size.</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -853,27 +977,42 @@ Note
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>In R, <code>group_by()</code> is used to group data by one or more variables, <code>summarise()</code> computes summary statistics within each group, and <code>ungroup()</code> removes grouping structure. These functions are commonly used together in data manipulation workflows and belong to the <code>tidyverse</code> (<code>dplyr</code>). <code>n()</code> is a function specifically for such grouping operations. It does not take any arguments and counts the number of rows in each group.</p>
+<p>In R, <code><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by()</a></code> is used to group data by one or more variables, <code><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarise()</a></code> computes summary statistics within each group, and <code><a href="https://dplyr.tidyverse.org/reference/group_by.html">ungroup()</a></code> removes grouping structure. These functions are commonly used together in data manipulation workflows and belong to the <code>tidyverse</code> (<code>dplyr</code>). <code><a href="https://dplyr.tidyverse.org/reference/context.html">n()</a></code> is a function specifically for such grouping operations. It does not take any arguments and counts the number of rows in each group.</p>
 </div>
 </div>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Split group into n equally sized groups </span></span>
-<span><span class="co"># ...</span></span>
+<div class="sourceCode" id="cb40"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Split group into n equally sized groups </span></span>
+<span><span class="va">profits</span><span class="op">$</span><span class="va">group</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/ntile.html">ntile</a></span><span class="op">(</span><span class="va">profits</span><span class="op">$</span><span class="va">previous_profit</span>, n <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Compute mean value and number of observations by group</span></span>
-<span><span class="co"># profits_by_group &lt;- profits |&gt;</span></span>
+<span><span class="va">profits_by_group</span> <span class="op">&lt;-</span> <span class="va">profits</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="co"># What columns to group by</span></span>
-<span>  <span class="co"># ...</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">group</span>, <span class="va">consultant</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="co"># What columns to use for aggregation and what kind of aggregations</span></span>
-<span>  <span class="co"># ...</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarise</a></span><span class="op">(</span></span>
 <span>    <span class="co"># Average profit by group</span></span>
-<span>    </span>
+<span>    mean_profit <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">profit</span><span class="op">)</span>,</span>
 <span>    <span class="co"># Number of observations by group</span></span>
+<span>    nobs <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/context.html">n</a></span><span class="op">(</span><span class="op">)</span></span>
+<span>  <span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="co"># Remove grouping structure</span></span>
-<span>  </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">ungroup</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Show table</span></span>
-<span><span class="co">#print(profits_by_group)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">profits_by_group</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 8 × 4
+  group consultant mean_profit  nobs
+  &lt;int&gt;      &lt;int&gt;       &lt;dbl&gt; &lt;int&gt;
+1     1          0        2.45   181
+2     1          1        3.44    69
+3     2          0        4.05   189
+4     2          1        5.02    61
+5     3          0        5.31    67
+6     3          1        6.33   183
+7     4          0        7.03    58
+8     4          1        8.28   192</code></pre>
+</div>
 </div>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -885,7 +1024,7 @@ Note
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>In R, <code>pivot_wider()</code> is a function included in the <code>tidyverse</code> (<code>tidyr</code>) used to convert data from long to wide format. It reshapes data by spreading values from a column into multiple columns, with each unique value in that column becoming a new column. This is particularly useful for creating summary tables or reshaping data for analysis and visualization.</p>
+<p>In R, <code><a href="https://tidyr.tidyverse.org/reference/pivot_wider.html">pivot_wider()</a></code> is a function included in the <code>tidyverse</code> (<code>tidyr</code>) used to convert data from long to wide format. It reshapes data by spreading values from a column into multiple columns, with each unique value in that column becoming a new column. This is particularly useful for creating summary tables or reshaping data for analysis and visualization.</p>
 </div>
 </div>
 <div class="callout callout-style-default callout-note callout-titled">
@@ -898,40 +1037,55 @@ Note
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p><code>mutate()</code> in R’s <code>dplyr</code> (incl.&nbsp;in <code>tidyverse</code>) adds new columns to a data frame, allowing you to transform or calculate values based on existing columns.</p>
+<p><code><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate()</a></code> in R’s <code>dplyr</code> (incl.&nbsp;in <code>tidyverse</code>) adds new columns to a data frame, allowing you to transform or calculate values based on existing columns.</p>
 </div>
 </div>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Convert to wide format to compute effect</span></span>
-<span><span class="co"># te_by_group &lt;- profits_by_group |&gt; </span></span>
+<div class="sourceCode" id="cb42"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Convert to wide format to compute effect</span></span>
+<span><span class="va">te_by_group</span> <span class="op">&lt;-</span> <span class="va">profits_by_group</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="co"># Convert column values of consultant to headers and take values from</span></span>
 <span>  <span class="co"># mean_profit</span></span>
-<span>  <span class="co"># pivot_wider(</span></span>
+<span>  <span class="fu"><a href="https://tidyr.tidyverse.org/reference/pivot_wider.html">pivot_wider</a></span><span class="op">(</span></span>
 <span>    <span class="co"># For each group, we want one row</span></span>
-<span>    <span class="co"># id_cols = ,</span></span>
+<span>    id_cols <span class="op">=</span> <span class="st">"group"</span>, </span>
 <span>    <span class="co"># Values of consultants to headers</span></span>
-<span>    <span class="co"># names_from = , </span></span>
+<span>    names_from <span class="op">=</span> <span class="st">"consultant"</span>,</span>
 <span>    <span class="co"># Take values from 'mean_profit'</span></span>
-<span>    <span class="co"># values_from = ,</span></span>
+<span>    values_from <span class="op">=</span> <span class="st">"mean_profit"</span>, </span>
 <span>    <span class="co"># Change names of headers for better readability</span></span>
-<span>    <span class="co">#names_prefix = ,</span></span>
-<span>    <span class="co">#) |&gt; </span></span>
+<span>    names_prefix <span class="op">=</span> <span class="st">"consultant_"</span></span>
+<span>    <span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="co"># Compute group treatment effect by subtracting mean of untreated units from</span></span>
 <span>  <span class="co"># mean of treated units</span></span>
-<span>  <span class="co"># mutate()</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>te <span class="op">=</span> <span class="va">consultant_1</span> <span class="op">-</span> <span class="va">consultant_0</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Show table</span></span>
-<span><span class="co">#print(te_by_group)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">te_by_group</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 4 × 4
+  group consultant_0 consultant_1    te
+  &lt;int&gt;        &lt;dbl&gt;        &lt;dbl&gt; &lt;dbl&gt;
+1     1         2.45         3.44 0.993
+2     2         4.05         5.02 0.964
+3     3         5.31         6.33 1.01 
+4     4         7.03         8.28 1.24 </code></pre>
+</div>
 </div>
 <p>Because all groups have the same size the weighted average is equal to the average and we can simply take the average to obtain the ATE:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Taking the average of the treatment effect column. Same as weighted mean,</span></span>
+<div class="sourceCode" id="cb44"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Taking the average of the treatment effect column. Same as weighted mean,</span></span>
 <span><span class="co"># because group sizes are identical.</span></span>
-<span><span class="co"># ...</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">te_by_group</span><span class="op">$</span><span class="va">te</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1.1</code></pre>
+</div>
 </div>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># With weighted mean</span></span>
-<span><span class="co"># ...</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb46"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># With weighted mean</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/stats/weighted.mean.html">weighted.mean</a></span><span class="op">(</span><span class="va">te_by_group</span><span class="op">$</span><span class="va">te</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">250</span>, <span class="fl">250</span>, <span class="fl">250</span>, <span class="fl">250</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1.1</code></pre>
+</div>
 </div>
 <p>One assumption that needs to be fulfilled for the treatment effect to be valid is the positivity assumption we discussed in the last week. Let’s recall it (slightly rewritten to match the notation of our example):</p>
 <div class="callout callout-style-default callout-note no-icon callout-titled">
@@ -951,18 +1105,31 @@ Note
 <p><strong>Question:</strong> Is the positivity assumption satisfied?</p>
 <details><summary>
 Answer
-</summary><p>..</p>
+</summary><p>Yes, because in each group, we have observations from both groups. Take a look at the column <code>nobs</code> in the table <code>profits_by_group</code>.</p>
 </details><p>For the sake of demonstration, let’s see what would have happened, had we not adjusted for the previous profits:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Naive estimate</span></span>
-<span><span class="co"># ...</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb48"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Naive estimate</span></span>
+<span><span class="va">y1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">profits</span><span class="op">[</span><span class="va">profits</span><span class="op">$</span><span class="va">consultant</span> <span class="op">==</span> <span class="fl">1</span>, <span class="op">]</span><span class="op">$</span><span class="va">profit</span><span class="op">)</span></span>
+<span><span class="va">y0</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">profits</span><span class="op">[</span><span class="va">profits</span><span class="op">$</span><span class="va">consultant</span> <span class="op">==</span> <span class="fl">0</span>, <span class="op">]</span><span class="op">$</span><span class="va">profit</span><span class="op">)</span></span>
+<span><span class="va">y1</span> <span class="op">-</span> <span class="va">y0</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 2.5</code></pre>
 </div>
-</section></section><section id="effect-of-new-feature" class="level3"><h3 class="anchored" data-anchor-id="effect-of-new-feature">Effect of new feature</h3>
+</div>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><a href="week_2_files/figure-html/unnamed-chunk-32-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-10"><img src="week_2_files/figure-html/unnamed-chunk-32-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:75.0%"></a></p>
+</figure>
+</div>
+</div>
+</div>
+</section></section><section id="optional-read-effect-of-new-feature" class="level3"><h3 class="anchored" data-anchor-id="optional-read-effect-of-new-feature">[Optional read] Effect of new feature</h3>
 <p>Imagine you’re at a software company, introducing a new feature and keen to gauge its impact. To ensure unbiased results, you conduct a randomized rollout: 10% of customers receive the new feature randomly, while the rest do not. Your aim is to assess if this feature enhances customer satisfaction, indirectly measured through Net Promoter Score (NPS). You distribute surveys to both the treated (with the new feature) and control groups, asking if they would recommend your product. Upon analysis, you observe higher NPS scores among customers with the new feature. But can you attribute this difference solely to the feature? To delve into this, start with a graph illustrating this scenario.</p>
 <p><strong>Identification</strong></p>
 <p>Graphically modeling the described scenario, you’ll end up with:</p>
 <div class="cell" data-layout-align="center">
-<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb31"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">rollout_dag</span> <span class="op">&lt;-</span> <span class="st">'dag {</span></span>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb50"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">rollout_dag</span> <span class="op">&lt;-</span> <span class="st">'dag {</span></span>
 <span><span class="st">bb="0,0,1,1"</span></span>
 <span><span class="st">"Customer satisfaction" [pos="0, 1"]</span></span>
 <span><span class="st">"New feature" [exposure,pos="0, 0"]</span></span>
@@ -975,15 +1142,15 @@ Answer
 <span><span class="st">Response -&gt; NPS</span></span>
 <span><span class="st">}'</span></span>
 <span></span>
-<span><span class="fu">ggdag</span><span class="op">(</span><span class="va">rollout_dag</span>, text <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">+</span></span>
+<span><span class="fu"><a href="https://r-causal.github.io/ggdag/reference/ggdag.html">ggdag</a></span><span class="op">(</span><span class="va">rollout_dag</span>, text <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">theme_dag_cds</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> <span class="co"># custom theme, can be left out</span></span>
-<span>  <span class="fu">geom_dag_point</span><span class="op">(</span>color <span class="op">=</span> <span class="fu">ggthemr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/ggthemr/man/swatch.html">swatch</a></span><span class="op">(</span><span class="op">)</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">geom_dag_text</span><span class="op">(</span>color <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">geom_dag_label_repel</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>label <span class="op">=</span> <span class="va">name</span><span class="op">)</span>, size <span class="op">=</span> <span class="fl">4</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">geom_dag_edges</span><span class="op">(</span>edge_color <span class="op">=</span> <span class="fu">ggthemr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/ggthemr/man/swatch.html">swatch</a></span><span class="op">(</span><span class="op">)</span><span class="op">[</span><span class="fl">7</span><span class="op">]</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span>  <span class="fu"><a href="https://r-causal.github.io/ggdag/reference/node_point.html">geom_dag_point</a></span><span class="op">(</span>color <span class="op">=</span> <span class="fu">ggthemr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/ggthemr/man/swatch.html">swatch</a></span><span class="op">(</span><span class="op">)</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://r-causal.github.io/ggdag/reference/geom_dag_text.html">geom_dag_text</a></span><span class="op">(</span>color <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://r-causal.github.io/ggdag/reference/repel.html">geom_dag_label_repel</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>label <span class="op">=</span> <span class="va">name</span><span class="op">)</span>, size <span class="op">=</span> <span class="fl">4</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://r-causal.github.io/ggdag/reference/geom_dag_edges.html">geom_dag_edges</a></span><span class="op">(</span>edge_color <span class="op">=</span> <span class="fu">ggthemr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/ggthemr/man/swatch.html">swatch</a></span><span class="op">(</span><span class="op">)</span><span class="op">[</span><span class="fl">7</span><span class="op">]</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><a href="week_2_files/figure-html/unnamed-chunk-33-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-6"><img src="week_2_files/figure-html/unnamed-chunk-33-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:75.0%"></a></p>
+<figure class="figure"><p><a href="week_2_files/figure-html/unnamed-chunk-33-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-11"><img src="week_2_files/figure-html/unnamed-chunk-33-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:75.0%"></a></p>
 </figure>
 </div>
 </div>
@@ -996,9 +1163,19 @@ Because identification not possible, we cannot compute the effect.
 -->
 </section></section><section id="assignment" class="level2"><h2 class="anchored" data-anchor-id="assignment">Assignment</h2>
 <div class="assignment">
-<p>Accept the <a href="LINK"><strong>Week 2 - Assignment</strong></a> and follow the same steps as last week and as described in the organization chapter.</p>
-<p>Solve the following assignments:</p>
-<p>Coming soon.</p>
+<p>Accept the <a href="https://classroom.github.com/a/eNvelq2Z"><strong>Week 2 - Assignment</strong></a> and follow the same steps as last week and as described in the organization chapter.</p>
+<p>Solve the following assignment:</p>
+<p>Load the data <code>health_program.rds</code> and first take a look at the data.</p>
+<p>Imagine the following scenario: you are manager of a company and want to reduce the number of sick days in your company by implementing a health program that employees are free to participate in. By learning about how to improve their health, you expect your employees to call in sick less frequently. Some time after implementing the <code>health_program</code>, you’ll observe the <code>sick_days</code> for each employee and want to estimate the average treatment effect. You know that because of the voluntary basis of participating in the program, other variables might confound your estimate if you compute a naive estimate of the average treatment effect. So you might apply what you have learned in the last weeks about confounding, adjusting etc.</p>
+<p>First, load the data <code>health_program.rds</code> and first take a look at the data.For the purpose of this task, we assume that all variables we need for a valid estimation are included in the data.</p>
+<ol type="1">
+<li><p>Take a look at all variables that are included in the data. List all pairs of variables and argue whether there might be a dependency and what direction you assume for that relationship if present.</p></li>
+<li><p>Map your explanations from the previous task into a DAG using <code>dagitty</code> and <code>ggdag</code>. Define exposure and treatment for that DAG.</p></li>
+<li><p>Based on your DAG, what variables do you need to control for? Explain in a short paragraph.</p></li>
+<li><p>Estimate the average treatment effect based on your previous explanations. (Hint: <code>id_cols</code> in pivot_wider can take more than one value by providing a vector <code>id_cols = c("var1", "var2")</code>).</p></li>
+<li><p>Explain, whether the positivity assumption is satisfied.</p></li>
+<li><p>Estimate the average treatment effect without conditioning on any variables and compare to the treatment effect computed in 4. Explain the difference.</p></li>
+</ol>
 </div>
 </section><section id="further-optional-reading" class="level2"><h2 class="anchored" data-anchor-id="further-optional-reading">Further optional reading</h2>
 <p>In this chapter, we already used some functions from the <code>tidyverse</code>. Functions from the tidyverse, are often preferred over base R functions for several reasons:</p>
@@ -1414,7 +1591,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       &nbsp;
     </div>
   </div>
-</footer><script>var lightboxQuarto = GLightbox({"openEffect":"zoom","loop":false,"selector":".lightbox","descPosition":"bottom","closeEffect":"zoom"});
+</footer><script>var lightboxQuarto = GLightbox({"selector":".lightbox","closeEffect":"zoom","loop":false,"descPosition":"bottom","openEffect":"zoom"});
 window.onload = () => {
   lightboxQuarto.on('slide_before_load', (data) => {
     const { slideIndex, slideNode, slideConfig, player, trigger } = data;

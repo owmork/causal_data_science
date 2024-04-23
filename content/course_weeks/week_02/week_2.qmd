@@ -108,7 +108,7 @@ Let's discuss some terms:
 
 <summary>Answer</summary>
 
-..
+`uni_degree` and `salary`
 
 </details>
 
@@ -118,7 +118,7 @@ Let's discuss some terms:
 
 <summary>Answer</summary>
 
-..
+`uni_degree` and `ability`
 
 </details>
 
@@ -128,7 +128,7 @@ Let's discuss some terms:
 
 <summary>Answer</summary>
 
-..
+`uni_degree` and `salary`
 
 </details>
 
@@ -138,7 +138,7 @@ Let's discuss some terms:
 
 <summary>Answer</summary>
 
-..
+A random variable
 
 </details>
 
@@ -148,7 +148,7 @@ Let's discuss some terms:
 
 <summary>Answer</summary>
 
-..
+Flow of association
 
 </details>
 
@@ -186,23 +186,54 @@ When drawing the DAG yourself, you can leave out `theme_dag_cds()` as it is only
 
 ```{r}
 # Load packages
-#...
+library(tidyverse)
+library(dagitty)
+library(ggdag)
 
 # Define dependencies and coordinates
-#...
+schooling_dag_1 <- dagify(
+  # Required arguments
+  uni_degree ~ ability,
+  salary ~ ability,
+  salary ~ uni_degree,
+  # Optional arguments
+  exposure = "uni_degree",
+  outcome = "salary",
+  coords = list(
+    x = c(uni_degree = 1, salary = 3, ability = 2),
+    y = c(uni_degree = 1, salary = 1, ability = 2)
+    ))
 
 # Plot DAG
-#...
+# Plot DAG
+ggdag(schooling_dag_1, text = FALSE) +
+  theme_dag_cds() + # custom theme, can be left out
+  geom_dag_point(color = ggthemr::swatch()[2]) +
+  geom_dag_text(color = NA) +
+  geom_dag_label_repel(aes(label = name), size = 4) +
+  geom_dag_edges(edge_color = ggthemr::swatch()[7])
 ```
 
 **Option 3: Copy from dagitty.net to build graph in R**
 
 ```{r}
 # Define DAG
-# ...
+schooling_dag_2 <- 'dag {
+ability [pos="0.5, 0.4"]
+salary [outcome,pos="0.8, 0"]
+uni_degree [exposure,pos="0.2, 0"]
+ability -> salary
+ability -> uni_degree
+uni_degree -> salary
+}'
 
 # Plot DAG
-# ...
+ggdag(schooling_dag_1, text = FALSE) +
+  theme_dag_cds() + # custom theme, can be left out
+  geom_dag_point(color = ggthemr::swatch()[2]) +
+  geom_dag_text(color = NA) +
+  geom_dag_label_repel(aes(label = name), size = 4) +
+  geom_dag_edges(edge_color = ggthemr::swatch()[7])
 ```
 
 One great advantage of having our DAG coded into R or on DAGitty is the possibility to see what we have to adjust for. You can do that by running the command `adjustmentSets()` which returns all possible sets of variables that you can control for to retrieve a causal effect.
@@ -211,7 +242,7 @@ One great advantage of having our DAG coded into R or on DAGitty is the possibil
 # Get adjustment sets. Because we already specified exposure and outcome when
 # constructing the DAG, we do not need to do again. If they were not specified,
 # you could do so by explicitly providing arguments ("exposure", "outcome")
-# ...
+adjustmentSets(schooling_dag_2)
 ```
 
 ## Types of association
@@ -273,10 +304,10 @@ This mechanism is also sometimes called mediation, because $Z$ mediates the effe
 
 <summary>Answer</summary>
 
--   $X$ and $Z$: 
--   $Z$ and $Y$: 
--   $X$ and $Y$: 
--   $X$ and $Y$ conditional on $Z$:
+-   $X$ and $Z$: dependent, as indicated by the arrow. If you invest more into R&D, you develop more innovative products.
+-   $Z$ and $Y$: dependent, as indicated by the arrow. If you develop more innovative products, your market share increases.
+-   $X$ and $Y$: dependent, as indicated by the arrow (going through $Z$). More investment in R&D leads to more innovative products and an increased market share.
+-   $X$ and $Y$ conditional on $Z$: independent, because when we condition on innovative products, that means we hold the quantity and quality of innovative products fixed at a particular level, then there is no effect from investment in R&D to market share as there is no direct effect, but only an effect through the development of innovative products.
 
 </details>
 
@@ -286,12 +317,12 @@ We can also check using the function `dseperated()`. It returns TRUE when two no
 
 ```{r}
 # Check d-separation between X and Y
-# ...
+dseparated(chain, X = "X", Y = "Y", Z = c())
 ```
 
 ```{r}
 # Check d-separation between X and Y conditional on Z
-# ...
+dseparated(chain, X = "X", Y = "Y", Z = c("Z"))
 ```
 
 ### Fork
@@ -335,10 +366,10 @@ However, there is no reason to assume there is a causal relationship between ice
 
 <summary>Answer</summary>
 
--   $Z$ and $X$: 
--   $Z$ and $Y$: 
--   $X$ and $Y$: 
--   $X$ and $Y$ conditional on $Z$:
+-   $Z$ and $X$: dependent, as indicated by arrow. Higher temperature leads to more ice cream sales.
+-   $Z$ and $Y$: dependent, as indicated by arrow. Higher temperature leads to more crimes.
+-   $X$ and $Y$: dependent, as both are influenced by $Z$. $X$ and $Y$ change both with variation in $Z$. Variation in temperature affects ice cream sales and number of crimes simultaneously.
+-   $X$ and $Y$ conditional on $Z$: independent, as for a fixed level of temperature, there is no association anymore.
 
 </details>
 
@@ -348,12 +379,12 @@ Again, we also check using R.
 
 ```{r}
 # Check d-separation between X and Y conditional on Z
-# ...
+dseparated(fork, X = "X", Y = "Y", Z = c("Z"))
 ```
 
 ```{r}
 # Check d-separation between X and Y
-# ...
+dseparated(fork, X = "X", Y = "Y", Z = c())
 ```
 
 ### Collision
@@ -406,12 +437,12 @@ Same procedure as above, checking using R.
 
 ```{r}
 # Check d-separation between X and Y
-# ...
+dseparated(collider, X = "X", Y = "Y", Z = c())
 ```
 
 ```{r}
 # Check d-separation between X and Y conditional on Z
-# ...
+dseparated(collider, X = "X", Y = "Y", Z = c("Z"))
 ```
 
 ### Quiz
@@ -453,38 +484,51 @@ For each of the following scenarios, explain **whether the nodes $X$ and $Y$ are
 -   no conditioning
 
 ```{r}
-# ...
+dseparated(dag_model, X = "X", Y = "Y", Z = c())
 ```
 
 -   conditioning on $(M, Z1)$
 
 ```{r}
-# ...
+dseparated(dag_model, X = "X", Y = "Y", Z = c("M", "Z1"))
 ```
 
 -   conditioning on $(M, Z3)$
 
 ```{r}
-# ...
+dseparated(dag_model, X = "X", Y = "Y", Z = c("M", "Z3"))
 ```
 
 -   conditioning on $(M, Z1, Z4)$
 
 ```{r}
-# ...
+dseparated(dag_model, X = "X", Y = "Y", Z = c("M", "Z1", "Z4"))
 ```
 
 -   conditioning on $(M, Z1, Z2, Z4)$
 
 ```{r}
-# ...
+dseparated(dag_model, X = "X", Y = "Y", Z = c("M", "Z1", "Z2", "Z4"))
 ```
 
 2.  In R, draw a DAG of a randomized controlled trial. Assume the following variables: the treatment $D$ and a variable $Z$ that affects the outcome $Y$.
 
 ```{r}
 # RCT
-# ...
+rct <- dagify(
+  Y ~ X,
+  Y ~ Z,
+  coords = list(x = c(Y = 3, Z = 2, X = 1),
+                y = c(Y = 1, Z = 2, X = 1))
+)
+
+# Plot DAG
+ggdag(rct) +
+  theme_dag_cds() + # custom theme, can be left out
+  geom_dag_point(color = ggthemr::swatch()[2]) +
+  geom_dag_text(color = "white") +
+  geom_dag_edges(edge_color = ggthemr::swatch()[7])
+
 ```
 
 
@@ -539,14 +583,28 @@ Let's discuss each possible dependency:
 
 ```{r}
 # Construct DAG
-# ...
+profits_dag <- dagify(
+  consultant ~ previous_profit,
+  profit ~ previous_profit,
+  profit ~ consultant,
+  coords = list(x = c(consultant = 1, profit = 3, previous_profit = 2),
+                y = c(consultant = 1, profit = 1, previous_profit = 2))
+)
+
+# Plot DAG
+ggdag(profits_dag, text = FALSE) +
+  theme_dag_cds() + # custom theme, can be left out
+  geom_dag_point(color = ggthemr::swatch()[2]) +
+  geom_dag_text(color = NA) +
+  geom_dag_label_repel(aes(label = name), size = 4) +
+  geom_dag_edges(edge_color = ggthemr::swatch()[7])
 ```
 
 By now, you are probably already able to see it on a first glance because you know what a confounder is and how to adjust for it. But for the purpose of demonstration, let's `dagitty` tell us what we need to adjust for.
 
 ```{r}
 # Adjustment set
-# ...
+adjustmentSets(profits_dag, exposure = "consultant", outcome = "profit")
 ```
 
 As expected, it is the backdoor adjustment which we need to perform in our estimation. We need to control for the previous profits because more previously profitable companies are more likely to hire top consultants and are more likely to make profits again.
@@ -575,7 +633,7 @@ However, when we look at our adjustment set, which is the previous profit of a c
 
 ```{r}
 # Statistical summary of column of previous profits
-# ...
+summary(profits$previous_profit)
 ```
 
 In the following weeks, we will learn sophisticated methods to deal with continuous confounders, but today, we refer to a simpler method. We assign each company to a group determined by the value of previous profits. The function `ntile()` does the job: it splits the data into $n$ equally sized groups ordered by size.
@@ -590,22 +648,24 @@ In R, `group_by()` is used to group data by one or more variables, `summarise()`
 
 ```{r}
 # Split group into n equally sized groups 
-# ...
+profits$group <- ntile(profits$previous_profit, n = 4)
 
 # Compute mean value and number of observations by group
-# profits_by_group <- profits |>
+profits_by_group <- profits |> 
   # What columns to group by
-  # ...
+  group_by(group, consultant) |> 
   # What columns to use for aggregation and what kind of aggregations
-  # ...
+  summarise(
     # Average profit by group
-    
+    mean_profit = mean(profit),
     # Number of observations by group
+    nobs = n()
+  ) |> 
   # Remove grouping structure
-  
+  ungroup()
 
 # Show table
-#print(profits_by_group)
+print(profits_by_group)
 ```
 
 ::: callout-note
@@ -618,25 +678,25 @@ In R, `pivot_wider()` is a function included in the `tidyverse` (`tidyr`) used t
 
 ```{r}
 # Convert to wide format to compute effect
-# te_by_group <- profits_by_group |> 
+te_by_group <- profits_by_group |> 
   # Convert column values of consultant to headers and take values from
   # mean_profit
-  # pivot_wider(
+  pivot_wider(
     # For each group, we want one row
-    # id_cols = ,
+    id_cols = "group", 
     # Values of consultants to headers
-    # names_from = , 
+    names_from = "consultant",
     # Take values from 'mean_profit'
-    # values_from = ,
+    values_from = "mean_profit", 
     # Change names of headers for better readability
-    #names_prefix = ,
-    #) |> 
+    names_prefix = "consultant_"
+    ) |> 
   # Compute group treatment effect by subtracting mean of untreated units from
   # mean of treated units
-  # mutate()
+  mutate(te = consultant_1 - consultant_0)
 
 # Show table
-#print(te_by_group)
+print(te_by_group)
 ```
 
 Because all groups have the same size the weighted average is equal to the average and we can simply take the average to obtain the ATE:
@@ -644,12 +704,12 @@ Because all groups have the same size the weighted average is equal to the avera
 ```{r}
 # Taking the average of the treatment effect column. Same as weighted mean,
 # because group sizes are identical.
-# ...
+mean(te_by_group$te)
 ```
 
 ```{r}
 # With weighted mean
-# ...
+weighted.mean(te_by_group$te, c(250, 250, 250, 250))
 ```
 
 
@@ -667,7 +727,7 @@ For all values of covariates $w$ present in the population of interest (i.e. $w$
 
 <summary>Answer</summary>
 
-..
+Yes, because in each group, we have observations from both groups. Take a look at the column `nobs` in the table `profits_by_group`.
 
 </details>
 
@@ -675,37 +735,37 @@ For the sake of demonstration, let's see what would have happened, had we not ad
 
 ```{r}
 # Naive estimate
-# ...
+y1 <- mean(profits[profits$consultant == 1, ]$profit)
+y0 <- mean(profits[profits$consultant == 0, ]$profit)
+y1 - y0
 ```
 
 ```{r}
 #| echo: false
-#| include: false
-# 
-# profits_all <-
-#   profits |>
-#   group_by(consultant) |> 
-#   summarise(mean_profit = mean(profit)) |>
-#   add_column(group = "All") 
-# profits_plot <- profits_by_group |> 
-#   mutate(group = as.character(group)) |> 
-#   bind_rows(profits_all) |> 
-#   mutate(group = as.factor(group), consultant = as.factor(consultant))
-# 
-# ggplot(
-#   profits_plot,
-#   aes(
-#     x = consultant,
-#     y = mean_profit,
-#     color = group,
-#     group = group
-#   )
-# ) +
-#   geom_point() +
-#   geom_line()
+profits_all <-
+  profits |>
+  group_by(consultant) |> 
+  summarise(mean_profit = mean(profit)) |>
+  add_column(group = "All") 
+profits_plot <- profits_by_group |> 
+  mutate(group = as.character(group)) |> 
+  bind_rows(profits_all) |> 
+  mutate(group = as.factor(group), consultant = as.factor(consultant))
+
+ggplot(
+  profits_plot,
+  aes(
+    x = consultant,
+    y = mean_profit,
+    color = group,
+    group = group
+  )
+) +
+  geom_point() +
+  geom_line()
 ```
 
-### Effect of new feature
+### [Optional read] Effect of new feature
 
 Imagine you're at a software company, introducing a new feature and keen to gauge its impact. To ensure unbiased results, you conduct a randomized rollout: 10% of customers receive the new feature randomly, while the rest do not. Your aim is to assess if this feature enhances customer satisfaction, indirectly measured through Net Promoter Score (NPS). You distribute surveys to both the treated (with the new feature) and control groups, asking if they would recommend your product. Upon analysis, you observe higher NPS scores among customers with the new feature. But can you attribute this difference solely to the feature? To delve into this, start with a graph illustrating this scenario.
 
@@ -770,11 +830,28 @@ Because identification not possible, we cannot compute the effect.
 ## Assignment
 
 ::: assignment
-Accept the [**Week 2 - Assignment**](LINK) and follow the same steps as last week and as described in the organization chapter.
+Accept the [**Week 2 - Assignment**](https://classroom.github.com/a/eNvelq2Z) and follow the same steps as last week and as described in the organization chapter.
 
-Solve the following assignments:
+Solve the following assignment:
 
-Coming soon.
+Load the data `health_program.rds` and first take a look at the data. 
+
+Imagine the following scenario: you are manager of a company and want to reduce the number of sick days in your company by implementing a health program that employees are free to participate in. By learning about how to improve their health, you expect your employees to call in sick less frequently. Some time after implementing the `health_program`, you'll observe the `sick_days` for each employee and want to estimate the average treatment effect. You know that because of the voluntary basis of participating in the program, other variables might confound your estimate if you compute a naive estimate of the average treatment effect. So you might apply what you have learned in the last weeks about confounding, adjusting etc.
+
+First, load the data `health_program.rds` and first take a look at the data.For the purpose of this task, we assume that all variables we need for a valid estimation are included in the data.
+
+1. Take a look at all variables that are included in the data. List all pairs of variables and argue whether there might be a dependency and what direction you assume for that relationship if present.
+
+2. Map your explanations from the previous task into a DAG using `dagitty` and `ggdag`. Define exposure and treatment for that DAG.
+
+3. Based on your DAG, what variables do you need to control for? Explain in a short paragraph.
+
+4. Estimate the average treatment effect based on your previous explanations. (Hint: `id_cols` in pivot_wider can take more than one value by providing a vector `id_cols = c("var1", "var2")`).
+
+5. Explain, whether the positivity assumption is satisfied.
+
+6. Estimate the average treatment effect without conditioning on any variables and compare to the treatment effect computed in 4. Explain the difference.
+
 :::
 
 ## Further optional reading
