@@ -17,6 +17,40 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 <script src="../../../site_libs/quarto-nav/quarto-nav.js"></script>
@@ -38,7 +72,10 @@ ul.task-list li input[type="checkbox"] {
 <script src="../../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="../../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="dark">
-<script src="../../../site_libs/quarto-contrib/iconify-1.0.7/iconify-icon.min.js"></script><script id="quarto-search-options" type="application/json">{
+<script src="../../../site_libs/quarto-contrib/iconify-1.0.7/iconify-icon.min.js"></script>
+<script src="../../../site_libs/quarto-contrib/glightbox/glightbox.min.js"></script>
+<link href="../../../site_libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
+<link href="../../../site_libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet"><script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
   "collapse-after": 3,
@@ -65,7 +102,32 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script><link href="../../../site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet">
-<script src="../../../site_libs/pagedtable-1.1/js/pagedtable.js"></script><link rel="stylesheet" href="../../../styles.css">
+<script src="../../../site_libs/pagedtable-1.1/js/pagedtable.js"></script><script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script><script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script><script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script><link rel="stylesheet" href="../../../styles.css">
 </head>
 <body class="nav-sidebar docked nav-fixed">
 
@@ -239,7 +301,14 @@ ul.task-list li input[type="checkbox"] {
    
   <ul>
 <li><a href="#slides-recap" id="toc-slides-recap" class="nav-link active" data-scroll-target="#slides-recap">Slides &amp; Recap</a></li>
-  <li><a href="#practical-example" id="toc-practical-example" class="nav-link" data-scroll-target="#practical-example">Practical example</a></li>
+  <li>
+<a href="#effect-of-introducing-a-new-feature" id="toc-effect-of-introducing-a-new-feature" class="nav-link" data-scroll-target="#effect-of-introducing-a-new-feature">Effect of introducing a new feature</a>
+  <ul class="collapse">
+<li><a href="#manual-calculation" id="toc-manual-calculation" class="nav-link" data-scroll-target="#manual-calculation">Manual calculation</a></li>
+  <li><a href="#linear-regression" id="toc-linear-regression" class="nav-link" data-scroll-target="#linear-regression">Linear regression</a></li>
+  </ul>
+</li>
+  <li><a href="#ab-test-at-streaming-service" id="toc-ab-test-at-streaming-service" class="nav-link" data-scroll-target="#ab-test-at-streaming-service">A/B test at streaming service</a></li>
   <li><a href="#assignment" id="toc-assignment" class="nav-link" data-scroll-target="#assignment">Assignment</a></li>
   </ul></nav>
     </div>
@@ -260,11 +329,508 @@ ul.task-list li input[type="checkbox"] {
 
 
 </header><section id="slides-recap" class="level2"><h2 class="anchored" data-anchor-id="slides-recap">Slides &amp; Recap</h2>
-<p>Coming soon.</p>
-</section><section id="practical-example" class="level2"><h2 class="anchored" data-anchor-id="practical-example">Practical example</h2>
-<p>Coming soon.</p>
-</section><section id="assignment" class="level2"><h2 class="anchored" data-anchor-id="assignment">Assignment</h2>
-<p>Coming soon.</p>
+<p><a href="../../../lecture/03.pdf"><strong>Slides - Week 3</strong></a></p>
+<p>Last week, our attention was dedicated to identification with the aid of graphical models. This week, our focus shifts to establishing the connection between causal identification and estimation. This section delves into <strong>randomized experiments</strong>, widely regarded as the gold standard for causal inference, and <strong>linear regression</strong>, recognized as the workhorse of causal inference. Randomization is the best way to make treatment and control group comparable, allowing us to go from mere association to causation. Linear regression equips us with the tools to extract statistical information necessary to assess the level of confidence level we have in our estimates.</p>
+</section><section id="effect-of-introducing-a-new-feature" class="level2"><h2 class="anchored" data-anchor-id="effect-of-introducing-a-new-feature">Effect of introducing a new feature</h2>
+<p>Let’s jump right into an example of a randomized experiment to grasp the advantages over observational studies. Imagine you’re part of the business analytics team at a software company. Your task is to analyze the impact of introducing a new feature on the time users spend within the app. While the exact nature of this feature isn’t specified, its objective is to boost users’ daily app engagement, thereby driving up ad revenue.</p>
+<p>As usual, we need to <a href="https://cloud.tuhh.de/index.php/s/JnCKMTiqBEKxNaw">download</a> and load the data first.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html">readRDS</a></span><span class="op">(</span><span class="st">"new_feature.rds"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1,000 × 3
+   ip              new_feature time_spent
+   &lt;chr&gt;                 &lt;dbl&gt;      &lt;dbl&gt;
+ 1 153.168.98.222            0      71.4 
+ 2 119.218.12.199            1      76.1 
+ 3 208.197.60.31             0      68.4 
+ 4 235.143.38.46             1      73.1 
+ 5 86.56.28.141              0      70.4 
+ 6 51.111.112.107            0      45.1 
+ 7 165.165.131.102           0     106.  
+ 8 98.178.26.235             0      14.0 
+ 9 63.223.57.208             0       9.22
+10 149.249.67.110            1      79.5 
+# ℹ 990 more rows</code></pre>
+</div>
+</div>
+<p>The data contains three columns, <code>ip</code>, <code>new_feature</code> and <code>time_spent</code>. Values in the <code>ip</code> column identify the user, <code>new_feature</code> indicates who has the new feature in the app and <code>time_spent</code> is the average daily minutes a user spent on the app following the start of the randomized experiment.</p>
+<p>In the lecture, you learned that when treatment is randomly assigned, potential outcomes are independent of the treatment, and any systematic difference observed in the outcomes can be attributed solely to the treatment. Consequently, we can simply compare the means of the respective groups to estimate the ATE.</p>
+<p><span class="math display">\[
+\hat{\tau}_{\text{ATE}} = \frac{1}{\sum_i D_i} \sum_i D_i Y_i - \frac{1}{\sum_i (1 - D_i)} \sum_i (1 - D_i) Y_i
+\]</span> First, we will go through the manual calculation of all we need to estimate the average treatment effect and asses the statistical significance. Afterwards, we will use linear regression, which saves us a lot of work and will be incredibly important in th weeks to come.</p>
+<section id="manual-calculation" class="level3"><h3 class="anchored" data-anchor-id="manual-calculation">Manual calculation</h3>
+<p>Using the <code>tidyverse</code> allows us a versatile and flexible approach that we can extend later. We group by the treatment column and compute the group-specific means.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Load tidyverse package</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Grouping by the treatment column and calculating the mean of the outcome</span></span>
+<span><span class="co"># column by group</span></span>
+<span><span class="va">group_means</span> <span class="op">&lt;-</span> <span class="va">df</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">new_feature</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarise</a></span><span class="op">(</span>mean_time_spent <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">time_spent</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">ungroup</a></span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Show group-specific means</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">group_means</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 2 × 2
+  new_feature mean_time_spent
+        &lt;dbl&gt;           &lt;dbl&gt;
+1           0            61.0
+2           1            63.5</code></pre>
+</div>
+</div>
+<p>To get the difference, we need to add one more step.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Compute the difference in means</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/diff.html">diff</a></span><span class="op">(</span><span class="va">group_means</span><span class="op">$</span><span class="va">mean_time_spent</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 2.5</code></pre>
+</div>
+</div>
+<p>Up to this point, this should sound familiar. However, although we have an estimate for the ATE, we lack certainty regarding the confidence in this estimate. We also cannot ascertain whether the difference between the mean outcomes of the treatment and control groups is solely due to chance or holds statistical significance.</p>
+<section id="standard-deviation-and-standard-error-of-the-mean" class="level4"><h4 class="anchored" data-anchor-id="standard-deviation-and-standard-error-of-the-mean">Standard deviation and standard error of the mean</h4>
+<p>In addition to the average, another crucial statistical measure, upon which all subsequent methods of statistical inference rely, is the variance. This measure indicates the extent of dispersion/spread in a random variable. Variance of a random variable <span class="math inline">\(X\)</span> calculated by:</p>
+<p><span class="math display">\[
+\sigma_X^2 = \frac{1}{n - 1} \sum_{i=1}^{n} \left(X_i - \frac{1}{n}\sum_{i=1}^{n}X_i\right)^2
+\]</span> The standard deviation obtains as the square root of the variance. Unlike the variance it expressed in the same unit as the data.</p>
+<p><span class="math display">\[
+\sigma = \sqrt{\sigma^2}
+\]</span> Let’s add the standard deviation to our summary table. We can use the built-in function <code><a href="https://rdrr.io/r/stats/sd.html">sd()</a></code>. If we would like to compute the variance, we could use <code><a href="https://rdrr.io/r/stats/cor.html">var()</a></code>.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Grouping by the treatment column and calculating the mean and the standard</span></span>
+<span><span class="co"># deviation of the outcome</span></span>
+<span><span class="co"># column by group</span></span>
+<span><span class="va">group_stats</span> <span class="op">&lt;-</span> <span class="va">df</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">new_feature</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarise</a></span><span class="op">(</span></span>
+<span>    mean_time_spent <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">time_spent</span><span class="op">)</span>,</span>
+<span>    <span class="co"># add standard deviation</span></span>
+<span>    sd_time_spent <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/sd.html">sd</a></span><span class="op">(</span><span class="va">time_spent</span><span class="op">)</span></span>
+<span>    <span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">ungroup</a></span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Show group-specific statistics</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">group_stats</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 2 × 3
+  new_feature mean_time_spent sd_time_spent
+        &lt;dbl&gt;           &lt;dbl&gt;         &lt;dbl&gt;
+1           0            61.0          30.5
+2           1            63.5          28.0</code></pre>
+</div>
+</div>
+<p>Knowing the group-specific means and standard deviations brings us one step closer to answer the question whether the treatment effect is large enough to be considered statistically significant. For each group, we also need to know the standard error of the mean. It can be easily confused with the standard deviation, but there is one large difference: the formula for the standard error takes the sample size into account. A larger sample gives us more confidence in the estimate.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Standard deviation measures the dispersion of individual data points from the mean, while standard error of the mean quantifies the precision of the sample mean estimate, reflecting how much the sample mean is likely to vary from the population mean.</p>
+</div>
+</div>
+<p><span class="math display">\[
+SE = \frac{\sigma}{\sqrt n}
+\]</span> Because there is no built-in function in R, we can easily define a function (we could use external packages, but for the sake of demonstration, we define it ourselves):</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>In many cases, you will find functions needed for your analysis in base R or by loading external packages. But sometimes, you want to do something so specific, that no one has done it before. Then, you define your custom function by using <code>function(arg1, arg2, ...)</code>.</p>
+</div>
+</div>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Custom function for the standard error</span></span>
+<span><span class="va">se</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="co"># Standard deviation divided by the square root of the sample size</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/stats/sd.html">sd</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>We need to update our table with the statistics by adding the number of observations <span class="math inline">\(n\)</span> per group (using the function <code><a href="https://dplyr.tidyverse.org/reference/context.html">n()</a></code>) and calculating the standard error of the mean.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Grouping by the treatment column and calculating the mean, standard deviation,</span></span>
+<span><span class="co"># sample size, and standard error of the mean</span></span>
+<span><span class="co"># column by group</span></span>
+<span><span class="va">group_stats</span> <span class="op">&lt;-</span> <span class="va">df</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">new_feature</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarise</a></span><span class="op">(</span></span>
+<span>    mean_time_spent <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">time_spent</span><span class="op">)</span>,</span>
+<span>    <span class="co"># add standard deviation</span></span>
+<span>    sd_time_spent <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/sd.html">sd</a></span><span class="op">(</span><span class="va">time_spent</span><span class="op">)</span>,</span>
+<span>    <span class="co"># add sample size</span></span>
+<span>    n_obs <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/context.html">n</a></span><span class="op">(</span><span class="op">)</span></span>
+<span>    <span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">ungroup</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="co"># Add a new column with the standard error of the mean</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>se_time_spent <span class="op">=</span> <span class="va">sd_time_spent</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span><span class="op">(</span><span class="va">n_obs</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Show group-specific statistics</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">group_stats</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 2 × 5
+  new_feature mean_time_spent sd_time_spent n_obs se_time_spent
+        &lt;dbl&gt;           &lt;dbl&gt;         &lt;dbl&gt; &lt;int&gt;         &lt;dbl&gt;
+1           0            61.0          30.5   590          1.26
+2           1            63.5          28.0   410          1.38</code></pre>
+</div>
+</div>
+</section><section id="confidence-interval" class="level4"><h4 class="anchored" data-anchor-id="confidence-interval">Confidence interval</h4>
+<p>A profoundly useful mathematical theorem is the Central Limit Theorem, which states that the distribution of sample means tends towards normality. Understanding the mean and standard error of the mean equips us with all the necessary information to comprehend and illustrate the distribution.</p>
+<p>Here, we plot the standard normal distribution, characterized by a mean of zero and a standard deviation of one. By delineating the mass of the distribution limited by specific values, we can construct confidence intervals around our estimates. These intervals provide a range within which the true mean likely lies, with a chosen probability. While 95% confidence intervals are most commonly reported, values such as 90% or 99% are also frequently used For instance, approximately 95% of the area under the normal distribution falls within approximately two standard deviations below and above the mean.</p>
+<div class="cell" data-layout-align="center">
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">3</span>, <span class="fl">3</span><span class="op">)</span><span class="op">)</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_function.html">stat_function</a></span><span class="op">(</span>fun <span class="op">=</span> <span class="va">dnorm</span>,</span>
+<span>                geom <span class="op">=</span> <span class="st">"line"</span>,</span>
+<span>                xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">3</span>, <span class="fl">3</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_function.html">stat_function</a></span><span class="op">(</span>fun <span class="op">=</span> <span class="va">dnorm</span>,</span>
+<span>                geom <span class="op">=</span> <span class="st">"area"</span>,</span>
+<span>                fill <span class="op">=</span> <span class="fu">ggthemr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/ggthemr/man/swatch.html">swatch</a></span><span class="op">(</span><span class="op">)</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span>,</span>
+<span>                alpha <span class="op">=</span> <span class="fl">.3</span>,</span>
+<span>                xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">qnorm</a></span><span class="op">(</span><span class="fl">.005</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">qnorm</a></span><span class="op">(</span><span class="fl">.995</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_function.html">stat_function</a></span><span class="op">(</span>fun <span class="op">=</span> <span class="va">dnorm</span>,</span>
+<span>                geom <span class="op">=</span> <span class="st">"area"</span>,</span>
+<span>                fill <span class="op">=</span> <span class="fu">ggthemr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/ggthemr/man/swatch.html">swatch</a></span><span class="op">(</span><span class="op">)</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span>,</span>
+<span>                alpha <span class="op">=</span> <span class="fl">.5</span>,</span>
+<span>                xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">qnorm</a></span><span class="op">(</span><span class="fl">.025</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">qnorm</a></span><span class="op">(</span><span class="fl">.975</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_function.html">stat_function</a></span><span class="op">(</span>fun <span class="op">=</span> <span class="va">dnorm</span>,</span>
+<span>                geom <span class="op">=</span> <span class="st">"area"</span>,</span>
+<span>                fill <span class="op">=</span> <span class="fu">ggthemr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/ggthemr/man/swatch.html">swatch</a></span><span class="op">(</span><span class="op">)</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span>,</span>
+<span>                alpha <span class="op">=</span> <span class="fl">.9</span>,</span>
+<span>                xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">qnorm</a></span><span class="op">(</span><span class="fl">.05</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">qnorm</a></span><span class="op">(</span><span class="fl">.95</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_x_continuous</a></span><span class="op">(</span>limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">3</span>, <span class="fl">3</span><span class="op">)</span>, breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="op">-</span><span class="fl">3</span>, <span class="fl">3</span>, <span class="fl">.5</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html">geom_vline</a></span><span class="op">(</span>xintercept <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">qnorm</a></span><span class="op">(</span><span class="fl">.005</span><span class="op">)</span>, linetype <span class="op">=</span> <span class="st">"dashed"</span>, color <span class="op">=</span> <span class="fu">ggthemr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/ggthemr/man/swatch.html">swatch</a></span><span class="op">(</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html">geom_vline</a></span><span class="op">(</span>xintercept <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">qnorm</a></span><span class="op">(</span><span class="fl">.995</span><span class="op">)</span>, linetype <span class="op">=</span> <span class="st">"dashed"</span>, color <span class="op">=</span> <span class="fu">ggthemr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/ggthemr/man/swatch.html">swatch</a></span><span class="op">(</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html">geom_vline</a></span><span class="op">(</span>xintercept <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">qnorm</a></span><span class="op">(</span><span class="fl">.025</span><span class="op">)</span>, linetype <span class="op">=</span> <span class="st">"dashed"</span>, color <span class="op">=</span> <span class="fu">ggthemr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/ggthemr/man/swatch.html">swatch</a></span><span class="op">(</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html">geom_vline</a></span><span class="op">(</span>xintercept <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">qnorm</a></span><span class="op">(</span><span class="fl">.975</span><span class="op">)</span>, linetype <span class="op">=</span> <span class="st">"dashed"</span>, color <span class="op">=</span> <span class="fu">ggthemr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/ggthemr/man/swatch.html">swatch</a></span><span class="op">(</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html">geom_vline</a></span><span class="op">(</span>xintercept <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">qnorm</a></span><span class="op">(</span><span class="fl">.05</span><span class="op">)</span>, linetype <span class="op">=</span> <span class="st">"dashed"</span>, color <span class="op">=</span> <span class="fu">ggthemr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/ggthemr/man/swatch.html">swatch</a></span><span class="op">(</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html">geom_vline</a></span><span class="op">(</span>xintercept <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">qnorm</a></span><span class="op">(</span><span class="fl">.95</span><span class="op">)</span>, linetype <span class="op">=</span> <span class="st">"dashed"</span>, color <span class="op">=</span> <span class="fu">ggthemr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/ggthemr/man/swatch.html">swatch</a></span><span class="op">(</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span><span class="op">(</span>panel.grid <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_blank</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span><span class="op">(</span><span class="st">"Standard Normal Distribution with 90%, 95% and \n99% Confidence Interval"</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">"z-score"</span>, y <span class="op">=</span> <span class="st">"Density"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><a href="week_3_files/figure-html/unnamed-chunk-8-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1"><img src="week_3_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:75.0%"></a></p>
+</figure>
+</div>
+</div>
+</div>
+<p>We can use this directly to compute the confidence intervals around our estimated group means. For the 95% confidence interval, we have <span class="math inline">\(alpha = 1 - 0.95 = 0.05\)</span> and can get z-value using using <code>qnorm(.975)</code></p>
+<p><span class="math display">\[
+\hat{\mu} \pm z_{\alpha/2} * SE
+\]</span></p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Confidence level and significance level are sometimes confused.</p>
+<ul>
+<li>confidence level = 1- significance level = 95%</li>
+<li>significance level (or alpha) = 1 - confidence level = 5%</li>
+</ul>
+</div>
+</div>
+<p>Adding the confidence intervals to our table:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Grouping by the treatment column and calculating the mean, standard deviation,</span></span>
+<span><span class="co"># sample size, and standard error of the mean</span></span>
+<span><span class="co"># column by group</span></span>
+<span><span class="va">group_stats</span> <span class="op">&lt;-</span> <span class="va">df</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">new_feature</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarise</a></span><span class="op">(</span></span>
+<span>    mean_time_spent <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">time_spent</span><span class="op">)</span>,</span>
+<span>    <span class="co"># add standard deviation</span></span>
+<span>    sd_time_spent <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/sd.html">sd</a></span><span class="op">(</span><span class="va">time_spent</span><span class="op">)</span>,</span>
+<span>    <span class="co"># add sample size</span></span>
+<span>    n_obs <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/context.html">n</a></span><span class="op">(</span><span class="op">)</span></span>
+<span>    <span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">ungroup</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="co"># Add a new column with the standard error of the mean</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span></span>
+<span>    se_time_spent <span class="op">=</span> <span class="va">sd_time_spent</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span><span class="op">(</span><span class="va">n_obs</span><span class="op">)</span>,</span>
+<span>    <span class="co"># adding confidence intervals (lower and upper bound)</span></span>
+<span>    ci_lb <span class="op">=</span> <span class="va">mean_time_spent</span> <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">qnorm</a></span><span class="op">(</span><span class="fl">.975</span><span class="op">)</span> <span class="op">*</span> <span class="va">se_time_spent</span>,</span>
+<span>    ci_ub <span class="op">=</span> <span class="va">mean_time_spent</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">qnorm</a></span><span class="op">(</span><span class="fl">.975</span><span class="op">)</span> <span class="op">*</span> <span class="va">se_time_spent</span></span>
+<span>    <span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Show group-specific statistics</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">group_stats</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 2 × 7
+  new_feature mean_time_spent sd_time_spent n_obs se_time_spent ci_lb ci_ub
+        &lt;dbl&gt;           &lt;dbl&gt;         &lt;dbl&gt; &lt;int&gt;         &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+1           0            61.0          30.5   590          1.26  58.6  63.5
+2           1            63.5          28.0   410          1.38  60.8  66.2</code></pre>
+</div>
+</div>
+<p>Comparing the confidence intervals across the groups, we see some overlap. However, that does not yet mean that they are not statistically significant, although it is usually a good indication. And, in fact, if they did not overlap at all, you would be able to conclude that they are statistcally different.</p>
+<div class="cell" data-layout-align="center">
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">u0</span> <span class="op">&lt;-</span> <span class="va">group_stats</span><span class="op">[</span><span class="va">group_stats</span><span class="op">$</span><span class="va">new_feature</span> <span class="op">==</span> <span class="fl">0</span>, <span class="op">]</span><span class="op">$</span><span class="va">mean_time_spent</span></span>
+<span><span class="va">u1</span> <span class="op">&lt;-</span> <span class="va">group_stats</span><span class="op">[</span><span class="va">group_stats</span><span class="op">$</span><span class="va">new_feature</span> <span class="op">==</span> <span class="fl">1</span>, <span class="op">]</span><span class="op">$</span><span class="va">mean_time_spent</span></span>
+<span></span>
+<span><span class="va">o0</span> <span class="op">&lt;-</span> <span class="va">group_stats</span><span class="op">[</span><span class="va">group_stats</span><span class="op">$</span><span class="va">new_feature</span> <span class="op">==</span> <span class="fl">0</span>, <span class="op">]</span><span class="op">$</span><span class="va">se_time_spent</span></span>
+<span><span class="va">o1</span> <span class="op">&lt;-</span> <span class="va">group_stats</span><span class="op">[</span><span class="va">group_stats</span><span class="op">$</span><span class="va">new_feature</span> <span class="op">==</span> <span class="fl">1</span>, <span class="op">]</span><span class="op">$</span><span class="va">se_time_spent</span></span>
+<span></span>
+<span><span class="va">ci_lb0</span> <span class="op">&lt;-</span> <span class="va">group_stats</span><span class="op">[</span><span class="va">group_stats</span><span class="op">$</span><span class="va">new_feature</span> <span class="op">==</span> <span class="fl">0</span>, <span class="op">]</span><span class="op">$</span><span class="va">ci_lb</span></span>
+<span><span class="va">ci_lb1</span> <span class="op">&lt;-</span> <span class="va">group_stats</span><span class="op">[</span><span class="va">group_stats</span><span class="op">$</span><span class="va">new_feature</span> <span class="op">==</span> <span class="fl">1</span>, <span class="op">]</span><span class="op">$</span><span class="va">ci_lb</span></span>
+<span></span>
+<span><span class="va">ci_ub0</span> <span class="op">&lt;-</span> <span class="va">group_stats</span><span class="op">[</span><span class="va">group_stats</span><span class="op">$</span><span class="va">new_feature</span> <span class="op">==</span> <span class="fl">0</span>, <span class="op">]</span><span class="op">$</span><span class="va">ci_ub</span></span>
+<span><span class="va">ci_ub1</span> <span class="op">&lt;-</span> <span class="va">group_stats</span><span class="op">[</span><span class="va">group_stats</span><span class="op">$</span><span class="va">new_feature</span> <span class="op">==</span> <span class="fl">1</span>, <span class="op">]</span><span class="op">$</span><span class="va">ci_ub</span></span>
+<span></span>
+<span></span>
+<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">55</span>, <span class="fl">70</span><span class="op">)</span><span class="op">)</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_function.html">stat_function</a></span><span class="op">(</span>fun <span class="op">=</span> <span class="va">dnorm</span>,</span>
+<span>                color <span class="op">=</span> <span class="fu">ggthemr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/ggthemr/man/swatch.html">swatch</a></span><span class="op">(</span><span class="op">)</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span>,</span>
+<span>                alpha <span class="op">=</span> <span class="fl">.5</span>,</span>
+<span>                args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>mean <span class="op">=</span> <span class="va">u0</span>, sd <span class="op">=</span> <span class="va">o0</span><span class="op">)</span>,</span>
+<span>                geom <span class="op">=</span> <span class="st">"line"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_function.html">stat_function</a></span><span class="op">(</span>fun <span class="op">=</span> <span class="va">dnorm</span>,</span>
+<span>                color <span class="op">=</span> <span class="fu">ggthemr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/ggthemr/man/swatch.html">swatch</a></span><span class="op">(</span><span class="op">)</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span>,</span>
+<span>                alpha <span class="op">=</span> <span class="fl">.5</span>,</span>
+<span>                args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>mean <span class="op">=</span> <span class="va">u1</span>, sd <span class="op">=</span> <span class="va">o1</span><span class="op">)</span>,</span>
+<span>                geom <span class="op">=</span> <span class="st">"line"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_function.html">stat_function</a></span><span class="op">(</span>fun <span class="op">=</span> <span class="va">dnorm</span>,</span>
+<span>                fill <span class="op">=</span> <span class="fu">ggthemr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/ggthemr/man/swatch.html">swatch</a></span><span class="op">(</span><span class="op">)</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span>,</span>
+<span>                alpha <span class="op">=</span> <span class="fl">.5</span>,</span>
+<span>                args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>mean <span class="op">=</span> <span class="va">u0</span>, sd <span class="op">=</span> <span class="va">o0</span><span class="op">)</span>,</span>
+<span>                geom <span class="op">=</span> <span class="st">"area"</span>,</span>
+<span>                xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">ci_lb0</span>, <span class="va">ci_ub0</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_function.html">stat_function</a></span><span class="op">(</span>fun <span class="op">=</span> <span class="va">dnorm</span>,</span>
+<span>                fill <span class="op">=</span> <span class="fu">ggthemr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/ggthemr/man/swatch.html">swatch</a></span><span class="op">(</span><span class="op">)</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span>,</span>
+<span>                alpha <span class="op">=</span> <span class="fl">.5</span>,</span>
+<span>                args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>mean <span class="op">=</span> <span class="va">u1</span>, sd <span class="op">=</span> <span class="va">o1</span><span class="op">)</span>,</span>
+<span>                geom <span class="op">=</span> <span class="st">"area"</span>,</span>
+<span>                xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">ci_lb1</span>, <span class="va">ci_ub1</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span><span class="op">(</span><span class="st">"Distribution of outcomes by group"</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">"Minutes"</span>, y <span class="op">=</span> <span class="st">"Density"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span><span class="op">(</span>panel.grid <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_blank</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><a href="week_3_files/figure-html/unnamed-chunk-10-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2"><img src="week_3_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:75.0%"></a></p>
+</figure>
+</div>
+</div>
+</div>
+</section><section id="hypothesis-testing" class="level4"><h4 class="anchored" data-anchor-id="hypothesis-testing">Hypothesis testing</h4>
+<p>To comprehensively address the question, “Is the difference statistically significant from zero (or any other value)?” we rely on hypothesis testing. Leveraging the mathematical principle that the sum or difference of two independent normal distributions also follows a normal distribution, we can check whether the confidence interval of the ATE contains zero. This occurs because the ATE is derived as the difference between the distributions of the two groups.</p>
+<p>Let’s explicitly formulate what we test:</p>
+<p><span class="math inline">\(H_0: \mu_1 - \mu_0 = 0\)</span></p>
+<p>Expressed in formulas, the mean of the resulting normal distribution is</p>
+<p><span class="math display">\[
+\mu_{diff} = \mu_1 - \mu_0
+\]</span></p>
+<p>and the standard deviation is (please note, that it is the sum and not the difference)</p>
+<p><span class="math display">\[
+SE_{diff} = \sqrt{SE_1^2 + SE_0^2}.
+\]</span></p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Get means</span></span>
+<span><span class="va">mu_0</span> <span class="op">&lt;-</span> <span class="va">group_stats</span><span class="op">[</span><span class="va">group_stats</span><span class="op">$</span><span class="va">new_feature</span><span class="op">==</span><span class="fl">0</span>, <span class="op">]</span><span class="op">$</span><span class="va">mean_time_spent</span></span>
+<span><span class="va">mu_1</span> <span class="op">&lt;-</span> <span class="va">group_stats</span><span class="op">[</span><span class="va">group_stats</span><span class="op">$</span><span class="va">new_feature</span><span class="op">==</span><span class="fl">1</span>, <span class="op">]</span><span class="op">$</span><span class="va">mean_time_spent</span></span>
+<span></span>
+<span><span class="co"># Get standard errors</span></span>
+<span><span class="va">se_0</span> <span class="op">&lt;-</span> <span class="va">group_stats</span><span class="op">[</span><span class="va">group_stats</span><span class="op">$</span><span class="va">new_feature</span><span class="op">==</span><span class="fl">0</span>, <span class="op">]</span><span class="op">$</span><span class="va">se_time_spent</span></span>
+<span><span class="va">se_1</span> <span class="op">&lt;-</span> <span class="va">group_stats</span><span class="op">[</span><span class="va">group_stats</span><span class="op">$</span><span class="va">new_feature</span><span class="op">==</span><span class="fl">1</span>, <span class="op">]</span><span class="op">$</span><span class="va">se_time_spent</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Mean</span></span>
+<span><span class="va">diff_mu</span> <span class="op">&lt;-</span> <span class="va">mu_1</span> <span class="op">-</span> <span class="va">mu_0</span></span>
+<span><span class="va">diff_mu</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 2.5</code></pre>
+</div>
+</div>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Standard error</span></span>
+<span><span class="va">diff_se</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span><span class="op">(</span><span class="va">se_1</span><span class="op">^</span><span class="fl">2</span> <span class="op">+</span> <span class="va">se_0</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span></span>
+<span><span class="va">diff_se</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1.9</code></pre>
+</div>
+</div>
+<p>Let’s make another plot: the distribution of the difference. We can already do the visual hypothesis test.</p>
+<div class="cell" data-layout-align="center">
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb21"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">10</span>, <span class="fl">10</span><span class="op">)</span><span class="op">)</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_function.html">stat_function</a></span><span class="op">(</span>fun <span class="op">=</span> <span class="va">dnorm</span>,</span>
+<span>                alpha <span class="op">=</span> <span class="fl">.5</span>,</span>
+<span>                args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>mean <span class="op">=</span> <span class="va">diff_mu</span>, sd <span class="op">=</span> <span class="va">diff_se</span><span class="op">)</span>,</span>
+<span>                geom <span class="op">=</span> <span class="st">"line"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_function.html">stat_function</a></span><span class="op">(</span>fun <span class="op">=</span> <span class="va">dnorm</span>,</span>
+<span>                alpha <span class="op">=</span> <span class="fl">.5</span>,</span>
+<span>                args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>mean <span class="op">=</span> <span class="va">diff_mu</span>, sd <span class="op">=</span> <span class="va">diff_se</span><span class="op">)</span>,</span>
+<span>                geom <span class="op">=</span> <span class="st">"area"</span>,</span>
+<span>                xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">diff_mu</span> <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">qnorm</a></span><span class="op">(</span><span class="fl">.975</span><span class="op">)</span> <span class="op">*</span> <span class="va">diff_se</span>, <span class="va">diff_mu</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">qnorm</a></span><span class="op">(</span><span class="fl">.975</span><span class="op">)</span> <span class="op">*</span> <span class="va">diff_se</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html">geom_vline</a></span><span class="op">(</span>xintercept <span class="op">=</span> <span class="fl">0</span>, color <span class="op">=</span> <span class="st">"white"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span><span class="op">(</span><span class="st">"Visual hypothesis testing with 95% CI"</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">"Minutes"</span>, y <span class="op">=</span> <span class="st">"Density"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span><span class="op">(</span>panel.grid <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_blank</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><a href="week_3_files/figure-html/unnamed-chunk-14-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-3"><img src="week_3_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:75.0%"></a></p>
+</figure>
+</div>
+</div>
+</div>
+<p>What we can infer from the plot already, can be confirmed by computing the confidence intervals with the known formula.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">diff_ci_lb</span> <span class="op">=</span> <span class="va">diff_mu</span> <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">qnorm</a></span><span class="op">(</span><span class="fl">.975</span><span class="op">)</span> <span class="op">*</span> <span class="va">diff_se</span></span>
+<span><span class="va">diff_ci_ub</span> <span class="op">=</span> <span class="va">diff_mu</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">qnorm</a></span><span class="op">(</span><span class="fl">.975</span><span class="op">)</span> <span class="op">*</span> <span class="va">diff_se</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Lower CI"</span> <span class="op">=</span> <span class="va">diff_ci_lb</span>, <span class="st">"Upper CI"</span> <span class="op">=</span> <span class="va">diff_ci_ub</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Lower CI Upper CI 
+    -1.2      6.2 </code></pre>
+</div>
+</div>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Important
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Null hypothesis: the null hypothesis <span class="math inline">\(H_0\)</span> is the claim the the effect being studied does not exists. The effect is a “null” effect.</p>
+</div>
+</div>
+<p><strong>Question:</strong> Do we reject the null hypothesis?</p>
+<details><summary>
+Answer
+</summary><p>No.&nbsp;The ATE is not different from zero.</p>
+</details></section><section id="optional-read-p-value" class="level4"><h4 class="anchored" data-anchor-id="optional-read-p-value">[Optional read] p-value</h4>
+<p>From a slightly different perspective, we can also compute the p-value to tell us the confidence in our estimates. The question we ask is then: What is the lowest significance level that results in rejecting the null hypothesis?</p>
+<p>First, we need to compute the t-statistic:</p>
+<p><span class="math display">\[
+\begin{align}
+t_{ATE} = \frac{\mu_1 - \mu_0}{\sqrt{SE_1^2 + SE_0^2}} &amp;= \frac{\mu_{diff}}{SE_{diff}}
+\end{align}
+\]</span></p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">t_stat</span> <span class="op">=</span> <span class="op">(</span><span class="va">diff_mu</span> <span class="op">-</span> <span class="fl">0</span><span class="op">)</span> <span class="op">/</span> <span class="va">diff_se</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Knowing the t-statistic, we provide it in to the following command.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="op">(</span><span class="fl">1</span> <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">pnorm</a></span><span class="op">(</span><span class="va">t_stat</span><span class="op">)</span><span class="op">)</span> <span class="op">*</span> <span class="fl">2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.18</code></pre>
+</div>
+</div>
+<p><code>pnorm(q)</code> returns the integral from <span class="math inline">\(-\infty\)</span> to <span class="math inline">\(q\)</span>, i.e.&nbsp;the mass up to the value <span class="math inline">\(q\)</span>. Because we are using the two-sided test, we need to multiply by 2.</p>
+<p>The p-value expresses the probability with which the null hypothesis is correct. For a rigorous statistical analysis, you usually expect a value of lower than 5% (sometimes 10% or 1%). Please note that this is just a different perspective and the common levels for p-values directly derive from the common values for confidence intervals.</p>
+</section></section><section id="linear-regression" class="level3"><h3 class="anchored" data-anchor-id="linear-regression">Linear regression</h3>
+<p>All the steps required to assess the hypothesis regarding the statistical significance of the average treatment effect can be condensed into a single step: running a linear regression. Regression functions as the workhorse for causal inference, serving as the cornerstone for more advanced techniques. Through the simple command <code><a href="https://rdrr.io/r/stats/lm.html">lm()</a></code>, regression seamlessly provides all the necessary statistical output for our analysis. Furthermore, it allows the implementation of more complex analyses beyond single-value treatments with ease.</p>
+<p>The generic functional form of a singe-valued regression without any covariate is as follows. <span class="math inline">\(Y\)</span> is the outcome variable, <span class="math inline">\(D\)</span> is treatment variable, and <span class="math inline">\(e\)</span> is the error term. We are interested in estimating the coefficients denoted by <span class="math inline">\(\beta\)</span>, particularly <span class="math inline">\(\beta_1\)</span>, which is the treatment effect.</p>
+<p><span class="math display">\[
+Y_i = \beta_0 + \beta_1*D+e_i
+\]</span></p>
+<p>We’ve already encountered the syntax before, but if you do not recall: <code>y ~ x</code>, where <span class="math inline">\(y\)</span> is the outcome and <span class="math inline">\(x\)</span> the explaining variable. We specify the respective variables in our data: we want to explain the effect of <code>new_feature</code> on <code>time_spent</code>, fit the model using <code><a href="https://rdrr.io/r/stats/lm.html">lm()</a></code> and assign it to a variable. Then, for a good summary of the estimates and statistical measures, we apply the <code><a href="https://rdrr.io/r/base/summary.html">summary()</a></code> function to the fitted object.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">lr</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">time_spent</span> <span class="op">~</span> <span class="va">new_feature</span>, data <span class="op">=</span> <span class="va">df</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">lr</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = time_spent ~ new_feature, data = df)
+
+Residuals:
+   Min     1Q Median     3Q    Max 
+-63.53 -19.83   1.11  19.08  96.01 
+
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)    61.04       1.21   50.30   &lt;2e-16 ***
+new_feature     2.49       1.90    1.32     0.19    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 30 on 998 degrees of freedom
+Multiple R-squared:  0.00173,   Adjusted R-squared:  0.000732 
+F-statistic: 1.73 on 1 and 998 DF,  p-value: 0.188</code></pre>
+</div>
+</div>
+<p>Take a look at the output and try to find the statistical measures we have manually calculated before.</p>
+<ul>
+<li>Group means</li>
+<li>Treatment effect</li>
+<li>Standard error of the estimates</li>
+<li>Confidence interval</li>
+<li>Hypothesis testing</li>
+</ul>
+<p>The output contains a p-value but does not contain confidence intervals because it is agnostic to the confidence level. However, if you are interested in confidence intervals for a specific confidence level, you can use the <code>confint(model, level)</code> function to calculate them. Or just simply calculate them by hand as you have learned.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/confint.html">confint</a></span><span class="op">(</span><span class="va">lr</span>, level <span class="op">=</span> <span class="fl">.95</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>            2.5 % 97.5 %
+(Intercept)  58.7   63.4
+new_feature  -1.2    6.2</code></pre>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Although the average treatment effect is equal, a minor difference in the statistics may arise. This difference stems from approximating the t-distribution with the normal distribution, a common practice when dealing with more than 100 observations. The benefit of utilizing the normal distribution is not needing to specify the degrees of freedom (sample size minus estimated parameters).</p>
+</div>
+</div>
+</section></section><section id="ab-test-at-streaming-service" class="level2"><h2 class="anchored" data-anchor-id="ab-test-at-streaming-service">A/B test at streaming service</h2>
+<p>Consider the following scenario: you are a data scientist at a music streaming company. Naturally, you’re keen to engage users for as long as possible and encourage them to become avid users of your streaming app. Your colleagues from the department responsible for recommendation algorithms have developed a new fancy algorithm which aims to enhance the daily number of minutes of music listening by offering particularly well tailored recommendations. Following common practice of A/B testing, you randomly assign your users into a treatment group (new algorithm) and a control group (no new algorithm). Download the data <a href="https://cloud.tuhh.de/index.php/s/KMLdg4TifqYjj54">here</a>.</p>
+<ol type="1">
+<li><p>As a pre-check, test whether your random assignment worked well by comparing the daily number of minutes users listened to music per group.</p></li>
+<li><p>Compute the average treatment effect using a linear regression.</p></li>
+<li>
+<p>Take a look at the summary statistics of the regression and answer the following questions:</p>
+<ol type="1">
+<li><p>What is the estimated treatment effect?</p></li>
+<li><p>What is the null hypothesis and do you reject or do you confirm it? At what significance level?</p></li>
+<li><p>What doest <span class="math inline">\(R^2\)</span> describe?</p></li>
+<li><p>What is the intercept and what does it describe?</p></li>
+</ol>
+</li>
+</ol>
+<!-- --><ol start="3" type="1">
+<li>Calculate 90%, 95% and 99% confidence intervals for the treatment effect and compare them. Which intervals are larger? And what question do they answer?</li>
+</ol>
+<p>After one month, you are asked to take a different outcome into focus - the rate of subscription cancellations. For each user you find the information whether he/she cancelled his/her subscription in the column <code>cancel</code>: 1 if cancelled, and 0 if not. Because other than <code>minutes</code>, <code>cancel</code> is a binary variable (it can only be 0 or 1), you need to apply a different form of regression: the logistic regression. There is lot of theory behind it, which we will not cover now. But feel free to read <a href="https://christophm.github.io/interpretable-ml-book/logistic.html">here</a> about it.</p>
+<p><a href="lin_vs_log.jpg" class="lightbox" data-gallery="quarto-lightbox-gallery-4"><img src="lin_vs_log.jpg" class="img-fluid"></a></p>
+<p>However, what you need to understand when using logistic regression is that the interpretation of the coefficients changes because you are acutally fitting</p>
+<p><span class="math display">\[
+logit(P(Y=1)) = logit(p) = log(\frac{p}{1-p}) = \beta_0 + \beta_1*D + \epsilon,
+\]</span></p>
+<p>which is different from the linear regression. We know relate a one-unit increase in <span class="math inline">\(D\)</span> (treated or not-treated) with an increase in <span class="math inline">\(logit(p)\)</span>. Therefore, you can read the coefficient as follows:</p>
+<p><strong>Increasing</strong> <span class="math inline">\(D\)</span> <strong>by 1 will result in a</strong> <span class="math inline">\(\beta_1\)</span> <strong>increase in</strong> <span class="math inline">\(logit(p)\)</span><strong>, which is approximately an</strong> <span class="math inline">\(exp(\beta_1)-1\)</span> <strong>increase in the odds of</strong> <span class="math inline">\(Y = 1\)</span><strong>.</strong></p>
+<p>Instead of <code><a href="https://rdrr.io/r/stats/lm.html">lm()</a></code> use the following command: <code>glm(formula, family=binomial(link='logit'), data)</code>, where you replace formula with the known syntax.</p>
+<ol type="1">
+<li><p>Fit the model and return the summary statistics.</p></li>
+<li><p>Interpret the coefficients.</p></li>
+</ol></section><section id="assignment" class="level2"><h2 class="anchored" data-anchor-id="assignment">Assignment</h2>
+<p>Accept the <strong>Week 3 - Assignment</strong> and follow the same steps as last week and as described in the organization chapter.</p>
+<p><em>Will be published 30 April 2024 20:00.</em></p>
 <div class="assignment">
 <p>…</p>
 </div>
@@ -674,7 +1240,31 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       &nbsp;
     </div>
   </div>
-</footer>
+</footer><script>var lightboxQuarto = GLightbox({"openEffect":"zoom","selector":".lightbox","closeEffect":"zoom","descPosition":"bottom","loop":false});
+window.onload = () => {
+  lightboxQuarto.on('slide_before_load', (data) => {
+    const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+    const href = trigger.getAttribute('href');
+    if (href !== null) {
+      const imgEl = window.document.querySelector(`a[href="${href}"] img`);
+      if (imgEl !== null) {
+        const srcAttr = imgEl.getAttribute("src");
+        if (srcAttr && srcAttr.startsWith("data:")) {
+          slideConfig.href = srcAttr;
+        }
+      }
+    } 
+  });
+
+  lightboxQuarto.on('slide_after_load', (data) => {
+    const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+    if (window.Quarto?.typesetMath) {
+      window.Quarto.typesetMath(slideNode);
+    }
+  });
+
+};
+          </script>
 
 
 </body></html>

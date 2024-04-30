@@ -308,7 +308,6 @@ window.Quarto = {
   <li><a href="#variance-of-a-conditional-expected-value" id="toc-variance-of-a-conditional-expected-value" class="nav-link" data-scroll-target="#variance-of-a-conditional-expected-value">Variance of a Conditional Expected Value</a></li>
   <li><a href="#covariance-and-correlation" id="toc-covariance-and-correlation" class="nav-link" data-scroll-target="#covariance-and-correlation">Covariance and Correlation</a></li>
   <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a></li>
-  <li><a href="#assignments" id="toc-assignments" class="nav-link" data-scroll-target="#assignments">Assignments</a></li>
   </ul></nav>
     </div>
 <!-- main -->
@@ -733,66 +732,6 @@ Note
 </div>
 </section><section id="conclusion" class="level1"><h1>Conclusion</h1>
 <p>Many of the rules and concepts that you have just learned will play a crucial in the upcoming chapters. Their understanding will guide you through and let you understand why we need to put a particular emphasis on causality, how we can isolate causal effects and build the foundation for many methods from our toolbox.</p>
-</section><section id="assignments" class="level1"><h1>Assignments</h1>
-<div class="assignment">
-<p>Load the table <code>random_vars.rds</code>. You can either</p>
-<ul>
-<li>run the command: <code>random_vars &lt;- readRDS("your_download_folder/random_vars.rds")</code>
-</li>
-<li>or find the file in the <code>Files</code> pane and select it.</li>
-</ul>
-<p>After you load the table, get an overview of what it contains with <code>View(random_vars)</code>.</p>
-<ol type="1">
-<li>For each variable, compute the following values. You can use the built-in functions or use the mathematical formulas.
-<ol type="1">
-<li>expected value</li>
-<li>variance</li>
-<li>standard deviation</li>
-</ol>
-</li>
-<li>Explain, if it makes sense to compare the standard deviations.</li>
-<li>Then, examine the relationship between both variables and compute:
-<ol type="1">
-<li>covariance</li>
-<li>correlation</li>
-</ol>
-</li>
-<li>What measure is easier to interpret? Please discuss your interpretation.</li>
-<li>Compute the conditional expected value for:
-<ol type="1">
-<li><span class="math inline">\(E[income|age &lt;= 18]\)</span></li>
-<li><span class="math inline">\(E[income|age \in [18, 65)]\)</span></li>
-<li><span class="math inline">\(E[income|age &gt;= 65]\)</span></li>
-</ol>
-</li>
-</ol>
-</div>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Tip
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>In the introduction you learned how to filter data. There are different ways, you could either use base R or <code>tidyverse</code>.</p>
-</div>
-</div>
-<div class="callout callout-style-default callout-warning callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Optional assignments!
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>As this is part of the optional section, you do not have to submit any solutions. But feel free to test your knowledge and understandy by solving the assignments.</p>
-</div>
-</div>
 
 
 </section><div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>

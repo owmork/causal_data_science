@@ -413,38 +413,3 @@ filtered = transpose(data).filter(function(corr_tbl) {
 # Conclusion
 
 Many of the rules and concepts that you have just learned will play a crucial in the upcoming chapters. Their understanding will guide you through and let you understand why we need to put a particular emphasis on causality, how we can isolate causal effects and build the foundation for many methods from our toolbox.
-
-# Assignments
-
-::: assignment
-Load the table `random_vars.rds`. You can either
-
--   run the command: `random_vars <- readRDS("your_download_folder/random_vars.rds")`
--   or find the file in the `Files` pane and select it.
-
-After you load the table, get an overview of what it contains with `View(random_vars)`.
-
-1.  For each variable, compute the following values. You can use the built-in functions or use the mathematical formulas.
-    1.  expected value
-    2.  variance
-    3.  standard deviation
-2.  Explain, if it makes sense to compare the standard deviations.
-3.  Then, examine the relationship between both variables and compute:
-    1.  covariance
-    2.  correlation
-4.  What measure is easier to interpret? Please discuss your interpretation.
-5.  Compute the conditional expected value for:
-    1.  $E[income|age <= 18]$
-    2.  $E[income|age \in [18, 65)]$
-    3.  $E[income|age >= 65]$
-:::
-
-::: callout-tip
-In the introduction you learned how to filter data. There are different ways, you could either use base R or `tidyverse`.
-:::
-
-::: callout-warning
-## Optional assignments!
-
-As this is part of the optional section, you do not have to submit any solutions. But feel free to test your knowledge and understandy by solving the assignments. 
-:::
