@@ -812,9 +812,7 @@ Tip
 <li><p>What is the intercept and what does it describe?</p></li>
 </ol>
 </li>
-</ol>
-<!-- --><ol start="3" type="1">
-<li>Calculate 90%, 95% and 99% confidence intervals for the treatment effect and compare them. Which intervals are larger? And what question do they answer?</li>
+<li><p>Calculate 90%, 95% and 99% confidence intervals for the treatment effect and compare them. Which intervals are larger? And what question do they answer?</p></li>
 </ol>
 <p>After one month, you are asked to take a different outcome into focus - the rate of subscription cancellations. For each user you find the information whether he/she cancelled his/her subscription in the column <code>cancel</code>: 1 if cancelled, and 0 if not. Because other than <code>minutes</code>, <code>cancel</code> is a binary variable (it can only be 0 or 1), you need to apply a different form of regression: the logistic regression. There is lot of theory behind it, which we will not cover now. But feel free to read <a href="https://christophm.github.io/interpretable-ml-book/logistic.html">here</a> about it.</p>
 <p><a href="lin_vs_log.jpg" class="lightbox" data-gallery="quarto-lightbox-gallery-4"><img src="lin_vs_log.jpg" class="img-fluid"></a></p>
@@ -823,16 +821,22 @@ Tip
 logit(P(Y=1)) = logit(p) = log(\frac{p}{1-p}) = \beta_0 + \beta_1*D + \epsilon,
 \]</span></p>
 <p>which is different from the linear regression. We know relate a one-unit increase in <span class="math inline">\(D\)</span> (treated or not-treated) with an increase in <span class="math inline">\(logit(p)\)</span>. Therefore, you can read the coefficient as follows:</p>
-<p><strong>Increasing</strong> <span class="math inline">\(D\)</span> <strong>by 1 will result in a</strong> <span class="math inline">\(\beta_1\)</span> <strong>increase in</strong> <span class="math inline">\(logit(p)\)</span><strong>, which is approximately an</strong> <span class="math inline">\(exp(\beta_1)-1\)</span> <strong>increase in the odds of</strong> <span class="math inline">\(Y = 1\)</span><strong>.</strong></p>
+<p><strong>Increasing</strong> <span class="math inline">\(D\)</span> <strong>by 1 will result in a</strong> <span class="math inline">\(\beta_1\)</span> <strong>increase in</strong> <span class="math inline">\(logit(p)\)</span><strong>, which is approximately an</strong> <span class="math inline">\((exp(\beta_1)-1)\)</span> % <strong>increase in the odds</strong> <span class="math inline">\(\frac{p}{1-p}\)</span><strong>.</strong></p>
 <p>Instead of <code><a href="https://rdrr.io/r/stats/lm.html">lm()</a></code> use the following command: <code>glm(formula, family=binomial(link='logit'), data)</code>, where you replace formula with the known syntax.</p>
 <ol type="1">
 <li><p>Fit the model and return the summary statistics.</p></li>
 <li><p>Interpret the coefficients.</p></li>
-</ol></section><section id="assignment" class="level2"><h2 class="anchored" data-anchor-id="assignment">Assignment</h2>
-<p>Accept the <strong>Week 3 - Assignment</strong> and follow the same steps as last week and as described in the organization chapter.</p>
-<p><em>Will be published 30 April 2024 20:00.</em></p>
+</ol>
+<p>Find here the <a href="../../../content/course_weeks/week_03/solution.R">solutions</a>.</p>
+</section><section id="assignment" class="level2"><h2 class="anchored" data-anchor-id="assignment">Assignment</h2>
 <div class="assignment">
-<p>…</p>
+<p>Accept the <a href="https://classroom.github.com/a/Fnvwjrn_"><strong>Week 3 - Assignment</strong></a> and follow the same steps as last week and as described in the organization chapter.</p>
+<ol type="1">
+<li><p>Imagine that there are cost associated with providing each user with this new algorithm. Your business colleague tells you, that from a business perspective, the introduction is only beneficial if users listen at least 5% more than before. Develop a hypothesis based on this information and test it.</p></li>
+<li><p>One advantage of A/B testing in software companies is the ability to monitor the experiment simultaneously. For the first three days after having started the experiment you check the numbers and compute the ATE. Simulate this by subsetting the data to include observations available after the first day, after the second day and after the third day. Do you notice any differences? If yes, what could be a possible explanation? Run the analysis for both outcomes, <code>minutes</code> and <code>cancel</code>. (Hint: you need to use the variable <code>log_in_day</code> which tells you at what day the users first logged in after the start of the experiment. Before that, we could not observe their behavior.)</p></li>
+<li><p>Compute conditional ATEs based on the day the users first logged into the application. (Please note, this is different to 2.) There are two different ways to compute the CATEs: you could subset the data and run the analysis for each condition or you could add a so-called interaction effect to your regression syntax by <code>y ~ x + x:interaction</code>, where interaction is the variable you to affect the treatment effect. Run the analysis for both outcomes, <code>minutes</code> and <code>cancel</code>.</p></li>
+<li><p>Your colleagues responsible for the development of the recommendation algorithm tell you that they ran an experiment prior to your experiment with a small number of Beta users. These users signed up to test a Beta version of your app where new features are tested before being released. Because your colleague received different results than you, he prefers to stick to his/her own estimates. Convince your colleague that your experiment returns more valid estimates. Use a DAG to do so.</p></li>
+</ol>
 </div>
 
 
@@ -1240,7 +1244,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       &nbsp;
     </div>
   </div>
-</footer><script>var lightboxQuarto = GLightbox({"openEffect":"zoom","selector":".lightbox","closeEffect":"zoom","descPosition":"bottom","loop":false});
+</footer><script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","loop":false,"descPosition":"bottom","selector":".lightbox","openEffect":"zoom"});
 window.onload = () => {
   lightboxQuarto.on('slide_before_load', (data) => {
     const { slideIndex, slideNode, slideConfig, player, trigger } = data;
