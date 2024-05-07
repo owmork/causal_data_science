@@ -64,7 +64,6 @@ Reading and printing the data, it's evident that each of the 10'000 rows represe
 
 ```{r}
 #| message: false
-#| echo: false
 
 library(tidyverse)
 
@@ -186,6 +185,7 @@ ggplot(prices, aes(y = sales_hat, x = price_hat)) +
 ```{r}
 #| eval: false
 
+# Naive model
 mod_naive <- ...
 summary(mod_naive)
 ```
@@ -198,8 +198,6 @@ summary(mod_naive)
 mod_naive <- lm(sales ~ price, data = prices)
 summary(mod_naive)
 ```
-
-ADD effect heterogeneity. non-linear models. conditional expectation -\> assumption: positivity
 
 ## Matching
 
@@ -308,7 +306,7 @@ summary(mod_1v1_atu)
 
 # ATE = p_T * ATT + p_C * ATC
 ATE <- weighted.mean(c(mod_1v1$coefficients[2], mod_1v1_atu$coefficients[2]), c(453, 547))
-ATE
+print(ATE)
 ```
 
 #### One vs. many matching
@@ -466,7 +464,7 @@ $$
 w_i = \frac{D_i}{\pi_i} + \frac{(1-D_i)}{(1-\pi_i)}
 $$
 
-where only one of the terms is always active as $D_i$ is either one or zero. $\_pi_i$ denotes the propensity. Now we should better understand what "inverse probability weighting" actually means. It weights each observation by its inverse of its treatment probability. Let's proceed to calculate this for our dataset.
+where only one of the terms is always active as $D_i$ is either one or zero. $\pi_i$ denotes the propensity. Now we should better understand what "inverse probability weighting" actually means. It weights each observation by its inverse of its treatment probability. Let's proceed to calculate this for our dataset.
 
 ***Q9. Given the formula, calculate the weights for each observation.***
 
