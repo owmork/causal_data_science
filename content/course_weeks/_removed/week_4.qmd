@@ -85,7 +85,12 @@ $$
 ***Q1. Assuming that all potential confounders are observed and in the table, estimate the treatment effect.***
 
 ```{r}
-#| code-fold: true
+# Basic OLS regression
+# ...
+```
+
+```{r}
+#| include: false
 # Basic OLS regression
 mod_ols <- lm(sales ~ price + rating + as.factor(weekday), data = prices)
 summary(mod_ols)
@@ -97,8 +102,8 @@ Following the Frisch--Waugh--Lovell theorem, you can decompose your regression i
 
 <div>
 
-1.  **Denoising:** run a regression of the form $Y_i = \beta_{Y0} + \mathbf{\beta_{Y \sim X}' X_i} + \epsilon_{Y_i \sim X_i}$ and extract the estimated residuals $\hat\epsilon_{Y_i \sim X_i}$.
-2.  **Debiasing:** run a regression of the form $D_i = \beta_{D0} + \mathbf{\beta_{D \sim X}' X_i} + \epsilon_{D_i \sim X_i}$ and extract the estimated residuals $\hat\epsilon_{D_i \sim X_i}$.
+1.  **Debiasing:** run a regression of the form $Y_i = \beta_{Y0} + \mathbf{\beta_{Y \sim X}' X_i} + \epsilon_{Y_i \sim X_i}$ and extract the estimated residuals $\hat\epsilon_{Y_i \sim X_i}$.
+2.  **Denoising:** run a regression of the form $D_i = \beta_{D0} + \mathbf{\beta_{D \sim X}' X_i} + \epsilon_{D_i \sim X_i}$ and extract the estimated residuals $\hat\epsilon_{D_i \sim X_i}$.
 3.  **Residual regression:** run a residual-on-residual regression of the form $\hat\epsilon_{Y_i \sim X_i} = \beta_D \hat\epsilon_{D_i \sim X_i} + \epsilon_i$ (no constant).
 
 </div>
@@ -113,7 +118,21 @@ Following the Frisch--Waugh--Lovell theorem, you can decompose your regression i
 :::
 
 ```{r}
-#| code-fold: true
+# Frisch–Waugh–Lovell Theorem: 3-step procedure
+
+# (1) Debiasing:
+# ...
+
+# (2) Denoising:
+# ...
+
+# (3) Residual regression
+# ...
+
+```
+
+```{r}
+#| include: false
 
 # Frisch–Waugh–Lovell Theorem: 3-step procedure
 
@@ -164,7 +183,16 @@ ggplot(prices, aes(y = sales_hat, x = price_hat)) +
 ***Q3. Compute the estimate that describes what is shown in the first plot.***
 
 ```{r}
-#| code-fold: true
+#| eval: false
+
+# Naive model
+mod_naive <- ...
+summary(mod_naive)
+```
+
+
+```{r}
+#| include: false
 
 # Naive estimate
 mod_naive <- lm(sales ~ price, data = prices)
@@ -214,7 +242,7 @@ match_1v1 <- matchit(
   method = "nearest",
   distance = "mahalanobis",
   ratio = 1,
-  replace = TRUE
+  replace = T
 )
 summary(match_1v1)
 ```
@@ -232,7 +260,15 @@ Now, we can simply run a regression. Please note, we only include the treatment 
 ***Q4. Run the estimation step of one-vs-one matching.***
 
 ```{r}
-#| code-fold: true
+#| eval: false
+
+# (2) Estimation
+mod_1v1 <- lm(...)
+summary(...)
+```
+
+```{r}
+#| include: false
 
 # (2) Estimation
 mod_1v1 <- lm(avg_purch ~ card, data = df_1v1, weights = weights)
@@ -242,7 +278,11 @@ summary(mod_1v1)
 ***Q5. Compute the $ATC$ (or: $ATU$) and the $ATE$.***
 
 ```{r}
-#| code-fold: true
+# ...
+```
+
+```{r}
+#| include: false
 
 # ATU:
 # (1) Matching
@@ -254,7 +294,7 @@ match_1v1_atu <- matchit(
   method = "nearest",
   distance = "mahalanobis",
   ratio = 1,
-  replace = TRUE
+  replace = T
 )
 summary(match_1v1_atu)
 # Use matched data
@@ -280,7 +320,19 @@ The R package `MatchIt` offers a wide range of matching methods and we only scra
 ***Q6. Run one-vs-many matching: find 3 matches for each the treated units.***
 
 ```{r}
-#| code-fold: true
+#| eval: false
+
+M <- 3
+
+# (1) Matching
+# ...
+
+# ...
+
+```
+
+```{r}
+#| include: false
 M <- 3
 
 # (1) Matching
@@ -292,7 +344,7 @@ match_1vM <- matchit(
   method = "nearest",
   distance = "mahalanobis",
   ratio = M,
-  replace = TRUE
+  replace = T
 )
 summary(match_1vM)
 
@@ -319,9 +371,19 @@ $$
 
 ***Q7. Run the matching using the propensity score as the matching variable. First, for each unit, compute the propensity of being treated.***
 
+```{r}
+#| eval: false
+
+# Estimate propensity to be treated
+mod_ps <- ...
+
+# Extract propensity score
+membership <- membership |> mutate(propensity = mod_ps$fitted) # or: mod_ps$fitted.values
+summary(membership$propensity)
+```
 
 ```{r}
-#| code-fold: true
+#| include: false
 
 # Estimate propensity to be treated
 mod_ps <- glm(
@@ -338,7 +400,20 @@ summary(membership$propensity)
 ***Q8. Having obtained the propensity score, use it as the matching variable.***
 
 ```{r}
-#| code-fold: true
+#| eval: false
+
+# (1) Matching
+# ...
+
+# Use matched data
+# ...
+
+# (2) Estimation
+# ...
+```
+
+```{r}
+#| include: false
 
 # (1) Matching
 match_ps <- matchit(
@@ -348,7 +423,7 @@ match_ps <- matchit(
   method = "nearest",
   distance = "mahalanobis",
   ratio = 1,
-  replace = TRUE
+  replace = T
 )
 summary(match_ps)
 
@@ -358,7 +433,7 @@ summary(match_ps)
 #   data = membership,
 #   estimand = "ATT",
 #   ratio = 1,
-#   replace = TRUE
+#   replace = T
 # )
 
 
@@ -394,7 +469,15 @@ where only one of the terms is always active as $D_i$ is either one or zero. $\p
 ***Q9. Given the formula, calculate the weights for each observation.***
 
 ```{r}
-#| code-fold: true
+#| eval: false
+
+# Calculate inverse probability weights
+membership <- membership |> mutate(ipw = ...)
+summary(membership$ipw)
+```
+
+```{r}
+#| include: false
 
 # Calculate inverse probability weights
 membership <- membership |> mutate(ipw = (card / propensity) + (1-card) / (1-propensity))
@@ -404,7 +487,15 @@ summary(membership$ipw)
 We need to provide these calculated weights as an additional argument to `lm()` using the weights argument.
 
 ```{r}
-#| code-fold: true
+#| eval: false
+
+# Regression with inverse probability weighting
+model_ipw <- lm(...)
+summary(...)
+```
+
+```{r}
+#| include: false
 
 # Regression with inverse probability weighting
 model_ipw <- lm(avg_purch ~ card, data = membership, weights = ipw)
@@ -439,25 +530,6 @@ model_ipw_int
 
 ::: assignment
 
-Accept the [**Week 4 - Assignment**](https://classroom.github.com/a/ZY_8r4KL) and follow the same steps as last week and as described in the organization chapter.
+Will be published at ~19:00.
 
-**Regression Adjustment**
-
-1.  When discussing your results from the regression adjustment for the sales of light jackets with your team, one of your analysts comes up with the idea to include temperature at the customers location into your analysis. Because you know the customer's location, you can check the temperature and add it to the data. Load the data `prices_new.rds`.
-    1.  Check whether adjusting for temperature improves your analysis using e.g. $R^2$ or hypothesis tests.
-    2.  Do you think the relationship between sales and temperature is linear? Or do you suspect a non-linear relationship? Please argue, whether including a quadratic term into the functional form by `y ~ x + I(x^2) + ...` makes sense?
-
-**Matching**
-
-For the next tasks, you are going to use the data set `health_program.rds`, which you should already be familiar with from the assignment [two weeks ago](http://localhost:4097/content/course_weeks/week_02/week_2.html#assignment). Identify the matching variables and perform
-
-2.  one-vs-one nearest-neighbor matching for $ATT$ and $ATU$,
-3.  and propensity score matching for $ATE$.
-4.  Look at the matched data frames and explain the different number of rows.
-
-**Inverse probability weighting**
-
-5.  Run a logistic regression to estimate the treatment propensity.
-6.  Add the propensity scores to your data frame, compute the inverse probability weights and sort your data frame by them by running `df |> arrange(var)` or `df |> arrange(-var)`. Take a look at the units with the highest or lowest weights. What do you notice? Use the logistic regression summary to argue why these observations have such high/low weights.
-7.  Run the regression based on the calculated weights and compare it to the estimates from the matching estimators.
 :::
