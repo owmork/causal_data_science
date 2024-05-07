@@ -1,0 +1,497 @@
+---
+title: "4 - Matching"
+linktitle: "4 - Matching"
+output:
+  blogdown::html_page:
+    toc: true
+menu:
+  example:
+    parent: Course content
+    weight: 1
+type: docs
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(fig.width = 6, fig.asp = 0.618, fig.align = "center", fig.retina = 3, out.width = "75%")
+set.seed(11)
+options("digits" = 2, "width" = 150)
+options(dplyr.summarise.inform = FALSE)
+
+# custom ggplot theme
+# colors from TUHH brand identitiy
+tuhh_colors <- c("#D0D0CE", "#00C1D4", "#FF4F4F", "#5AFFC5",
+                 "#FFDE36", "#143BFF", "#FF7E15", "#FFAEA2")
+
+# initialise theme
+cds_theme <- ggthemr::define_palette(
+  swatch = tuhh_colors,
+  gradient = c(lower = "#FFAEA2", upper = "#00C1D4"),
+  background = "#0F2231",
+  line = c("#FFFFFF", "#FFFFFF"),
+  text = c("#FFFFFF", "#FFFFFF"),
+  gridline = c(ggplot2::alpha("#D0D0CE", 0.2), 
+               ggplot2::alpha("#D0D0CE", 0.4))
+)
+
+# set theme
+ggthemr::ggthemr(cds_theme, type = "outer")
+
+# source custom DAG theme
+source(paste0(here::here(), "/code/dag_theme.R"))
+```
+
+## Slides & Recap
+
+[**Slides - Week 4**](../../../lecture/04.pdf)
+
+Last week, we discussed the significant advantage of employing a randomized treatment assignment: it allowed straightforward comparisons of group averages or the application of univariate linear regressions (i.e., with only one variable on the right-hand side), thereby easing statistical inference.
+
+However, what if the treatment isn't randomized? We've discovered that when developing our identification strategy, we must consider confounding variables and implement measures to control for them. How do we do this? In this chapter, you'll delve into (1) a regression-based approach, (2) a matching-based approach, and (3) a weighting-based approach to address this challenge.
+
+::: callout-tip
+There are many terms used to account for a confounder which are used interchangeably. Among other, depending on the perspective, you could "block a backdoor path", "condition on a confounder", "adjust for the confounder", or "control for the confounder".
+:::
+
+## Regression adjustment
+
+In this scenario, similar to the example from the first week, you're the owner of an online marketplace enterprise aiming to assist businesses on your platform with strategic pricing guidance. However, please recall that these businesses operate anonymously and independently determine their pricing, rendering the treatment non-randomized. Once more, our focus remains on a particular category of similar products: light jackets. While in the initial week, we denoted the treatment as being on sale, this time, we adopt a more precise approach, utilizing price --- a continuous variable - as the treatment.
+
+DOWNLOAD LINK. Potentially add temperature\^2 (light jacket e.g.). make rating more continous.
+
+Reading and printing the data, we see that each row represents an observation detailing the daily sales of a particular business with additional information such as the weekday and the product rating. In total, you collected 10'000 observations.
+
+Reading and printing the data, it's evident that each of the 10'000 rows represents an observation detailing the daily sales of a specific business, accompanied by supplementary information like the weekday and product rating.
+
+```{r}
+#| message: false
+#| echo: false
+
+library(tidyverse)
+prices <- readRDS("prices.rds")
+#prices <- readRDS("content/course_weeks/week_04/prices.rds")
+print(prices)
+```
+
+### Conditional outcome regression
+
+With the regression-based approach, we employ a multivariate linear regression that incorporates confounding variables. In essence, we estimates the treatment effect conditionally on covariates.
+
+$$
+\begin{align}
+Y_i &= \beta_0 + \beta_D D_i + \mathbf{\beta_{X}' X_i} + \epsilon_i \\
+\mathbb{E}[Y_i | T_i, \mathbf{X_i}] &= \beta_0 + \beta_D D_i + \mathbf{\beta_{X}' X_i}
+\end{align}
+$$ ***Q1. Assuming that all potential confounders are observed and in the table: how do you estimate the treatment effect?***
+
+```{r}
+#| include: false
+# Basic OLS regression
+mod1 <- lm(sales ~ price + rating + as.factor(weekday), data = prices)
+summary(mod1)
+```
+
+```{r}
+# Basic OLS regression
+# ...
+```
+
+### Frisch--Waugh--Lovell Theorem
+
+Following the Frisch--Waugh--Lovell theorem, you can decompose your regression into a three-stage process and obtain identical estimates. The idea behind this is to initially eliminate all variation in $D$ and $Y$ that can be explained by the covariates $X$. Subsequently, you account for the remaining variation in $Y$ using the remaining variation in $D$.
+
+<div>
+
+1.  **Debiasing:** run a regression of the form $Y_i = \beta_{Y0} + \mathbf{\beta_{Y \sim X}' X_i} + \epsilon_{Y_i \sim X_i}$ and extract the estimated residuals $\hat\epsilon_{Y_i \sim X_i}$.
+2.  **Denoising:** run a regression of the form $D_i = \beta_{D0} + \mathbf{\beta_{D \sim X}' X_i} + \epsilon_{D_i \sim X_i}$ and extract the estimated residuals $\hat\epsilon_{D_i \sim X_i}$.
+3.  **Residual regression:** run a residual-on-residual regression of the form $\hat\epsilon_{Y_i \sim X_i} = \beta_D \hat\epsilon_{D_i \sim X_i} + \epsilon_i$ (no constant).
+
+</div>
+
+***Q2. Use the three-step procedure as described above to obtain the estimate. Check that they are identical to the estimates obtained with `lm()`.***
+
+```{r}
+#| include: false
+
+# Frisch–Waugh–Lovell Theorem: 3- step procedure
+
+# (1) Debiasing:
+mod2_D <- lm(price ~ as.factor(weekday) + rating, prices)
+D_hat <- mod2_D$residuals
+
+# (2) Denoising:
+mod2_Y <- lm(sales ~ as.factor(weekday) + rating, prices)
+Y_hat <- mod2_Y$residuals
+
+# (3) Residual regression
+mod2 <- lm(Y_hat ~ 0 + D_hat)
+summary(mod2)
+```
+
+::: callout-tip
+**Hints:**
+
+-   When you run a model with `lm()`, residuals are automatically computed. You can access them by `model_name$residuals`. Residuals are the difference between the actual value and the value predicted by the model. By construction of the ordinary least square regression, residuals are zero on average.
+-   To run a model without a constant/intercept, use `y ~ 0 + ...`.
+:::
+
+```{r}
+# Frisch–Waugh–Lovell Theorem: 3- step procedure
+
+# (1) Debiasing:
+# ...
+
+# (2) Denoising:
+# ...
+
+# (3) Residual regression
+# ...
+
+```
+
+Let's visualize what we have done in the steps before and what the FWL theorem makes so intuitive. With the regression-based approach, we account for the confounders by remove variance in both $D$ and $Y$ due to $X$ and then, we perform a "clean" residual regression.
+
+When we would simply run a normal regression without any accounting for the confounder, we would obtain what is depicted here. There does not appear to be a relationship between price and sales.
+
+```{r}
+#| code-fold: true
+#| message: false
+
+# Plot
+ggplot(prices, aes(y = sales, x = price)) +
+  geom_point(alpha = .2) +
+  geom_smooth(method='lm')
+```
+
+However, when we do account for the confounders and regress the residual $\hat{Y}$ on the residual $\hat{D}$, we obtain what is expected: a negative correlation. Higher prices lead to fewer sales.
+
+```{r}
+#| code-fold: true
+#| message: false
+
+# Add residuals to data frame
+prices <- prices |> 
+  mutate(
+    sales_hat = Y_hat,
+    price_hat = D_hat
+    )
+
+# Plot
+ggplot(prices, aes(y = sales_hat, x = price_hat)) +
+  geom_point(alpha = .2) +
+  geom_smooth(method='lm')
+```
+
+***QX. Compute the estimate that describes what is shown in the first plot.***
+
+```{r}
+#| include: false
+
+# Naive estimate
+mod_naive <- lm(sales ~ price, data = prices)
+summary(mod_naive)
+```
+
+ADD effect heterogeneity. non-linear models. conditional expectation -\> assumption: positivity
+
+## Matching
+
+Imagine another situation. You are operating an online shop, and a year ago, introduced a plus membership aimed at binding customers and driving revenue growth. The plus memberships comes at a small cost for the customers, which is why not all of the customers subscribed. Now you want to examine whether binding customers by this membership program in fact increases your sales with subscribed customers. However, it's essential to consider potential confounding variables such as age, gender, or previous average purchase amounts.
+
+Each row in your dataset corresponds to a different customer, with accompanying demographic details, their average purchase sum before the introduction of the plus membership, their current average purchase, and an indication of their participation in the plus membership program.
+
+ADD DOWNLOAD LINK.
+
+```{r}
+# Read data and show
+membership <- readRDS("membership.rds")
+#membership <- readRDS("content/course_weeks/week_04/membership.rds")
+print(membership)
+```
+
+Now, we'll delve into the matching-based approach, an alternative to regression for addressing backdoor bias. The concept is to find and match treated and non-treated units with similar or identical covariate values. This method aims to replicate the conditions of a randomized experiment, assuming we have observed all confounding variables. Matching encompasses various techniques aimed at equalizing or balancing the distribution of covariates between the treatment and control groups. Essentially, the objective is to compare "apples to apples" and ensure that treatment and control groups are as similar as possible, except for the treatment variable.
+
+In R, there are several packages available to facilitate matching-based methods, one of which is the `Matching` package. You'll need to install this package first and then load it.
+
+```{r}
+#| eval: false
+install.packages("Matching")
+```
+
+### Nearest neighbor matching
+
+By enforcing treatment and control group to have little variation in the matching variables, we close the backdoors. When the backdoor variable does not vary or varies only very little, it cannot induce changes in treatment and outcome. So, when we suppress this variation in the backdoor variable, we can interpret the effect from treatment to outcome as causal. So let's first take a look at the covariates in the respective group prior to matching.
+
+```{r}
+#| message: false
+
+library(Matching)
+balance_pre <- MatchBalance(card ~ age + sex + pre_avg_purch, data = membership)
+```
+
+ADD Plot squares to see common support (different sizes of squares to show trade-off) Why so many ties
+
+#### One-vs-one matching
+
+We start by performing a one-vs-one nearest-neighbor matching for the treated units, which means, for each treated unit we find one control unit with the highest resemblance based on the covariates.
+
+```{r}
+#| include: false
+
+# 1 vs. 1 matching
+mod_nn_1v1 = Match(
+  Y = membership$avg_purch,
+  Tr = membership$card,
+  X = membership[, c("pre_avg_purch", "age", "sex")],
+  M = 1,
+  ties = FALSE
+  )
+summary(mod_nn_1v1)
+
+match_1v1 <- MatchIt::matchit(
+  card ~ pre_avg_purch + age + sex,
+  data = membership,
+  method = "nearest",
+  ratio = 1,
+  replace = T
+)
+
+# Use matched data
+df_nn <- MatchIt::match.data(match_1v1)
+
+# (2) Estimation
+matchit_mod_1v1 <- lm(avg_purch ~ card, data = df_nn, weights = weights)
+summary(matchit_mod_1v1)
+
+```
+
+***Q3. Run the one-vs-one matching.***
+
+```{r}
+#| eval: false
+
+# One-vs-one matching
+mod_nn_1v1 = Match(
+  Y = membership$avg_purch, # outcome
+  Tr = .., # treatment
+  X = ..., # matching variable(s)
+  M = ..., # number of matches to find
+  ties = FALSE
+  )
+summary(mod_nn_1v1)
+```
+
+```{r}
+#| eval: false
+
+# One-vs-one matching
+mod_nn_1v1 = Match(
+  Y = membership$avg_purch, # outcome
+  Tr = .., # treatment
+  X = ..., # matching variable(s)
+  M = ..., # number of matches to find
+  ties = FALSE
+  )
+summary(mod_nn_1v1)
+```
+
+
+Let's check the balance of covariate after matching. When treatment and untreated group are comparable in terms of covariates, we gain confidence in the validity of our estimates.
+
+```{r}
+#| warning: false
+
+MatchBalance(card ~ age + sex + pre_avg_purch, match.out = mod_nn_1v1, data = membership)
+```
+
+#### One vs. many matching
+
+Sometimes, you want to match more than just one unit. For example, imagine that you have relatively few treated units but a large amount of untreated units. To leverage all the information contained in the untreated units, matching more units might increase the validity and precision of your estimate.
+
+***Q4. Run one-vs-many matching: select a different value for the numbers of matched units.***
+
+```{r}
+#| include: false
+M <- 3
+
+# One-vs-many matching
+mod_nn_1vM <- Match(
+  Y = membership$avg_purch,
+  Tr = membership$card,
+  X = membership[, c("pre_avg_purch", "age", "sex")],
+  M = M,
+  BiasAdjust = TRUE,
+  ties = FALSE
+  )
+summary(mod_nn_1vM)
+```
+
+```{r}
+#| eval: false
+
+M <- ...
+
+mod_nn_1vM <- ...
+
+```
+
+### Propensity score matching
+
+When employing approaches based on covariate-matching, you quickly run into the curse of dimensionality as your number of covariates grows. As the dimensionality grows, it becomes increasingly difficult to find suitable matches, particularly in high-dimensional spaces where finding matches can be improbable.
+
+Consider a scenario with two covariates, each with five distinct values. In this case, observations fall into one of 25 cells defined by the covariate value grid. Now, envision ten covariates with three different values each, creating already approximately 60,000 cells. This significantly boosts the likelihood of many cells being populated by only one or zero observations, making it impossible to find matches for numerous observations.
+
+One approach to tackle this issue is the use of propensity scores. Propensity score represents the predicted probability of treatment assignment based on matching variables. In our case, we utilize age, gender, and previous average purchases to predict the likelihood of a customer participating in the membership program. Specifically, customers who spend more on average are expected to have a higher likelihood of participation. To model this relationship, we employ logistic regression, a technique that predicts outcomes between zero and one, generating the propensity score.
+
+$$
+\pi_i = PS(\mathbf{X_i}) = P(D_i = 1 | \mathbf{X_i})
+$$
+
+***Q5. Run the matching using the propensity score as the matching variable. First, for each unit, compute the propensity of being treated.***
+
+```{r}
+#| include: false
+
+# Estimate propensity to be treated
+mod_ps <- glm(
+  card ~ pre_avg_purch + age + sex,
+  family = binomial(link = 'logit'), 
+  data = membership
+  )
+
+# Extract propensity score
+membership <- membership |> mutate(propensity = mod_ps$fitted) # or: mod_ps$fitted.values
+summary(membership$propensity)
+```
+
+```{r}
+#| eval: false
+
+# Estimate propensity to be treated
+mod_ps <- ...
+
+# Extract propensity score
+membership <- membership |> mutate(propensity = mod_ps$fitted) # or: mod_ps$fitted.values
+summary(membership$propensity)
+```
+
+***Q6. Having obtained the propensity score, use it as the matching variable.***
+
+```{r}
+#| include: false
+
+# Use propensity scores as matching variable
+mod_psm <- Match(
+  Y = membership$avg_purch,
+  Tr = membership$card,
+  X = membership$propensity,
+  BiasAdjust = TRUE,
+  estimand = "ATE"
+  )
+summary(mod_psm)
+```
+
+```{r}
+#| eval: false
+
+# Use propensity scores as matching variable
+mod_psm <- ...
+```
+
+***Q7. Compare the balance for the propensity score before and after matching.***
+
+```{r}
+#| include: false
+MatchBalance(card ~ propensity, match.out = mod_psm, data = membership, nboots = 500)
+```
+
+```{r}
+# Balance of the propensity score before and after matching
+# ...
+```
+
+It's important to note that while propensity score matching effectively mitigates the curse of dimensionality, a fundamental issue arises: having the same propensity score does not guarantee that observations share identical covariate values. Conversely, identical covariate values do imply the same propensity score. This inherent asymmetry raises concerns among prominent statisticians, leading to criticism of propensity score matching as a robust identification strategy.[^1]
+
+[^1]: https://gking.harvard.edu/publications/why-propensity-scores-should-not-be-used-formatching
+
+## Inverse probability weighting
+
+### Step-by-step approach
+
+Instead inverse probability weighting (IPW) has proven to be a more precise method than matching approaches, particularly when the sample is large enough. So what do we do with the probability/propensity scores in IPW? We use the propensity score of an observation unit to increase or decrease its weights and thereby make some observations more important than others. The weight obtains as
+
+$$
+w_i = \frac{D_i}{\pi_i} + \frac{(1-D_i)}{(1-\pi_i)}
+$$
+
+where only one of the terms is always active as $D_i$ is either one or zero. $\_pi_i$ denotes the propensity. Now we should better understand what "inverse probability weighting" actually means. It weights each observation by its inverse of its treatment probability. Let's proceed to calculate this for our dataset.
+
+***Q8. Given the formula, calculate the weights for each observation.***
+
+```{r}
+#| include: false
+
+# Calculate inverse probability weights
+membership <- membership |> mutate(ipw = (card / propensity) + (1-card) / (1-propensity))
+summary(membership$ipw)
+```
+
+```{r}
+#| eval: false
+
+# Calculate inverse probability weights
+membership <- membership |> mutate(ipw = ...)
+summary(membership$ipw)
+```
+
+***Q9. Order the data to see the observations with the largest and smallest weights. What do you notice?***
+
+```{r}
+# Lowest weights
+membership |> arrange(ipw) |> head()
+```
+
+```{r}
+# Highest weights
+membership |> arrange(-ipw) |> head()
+```
+
+We need to provide these calculated weights as an additional argument to `lm()` using the weights argument.
+
+```{r}
+# Regression with inverse probability weighting
+model_ipw <- lm(avg_purch ~ card, data = membership, weights = ipw)
+summary(model_ipw)
+```
+
+### Integrated approach
+
+For demonstration and learning purpose, we split the procedure in two steps but there are external packages which combine both steps, e.g. the `causalweight` package and the function `treatweight()`.
+
+```{r}
+#| eval: false
+install.packages("causalweight")
+```
+
+```{r}
+#| message: false
+#| warning: false
+
+library(causalweight)
+
+model_ipw_int <- treatweight(
+  y = membership$avg_purch,
+  d = membership$card,
+  x = membership[, c("pre_avg_purch", "age")], 
+)
+model_ipw_int
+```
+
+## Assignment
+
+Coming soon.
+
+::: assignment
+...
+:::

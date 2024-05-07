@@ -17,6 +17,40 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 <script src="../../../site_libs/quarto-nav/quarto-nav.js"></script>
@@ -38,7 +72,10 @@ ul.task-list li input[type="checkbox"] {
 <script src="../../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="../../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="dark">
-<script src="../../../site_libs/quarto-contrib/iconify-1.0.7/iconify-icon.min.js"></script><script id="quarto-search-options" type="application/json">{
+<script src="../../../site_libs/quarto-contrib/iconify-1.0.7/iconify-icon.min.js"></script>
+<script src="../../../site_libs/quarto-contrib/glightbox/glightbox.min.js"></script>
+<link href="../../../site_libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
+<link href="../../../site_libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet"><script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
   "collapse-after": 3,
@@ -65,7 +102,32 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script><link href="../../../site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet">
-<script src="../../../site_libs/pagedtable-1.1/js/pagedtable.js"></script><link rel="stylesheet" href="../../../styles.css">
+<script src="../../../site_libs/pagedtable-1.1/js/pagedtable.js"></script><script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script><script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script><script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script><link rel="stylesheet" href="../../../styles.css">
 </head>
 <body class="nav-sidebar docked nav-fixed">
 
@@ -239,7 +301,27 @@ ul.task-list li input[type="checkbox"] {
    
   <ul>
 <li><a href="#slides-recap" id="toc-slides-recap" class="nav-link active" data-scroll-target="#slides-recap">Slides &amp; Recap</a></li>
-  <li><a href="#practical-example" id="toc-practical-example" class="nav-link" data-scroll-target="#practical-example">Practical example</a></li>
+  <li>
+<a href="#regression-adjustment" id="toc-regression-adjustment" class="nav-link" data-scroll-target="#regression-adjustment">Regression adjustment</a>
+  <ul class="collapse">
+<li><a href="#conditional-outcome-regression" id="toc-conditional-outcome-regression" class="nav-link" data-scroll-target="#conditional-outcome-regression">Conditional outcome regression</a></li>
+  <li><a href="#frischwaughlovell-theorem" id="toc-frischwaughlovell-theorem" class="nav-link" data-scroll-target="#frischwaughlovell-theorem">Frisch–Waugh–Lovell Theorem</a></li>
+  </ul>
+</li>
+  <li>
+<a href="#matching" id="toc-matching" class="nav-link" data-scroll-target="#matching">Matching</a>
+  <ul class="collapse">
+<li><a href="#nearest-neighbor-matching" id="toc-nearest-neighbor-matching" class="nav-link" data-scroll-target="#nearest-neighbor-matching">Nearest neighbor matching</a></li>
+  <li><a href="#propensity-score-matching" id="toc-propensity-score-matching" class="nav-link" data-scroll-target="#propensity-score-matching">Propensity score matching</a></li>
+  </ul>
+</li>
+  <li>
+<a href="#inverse-probability-weighting" id="toc-inverse-probability-weighting" class="nav-link" data-scroll-target="#inverse-probability-weighting">Inverse probability weighting</a>
+  <ul class="collapse">
+<li><a href="#step-by-step-approach" id="toc-step-by-step-approach" class="nav-link" data-scroll-target="#step-by-step-approach">Step-by-step approach</a></li>
+  <li><a href="#integrated-approach" id="toc-integrated-approach" class="nav-link" data-scroll-target="#integrated-approach">Integrated approach</a></li>
+  </ul>
+</li>
   <li><a href="#assignment" id="toc-assignment" class="nav-link" data-scroll-target="#assignment">Assignment</a></li>
   </ul></nav>
     </div>
@@ -260,17 +342,375 @@ ul.task-list li input[type="checkbox"] {
 
 
 </header><section id="slides-recap" class="level2"><h2 class="anchored" data-anchor-id="slides-recap">Slides &amp; Recap</h2>
-<p>Coming soon.</p>
-</section><section id="practical-example" class="level2"><h2 class="anchored" data-anchor-id="practical-example">Practical example</h2>
-<p>Coming soon.</p>
-</section><section id="assignment" class="level2"><h2 class="anchored" data-anchor-id="assignment">Assignment</h2>
-<p>Coming soon.</p>
+<p><a href="../../../lecture/04.pdf"><strong>Slides - Week 4</strong></a></p>
+<p>Last week, we discussed the significant advantage of employing a randomized treatment assignment: it allowed straightforward comparisons of group averages or the application of univariate linear regressions (i.e., with only one variable on the right-hand side), thereby easing statistical inference.</p>
+<p>However, what if the treatment isn’t randomized? We’ve discovered that when developing our identification strategy, we must consider confounding variables and implement measures to control for them. How do we do this? In this chapter, you’ll delve into (1) a regression-based approach, (2) a matching-based approach, and (3) a weighting-based approach to address this challenge.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>There are many terms used to account for a confounder which are used interchangeably. Among other, depending on the perspective, you could “block a backdoor path”, “condition on a confounder”, “adjust for the confounder”, or “control for the confounder”.</p>
+</div>
+</div>
+</section><section id="regression-adjustment" class="level2"><h2 class="anchored" data-anchor-id="regression-adjustment">Regression adjustment</h2>
+<p>In this scenario, similar to the example from the first week, you’re the owner of an online marketplace enterprise aiming to assist businesses on your platform with strategic pricing guidance. However, please recall that these businesses operate anonymously and independently determine their pricing, rendering the treatment non-randomized. Once more, our focus remains on a particular category of similar products: light jackets. While in the initial week, we denoted the treatment as being on sale, this time, we adopt a more precise approach, utilizing price — a continuous variable - as the treatment.</p>
+<p><a href="https://cloud.tuhh.de/index.php/s/3iq3LZoE57cZrkf">Downloading</a>, reading and printing the data, we see that each row represents an observation detailing the daily sales of a particular business with additional information such as the weekday and the product rating. In total, you collected 10’000 observations.</p>
+<p>Reading and printing the data, it’s evident that each of the 10’000 rows represents an observation detailing the daily sales of a specific business, accompanied by supplementary information like the weekday and product rating.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 10,000 × 6
+   weekday rating price sales sales_hat price_hat
+     &lt;int&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;int&gt;     &lt;dbl&gt;     &lt;dbl&gt;
+ 1       4    4    26.5    37     0.501  -2.45   
+ 2       3    4.2  31      39    -7.66    1.82   
+ 3       1    4    30      63    -8.04   -0.00470
+ 4       7    3.6  28.6    56   -14.8    -1.03   
+ 5       3    4    28.4    26   -13.2    -0.566  
+ 6       4    4.8  30.2    38    -2.53    0.469  
+ 7       5    4.6  29      45     2.13   -0.568  
+ 8       5    4.8  29.7    41     0.137  -0.0557 
+ 9       7    4.3  29.7    43   -21.4    -0.590  
+10       4    4    29.1    48     3.79    0.131  
+# ℹ 9,990 more rows</code></pre>
+</div>
+</div>
+<section id="conditional-outcome-regression" class="level3"><h3 class="anchored" data-anchor-id="conditional-outcome-regression">Conditional outcome regression</h3>
+<p>With the regression-based approach, we employ a multivariate linear regression that incorporates confounding variables. In essence, we estimates the treatment effect conditionally on covariates.</p>
+<p><span class="math display">\[
+\begin{align}
+Y_i &amp;= \beta_0 + \beta_D D_i + \mathbf{\beta_{X}' X_i} + \epsilon_i \\
+\mathbb{E}[Y_i | T_i, \mathbf{X_i}] &amp;= \beta_0 + \beta_D D_i + \mathbf{\beta_{X}' X_i}
+\end{align}
+\]</span></p>
+<p><strong><em>Q1. Assuming that all potential confounders are observed and in the table, estimate the treatment effect.</em></strong></p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Basic OLS regression</span></span>
+<span><span class="co"># ...</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section><section id="frischwaughlovell-theorem" class="level3"><h3 class="anchored" data-anchor-id="frischwaughlovell-theorem">Frisch–Waugh–Lovell Theorem</h3>
+<p>Following the Frisch–Waugh–Lovell theorem, you can decompose your regression into a three-stage process and obtain identical estimates. The idea behind this is to initially eliminate all variation in <span class="math inline">\(D\)</span> and <span class="math inline">\(Y\)</span> that can be explained by the covariates <span class="math inline">\(X\)</span>. Subsequently, you account for the remaining variation in <span class="math inline">\(Y\)</span> using the remaining variation in <span class="math inline">\(D\)</span>.</p>
+<div>
+<ol type="1">
+<li>
+<strong>Debiasing:</strong> run a regression of the form <span class="math inline">\(Y_i = \beta_{Y0} + \mathbf{\beta_{Y \sim X}' X_i} + \epsilon_{Y_i \sim X_i}\)</span> and extract the estimated residuals <span class="math inline">\(\hat\epsilon_{Y_i \sim X_i}\)</span>.</li>
+<li>
+<strong>Denoising:</strong> run a regression of the form <span class="math inline">\(D_i = \beta_{D0} + \mathbf{\beta_{D \sim X}' X_i} + \epsilon_{D_i \sim X_i}\)</span> and extract the estimated residuals <span class="math inline">\(\hat\epsilon_{D_i \sim X_i}\)</span>.</li>
+<li>
+<strong>Residual regression:</strong> run a residual-on-residual regression of the form <span class="math inline">\(\hat\epsilon_{Y_i \sim X_i} = \beta_D \hat\epsilon_{D_i \sim X_i} + \epsilon_i\)</span> (no constant).</li>
+</ol>
+</div>
+<p><strong><em>Q2. Use the three-step procedure as described above to obtain the estimate. Check that they are identical to the estimates obtained with <code><a href="https://rdrr.io/r/stats/lm.html">lm()</a></code>.</em></strong></p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Hints:</strong></p>
+<ul>
+<li>When you run a model with <code><a href="https://rdrr.io/r/stats/lm.html">lm()</a></code>, residuals are automatically computed. You can access them by <code>model_name$residuals</code>. Residuals are the difference between the actual value and the value predicted by the model. By construction of the ordinary least square regression, residuals are zero on average.</li>
+<li>To run a model without a constant/intercept, use <code>y ~ 0 + ...</code>.</li>
+</ul>
+</div>
+</div>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Frisch–Waugh–Lovell Theorem: 3-step procedure</span></span>
+<span></span>
+<span><span class="co"># (1) Debiasing:</span></span>
+<span><span class="co"># ...</span></span>
+<span></span>
+<span><span class="co"># (2) Denoising:</span></span>
+<span><span class="co"># ...</span></span>
+<span></span>
+<span><span class="co"># (3) Residual regression</span></span>
+<span><span class="co"># ...</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Let’s visualize what we have done in the steps before and what the FWL theorem makes so intuitive. With the regression-based approach, we account for the confounders by remove variance in both <span class="math inline">\(D\)</span> and <span class="math inline">\(Y\)</span> due to <span class="math inline">\(X\)</span> and then, we perform a “clean” residual regression.</p>
+<p>When we would simply run a normal regression without any accounting for the confounder, we would obtain what is depicted here. There does not appear to be a relationship between price and sales.</p>
+<div class="cell" data-layout-align="center">
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Plot</span></span>
+<span><span class="fu">ggplot</span><span class="op">(</span><span class="va">prices</span>, <span class="fu">aes</span><span class="op">(</span>y <span class="op">=</span> <span class="va">sales</span>, x <span class="op">=</span> <span class="va">price</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">geom_point</span><span class="op">(</span>alpha <span class="op">=</span> <span class="fl">.2</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">geom_smooth</span><span class="op">(</span>method<span class="op">=</span><span class="st">'lm'</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">labs</span><span class="op">(</span>x <span class="op">=</span> <span class="st">"Price (X)"</span>, y <span class="op">=</span> <span class="st">"Sales (Y)"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><a href="week_4_files/figure-html/unnamed-chunk-6-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1"><img src="week_4_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:75.0%"></a></p>
+</figure>
+</div>
+</div>
+</div>
+<p>However, when we do account for the confounders and regress the residual <span class="math inline">\(\hat{Y}\)</span> on the residual <span class="math inline">\(\hat{D}\)</span>, we obtain what is expected: a negative correlation. Higher prices lead to fewer sales.</p>
+<div class="cell" data-layout-align="center">
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Add residuals to data frame</span></span>
+<span><span class="va">prices</span> <span class="op">&lt;-</span> <span class="va">prices</span> <span class="op">|&gt;</span> <span class="fu">mutate</span><span class="op">(</span>sales_hat <span class="op">=</span> <span class="va">Y_hat</span>, price_hat <span class="op">=</span> <span class="va">D_hat</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Plot</span></span>
+<span><span class="fu">ggplot</span><span class="op">(</span><span class="va">prices</span>, <span class="fu">aes</span><span class="op">(</span>y <span class="op">=</span> <span class="va">sales_hat</span>, x <span class="op">=</span> <span class="va">price_hat</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">geom_point</span><span class="op">(</span>alpha <span class="op">=</span> <span class="fl">.2</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">geom_smooth</span><span class="op">(</span>method<span class="op">=</span><span class="st">'lm'</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">labs</span><span class="op">(</span>x <span class="op">=</span> <span class="st">"Price residuals (X_hat)"</span>, y <span class="op">=</span> <span class="st">"Sales residuals (Y_hat)"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><a href="week_4_files/figure-html/unnamed-chunk-7-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2"><img src="week_4_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:75.0%"></a></p>
+</figure>
+</div>
+</div>
+</div>
+<p><strong><em>Q3. Compute the estimate that describes what is shown in the first plot.</em></strong></p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mod_naive</span> <span class="op">&lt;-</span> <span class="va">...</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">mod_naive</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>ADD effect heterogeneity. non-linear models. conditional expectation -&gt; assumption: positivity</p>
+</section></section><section id="matching" class="level2"><h2 class="anchored" data-anchor-id="matching">Matching</h2>
+<p>Imagine another situation. You are operating an online shop, and a year ago, introduced a plus membership aimed at binding customers and driving revenue growth. The plus memberships comes at a small cost for the customers, which is why not all of the customers subscribed. Now you want to examine whether binding customers by this membership program in fact increases your sales with subscribed customers. However, it’s essential to consider potential confounding variables such as age, gender, or previous average purchase amounts.</p>
+<p>Each row in your <a href="https://cloud.tuhh.de/index.php/s/N85C6xAerg7SaE9">dataset</a> corresponds to a different customer, with accompanying demographic details, their average purchase sum before the introduction of the plus membership, their current average purchase, and an indication of their participation in the plus membership program.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Read data and show</span></span>
+<span><span class="va">membership</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html">readRDS</a></span><span class="op">(</span><span class="st">"membership.rds"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">membership</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1,000 × 5
+     age   sex pre_avg_purch  card avg_purch
+   &lt;dbl&gt; &lt;int&gt;         &lt;dbl&gt; &lt;int&gt;     &lt;dbl&gt;
+ 1  31.7     0          22.4     1    47.2  
+ 2  41.5     1          32.5     0    72.7  
+ 3  23.2     0          31.5     1    57.4  
+ 4  67.1     1          47.5     1    87.8  
+ 5  27.4     1          30.3     1    72.5  
+ 6  53.7     1          30.8     1    54.0  
+ 7  40.2     0          37.7     0    10.2  
+ 8  26.7     0          25.5     1    42.0  
+ 9  28.7     0          26.0     0     0.561
+10  35.2     1          46.5     1    70.0  
+# ℹ 990 more rows</code></pre>
+</div>
+</div>
+<p>Now, we’ll delve into the matching-based approach, an alternative to regression for addressing backdoor bias. The concept is to find and match treated and non-treated units with similar or identical covariate values. This method aims to replicate the conditions of a randomized experiment, assuming we have observed all confounding variables. Matching encompasses various techniques aimed at equalizing or balancing the distribution of covariates between the treatment and control groups. Essentially, the objective is to compare “apples to apples” and ensure that treatment and control groups are as similar as possible, except for the treatment variable.</p>
+<p>In R, there are several packages available to facilitate matching-based methods, one of which is the <code>MatchIt</code> package. You’ll need to install this package first and then load it.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"MatchIt"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="nearest-neighbor-matching" class="level3"><h3 class="anchored" data-anchor-id="nearest-neighbor-matching">Nearest neighbor matching</h3>
+<p>By enforcing treatment and control group to have little variation in the matching variables, we close the backdoors. When the backdoor variable does not vary or varies only very little, it cannot induce changes in treatment and outcome. So, when we suppress this variation in the backdoor variable, we can interpret the effect from treatment to outcome as causal.</p>
+<section id="one-vs-one-matching" class="level4"><h4 class="anchored" data-anchor-id="one-vs-one-matching">One-vs-one matching</h4>
+<p>The procedure consists of two steps, matching and estimation. Let’s start with a one-vs-one matching. Because, as our estimand, we specify <span class="math inline">\(ATT\)</span>, the average treatment effect on the treatment group, we find for each treated unit an untreated unit with the highest resemblance regarding the matching variables. To retrieve the <span class="math inline">\(ATC\)</span>, the average effect on the control group (sometimes also called <span class="math inline">\(ATU\)</span>), we would find a treated unit for each untreated unit. Using the <code><a href="https://rdrr.io/r/base/summary.html">summary()</a></code> function, we can check how well the matching works in terms of the covariate balance across the groups.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://kosukeimai.github.io/MatchIt/">MatchIt</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># (1) Matching</span></span>
+<span><span class="co"># 1 vs. 1 matching</span></span>
+<span><span class="va">match_1v1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://kosukeimai.github.io/MatchIt/reference/matchit.html">matchit</a></span><span class="op">(</span></span>
+<span>  <span class="va">card</span> <span class="op">~</span> <span class="va">pre_avg_purch</span> <span class="op">+</span> <span class="va">age</span> <span class="op">+</span> <span class="va">sex</span>,</span>
+<span>  data <span class="op">=</span> <span class="va">membership</span>,</span>
+<span>  estimand <span class="op">=</span> <span class="st">"ATT"</span>,</span>
+<span>  method <span class="op">=</span> <span class="st">"nearest"</span>,</span>
+<span>  distance <span class="op">=</span> <span class="st">"mahalanobis"</span>,</span>
+<span>  ratio <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  replace <span class="op">=</span> <span class="cn">T</span></span>
+<span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">match_1v1</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+matchit(formula = card ~ pre_avg_purch + age + sex, data = membership, 
+    method = "nearest", distance = "mahalanobis", estimand = "ATT", 
+    replace = T, ratio = 1)
+
+Summary of Balance for All Data:
+              Means Treated Means Control Std. Mean Diff. Var. Ratio eCDF Mean eCDF Max
+pre_avg_purch         39.06          34.0           0.431        1.1     0.121    0.194
+age                   43.39          39.0           0.307        1.1     0.079    0.137
+sex                    0.52           0.5           0.035          .     0.017    0.017
+
+Summary of Balance for Matched Data:
+              Means Treated Means Control Std. Mean Diff. Var. Ratio eCDF Mean eCDF Max Std. Pair Dist.
+pre_avg_purch         39.06         38.80           0.023        1.1     0.007    0.026           0.091
+age                   43.39         43.09           0.021        1.1     0.008    0.029           0.098
+sex                    0.52          0.52           0.000          .     0.000    0.000           0.000
+
+Sample Sizes:
+              Control Treated
+All               547     453
+Matched (ESS)     210     453
+Matched           288     453
+Unmatched         259       0
+Discarded           0       0</code></pre>
+</div>
+</div>
+<p>The next step, the estimation, we will perform using the known <code><a href="https://rdrr.io/r/stats/lm.html">lm()</a></code> command. But we’ll need the matched data which includes the matched rows and the corresponding weights.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Use matched data</span></span>
+<span><span class="va">df_1v1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://kosukeimai.github.io/MatchIt/reference/match.data.html">match.data</a></span><span class="op">(</span><span class="va">match_1v1</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">df_1v1</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 741 × 6
+     age   sex pre_avg_purch  card avg_purch weights
+   &lt;dbl&gt; &lt;int&gt;         &lt;dbl&gt; &lt;int&gt;     &lt;dbl&gt;   &lt;dbl&gt;
+ 1  31.7     0          22.4     1      47.2   1    
+ 2  41.5     1          32.5     0      72.7   1.27 
+ 3  23.2     0          31.5     1      57.4   1    
+ 4  67.1     1          47.5     1      87.8   1    
+ 5  27.4     1          30.3     1      72.5   1    
+ 6  53.7     1          30.8     1      54.0   1    
+ 7  40.2     0          37.7     0      10.2   0.636
+ 8  26.7     0          25.5     1      42.0   1    
+ 9  35.2     1          46.5     1      70.0   1    
+10  21.8     0          35.7     1      45.5   1    
+# ℹ 731 more rows</code></pre>
+</div>
+</div>
+<p>Now, we can simply run a regression. Please note, we only include the treatment variable as a predictor, because we closed the backdoor path in the matching step.</p>
+<p><strong><em>Q4. Run the estimation step of one-vs-one matching.</em></strong></p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># (2) Estimation</span></span>
+<span><span class="va">mod_1v1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><strong><em>Q5. Compute the <span class="math inline">\(ATC\)</span> (or: <span class="math inline">\(ATU\)</span>) and the <span class="math inline">\(ATE\)</span>.</em></strong></p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># ...</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section><section id="one-vs.-many-matching" class="level4"><h4 class="anchored" data-anchor-id="one-vs.-many-matching">One vs.&nbsp;many matching</h4>
+<p>Sometimes, you want to match more than just one unit. For example, imagine that you have relatively few treated units but a large amount of untreated units. To leverage all the information contained in the untreated units, matching more units might increase the validity and precision of your estimate.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The R package <code>MatchIt</code> offers a wide range of matching methods and we only scratch the surface of what is possible. Feel free to have a look at the <a href="https://kosukeimai.github.io/MatchIt/reference/matchit.html">documentation</a> for further information.</p>
+</div>
+</div>
+<p><strong><em>Q6. Run one-vs-many matching: find 3 matches for each the treated units.</em></strong></p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">M</span> <span class="op">&lt;-</span> <span class="fl">3</span></span>
+<span></span>
+<span><span class="co"># (1) Matching</span></span>
+<span><span class="co"># ...</span></span>
+<span></span>
+<span><span class="co"># ...</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section></section><section id="propensity-score-matching" class="level3"><h3 class="anchored" data-anchor-id="propensity-score-matching">Propensity score matching</h3>
+<p>When employing approaches based on covariate-matching, you quickly run into the curse of dimensionality as your number of covariates grows. As the dimensionality grows, it becomes increasingly difficult to find suitable matches, particularly in high-dimensional spaces where finding matches can be improbable.</p>
+<p>Consider a scenario with two covariates, each with five distinct values. In this case, observations fall into one of 25 cells defined by the covariate value grid. Now, envision ten covariates with three different values each, creating already approximately 60,000 cells. This significantly boosts the likelihood of many cells being populated by only one or zero observations, making it impossible to find matches for numerous observations.</p>
+<p>One approach to tackle this issue is the use of propensity scores. Propensity score represents the predicted probability of treatment assignment based on matching variables. In our case, we utilize age, gender, and previous average purchases to predict the likelihood of a customer participating in the membership program. Specifically, customers who spend more on average are expected to have a higher likelihood of participation. To model this relationship, we employ logistic regression, a technique that predicts outcomes between zero and one, generating the propensity score.</p>
+<p><span class="math display">\[
+\pi_i = PS(\mathbf{X_i}) = P(D_i = 1 | \mathbf{X_i})
+\]</span></p>
+<p><strong><em>Q7. Run the matching using the propensity score as the matching variable. First, for each unit, compute the propensity of being treated.</em></strong></p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Estimate propensity to be treated</span></span>
+<span><span class="va">mod_ps</span> <span class="op">&lt;-</span> <span class="va">...</span></span>
+<span></span>
+<span><span class="co"># Extract propensity score</span></span>
+<span><span class="va">membership</span> <span class="op">&lt;-</span> <span class="va">membership</span> <span class="op">|&gt;</span> <span class="fu">mutate</span><span class="op">(</span>propensity <span class="op">=</span> <span class="va">mod_ps</span><span class="op">$</span><span class="va">fitted</span><span class="op">)</span> <span class="co"># or: mod_ps$fitted.values</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">membership</span><span class="op">$</span><span class="va">propensity</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><strong><em>Q8. Having obtained the propensity score, use it as the matching variable.</em></strong></p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># (1) Matching</span></span>
+<span><span class="co"># ...</span></span>
+<span></span>
+<span><span class="co"># Use matched data</span></span>
+<span><span class="co"># ...</span></span>
+<span></span>
+<span><span class="co"># (2) Estimation</span></span>
+<span><span class="co"># ...</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Instead of running a separate logistic regression to compute the propensity scores, you could also provide the arguments <code>method = "glm"</code> and <code>link = "logit"</code> to the <code><a href="https://kosukeimai.github.io/MatchIt/reference/matchit.html">matchit()</a></code> function.</p>
+</div>
+</div>
+<p>It’s important to note that while propensity score matching effectively mitigates the curse of dimensionality, a fundamental issue arises: having the same propensity score does not guarantee that observations share identical covariate values. Conversely, identical covariate values do imply the same propensity score. This inherent asymmetry raises concerns among prominent statisticians, leading to criticism of propensity score matching as a robust identification strategy.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
+</section></section><section id="inverse-probability-weighting" class="level2"><h2 class="anchored" data-anchor-id="inverse-probability-weighting">Inverse probability weighting</h2>
+<section id="step-by-step-approach" class="level3"><h3 class="anchored" data-anchor-id="step-by-step-approach">Step-by-step approach</h3>
+<p>Instead inverse probability weighting (IPW) has proven to be a more precise method than matching approaches, particularly when the sample is large enough. So what do we do with the probability/propensity scores in IPW? We use the propensity score of an observation unit to increase or decrease its weights and thereby make some observations more important than others. The weight obtains as</p>
+<p><span class="math display">\[
+w_i = \frac{D_i}{\pi_i} + \frac{(1-D_i)}{(1-\pi_i)}
+\]</span></p>
+<p>where only one of the terms is always active as <span class="math inline">\(D_i\)</span> is either one or zero. <span class="math inline">\(\_pi_i\)</span> denotes the propensity. Now we should better understand what “inverse probability weighting” actually means. It weights each observation by its inverse of its treatment probability. Let’s proceed to calculate this for our dataset.</p>
+<p><strong><em>Q9. Given the formula, calculate the weights for each observation.</em></strong></p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Calculate inverse probability weights</span></span>
+<span><span class="va">membership</span> <span class="op">&lt;-</span> <span class="va">membership</span> <span class="op">|&gt;</span> <span class="fu">mutate</span><span class="op">(</span>ipw <span class="op">=</span> <span class="va">...</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">membership</span><span class="op">$</span><span class="va">ipw</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>We need to provide these calculated weights as an additional argument to <code><a href="https://rdrr.io/r/stats/lm.html">lm()</a></code> using the weights argument.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Regression with inverse probability weighting</span></span>
+<span><span class="va">model_ipw</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section><section id="integrated-approach" class="level3"><h3 class="anchored" data-anchor-id="integrated-approach">Integrated approach</h3>
+<p>For demonstration and learning purpose, we split the procedure in two steps but there are external packages which combine both steps, e.g.&nbsp;the <code>causalweight</code> package and the function <code><a href="https://rdrr.io/pkg/causalweight/man/treatweight.html">treatweight()</a></code>.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"causalweight"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">causalweight</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># IPW estimation</span></span>
+<span><span class="va">model_ipw_int</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/causalweight/man/treatweight.html">treatweight</a></span><span class="op">(</span></span>
+<span>  y <span class="op">=</span> <span class="va">membership</span><span class="op">$</span><span class="va">avg_purch</span>,</span>
+<span>  d <span class="op">=</span> <span class="va">membership</span><span class="op">$</span><span class="va">card</span>,</span>
+<span>  x <span class="op">=</span> <span class="va">membership</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"pre_avg_purch"</span>, <span class="st">"age"</span>, <span class="st">"sex"</span><span class="op">)</span><span class="op">]</span></span>
+<span><span class="op">)</span></span>
+<span><span class="va">model_ipw_int</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$effect
+[1] 15
+
+$se
+[1] 0.99
+
+$pval
+[1] 3.8e-55
+
+$y1
+[1] 53
+
+$y0
+[1] 37
+
+$ntrimmed
+[1] 0</code></pre>
+</div>
+</div>
+</section></section><section id="assignment" class="level2"><h2 class="anchored" data-anchor-id="assignment">Assignment</h2>
 <div class="assignment">
-<p>…</p>
+<p>Will be published at ~19:00.</p>
 </div>
 
 
-</section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+</section><div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+<ol>
+<li id="fn1"><p>https://gking.harvard.edu/publications/why-propensity-scores-should-not-be-used-formatching<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol></section></div></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
     const mode = bsSheetEl.getAttribute("data-mode");
@@ -674,7 +1114,31 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       &nbsp;
     </div>
   </div>
-</footer>
+</footer><script>var lightboxQuarto = GLightbox({"descPosition":"bottom","openEffect":"zoom","closeEffect":"zoom","selector":".lightbox","loop":false});
+window.onload = () => {
+  lightboxQuarto.on('slide_before_load', (data) => {
+    const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+    const href = trigger.getAttribute('href');
+    if (href !== null) {
+      const imgEl = window.document.querySelector(`a[href="${href}"] img`);
+      if (imgEl !== null) {
+        const srcAttr = imgEl.getAttribute("src");
+        if (srcAttr && srcAttr.startsWith("data:")) {
+          slideConfig.href = srcAttr;
+        }
+      }
+    } 
+  });
+
+  lightboxQuarto.on('slide_after_load', (data) => {
+    const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+    if (window.Quarto?.typesetMath) {
+      window.Quarto.typesetMath(slideNode);
+    }
+  });
+
+};
+          </script>
 
 
 </body></html>

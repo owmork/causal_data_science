@@ -1,0 +1,1111 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.536">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<title>CAUSAL DATA SCIENCE FOR BUSINESS ANALYTICS - 4 - Matching</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+<script src="../../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../../">
+<link href="../../../images/favicon_cds_16x16.png" rel="icon" type="image/png">
+<script src="../../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="dark">
+<script src="../../../site_libs/quarto-contrib/iconify-1.0.7/iconify-icon.min.js"></script>
+<script src="../../../site_libs/quarto-contrib/glightbox/glightbox.min.js"></script>
+<link href="../../../site_libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
+<link href="../../../site_libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet"><script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script><link href="../../../site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet">
+<script src="../../../site_libs/pagedtable-1.1/js/pagedtable.js"></script><script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script><script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script><script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script><link rel="stylesheet" href="../../../styles.css">
+</head>
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top"><nav class="navbar navbar-expand-lg " data-bs-theme="dark"><div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a href="../../../index.html" class="navbar-brand navbar-brand-logo">
+    <img src="../../../images/icon_cds.svg" alt="" class="navbar-logo"></a>
+    <a class="navbar-brand" href="../../../index.html">
+    <span class="navbar-title"><b>CAUSAL DATA SCIENCE FOR BUSINESS ANALYTICS</b></span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+<li class="nav-item">
+    <a class="nav-link" href="../../../index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../content/course_weeks/overview.html"> 
+<span class="menu-text">Content</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../content/organization/mattermost.html"> 
+<span class="menu-text">Organization</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="https://communicating.tuhh.de/w-11-students/channels/cdsba_ss24"> 
+<span class="menu-text"><iconify-icon inline="" icon="cib:mattermost" style="font-size: 1.25em;"></iconify-icon></span></a>
+  </li>  
+</ul>
+</div> <!-- /navcollapse -->
+          <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">On this page</h2>
+   
+  <ul>
+<li><a href="#slides-recap" id="toc-slides-recap" class="nav-link active" data-scroll-target="#slides-recap">Slides &amp; Recap</a></li>
+  <li>
+<a href="#regression-adjustment" id="toc-regression-adjustment" class="nav-link" data-scroll-target="#regression-adjustment">Regression adjustment</a>
+  <ul class="collapse">
+<li><a href="#conditional-outcome-regression" id="toc-conditional-outcome-regression" class="nav-link" data-scroll-target="#conditional-outcome-regression">Conditional outcome regression</a></li>
+  <li><a href="#frischwaughlovell-theorem" id="toc-frischwaughlovell-theorem" class="nav-link" data-scroll-target="#frischwaughlovell-theorem">Frisch–Waugh–Lovell Theorem</a></li>
+  </ul>
+</li>
+  <li>
+<a href="#matching" id="toc-matching" class="nav-link" data-scroll-target="#matching">Matching</a>
+  <ul class="collapse">
+<li><a href="#nearest-neighbor-matching" id="toc-nearest-neighbor-matching" class="nav-link" data-scroll-target="#nearest-neighbor-matching">Nearest neighbor matching</a></li>
+  <li><a href="#propensity-score-matching" id="toc-propensity-score-matching" class="nav-link" data-scroll-target="#propensity-score-matching">Propensity score matching</a></li>
+  </ul>
+</li>
+  <li>
+<a href="#inverse-probability-weighting" id="toc-inverse-probability-weighting" class="nav-link" data-scroll-target="#inverse-probability-weighting">Inverse probability weighting</a>
+  <ul class="collapse">
+<li><a href="#step-by-step-approach" id="toc-step-by-step-approach" class="nav-link" data-scroll-target="#step-by-step-approach">Step-by-step approach</a></li>
+  <li><a href="#integrated-approach" id="toc-integrated-approach" class="nav-link" data-scroll-target="#integrated-approach">Integrated approach</a></li>
+  </ul>
+</li>
+  <li><a href="#assignment" id="toc-assignment" class="nav-link" data-scroll-target="#assignment">Assignment</a></li>
+  </ul></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
+<h1 class="title">4 - Matching</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header><section id="slides-recap" class="level2"><h2 class="anchored" data-anchor-id="slides-recap">Slides &amp; Recap</h2>
+<p><a href="../../../lecture/04.pdf"><strong>Slides - Week 4</strong></a></p>
+<p>Last week, we discussed the significant advantage of employing a randomized treatment assignment: it allowed straightforward comparisons of group averages or the application of univariate linear regressions (i.e., with only one variable on the right-hand side), thereby easing statistical inference.</p>
+<p>However, what if the treatment isn’t randomized? We’ve discovered that when developing our identification strategy, we must consider confounding variables and implement measures to control for them. How do we do this? In this chapter, you’ll delve into (1) a regression-based approach, (2) a matching-based approach, and (3) a weighting-based approach to address this challenge.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>There are many terms used to account for a confounder which are used interchangeably. Among other, depending on the perspective, you could “block a backdoor path”, “condition on a confounder”, “adjust for the confounder”, or “control for the confounder”.</p>
+</div>
+</div>
+</section><section id="regression-adjustment" class="level2"><h2 class="anchored" data-anchor-id="regression-adjustment">Regression adjustment</h2>
+<p>In this scenario, similar to the example from the first week, you’re the owner of an online marketplace enterprise aiming to assist businesses on your platform with strategic pricing guidance. However, please recall that these businesses operate anonymously and independently determine their pricing, rendering the treatment non-randomized. Once more, our focus remains on a particular category of similar products: light jackets. While in the initial week, we denoted the treatment as being on sale, this time, we adopt a more precise approach, utilizing price — a continuous variable - as the treatment.</p>
+<p>DOWNLOAD LINK. Potentially add temperature^2 (light jacket e.g.). make rating more continous.</p>
+<p>Reading and printing the data, we see that each row represents an observation detailing the daily sales of a particular business with additional information such as the weekday and the product rating. In total, you collected 10’000 observations.</p>
+<p>Reading and printing the data, it’s evident that each of the 10’000 rows represents an observation detailing the daily sales of a specific business, accompanied by supplementary information like the weekday and product rating.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 10,000 × 6
+   weekday rating price sales sales_hat price_hat
+     &lt;int&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;int&gt;     &lt;dbl&gt;     &lt;dbl&gt;
+ 1       4    4    26.5    37     0.501  -2.45   
+ 2       3    4.2  31      39    -7.66    1.82   
+ 3       1    4    30      63    -8.04   -0.00470
+ 4       7    3.6  28.6    56   -14.8    -1.03   
+ 5       3    4    28.4    26   -13.2    -0.566  
+ 6       4    4.8  30.2    38    -2.53    0.469  
+ 7       5    4.6  29      45     2.13   -0.568  
+ 8       5    4.8  29.7    41     0.137  -0.0557 
+ 9       7    4.3  29.7    43   -21.4    -0.590  
+10       4    4    29.1    48     3.79    0.131  
+# ℹ 9,990 more rows</code></pre>
+</div>
+</div>
+<section id="conditional-outcome-regression" class="level3"><h3 class="anchored" data-anchor-id="conditional-outcome-regression">Conditional outcome regression</h3>
+<p>With the regression-based approach, we employ a multivariate linear regression that incorporates confounding variables. In essence, we estimates the treatment effect conditionally on covariates.</p>
+<p><span class="math display">\[
+\begin{align}
+Y_i &amp;= \beta_0 + \beta_D D_i + \mathbf{\beta_{X}' X_i} + \epsilon_i \\
+\mathbb{E}[Y_i | T_i, \mathbf{X_i}] &amp;= \beta_0 + \beta_D D_i + \mathbf{\beta_{X}' X_i}
+\end{align}
+\]</span> <strong><em>Q1. Assuming that all potential confounders are observed and in the table: how do you estimate the treatment effect?</em></strong></p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Basic OLS regression</span></span>
+<span><span class="co"># ...</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section><section id="frischwaughlovell-theorem" class="level3"><h3 class="anchored" data-anchor-id="frischwaughlovell-theorem">Frisch–Waugh–Lovell Theorem</h3>
+<p>Following the Frisch–Waugh–Lovell theorem, you can decompose your regression into a three-stage process and obtain identical estimates. The idea behind this is to initially eliminate all variation in <span class="math inline">\(D\)</span> and <span class="math inline">\(Y\)</span> that can be explained by the covariates <span class="math inline">\(X\)</span>. Subsequently, you account for the remaining variation in <span class="math inline">\(Y\)</span> using the remaining variation in <span class="math inline">\(D\)</span>.</p>
+<div>
+<ol type="1">
+<li>
+<strong>Debiasing:</strong> run a regression of the form <span class="math inline">\(Y_i = \beta_{Y0} + \mathbf{\beta_{Y \sim X}' X_i} + \epsilon_{Y_i \sim X_i}\)</span> and extract the estimated residuals <span class="math inline">\(\hat\epsilon_{Y_i \sim X_i}\)</span>.</li>
+<li>
+<strong>Denoising:</strong> run a regression of the form <span class="math inline">\(D_i = \beta_{D0} + \mathbf{\beta_{D \sim X}' X_i} + \epsilon_{D_i \sim X_i}\)</span> and extract the estimated residuals <span class="math inline">\(\hat\epsilon_{D_i \sim X_i}\)</span>.</li>
+<li>
+<strong>Residual regression:</strong> run a residual-on-residual regression of the form <span class="math inline">\(\hat\epsilon_{Y_i \sim X_i} = \beta_D \hat\epsilon_{D_i \sim X_i} + \epsilon_i\)</span> (no constant).</li>
+</ol>
+</div>
+<p><strong><em>Q2. Use the three-step procedure as described above to obtain the estimate. Check that they are identical to the estimates obtained with <code><a href="https://rdrr.io/r/stats/lm.html">lm()</a></code>.</em></strong></p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Hints:</strong></p>
+<ul>
+<li>When you run a model with <code><a href="https://rdrr.io/r/stats/lm.html">lm()</a></code>, residuals are automatically computed. You can access them by <code>model_name$residuals</code>. Residuals are the difference between the actual value and the value predicted by the model. By construction of the ordinary least square regression, residuals are zero on average.</li>
+<li>To run a model without a constant/intercept, use <code>y ~ 0 + ...</code>.</li>
+</ul>
+</div>
+</div>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Frisch–Waugh–Lovell Theorem: 3- step procedure</span></span>
+<span></span>
+<span><span class="co"># (1) Debiasing:</span></span>
+<span><span class="co"># ...</span></span>
+<span></span>
+<span><span class="co"># (2) Denoising:</span></span>
+<span><span class="co"># ...</span></span>
+<span></span>
+<span><span class="co"># (3) Residual regression</span></span>
+<span><span class="co"># ...</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Let’s visualize what we have done in the steps before and what the FWL theorem makes so intuitive. With the regression-based approach, we account for the confounders by remove variance in both <span class="math inline">\(D\)</span> and <span class="math inline">\(Y\)</span> due to <span class="math inline">\(X\)</span> and then, we perform a “clean” residual regression.</p>
+<p>When we would simply run a normal regression without any accounting for the confounder, we would obtain what is depicted here. There does not appear to be a relationship between price and sales.</p>
+<div class="cell" data-layout-align="center">
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Plot</span></span>
+<span><span class="fu">ggplot</span><span class="op">(</span><span class="va">prices</span>, <span class="fu">aes</span><span class="op">(</span>y <span class="op">=</span> <span class="va">sales</span>, x <span class="op">=</span> <span class="va">price</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">geom_point</span><span class="op">(</span>alpha <span class="op">=</span> <span class="fl">.2</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">geom_smooth</span><span class="op">(</span>method<span class="op">=</span><span class="st">'lm'</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><a href="week_4_Matching_files/figure-html/unnamed-chunk-6-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1"><img src="week_4_Matching_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:75.0%"></a></p>
+</figure>
+</div>
+</div>
+</div>
+<p>However, when we do account for the confounders and regress the residual <span class="math inline">\(\hat{Y}\)</span> on the residual <span class="math inline">\(\hat{D}\)</span>, we obtain what is expected: a negative correlation. Higher prices lead to fewer sales.</p>
+<div class="cell" data-layout-align="center">
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Add residuals to data frame</span></span>
+<span><span class="va">prices</span> <span class="op">&lt;-</span> <span class="va">prices</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">mutate</span><span class="op">(</span></span>
+<span>    sales_hat <span class="op">=</span> <span class="va">Y_hat</span>,</span>
+<span>    price_hat <span class="op">=</span> <span class="va">D_hat</span></span>
+<span>    <span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Plot</span></span>
+<span><span class="fu">ggplot</span><span class="op">(</span><span class="va">prices</span>, <span class="fu">aes</span><span class="op">(</span>y <span class="op">=</span> <span class="va">sales_hat</span>, x <span class="op">=</span> <span class="va">price_hat</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">geom_point</span><span class="op">(</span>alpha <span class="op">=</span> <span class="fl">.2</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">geom_smooth</span><span class="op">(</span>method<span class="op">=</span><span class="st">'lm'</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><a href="week_4_Matching_files/figure-html/unnamed-chunk-7-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2"><img src="week_4_Matching_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:75.0%"></a></p>
+</figure>
+</div>
+</div>
+</div>
+<p><strong><em>QX. Compute the estimate that describes what is shown in the first plot.</em></strong></p>
+<p>ADD effect heterogeneity. non-linear models. conditional expectation -&gt; assumption: positivity</p>
+</section></section><section id="matching" class="level2"><h2 class="anchored" data-anchor-id="matching">Matching</h2>
+<p>Imagine another situation. You are operating an online shop, and a year ago, introduced a plus membership aimed at binding customers and driving revenue growth. The plus memberships comes at a small cost for the customers, which is why not all of the customers subscribed. Now you want to examine whether binding customers by this membership program in fact increases your sales with subscribed customers. However, it’s essential to consider potential confounding variables such as age, gender, or previous average purchase amounts.</p>
+<p>Each row in your dataset corresponds to a different customer, with accompanying demographic details, their average purchase sum before the introduction of the plus membership, their current average purchase, and an indication of their participation in the plus membership program.</p>
+<p>ADD DOWNLOAD LINK.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Read data and show</span></span>
+<span><span class="va">membership</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html">readRDS</a></span><span class="op">(</span><span class="st">"membership.rds"</span><span class="op">)</span></span>
+<span><span class="co">#membership &lt;- readRDS("content/course_weeks/week_04/membership.rds")</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">membership</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1,000 × 5
+     age   sex pre_avg_purch  card avg_purch
+   &lt;dbl&gt; &lt;int&gt;         &lt;dbl&gt; &lt;int&gt;     &lt;dbl&gt;
+ 1  31.7     0          22.4     1    47.2  
+ 2  41.5     1          32.5     0    72.7  
+ 3  23.2     0          31.5     1    57.4  
+ 4  67.1     1          47.5     1    87.8  
+ 5  27.4     1          30.3     1    72.5  
+ 6  53.7     1          30.8     1    54.0  
+ 7  40.2     0          37.7     0    10.2  
+ 8  26.7     0          25.5     1    42.0  
+ 9  28.7     0          26.0     0     0.561
+10  35.2     1          46.5     1    70.0  
+# ℹ 990 more rows</code></pre>
+</div>
+</div>
+<p>Now, we’ll delve into the matching-based approach, an alternative to regression for addressing backdoor bias. The concept is to find and match treated and non-treated units with similar or identical covariate values. This method aims to replicate the conditions of a randomized experiment, assuming we have observed all confounding variables. Matching encompasses various techniques aimed at equalizing or balancing the distribution of covariates between the treatment and control groups. Essentially, the objective is to compare “apples to apples” and ensure that treatment and control groups are as similar as possible, except for the treatment variable.</p>
+<p>In R, there are several packages available to facilitate matching-based methods, one of which is the <code>Matching</code> package. You’ll need to install this package first and then load it.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"Matching"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="nearest-neighbor-matching" class="level3"><h3 class="anchored" data-anchor-id="nearest-neighbor-matching">Nearest neighbor matching</h3>
+<p>By enforcing treatment and control group to have little variation in the matching variables, we close the backdoors. When the backdoor variable does not vary or varies only very little, it cannot induce changes in treatment and outcome. So, when we suppress this variation in the backdoor variable, we can interpret the effect from treatment to outcome as causal. So let’s first take a look at the covariates in the respective group prior to matching.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/JasjeetSekhon/Matching">Matching</a></span><span class="op">)</span></span>
+<span><span class="va">balance_pre</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Matching/man/MatchBalance.html">MatchBalance</a></span><span class="op">(</span><span class="va">card</span> <span class="op">~</span> <span class="va">age</span> <span class="op">+</span> <span class="va">sex</span> <span class="op">+</span> <span class="va">pre_avg_purch</span>, data <span class="op">=</span> <span class="va">membership</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in ks.test.default(...): im Falle von Bindungen sind die p-Werte approximativ</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+***** (V1) age *****
+before matching:
+mean treatment........ 43.39 
+mean control.......... 39.049 
+std mean diff......... 30.719 
+
+mean raw eQQ diff..... 4.3987 
+med  raw eQQ diff..... 4.4 
+max  raw eQQ diff..... 11.4 
+
+mean eCDF diff........ 0.07928 
+med  eCDF diff........ 0.0951 
+max  eCDF diff........ 0.13743 
+
+var ratio (Tr/Co)..... 1.1419 
+T-test p-value........ 7.6545e-07 
+KS Bootstrap p-value.. &lt; 2.22e-16 
+KS Naive p-value...... 0.00017218 
+KS Statistic.......... 0.13743 
+
+
+***** (V2) sex *****
+before matching:
+mean treatment........ 0.51656 
+mean control.......... 0.49909 
+std mean diff......... 3.4921 
+
+mean raw eQQ diff..... 0.01766 
+med  raw eQQ diff..... 0 
+max  raw eQQ diff..... 1 
+
+mean eCDF diff........ 0.0087352 
+med  eCDF diff........ 0.0087352 
+max  eCDF diff........ 0.01747 
+
+var ratio (Tr/Co)..... 0.99929 
+T-test p-value........ 0.58271 
+
+
+***** (V3) pre_avg_purch *****
+before matching:
+mean treatment........ 39.06 
+mean control.......... 34.026 
+std mean diff......... 43.118 
+
+mean raw eQQ diff..... 5.0923 
+med  raw eQQ diff..... 5.1154 
+max  raw eQQ diff..... 10.869 
+
+mean eCDF diff........ 0.12144 
+med  eCDF diff........ 0.13706 
+max  eCDF diff........ 0.19428 
+
+var ratio (Tr/Co)..... 1.0908 
+T-test p-value........ 8.3626e-12 
+KS Bootstrap p-value.. &lt; 2.22e-16 
+KS Naive p-value...... 1.504e-08 
+KS Statistic.......... 0.19428 
+
+
+Before Matching Minimum p.value: &lt; 2.22e-16 
+Variable Name(s): age pre_avg_purch  Number(s): 1 3 </code></pre>
+</div>
+</div>
+<p>ADD Plot squares to see common support (different sizes of squares to show trade-off) Why so many ties</p>
+<section id="one-vs-one-matching" class="level4"><h4 class="anchored" data-anchor-id="one-vs-one-matching">One-vs-one matching</h4>
+<p>We start by performing a one-vs-one nearest-neighbor matching for the treated units, which means, for each treated unit we find one control unit with the highest resemblance based on the covariates.</p>
+<p><strong><em>Q3. Run the one-vs-one matching.</em></strong></p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># One-vs-one matching</span></span>
+<span><span class="va">mod_nn_1v1</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/Matching/man/Match.html">Match</a></span><span class="op">(</span></span>
+<span>  Y <span class="op">=</span> <span class="va">membership</span><span class="op">$</span><span class="va">avg_purch</span>, <span class="co"># outcome</span></span>
+<span>  Tr <span class="op">=</span> <span class="va">..</span>, <span class="co"># treatment</span></span>
+<span>  X <span class="op">=</span> <span class="va">...</span>, <span class="co"># matching variable(s)</span></span>
+<span>  M <span class="op">=</span> <span class="va">...</span>, <span class="co"># number of matches to find</span></span>
+<span>  ties <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">mod_nn_1v1</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># One-vs-one matching</span></span>
+<span><span class="va">mod_nn_1v1</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/Matching/man/Match.html">Match</a></span><span class="op">(</span></span>
+<span>  Y <span class="op">=</span> <span class="va">membership</span><span class="op">$</span><span class="va">avg_purch</span>, <span class="co"># outcome</span></span>
+<span>  Tr <span class="op">=</span> <span class="va">..</span>, <span class="co"># treatment</span></span>
+<span>  X <span class="op">=</span> <span class="va">...</span>, <span class="co"># matching variable(s)</span></span>
+<span>  M <span class="op">=</span> <span class="va">...</span>, <span class="co"># number of matches to find</span></span>
+<span>  ties <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">mod_nn_1v1</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Let’s check the balance of covariate after matching. When treatment and untreated group are comparable in terms of covariates, we gain confidence in the validity of our estimates.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/Matching/man/MatchBalance.html">MatchBalance</a></span><span class="op">(</span><span class="va">card</span> <span class="op">~</span> <span class="va">age</span> <span class="op">+</span> <span class="va">sex</span> <span class="op">+</span> <span class="va">pre_avg_purch</span>, match.out <span class="op">=</span> <span class="va">mod_nn_1v1</span>, data <span class="op">=</span> <span class="va">membership</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+***** (V1) age *****
+                       Before Matching       After Matching
+mean treatment........      43.39             43.39 
+mean control..........     39.049            43.214 
+std mean diff.........     30.719             1.245 
+
+mean raw eQQ diff.....     4.3987           0.51369 
+med  raw eQQ diff.....        4.4               0.3 
+max  raw eQQ diff.....       11.4              11.1 
+
+mean eCDF diff........    0.07928         0.0068473 
+med  eCDF diff........     0.0951         0.0066225 
+max  eCDF diff........    0.13743          0.028698 
+
+var ratio (Tr/Co).....     1.1419            1.0803 
+T-test p-value........ 7.6545e-07          0.056814 
+KS Bootstrap p-value.. &lt; 2.22e-16             0.994 
+KS Naive p-value...... 0.00017218           0.99221 
+KS Statistic..........    0.13743          0.028698 
+
+
+***** (V2) sex *****
+                       Before Matching       After Matching
+mean treatment........    0.51656           0.51656 
+mean control..........    0.49909           0.51656 
+std mean diff.........     3.4921                 0 
+
+mean raw eQQ diff.....    0.01766                 0 
+med  raw eQQ diff.....          0                 0 
+max  raw eQQ diff.....          1                 0 
+
+mean eCDF diff........  0.0087352                 0 
+med  eCDF diff........  0.0087352                 0 
+max  eCDF diff........    0.01747                 0 
+
+var ratio (Tr/Co).....    0.99929                 1 
+T-test p-value........    0.58271                 1 
+
+
+***** (V3) pre_avg_purch *****
+                       Before Matching       After Matching
+mean treatment........      39.06             39.06 
+mean control..........     34.026            38.824 
+std mean diff.........     43.118            2.0194 
+
+mean raw eQQ diff.....     5.0923           0.42939 
+med  raw eQQ diff.....     5.1154           0.25949 
+max  raw eQQ diff.....     10.869            7.0606 
+
+mean eCDF diff........    0.12144         0.0074518 
+med  eCDF diff........    0.13706         0.0066225 
+max  eCDF diff........    0.19428           0.02649 
+
+var ratio (Tr/Co).....     1.0908            1.0632 
+T-test p-value........ 8.3626e-12        0.00087649 
+KS Bootstrap p-value.. &lt; 2.22e-16                 1 
+KS Naive p-value......  1.504e-08           0.99732 
+KS Statistic..........    0.19428           0.02649 
+
+
+Before Matching Minimum p.value: &lt; 2.22e-16 
+Variable Name(s): age pre_avg_purch  Number(s): 1 3 
+
+After Matching Minimum p.value: 0.00087649 
+Variable Name(s): pre_avg_purch  Number(s): 3 </code></pre>
+</div>
+</div>
+</section><section id="one-vs.-many-matching" class="level4"><h4 class="anchored" data-anchor-id="one-vs.-many-matching">One vs.&nbsp;many matching</h4>
+<p>Sometimes, you want to match more than just one unit. For example, imagine that you have relatively few treated units but a large amount of untreated units. To leverage all the information contained in the untreated units, matching more units might increase the validity and precision of your estimate.</p>
+<p><strong><em>Q4. Run one-vs-many matching: select a different value for the numbers of matched units.</em></strong></p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">M</span> <span class="op">&lt;-</span> <span class="va">...</span></span>
+<span></span>
+<span><span class="va">mod_nn_1vM</span> <span class="op">&lt;-</span> <span class="va">...</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section></section><section id="propensity-score-matching" class="level3"><h3 class="anchored" data-anchor-id="propensity-score-matching">Propensity score matching</h3>
+<p>When employing approaches based on covariate-matching, you quickly run into the curse of dimensionality as your number of covariates grows. As the dimensionality grows, it becomes increasingly difficult to find suitable matches, particularly in high-dimensional spaces where finding matches can be improbable.</p>
+<p>Consider a scenario with two covariates, each with five distinct values. In this case, observations fall into one of 25 cells defined by the covariate value grid. Now, envision ten covariates with three different values each, creating already approximately 60,000 cells. This significantly boosts the likelihood of many cells being populated by only one or zero observations, making it impossible to find matches for numerous observations.</p>
+<p>One approach to tackle this issue is the use of propensity scores. Propensity score represents the predicted probability of treatment assignment based on matching variables. In our case, we utilize age, gender, and previous average purchases to predict the likelihood of a customer participating in the membership program. Specifically, customers who spend more on average are expected to have a higher likelihood of participation. To model this relationship, we employ logistic regression, a technique that predicts outcomes between zero and one, generating the propensity score.</p>
+<p><span class="math display">\[
+\pi_i = PS(\mathbf{X_i}) = P(D_i = 1 | \mathbf{X_i})
+\]</span></p>
+<p><strong><em>Q5. Run the matching using the propensity score as the matching variable. First, for each unit, compute the propensity of being treated.</em></strong></p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Estimate propensity to be treated</span></span>
+<span><span class="va">mod_ps</span> <span class="op">&lt;-</span> <span class="va">...</span></span>
+<span></span>
+<span><span class="co"># Extract propensity score</span></span>
+<span><span class="va">membership</span> <span class="op">&lt;-</span> <span class="va">membership</span> <span class="op">|&gt;</span> <span class="fu">mutate</span><span class="op">(</span>propensity <span class="op">=</span> <span class="va">mod_ps</span><span class="op">$</span><span class="va">fitted</span><span class="op">)</span> <span class="co"># or: mod_ps$fitted.values</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">membership</span><span class="op">$</span><span class="va">propensity</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><strong><em>Q6. Having obtained the propensity score, use it as the matching variable.</em></strong></p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Use propensity scores as matching variable</span></span>
+<span><span class="va">mod_psm</span> <span class="op">&lt;-</span> <span class="va">...</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><strong><em>Q7. Compare the balance for the propensity score before and after matching.</em></strong></p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Balance of the propensity score before and after matching</span></span>
+<span><span class="co"># ...</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>It’s important to note that while propensity score matching effectively mitigates the curse of dimensionality, a fundamental issue arises: having the same propensity score does not guarantee that observations share identical covariate values. Conversely, identical covariate values do imply the same propensity score. This inherent asymmetry raises concerns among prominent statisticians, leading to criticism of propensity score matching as a robust identification strategy.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
+</section></section><section id="inverse-probability-weighting" class="level2"><h2 class="anchored" data-anchor-id="inverse-probability-weighting">Inverse probability weighting</h2>
+<section id="step-by-step-approach" class="level3"><h3 class="anchored" data-anchor-id="step-by-step-approach">Step-by-step approach</h3>
+<p>Instead inverse probability weighting (IPW) has proven to be a more precise method than matching approaches, particularly when the sample is large enough. So what do we do with the probability/propensity scores in IPW? We use the propensity score of an observation unit to increase or decrease its weights and thereby make some observations more important than others. The weight obtains as</p>
+<p><span class="math display">\[
+w_i = \frac{D_i}{\pi_i} + \frac{(1-D_i)}{(1-\pi_i)}
+\]</span></p>
+<p>where only one of the terms is always active as <span class="math inline">\(D_i\)</span> is either one or zero. <span class="math inline">\(\_pi_i\)</span> denotes the propensity. Now we should better understand what “inverse probability weighting” actually means. It weights each observation by its inverse of its treatment probability. Let’s proceed to calculate this for our dataset.</p>
+<p><strong><em>Q8. Given the formula, calculate the weights for each observation.</em></strong></p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Calculate inverse probability weights</span></span>
+<span><span class="va">membership</span> <span class="op">&lt;-</span> <span class="va">membership</span> <span class="op">|&gt;</span> <span class="fu">mutate</span><span class="op">(</span>ipw <span class="op">=</span> <span class="va">...</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">membership</span><span class="op">$</span><span class="va">ipw</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><strong><em>Q9. Order the data to see the observations with the largest and smallest weights. What do you notice?</em></strong></p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Lowest weights</span></span>
+<span><span class="va">membership</span> <span class="op">|&gt;</span> <span class="fu">arrange</span><span class="op">(</span><span class="va">ipw</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div data-pagedtable="false">
+  <script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["age"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["sex"],"name":[2],"type":["int"],"align":["right"]},{"label":["pre_avg_purch"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["card"],"name":[4],"type":["int"],"align":["right"]},{"label":["avg_purch"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["propensity"],"name":[6],"type":["dbl"],"align":["right"]},{"label":["ipw"],"name":[7],"type":["dbl"],"align":["right"]}],"data":[{"1":"21","2":"1","3":"0.0","4":"0","5":"7.5","6":"0.17","7":"1.2"},{"1":"20","2":"1","3":"4.0","4":"0","5":"-2.5","6":"0.19","7":"1.2"},{"1":"18","2":"0","3":"5.2","4":"0","5":"-14.2","6":"0.19","7":"1.2"},{"1":"18","2":"1","3":"7.3","4":"0","5":"-9.9","6":"0.20","7":"1.3"},{"1":"23","2":"0","3":"7.7","4":"0","5":"-12.9","6":"0.21","7":"1.3"},{"1":"19","2":"0","3":"8.8","4":"0","5":"13.2","6":"0.21","7":"1.3"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+</div>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Highest weights</span></span>
+<span><span class="va">membership</span> <span class="op">|&gt;</span> <span class="fu">arrange</span><span class="op">(</span><span class="op">-</span><span class="va">ipw</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div data-pagedtable="false">
+  <script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["age"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["sex"],"name":[2],"type":["int"],"align":["right"]},{"label":["pre_avg_purch"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["card"],"name":[4],"type":["int"],"align":["right"]},{"label":["avg_purch"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["propensity"],"name":[6],"type":["dbl"],"align":["right"]},{"label":["ipw"],"name":[7],"type":["dbl"],"align":["right"]}],"data":[{"1":"23","2":"0","3":"11","4":"1","5":"18.1","6":"0.23","7":"4.4"},{"1":"26","2":"1","3":"11","4":"1","5":"43.4","6":"0.24","7":"4.2"},{"1":"28","2":"0","3":"11","4":"1","5":"0.4","6":"0.24","7":"4.2"},{"1":"24","2":"1","3":"13","4":"1","5":"38.4","6":"0.24","7":"4.1"},{"1":"76","2":"0","3":"66","4":"0","5":"100.9","6":"0.75","7":"4.1"},{"1":"16","2":"1","3":"15","4":"1","5":"36.5","6":"0.25","7":"4.1"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+</div>
+<p>We need to provide these calculated weights as an additional argument to <code><a href="https://rdrr.io/r/stats/lm.html">lm()</a></code> using the weights argument.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Regression with inverse probability weighting</span></span>
+<span><span class="va">model_ipw</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">avg_purch</span> <span class="op">~</span> <span class="va">card</span>, data <span class="op">=</span> <span class="va">membership</span>, weights <span class="op">=</span> <span class="va">ipw</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">model_ipw</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = avg_purch ~ card, data = membership, weights = ipw)
+
+Weighted Residuals:
+    Min      1Q  Median      3Q     Max 
+-107.34  -18.56   -0.18   17.59  128.59 
+
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)   37.245      0.847    44.0   &lt;2e-16 ***
+card          15.413      1.197    12.9   &lt;2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 27 on 998 degrees of freedom
+Multiple R-squared:  0.142, Adjusted R-squared:  0.142 
+F-statistic:  166 on 1 and 998 DF,  p-value: &lt;2e-16</code></pre>
+</div>
+</div>
+</section><section id="integrated-approach" class="level3"><h3 class="anchored" data-anchor-id="integrated-approach">Integrated approach</h3>
+<p>For demonstration and learning purpose, we split the procedure in two steps but there are external packages which combine both steps, e.g.&nbsp;the <code>causalweight</code> package and the function <code><a href="https://rdrr.io/pkg/causalweight/man/treatweight.html">treatweight()</a></code>.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"causalweight"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">causalweight</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">model_ipw_int</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/causalweight/man/treatweight.html">treatweight</a></span><span class="op">(</span></span>
+<span>  y <span class="op">=</span> <span class="va">membership</span><span class="op">$</span><span class="va">avg_purch</span>,</span>
+<span>  d <span class="op">=</span> <span class="va">membership</span><span class="op">$</span><span class="va">card</span>,</span>
+<span>  x <span class="op">=</span> <span class="va">membership</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"pre_avg_purch"</span>, <span class="st">"age"</span><span class="op">)</span><span class="op">]</span>, </span>
+<span><span class="op">)</span></span>
+<span><span class="va">model_ipw_int</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$effect
+[1] 15
+
+$se
+[1] 1
+
+$pval
+[1] 1.5e-53
+
+$y1
+[1] 53
+
+$y0
+[1] 37
+
+$ntrimmed
+[1] 0</code></pre>
+</div>
+</div>
+</section></section><section id="assignment" class="level2"><h2 class="anchored" data-anchor-id="assignment">Assignment</h2>
+<p>Coming soon.</p>
+<div class="assignment">
+<p>…</p>
+</div>
+
+
+</section><div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+<ol>
+<li id="fn1"><p>https://gking.harvard.edu/publications/why-propensity-scores-should-not-be-used-formatching<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol></section></div></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      return note.innerHTML;
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+<footer class="footer"><div class="nav-footer">
+    <div class="nav-footer-left">
+<p>lv3095_s24: Causal Data Science for Business Analytics</p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    </div>
+    <div class="nav-footer-right">
+      &nbsp;
+    </div>
+  </div>
+</footer><script>var lightboxQuarto = GLightbox({"openEffect":"zoom","selector":".lightbox","loop":false,"closeEffect":"zoom","descPosition":"bottom"});
+window.onload = () => {
+  lightboxQuarto.on('slide_before_load', (data) => {
+    const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+    const href = trigger.getAttribute('href');
+    if (href !== null) {
+      const imgEl = window.document.querySelector(`a[href="${href}"] img`);
+      if (imgEl !== null) {
+        const srcAttr = imgEl.getAttribute("src");
+        if (srcAttr && srcAttr.startsWith("data:")) {
+          slideConfig.href = srcAttr;
+        }
+      }
+    } 
+  });
+
+  lightboxQuarto.on('slide_after_load', (data) => {
+    const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+    if (window.Quarto?.typesetMath) {
+      window.Quarto.typesetMath(slideNode);
+    }
+  });
+
+};
+          </script>
+
+
+</body></html>
