@@ -1,0 +1,218 @@
+/*-- scss:defaults --*/
+
+$font-family-monospace: 'PublicaSans';
+
+
+
+// Base document colors
+$body-color: #484848 !default;
+$link-color: #00C1D4 !default;
+
+// headings
+$presentation-heading-font: 'PublicaSans' !default;
+$presentation-heading-color: #005e73 !important;
+$h1-font-size: 1.8em !default;
+$h2-font-size: 1.6em !default;
+$h3-font-size: 1.3em !default;
+$h4-font-size: 1.0em !default;
+
+
+
+/* -- scss:mixins --*/
+
+/*-- scss:rules --*/
+
+/************************************
+********** Headings - Line **********
+************************************/
+h1 h1:not(#title-slide), h2
+{
+    border-bottom:1px solid $body-color;
+    width:100%;
+    float:left;
+    padding-bottom:3px;
+}
+
+/********************************
+********** Title Slide **********
+********************************/
+#title-slide {
+  text-align: left;
+  background-position: right bottom; /*Positioning*/
+  background-size: 10em auto;
+  background-repeat: no-repeat; /*Prevent showing multiple background images*/
+  background-image: url($tie-logo);
+}
+
+#title-slide .subtitle {
+  font-size: 1em;
+  border-bottom:1px solid $body-color;
+  width:100%;
+  padding-bottom:1em;
+  margin-bottom: 2.2rem;
+}
+
+#title-slide .quarto-title-authors {
+  justify-content: start;
+  .quarto-title-author {
+    padding-left: 0;
+  }
+}
+
+#title-slide .quarto-title-author-name,
+#title-slide .quarto-title-affiliation,
+#title-slide .date {
+  font-style: italic;
+  font-size: 0.6em;
+}
+#title-slide .quarto-title-author-name, {
+  color: $link-color;
+  margin-bottom: 0.3em;
+}
+#title-slide .quarto-title-affiliation,, {
+  margin: 0;
+}
+#title-slide .date { 
+  margin-top: 0.3em;
+  margin-bottom: 0;
+}
+
+
+/**********************************
+********** Slide Numbers **********
+**********************************/
+.slide-number, .reveal.has-logo .slide-number {
+  font-size: 0.35em !important;
+  padding:  5px 0px 0px 5px !important;
+  bottom: 18px !important;
+  right: 18px !important;
+  top: unset !important;
+  color: #00C1D4 !important;
+}
+
+/***************************
+********** Footer **********
+***************************/
+.reveal .footer {
+  color: #00C1D4;
+  font-size: 0.35em !important;
+}
+
+/*************************
+********** Logo **********
+*************************/
+@media (min-width:1025px){ // dont show on mobile
+  .menubar {
+   text-align: left;
+   background-position: right; /*Positioning*/
+   background-size: auto 80%;
+   background-origin: content-box; /*Padding of image*/
+   background-repeat: no-repeat; /*Prevent showing multiple background images*/
+   background-image: url($tie-logo);
+  }
+}
+
+/**************************************************************
+**** simple menu plugin - Hide elements on specific slides ****
+**************************************************************/
+/*HIDE (bottom)*/
+.reveal .slide-number,
+.reveal .footer {
+  -webkit-transition: -webkit-transform 0.8s cubic-bezier(0.26, 0.86, 0.44, 0.985);
+  transition: -webkit-transform 0.8s cubic-bezier(0.26, 0.86, 0.44, 0.985);
+  -o-transition: transform 0.8s cubic-bezier(0.26, 0.86, 0.44, 0.985);
+  transition: transform 0.8s cubic-bezier(0.26, 0.86, 0.44, 0.985);
+  transition: transform 0.8s cubic-bezier(0.26, 0.86, 0.44, 0.985), 
+  -webkit-transform 0.8s cubic-bezier(0.26, 0.86, 0.44, 0.985);
+  -webkit-transform: translateY(200%);
+  -ms-transform: translateY(200%);
+  transform: translateY(200%);
+
+}
+
+/*SHOW*/
+body:not(.hide-menubar) .reveal.ready:not(.hide-menubar) .slide-number,
+body:not(.hide-menubar) .reveal.ready:not(.hide-menubar) .footer {
+    -webkit-transform: translateY(0);
+    -ms-transform: translateY(0);
+    transform: translateY(0);
+}
+
+/***************************************************
+**** Tooltip on title slide - Toggle Fullscreen ****
+****************************************************/
+.tippy-box {
+  font-family: $font-family-sans-serif;
+  background-color: $body-bg;
+  color: $link-color;
+  border: 0.1rem solid $link-color;
+  .tippy-arrow {
+    transform-style: preserve-3d;
+
+    &::after {
+      content: '';
+      position: absolute;
+      top: 17px;
+      transform: translateZ(-1px);
+      border-left: 8px solid transparent;
+      border-right: 8px solid transparent;
+      border-top: 8px solid $link-color;
+    }
+  }
+}
+
+.tippy-box[data-placement^='top'] > .tippy-arrow::before {
+  border-top-color: $body-bg;
+}
+
+
+/*******
+WZ
+********/
+.center-x {
+  text-align: center;
+}
+
+.center-xy {
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -ms-transform: translateY(-50%), translateX(-50%);
+  transform: translateY(-50%), translateX(-50%);
+}
+
+.picture {
+  border-style: solid;
+  border-width: 3pt;
+  border-color: $body-color;
+  border-radius: 50%;
+  padding: 5pt;
+  height: 50%;
+  width: auto;
+}
+
+
+/***************************************************
+**** some formatting here and there ****
+****************************************************/
+
+
+li::marker {
+  color: #005e73;
+}
+
+
+.reveal code {
+    color: #00C1D4;
+}
+
+
+.source {
+    text-align: right;
+    font-size: 0.5em;
+}
+
+
+
+

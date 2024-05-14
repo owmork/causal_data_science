@@ -1,0 +1,500 @@
+---
+title: "5 - Double Machine Learning"
+linktitle: "5 - Double Machine Learning"
+output:
+  blogdown::html_page:
+    toc: true
+menu:
+  example:
+    parent: Course content
+    weight: 1
+type: docs
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(fig.width = 6, fig.asp = 0.618, fig.align = "center", fig.retina = 3, out.width = "75%")
+set.seed(11)
+options("digits" = 2, "width" = 150)
+options(dplyr.summarise.inform = FALSE)
+
+# custom ggplot theme
+# colors from TUHH brand identity
+tuhh_colors <- c("#D0D0CE", "#00C1D4", "#FF4F4F", "#5AFFC5",
+                 "#FFDE36", "#143BFF", "#FF7E15", "#FFAEA2")
+
+# initialise theme
+cds_theme <- ggthemr::define_palette(
+  swatch = tuhh_colors,
+  gradient = c(lower = "#FFAEA2", upper = "#00C1D4"),
+  background = "#0F2231",
+  line = c("#FFFFFF", "#FFFFFF"),
+  text = c("#FFFFFF", "#FFFFFF"),
+  gridline = c(ggplot2::alpha("#D0D0CE", 0.2), 
+               ggplot2::alpha("#D0D0CE", 0.4))
+)
+
+# set theme
+ggthemr::ggthemr(cds_theme, type = "outer")
+
+# source custom DAG theme
+source(paste0(here::here(), "/code/dag_theme.R"))
+```
+
+## Slides & Recap
+
+[**Slides - Week 5**](../../../lecture/05.pdf)
+
+Last week, we delved into strategies for managing observed confounders, exploring techniques such as estimating conditional outcomes and re-weighting data based on propensity scores. Building on that foundation, we'll now explore doubly robust methods. These approaches combine modeling of both the conditional outcome and the likelihood of treatment, offering the advantage of consistency even if only one model is accurately specified. Additionally, we'll introduce machine learning (ML) models into our toolkit. ML enables us to perform data-driven model selection and tackle complex non-linear relationships while still allowing for statistical inference. Primarily, ML methods help us model nuisance parameters --- factors that aren't our main focus but assist in estimating our target parameter: the treatment's effect on an outcome.
+
+## Practical example
+
+As a member of the marketing team at an online retailer, your objective is to identify customers who are receptive to marketing emails. While recognizing the potential for increased spending associated with these emails, you're also aware that some customers prefer not to receive them. To address this challenge, your aim is to estimate the average treatment effect (ATE) of sending such emails on customers' future purchase volume. This estimation will enable your team to make informed decisions about email recipients.
+
+::: callout-tip
+Today, you will download a R [script](https://cloud.tuhh.de/index.php/s/pQYPenMgHXCnetZ) and the [data](https://cloud.tuhh.de/index.php/s/Ek25Lk2LTPLtL4s) to answer the questions throughout the tutorial.
+:::
+
+```{r}
+#| message: false
+
+# Load tidyverse package
+library(tidyverse)
+
+# Read data
+email <- read_csv("email_obs.csv")
+
+# Data overview
+glimpse(email)
+```
+
+The treatment variable of interest is denoted as `mkt_email`, indicating whether a customer received a marketing email. The outcome of importance is the purchase volume one month after receiving the email, represented as `next_mnth_pv`. Alongside these key variables, the dataset encompasses various covariates such as customer age, tenure (time elapsed since the first purchase on the website), and purchase history across different product categories.
+
+## Frisch--Waugh--Lovell Theorem
+
+Please recall from last week that we are able to split the estimation into three steps: estimating (1) a model for exposure, (2) a model for the outcome, and a (3) residual-on-residual regression. We obtain an estimate that is numerically equivalent to what we would have obtained in a linear regression modeling the conditional outcome.
+
+**Question:** What is a residual?
+
+<details>
+
+<summary>Answer</summary>
+
+Difference between the observed value and the value predicted by the fitted model.
+
+</details>
+
+***Q1. Estimate the treatment effect using the FWL theorem.***
+
+```{r}
+#| code-fold: true
+# Frisch–Waugh–Lovell Theorem: 3-step procedure
+
+# (1) Debiasing:
+mod_D <- lm(mkt_email ~ ., data = select(email, -next_mnth_pv))
+D_hat <- mod_D$residuals
+
+# (2) Denoising:
+mod_Y <- lm(next_mnth_pv ~ ., select(email, -mkt_email))
+Y_hat <- mod_Y$residuals
+
+# (3) Residual regression
+mod_fwl <- lm(Y_hat ~ 0 + D_hat)
+summary(mod_fwl)
+```
+
+```{r}
+#| eval: false
+
+# Frisch–Waugh–Lovell Theorem: 3-step procedure
+
+# (1) Debiasing:
+
+# (2) Denoising:
+
+# (3) Residual regression
+```
+
+
+## Double machine learning with partially linear regression
+
+To capture e.g. interactions and non-linearities better, the choice of flexible ML estimators instead of linear regression can be beneficial. In R, the package `mlr3`, alongside with the extension package `mlr3learners` provides a wide range of common ML estimators and a flexible framework.
+
+```{r}
+#| eval: false
+
+install.packages("mlr3")
+install.packages("mlr3learners")
+```
+
+Just as the FWL theorem, [Chernozhukov et al. (2018)](https://doi.org/10.1111/ectj.12097) proposes a three step procedure to estimate the $ATE$:
+
+1.  Form prediction model for the treatment: $\hat{e}(\mathbf{X_i})$
+
+2.  Form prediction model for the outcome: $\hat{\mu}(\mathbf{X_i})$
+
+3.  Run feasible residual-on-residual regression: $\hat{\tau}_{\text{ATE}} = \arg \min_{\tilde{\tau}} \frac{1}{N}\sum_{i=1}^n ( Y_i - \hat{\mu}(\mathbf{X_i}) - \tilde{\tau} ( T_i - \hat{e}(\mathbf{X_i})))^2 = \frac{\sum_{i=1}^n (Y_i - \hat{\mu}(\mathbf{X_i})) (T_i - \hat{e}(\mathbf{X_i}))}{\sum_{i=1}^n (T_i - \hat{e}(\mathbf{X_i}))^2}$
+
+Please note, no particular estimation method is specified in the procedure for step (1) and (2). Only for step (3), an OLS regression will be run on the residuals. Therefore, we load the packages and define what estimators, we want to use.
+
+::: callout-note
+With `as_task_classif()` or `as_task_reg()`, we define *what we want to estimate* which includes the data object and the estimation target, also known as response or outcome. When the outcome is binary, we use a classification task, when it is continuous, we use a regression task. With `lrn()`, we specify *how we want to estimate* it.
+:::
+
+```{r}
+#| message: false
+#| warning: false
+
+# Load packages
+library(mlr3)
+library(mlr3learners)
+
+# Prediction model for the treatment/exposure
+task_e <- as_task_classif(email |> select(-next_mnth_pv), target = "mkt_email")
+lrnr_e <- lrn("classif.log_reg", predict_type = "prob")
+
+# Prediction model for the outcome
+task_m <- as_task_regr(email |> select(-mkt_email), target = "next_mnth_pv")
+lrnr_m <- lrn("regr.lm")
+```
+
+Using these estimators, we will populate the vectors `e_hat` and `m_hat`, which are estimates of the treatment propensity and the conditional outcome for each unit, respectively (step 1 and step 2).
+
+```{r}
+# Initialize nuisance vectors
+n <- nrow(email)
+m_hat <- rep(NA, n)
+e_hat <- rep(NA, n)
+
+head(m_hat)
+```
+
+However, because we generally do not rely on structural assumptions for the estimation of nuisance parameters and ML methods are prone to overfitting, we need to perform cross-fitting, i.e. we split the sample into $K$ folds and for each fold $k$, we train (or "fit") a model on the remaining $K-1$ folds. We predict the nuisance parameters for units in the fold $k$ only with the model trained on the remaining $K-1$ folds.
+
+**Question:** What is overfitting?
+
+<details>
+
+<summary>Answer</summary>
+
+An inadequate modeling of the data which results in a too close fit with the training but a bad fit with the test data.
+
+</details>
+
+::: callout-tip
+Literature and methods from causal/statistical inference and machine learning often describe the same process. E.g. in causal/statistical inference the term *fitting* is mostly used, while in machine learning the term *training* is more prevalent. Other examples are covariates vs. features or outcome vs. target.
+:::
+
+![K-fold cross fitting with K = 5](cross_val.png){width="400"}
+
+For the sake of simplicity and demonstration, we select $K=2$. Common values for smaller data sets are $K=5$ or $K=10$, while for larger data sets, you will also see $K=20$ quite often. Generally, the choice of $K$ is associated with bias-variance trade-off and empirically, the values have shown to perform well.
+
+
+```{r}
+# Split sample
+ids_s1 <- sample(1:n, n/2) # indices of sample 1
+ids_s2 <- which(!1:n %in% ids_s1) # indices of sample 2
+
+head(ids_s1)
+```
+
+Now, we just have to use the right sample for training and prediction as described above. Remember: **a unit must never be predicted with a model that was trained on the same observation.**
+
+::: callout-note
+In the `mlr3` framework, we fit/train using the dollar operator and the method `train()` which takes the task and the row indexes as arguments. To predict, we use the method `predict()`, which takes the same arguments. You might feel that the usage of the dollar operator and methods is a bit different to what we have seen before - and you're right: it's from the R S4 system, which is a system for object oriented programming.
+:::
+
+```{r}
+# Iteration 1:
+# Train: S1 - Predict: S2
+# Y ~ X
+lrnr_m$train(task_m, row_ids = ids_s1)
+m_hat[ids_s2] <- lrnr_m$predict(task_m, row_ids = ids_s2)$response
+# D ~ X
+lrnr_e$train(task_e, row_ids = ids_s1)
+e_hat[ids_s2] <- lrnr_e$predict(task_e, row_ids = ids_s2)$prob[, 2] # col 2 for value D = 1
+```
+
+***Q2. Run the second iteration.***
+
+```{r}
+#| code-fold: true
+
+# Iteration 2:
+# Train: S2 - Predict: S1
+# Y ~ X
+lrnr_m$train(task_m, row_ids = ids_s2)
+m_hat[ids_s1] <- lrnr_m$predict(task_m, row_ids = ids_s1)$response
+# D ~ X
+lrnr_e$train(task_e, row_ids = ids_s2)
+e_hat[ids_s1] <- lrnr_e$predict(task_e, row_ids = ids_s1)$prob[, 2]
+```
+
+Having obtained our nuisance parameters, we can move to step 3 and estimate the residuals-on-residuals regression.
+
+***Q3a. Obtain the residuals and store them as `Y_hat` and `D_hat`.***
+
+```{r}
+#| code-fold: true
+
+# Obtain outcome and treatment residuals
+Y <- email$next_mnth_pv
+D <- email$mkt_email
+Y_hat <- Y - m_hat
+D_hat <- D - e_hat
+```
+
+***Q3b. Run the residual-on-residual regression.***
+
+```{r}
+#| code-fold: true
+
+# Residual-on-residual regression
+mod_plr <- lm(Y_hat ~ 0 + D_hat)
+summary(mod_plr)
+```
+
+We obtain our target parameter - the estimated effect of receiving an email on the purchase volume.
+
+## Double machine learning with augmented inverse probability weighting
+
+Now we want to make use of augmented inverse probability weighting, i.e. we want to combine outcome modeling and weighting with treatment probabilities. Again, [Chernozhukov et al. (2018)](https://doi.org/10.1111/ectj.12097) propose a three step procedure.
+
+1.  For prediction model and obtain the fitted values of the propensity scores:
+    -   $\hat{e}_t(\mathbf{X_i})$
+2.  For outcome models and obtain the fitted values of the outcome regressions:
+    -   $\hat{\mu}(t, \mathbf{X_i})$.
+3.  Construct the doubly robust estimator:
+    -   $\hat{\tau}_{\text{ATE}} = \hat{\mu}_{1} - \hat{\mu}_{0}$ with
+
+    -   $\hat{\mu}_{1} = \frac{1}{n} \sum_{i=1}^n \left[\hat{\mu}(t= 1, \mathbf{X_i}) + \frac{\mathbb{1}(T_i = 1)(Y_i - \hat{\mu}(t = 1, \mathbf{ X_i})}{\hat{e}_1(\mathbf{X_i})}\right]$
+
+    -   $\hat{\mu}_{0} = \frac{1}{n} \sum_{i=1}^n \left[\hat{\mu}(t= 0, \mathbf{X_i}) + \frac{\mathbb{1}(T_i = 0)(Y_i - \hat{\mu}(t = 0, \mathbf{ X_i})}{\hat{e}_0(\mathbf{X_i})}\right]$ and
+
+    -   $\hat{e}_0(\mathbf{X_i}) = 1 - \hat{e}_1(\mathbf{X_i})$
+
+Again, we initialize our nuisance vectors, but this time, we need to differentiate between a model for the untreated and one for the treated outcomes because we estimate the $APO$ for all units and all outcomes, separately.
+
+```{r}
+# Initialize nuisance vectors
+e_hat <- rep(NA,n)
+m0_hat <- rep(NA,n) # untreated
+m1_hat <- rep(NA,n) # treated
+```
+
+Therefore, we also filter on whether some received the treatment or not.
+
+```{r}
+# Treatment indices
+ids_d0 <- which(email$mkt_email==0)
+ids_d1 <- which(email$mkt_email==1)
+```
+
+Then, again using cross-fitting, because we do not rely on structural assumptions, we train and predict.
+
+```{r}
+# Iteration 1:
+# Train in S1, predict in S2
+# D ~ X
+lrnr_e$train(task_e, row_ids = ids_s1)
+e_hat[ids_s2] <- lrnr_e$predict(task_e, row_ids = ids_s2)$prob[, 2]
+# Y0 ~ X
+lrnr_m$train(task_m, row_ids = intersect(ids_s1, ids_d0))
+m0_hat[ids_s2] <- lrnr_m$predict(task_m, row_ids = ids_s2)$response
+# Y1 ~ X
+lrnr_m$train(task_m, row_ids = intersect(ids_s1, ids_d1))
+m1_hat[ids_s2] <- lrnr_m$predict(task_m, row_ids = ids_s2)$response
+```
+
+***Q4. Run the second iteration.***
+
+```{r}
+#| code-fold: true
+
+# Iteration 2:
+# Train in S2, predict in S1
+# D ~ X
+lrnr_e$train(task_e, row_ids = ids_s2)
+e_hat[ids_s1] <- lrnr_e$predict(task_e, row_ids = ids_s1)$prob[, 2]
+# Y0 ~ X
+lrnr_m$train(task_m, row_ids = intersect(ids_s2, ids_d0))
+m0_hat[ids_s1] <- lrnr_m$predict(task_m, row_ids = ids_s1)$response
+# Y1 ~ X
+lrnr_m$train(task_m, row_ids = intersect(ids_s2, ids_d1))
+m1_hat[ids_s1] <- lrnr_m$predict(task_m, row_ids = ids_s1)$response
+```
+
+And finally, using the formula from above, we obtain the potential outcomes for each unit. The ATE obtains as the difference between those two.
+
+***Q5. Calculate the potential outcomes and the ATE.***
+
+```{r}
+#| code-fold: true
+
+# Potential outcomes with AIPW
+Y_0_PO <- m0_hat + (1-D) * (Y-m0_hat) / (1-e_hat)
+Y_1_PO <- m1_hat + D * (Y-m1_hat) / e_hat
+
+# ATE
+Y_ate <- Y_1_PO - Y_0_PO
+```
+
+A trick to obtain the same statistical information as we are used to, is by simply regressing the variable `Y_ate` on the constant 1.
+
+```{r}
+# Obtain statistical inference (same as t-test)
+mod_aipw <- lm(Y_ate ~ 1)
+summary(mod_aipw)
+```
+
+## DoubleML
+
+In the previous examples, we manually coded the estimation procedures, which involved splitting the sample and executing all steps ourselves. However, employing a function to automate these tasks offers numerous advantages. For instance, it enables easy adjustment of the number of folds $K$, streamlines the process of changing the models for estimation, and significantly reduces the risk of errors by preventing confusion regarding which sample to use for training and prediction.
+
+The R package `DoubleML` provides an implementation of the double / debiased machine learning framework and is built on top of the `mlr3` framework we have already used. It also has a [Python twin](https://github.com/DoubleML/doubleml-for-py).
+
+```{r}
+#| eval: false
+
+install.packages("DoubleML")
+```
+
+A little different than before, we need to specify the data object first. The object contains the data frame, the outcome column `y_col` and the treatment column `d_cols`.
+
+```{r}
+#| include: false
+
+lgr::get_logger("mlr3")$set_threshold("warn")
+```
+
+```{r}
+#| message: false
+#| warning: false
+
+# Load package
+library(DoubleML)
+
+# Specify data object
+email_dml_data <- DoubleMLData$new(
+  data = as.data.frame(email),
+  y_col = "next_mnth_pv", 
+  d_cols = "mkt_email"
+  )
+```
+
+### Partially linear regression
+
+We choose the class `DoubleMLPLR`, which is short for "partially linear regression" and provide the data object and specify what estimators to use. We can just reuse the estimators from before. The methods `fit()` and `summary()` are self-explanatory.
+
+```{r}
+# Specify task
+dml_plr_obj <- DoubleMLPLR$new(
+  data =  email_dml_data, # data object
+  ml_l = lrnr_m, # outcome model
+  ml_m = lrnr_e, # exposure model
+  apply_cross_fitting = TRUE,
+  n_folds = 10
+  )
+
+# Fit and return summary
+dml_plr_obj$fit()
+dml_plr_obj$summary()
+```
+
+### Augmented inverse probablity weighting
+
+The steps are the same for our AIPW estimator, only that we use the class `DoubleMLIRM` and additionally need to specify the `score` argument which we set to $ATE$.
+
+```{r}
+# Specify task
+dml_aipw_obj = DoubleMLIRM$new(
+  data = email_dml_data,
+  ml_g = lrnr_m,
+  ml_m = lrnr_e,
+  score = "ATE",
+  trimming_threshold = 0.01, # to prevent too extreme weights
+  apply_cross_fitting = TRUE,
+  n_folds = 10)
+
+# Fit and return summary
+dml_aipw_obj$fit()
+dml_aipw_obj$summary()
+```
+
+```{r}
+#| code-fold: true
+
+# Table of all estimates and standard errors
+tbl_coef <- tibble(
+  estimator = c(
+    "PLR (by hand)",
+    "AIPW (by hand)",
+    "PLR (DoubleML)",
+    "AIPW (DoubleML)"
+  ),
+  coef = c(
+    broom::tidy(mod_plr)$estimate,
+    broom::tidy(mod_aipw)$estimate,
+    dml_plr_obj$coef,
+    dml_aipw_obj$coef
+  ),
+  se   = c(
+    broom::tidy(mod_plr)$std.error,
+    broom::tidy(mod_aipw)$std.error,
+    dml_plr_obj$se,
+    dml_aipw_obj$se
+  )
+)
+
+# Plot comparison
+ggplot(tbl_coef, aes(x = estimator, y = coef, ymin = coef - 1.96*se, ymax = coef + 1.96*se)) +
+  geom_errorbar(width = .5) +
+  ylim(c(1100, 1400))
+```
+
+## Assignment
+
+::: assignment
+Accept the [**Week 5 - Assignment**](https://classroom.github.com/a/m7oLFvnr) and follow the same steps as last week and as described in the organization chapter.
+
+For the purpose of introduction, we have just used logistic and linear regression. But as we mentioned, the usage of more flexible ML methods can have benefits.
+
+1.  Use the commands from the `DoubleML` package but swap out the estimators with ML methods for
+
+    -   partially linear regression and
+
+    -   augmented inverse probability weighting.
+
+You can find an overview of more ML-like estimators [here](https://mlr-org.com/learners.html). Please note, that for some of the learners, you have to install the package `mlr3extralearners` which is just available from GitHub via ...
+
+```{r}
+#| eval: false
+
+# You can ignore this for now.
+install.packages("remotes")
+remotes::install_github("mlr-org/mlr3extralearners")
+```
+
+load it via ...
+
+```{r}
+#| eval: false
+
+library(mlr3extralearners)
+```
+
+and, in some cases, install learners via ...
+
+```{r}
+#| eval: false
+
+install_learners("..")
+```
+
+2.  A few weeks later you are able to run an AB-test with perfectly randomized groups that either receive a marketing email or do not. Load `email_rnd.csv`, recall, how to retrieve the $ATE$ in randomized experiments and report it.
+
+3.  Compare the treatment effects from task 1 and 2 visually using `ggplot` and shortly discuss what estimate you have the most trust in.
+
+4.  Explain why in double machine learning cross-fitting plays such a crucial role. What would happen if you left out the step of cross-fitting?
+:::

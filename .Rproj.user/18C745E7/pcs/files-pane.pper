@@ -1,12 +1,12 @@
 {
-    "path": "~/my_drive/02_TUHH/03_github/causal_ds_ss24/content/course_weeks/_removed",
+    "path": "~/my_drive/02_TUHH/03_github/causal_ds_ss24/content/course_weeks/week_05",
     "sortOrder": [
         {
-            "columnIndex": 1,
+            "columnIndex": 2,
             "ascending": true
         },
         {
-            "columnIndex": 2,
+            "columnIndex": 1,
             "ascending": true
         }
     ]

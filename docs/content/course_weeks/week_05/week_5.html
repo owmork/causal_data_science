@@ -17,6 +17,40 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 <script src="../../../site_libs/quarto-nav/quarto-nav.js"></script>
@@ -38,7 +72,10 @@ ul.task-list li input[type="checkbox"] {
 <script src="../../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="../../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="dark">
-<script src="../../../site_libs/quarto-contrib/iconify-1.0.7/iconify-icon.min.js"></script><script id="quarto-search-options" type="application/json">{
+<script src="../../../site_libs/quarto-contrib/iconify-1.0.7/iconify-icon.min.js"></script>
+<script src="../../../site_libs/quarto-contrib/glightbox/glightbox.min.js"></script>
+<link href="../../../site_libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
+<link href="../../../site_libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet"><script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
   "collapse-after": 3,
@@ -65,7 +102,32 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script><link href="../../../site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet">
-<script src="../../../site_libs/pagedtable-1.1/js/pagedtable.js"></script><link rel="stylesheet" href="../../../styles.css">
+<script src="../../../site_libs/pagedtable-1.1/js/pagedtable.js"></script><script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script><script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script><script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script><link rel="stylesheet" href="../../../styles.css">
 </head>
 <body class="nav-sidebar docked nav-fixed">
 
@@ -240,6 +302,16 @@ ul.task-list li input[type="checkbox"] {
   <ul>
 <li><a href="#slides-recap" id="toc-slides-recap" class="nav-link active" data-scroll-target="#slides-recap">Slides &amp; Recap</a></li>
   <li><a href="#practical-example" id="toc-practical-example" class="nav-link" data-scroll-target="#practical-example">Practical example</a></li>
+  <li><a href="#frischwaughlovell-theorem" id="toc-frischwaughlovell-theorem" class="nav-link" data-scroll-target="#frischwaughlovell-theorem">Frisch–Waugh–Lovell Theorem</a></li>
+  <li><a href="#double-machine-learning-with-partially-linear-regression" id="toc-double-machine-learning-with-partially-linear-regression" class="nav-link" data-scroll-target="#double-machine-learning-with-partially-linear-regression">Double machine learning with partially linear regression</a></li>
+  <li><a href="#double-machine-learning-with-augmented-inverse-probability-weighting" id="toc-double-machine-learning-with-augmented-inverse-probability-weighting" class="nav-link" data-scroll-target="#double-machine-learning-with-augmented-inverse-probability-weighting">Double machine learning with augmented inverse probability weighting</a></li>
+  <li>
+<a href="#doubleml" id="toc-doubleml" class="nav-link" data-scroll-target="#doubleml">DoubleML</a>
+  <ul class="collapse">
+<li><a href="#partially-linear-regression" id="toc-partially-linear-regression" class="nav-link" data-scroll-target="#partially-linear-regression">Partially linear regression</a></li>
+  <li><a href="#augmented-inverse-probablity-weighting" id="toc-augmented-inverse-probablity-weighting" class="nav-link" data-scroll-target="#augmented-inverse-probablity-weighting">Augmented inverse probablity weighting</a></li>
+  </ul>
+</li>
   <li><a href="#assignment" id="toc-assignment" class="nav-link" data-scroll-target="#assignment">Assignment</a></li>
   </ul></nav>
     </div>
@@ -260,16 +332,359 @@ ul.task-list li input[type="checkbox"] {
 
 
 </header><section id="slides-recap" class="level2"><h2 class="anchored" data-anchor-id="slides-recap">Slides &amp; Recap</h2>
-<p>Coming soon.</p>
+<p><a href="../../../lecture/05.pdf"><strong>Slides - Week 5</strong></a></p>
+<p>Last week, we delved into strategies for managing observed confounders, exploring techniques such as estimating conditional outcomes and re-weighting data based on propensity scores. Building on that foundation, we’ll now explore doubly robust methods. These approaches combine modeling of both the conditional outcome and the likelihood of treatment, offering the advantage of consistency even if only one model is accurately specified. Additionally, we’ll introduce machine learning (ML) models into our toolkit. ML enables us to perform data-driven model selection and tackle complex non-linear relationships while still allowing for statistical inference. Primarily, ML methods help us model nuisance parameters — factors that aren’t our main focus but assist in estimating our target parameter: the treatment’s effect on an outcome.</p>
 </section><section id="practical-example" class="level2"><h2 class="anchored" data-anchor-id="practical-example">Practical example</h2>
-<p>Coming soon.</p>
-</section><section id="assignment" class="level2"><h2 class="anchored" data-anchor-id="assignment">Assignment</h2>
-<p>Coming soon.</p>
+<p>As a member of the marketing team at an online retailer, your objective is to identify customers who are receptive to marketing emails. While recognizing the potential for increased spending associated with these emails, you’re also aware that some customers prefer not to receive them. To address this challenge, your aim is to estimate the average treatment effect (ATE) of sending such emails on customers’ future purchase volume. This estimation will enable your team to make informed decisions about email recipients.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Today, you will download a R <a href="https://cloud.tuhh.de/index.php/s/pQYPenMgHXCnetZ">script</a> and the <a href="https://cloud.tuhh.de/index.php/s/Ek25Lk2LTPLtL4s">data</a> to answer the questions throughout the tutorial.</p>
+</div>
+</div>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Load tidyverse package</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Read data</span></span>
+<span><span class="va">email</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html">read_csv</a></span><span class="op">(</span><span class="st">"email_obs.csv"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Data overview</span></span>
+<span><span class="fu"><a href="https://pillar.r-lib.org/reference/glimpse.html">glimpse</a></span><span class="op">(</span><span class="va">email</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 10,000
+Columns: 27
+$ mkt_email          &lt;dbl&gt; 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 1, 0, 1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 1, 0…
+$ next_mnth_pv       &lt;dbl&gt; 1764.62, 162.21, 42.33, 12.41, 1398.49, 1088.87, 1485.70, 812.83, 1091.01, 2081.43, 984.25, 1755.68, 1.75, 1525.07, 739.7…
+$ age                &lt;dbl&gt; 34, 65, 26, 31, 36, 68, 27, 23, 46, 27, 35, 37, 30, 31, 24, 29, 23, 49, 46, 28, 49, 47, 34, 41, 42, 24, 28, 34, 55, 27, 3…
+$ tenure             &lt;dbl&gt; 2, 0, 1, 0, 2, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 1, 0, 0, 1, 0, 1, 0, 0, 0, 2, 0, 0…
+$ ammount_spent      &lt;dbl&gt; 230.31, 142.41, 103.19, 10.25, 30.34, 78.16, 178.64, 37.14, 182.87, 136.78, 4.75, 28.81, 0.68, 92.45, 40.65, 192.17, 186.…
+$ vehicle            &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0…
+$ food               &lt;dbl&gt; 2, 2, 0, 0, 1, 2, 0, 1, 0, 1, 1, 1, 0, 1, 2, 0, 0, 2, 0, 2, 1, 1, 3, 1, 4, 1, 0, 1, 2, 0, 0, 1, 0, 2, 1, 1, 1, 0, 2, 1, 1…
+$ beverage           &lt;dbl&gt; 2, 3, 0, 1, 0, 0, 1, 0, 0, 2, 1, 1, 0, 0, 1, 3, 0, 0, 1, 0, 1, 1, 1, 0, 1, 2, 1, 0, 2, 2, 2, 1, 0, 2, 1, 0, 3, 1, 0, 0, 0…
+$ art                &lt;dbl&gt; 1, 0, 1, 0, 0, 0, 2, 0, 2, 3, 0, 0, 3, 0, 1, 3, 0, 0, 4, 2, 2, 1, 1, 1, 1, 1, 2, 1, 0, 0, 0, 0, 2, 0, 2, 0, 1, 1, 1, 2, 0…
+$ baby               &lt;dbl&gt; 0, 3, 2, 1, 1, 1, 1, 2, 1, 0, 1, 0, 3, 0, 0, 1, 1, 2, 1, 1, 1, 0, 2, 1, 1, 4, 1, 3, 1, 3, 2, 1, 3, 1, 0, 0, 2, 2, 3, 1, 2…
+$ personal_care      &lt;dbl&gt; 2, 0, 0, 1, 0, 0, 2, 0, 2, 1, 3, 1, 2, 2, 1, 2, 3, 2, 1, 0, 0, 1, 1, 2, 0, 0, 1, 2, 0, 0, 0, 4, 1, 0, 1, 2, 2, 1, 0, 0, 2…
+$ toys               &lt;dbl&gt; 0, 1, 2, 0, 0, 0, 1, 1, 1, 2, 0, 2, 0, 0, 1, 0, 0, 0, 0, 1, 2, 3, 0, 1, 2, 0, 3, 1, 1, 0, 1, 0, 0, 0, 1, 2, 1, 0, 0, 1, 1…
+$ clothing           &lt;dbl&gt; 1, 3, 4, 1, 1, 4, 2, 1, 1, 4, 2, 2, 2, 3, 1, 0, 1, 0, 2, 2, 1, 0, 0, 1, 1, 3, 0, 3, 3, 1, 0, 6, 3, 0, 3, 8, 7, 3, 2, 1, 1…
+$ decor              &lt;dbl&gt; 0, 0, 1, 2, 1, 0, 1, 1, 0, 1, 2, 5, 1, 2, 0, 1, 0, 2, 0, 1, 3, 0, 2, 0, 0, 0, 0, 1, 0, 3, 0, 1, 1, 0, 3, 0, 0, 0, 0, 0, 2…
+$ cell_phones        &lt;dbl&gt; 4, 1, 2, 3, 3, 1, 5, 1, 3, 4, 0, 3, 1, 3, 2, 0, 1, 1, 4, 3, 1, 2, 1, 4, 2, 6, 3, 5, 3, 1, 2, 1, 5, 4, 6, 3, 5, 2, 1, 3, 4…
+$ construction       &lt;dbl&gt; 3, 1, 0, 1, 2, 1, 0, 1, 1, 0, 2, 2, 1, 1, 2, 2, 2, 0, 2, 1, 2, 0, 1, 0, 2, 2, 0, 2, 1, 0, 1, 1, 1, 2, 1, 0, 3, 0, 2, 0, 0…
+$ home_appliances    &lt;dbl&gt; 0, 1, 1, 2, 1, 1, 1, 0, 1, 1, 2, 2, 2, 3, 1, 0, 1, 0, 0, 1, 1, 2, 0, 2, 0, 0, 1, 0, 2, 1, 1, 2, 2, 3, 2, 0, 1, 1, 2, 0, 1…
+$ electronics        &lt;dbl&gt; 2, 4, 2, 1, 4, 0, 0, 3, 1, 5, 0, 5, 0, 4, 2, 2, 2, 3, 1, 3, 1, 1, 3, 1, 1, 2, 4, 2, 3, 3, 2, 2, 1, 1, 0, 1, 0, 1, 1, 3, 3…
+$ sports             &lt;dbl&gt; 0, 3, 1, 0, 0, 1, 0, 2, 2, 1, 1, 0, 0, 1, 1, 0, 0, 1, 2, 1, 0, 0, 1, 0, 1, 0, 0, 1, 2, 1, 0, 0, 3, 0, 2, 0, 2, 0, 1, 1, 2…
+$ tools              &lt;dbl&gt; 0, 0, 0, 1, 1, 0, 0, 1, 0, 1, 1, 1, 1, 2, 0, 0, 3, 0, 1, 0, 3, 0, 4, 1, 0, 1, 0, 1, 0, 2, 0, 0, 1, 0, 0, 0, 0, 1, 1, 1, 0…
+$ games              &lt;dbl&gt; 2, 3, 2, 0, 1, 2, 2, 0, 2, 1, 2, 1, 2, 3, 2, 1, 2, 1, 5, 2, 1, 2, 1, 0, 3, 4, 3, 0, 2, 1, 1, 0, 1, 3, 1, 0, 1, 2, 1, 0, 4…
+$ industry           &lt;dbl&gt; 0, 1, 2, 0, 3, 1, 4, 1, 1, 2, 1, 1, 0, 1, 0, 2, 0, 1, 1, 0, 0, 0, 1, 2, 0, 0, 0, 1, 4, 0, 0, 0, 0, 0, 1, 1, 3, 2, 1, 2, 2…
+$ pc                 &lt;dbl&gt; 2, 3, 5, 2, 0, 3, 3, 2, 2, 3, 3, 4, 3, 2, 0, 1, 0, 2, 0, 4, 3, 2, 0, 3, 2, 2, 3, 3, 1, 0, 1, 1, 2, 0, 2, 2, 3, 3, 1, 0, 3…
+$ jewel              &lt;dbl&gt; 0, 0, 1, 3, 2, 1, 0, 0, 0, 2, 0, 3, 0, 2, 0, 0, 0, 0, 1, 1, 1, 1, 1, 2, 0, 0, 2, 1, 3, 1, 3, 3, 1, 1, 1, 0, 0, 1, 0, 2, 1…
+$ books              &lt;dbl&gt; 0, 0, 2, 1, 1, 1, 0, 0, 0, 0, 1, 1, 2, 0, 1, 1, 0, 0, 0, 3, 1, 2, 0, 0, 1, 0, 1, 2, 0, 0, 1, 2, 1, 1, 1, 1, 3, 0, 0, 2, 2…
+$ music_books_movies &lt;dbl&gt; 3, 2, 1, 2, 0, 3, 1, 0, 1, 0, 1, 0, 3, 2, 1, 1, 0, 1, 3, 0, 0, 1, 0, 1, 1, 1, 1, 2, 1, 0, 0, 1, 0, 1, 0, 0, 0, 0, 2, 0, 2…
+$ health             &lt;dbl&gt; 2, 2, 1, 2, 2, 1, 1, 0, 2, 4, 0, 2, 5, 2, 0, 2, 1, 2, 2, 4, 3, 3, 1, 2, 2, 2, 2, 3, 1, 1, 1, 1, 2, 2, 1, 3, 3, 1, 0, 0, 3…</code></pre>
+</div>
+</div>
+<p>The treatment variable of interest is denoted as <code>mkt_email</code>, indicating whether a customer received a marketing email. The outcome of importance is the purchase volume one month after receiving the email, represented as <code>next_mnth_pv</code>. Alongside these key variables, the dataset encompasses various covariates such as customer age, tenure (time elapsed since the first purchase on the website), and purchase history across different product categories.</p>
+</section><section id="frischwaughlovell-theorem" class="level2"><h2 class="anchored" data-anchor-id="frischwaughlovell-theorem">Frisch–Waugh–Lovell Theorem</h2>
+<p>Please recall from last week that we are able to split the estimation into three steps: estimating (1) a model for exposure, (2) a model for the outcome, and a (3) residual-on-residual regression. We obtain an estimate that is numerically equivalent to what we would have obtained in a linear regression modeling the conditional outcome.</p>
+<p><strong>Question:</strong> What is a residual?</p>
+<details><summary>
+Answer
+</summary><p>Difference between the observed value and the value predicted by the fitted model.</p>
+</details><p><strong><em>Q1. Estimate the treatment effect using the FWL theorem.</em></strong></p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Frisch–Waugh–Lovell Theorem: 3-step procedure</span></span>
+<span></span>
+<span><span class="co"># (1) Debiasing:</span></span>
+<span></span>
+<span><span class="co"># (2) Denoising:</span></span>
+<span></span>
+<span><span class="co"># (3) Residual regression</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section><section id="double-machine-learning-with-partially-linear-regression" class="level2"><h2 class="anchored" data-anchor-id="double-machine-learning-with-partially-linear-regression">Double machine learning with partially linear regression</h2>
+<p>To capture e.g.&nbsp;interactions and non-linearities better, the choice of flexible ML estimators instead of linear regression can be beneficial. In R, the package <code>mlr3</code>, alongside with the extension package <code>mlr3learners</code> provides a wide range of common ML estimators and a flexible framework.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"mlr3"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"mlr3learners"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Just as the FWL theorem, <a href="https://doi.org/10.1111/ectj.12097">Chernozhukov et al.&nbsp;(2018)</a> proposes a three step procedure to estimate the <span class="math inline">\(ATE\)</span>:</p>
+<ol type="1">
+<li><p>Form prediction model for the treatment: <span class="math inline">\(\hat{e}(\mathbf{X_i})\)</span></p></li>
+<li><p>Form prediction model for the outcome: <span class="math inline">\(\hat{\mu}(\mathbf{X_i})\)</span></p></li>
+<li><p>Run feasible residual-on-residual regression: <span class="math inline">\(\hat{\tau}_{\text{ATE}} = \arg \min_{\tilde{\tau}} \frac{1}{N}\sum_{i=1}^n ( Y_i - \hat{\mu}(\mathbf{X_i}) - \tilde{\tau} ( T_i - \hat{e}(\mathbf{X_i})))^2 = \frac{\sum_{i=1}^n (Y_i - \hat{\mu}(\mathbf{X_i})) (T_i - \hat{e}(\mathbf{X_i}))}{\sum_{i=1}^n (T_i - \hat{e}(\mathbf{X_i}))^2}\)</span></p></li>
+</ol>
+<p>Please note, no particular estimation method is specified in the procedure for step (1) and (2). Only for step (3), an OLS regression will be run on the residuals. Therefore, we load the packages and define what estimators, we want to use.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>With <code><a href="https://mlr3.mlr-org.com/reference/as_task_classif.html">as_task_classif()</a></code> or <code>as_task_reg()</code>, we define <em>what we want to estimate</em> which includes the data object and the estimation target, also known as response or outcome. When the outcome is binary, we use a classification task, when it is continuous, we use a regression task. With <code><a href="https://mlr3.mlr-org.com/reference/mlr_sugar.html">lrn()</a></code>, we specify <em>how we want to estimate</em> it.</p>
+</div>
+</div>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Load packages</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://mlr3.mlr-org.com">mlr3</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://mlr3learners.mlr-org.com">mlr3learners</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Prediction model for the treatment/exposure</span></span>
+<span><span class="va">task_e</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://mlr3.mlr-org.com/reference/as_task_classif.html">as_task_classif</a></span><span class="op">(</span><span class="va">email</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="op">-</span><span class="va">next_mnth_pv</span><span class="op">)</span>, target <span class="op">=</span> <span class="st">"mkt_email"</span><span class="op">)</span></span>
+<span><span class="va">lrnr_e</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://mlr3.mlr-org.com/reference/mlr_sugar.html">lrn</a></span><span class="op">(</span><span class="st">"classif.log_reg"</span>, predict_type <span class="op">=</span> <span class="st">"prob"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Prediction model for the outcome</span></span>
+<span><span class="va">task_m</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://mlr3.mlr-org.com/reference/as_task_regr.html">as_task_regr</a></span><span class="op">(</span><span class="va">email</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="op">-</span><span class="va">mkt_email</span><span class="op">)</span>, target <span class="op">=</span> <span class="st">"next_mnth_pv"</span><span class="op">)</span></span>
+<span><span class="va">lrnr_m</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://mlr3.mlr-org.com/reference/mlr_sugar.html">lrn</a></span><span class="op">(</span><span class="st">"regr.lm"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Using these estimators, we will populate the vectors <code>e_hat</code> and <code>m_hat</code>, which are estimates of the treatment propensity and the conditional outcome for each unit, respectively (step 1 and step 2).</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Initialize nuisance vectors</span></span>
+<span><span class="va">n</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">email</span><span class="op">)</span></span>
+<span><span class="va">m_hat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="cn">NA</span>, <span class="va">n</span><span class="op">)</span></span>
+<span><span class="va">e_hat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="cn">NA</span>, <span class="va">n</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">m_hat</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] NA NA NA NA NA NA</code></pre>
+</div>
+</div>
+<p>However, because we generally do not rely on structural assumptions for the estimation of nuisance parameters and ML methods are prone to overfitting, we need to perform cross-fitting, i.e.&nbsp;we split the sample into <span class="math inline">\(K\)</span> folds and for each fold <span class="math inline">\(k\)</span>, we train (or “fit”) a model on the remaining <span class="math inline">\(K-1\)</span> folds. We predict the nuisance parameters for units in the fold <span class="math inline">\(k\)</span> only with the model trained on the remaining <span class="math inline">\(K-1\)</span> folds.</p>
+<p><strong>Question:</strong> What is overfitting?</p>
+<details><summary>
+Answer
+</summary><p>An inadequate modeling of the data which results in a too close fit with the training but a bad fit with the test data.</p>
+</details><div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Literature and methods from causal/statistical inference and machine learning often describe the same process. E.g. in causal/statistical inference the term <em>fitting</em> is mostly used, while in machine learning the term <em>training</em> is more prevalent. Other examples are covariates vs.&nbsp;features or outcome vs.&nbsp;target.</p>
+</div>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><a href="cross_val.png" class="lightbox" data-glightbox="description: .lightbox-desc-1" data-gallery="quarto-lightbox-gallery-1" title="K-fold cross fitting with K = 5"><img src="cross_val.png" class="img-fluid figure-img" width="400" alt="K-fold cross fitting with K = 5"></a></p>
+<figcaption>K-fold cross fitting with K = 5</figcaption></figure>
+</div>
+<p>For the sake of simplicity and demonstration, we select <span class="math inline">\(K=2\)</span>. Common values for smaller data sets are <span class="math inline">\(K=5\)</span> or <span class="math inline">\(K=10\)</span>, while for larger data sets, you will also see <span class="math inline">\(K=20\)</span> quite often. Generally, the choice of <span class="math inline">\(K\)</span> is associated with bias-variance trade-off and empirically, the values have shown to perform well.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Split sample</span></span>
+<span><span class="va">ids_s1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="va">n</span>, <span class="va">n</span><span class="op">/</span><span class="fl">2</span><span class="op">)</span> <span class="co"># indices of sample 1</span></span>
+<span><span class="va">ids_s2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/which.html">which</a></span><span class="op">(</span><span class="op">!</span><span class="fl">1</span><span class="op">:</span><span class="va">n</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="va">ids_s1</span><span class="op">)</span> <span class="co"># indices of sample 2</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">ids_s1</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1786   34  696  921 4240 5669</code></pre>
+</div>
+</div>
+<p>Now, we just have to use the right sample for training and prediction as described above. Remember: <strong>a unit must never be predicted with a model that was trained on the same observation.</strong></p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>In the <code>mlr3</code> framework, we fit/train using the dollar operator and the method <code>train()</code> which takes the task and the row indexes as arguments. To predict, we use the method <code><a href="https://rdrr.io/r/stats/predict.html">predict()</a></code>, which takes the same arguments. You might feel that the usage of the dollar operator and methods is a bit different to what we have seen before - and you’re right: it’s from the R S4 system, which is a system for object oriented programming.</p>
+</div>
+</div>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Iteration 1:</span></span>
+<span><span class="co"># Train: S1 - Predict: S2</span></span>
+<span><span class="co"># Y ~ X</span></span>
+<span><span class="va">lrnr_m</span><span class="op">$</span><span class="fu">train</span><span class="op">(</span><span class="va">task_m</span>, row_ids <span class="op">=</span> <span class="va">ids_s1</span><span class="op">)</span></span>
+<span><span class="va">m_hat</span><span class="op">[</span><span class="va">ids_s2</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">lrnr_m</span><span class="op">$</span><span class="fu">predict</span><span class="op">(</span><span class="va">task_m</span>, row_ids <span class="op">=</span> <span class="va">ids_s2</span><span class="op">)</span><span class="op">$</span><span class="va">response</span></span>
+<span><span class="co"># D ~ X</span></span>
+<span><span class="va">lrnr_e</span><span class="op">$</span><span class="fu">train</span><span class="op">(</span><span class="va">task_e</span>, row_ids <span class="op">=</span> <span class="va">ids_s1</span><span class="op">)</span></span>
+<span><span class="va">e_hat</span><span class="op">[</span><span class="va">ids_s2</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">lrnr_e</span><span class="op">$</span><span class="fu">predict</span><span class="op">(</span><span class="va">task_e</span>, row_ids <span class="op">=</span> <span class="va">ids_s2</span><span class="op">)</span><span class="op">$</span><span class="va">prob</span><span class="op">[</span>, <span class="fl">2</span><span class="op">]</span> <span class="co"># col 2 for value D = 1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><strong><em>Q2. Run the second iteration.</em></strong></p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># ...</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Having obtained our nuisance parameters, we can move to step 3 and estimate the residuals-on-residuals regression.</p>
+<p><strong><em>Q3a. Obtain the residuals and store them as <code>Y_hat</code> and <code>D_hat</code>.</em></strong></p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># ...</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><strong><em>Q3b. Run the residual-on-residual regression.</em></strong></p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># ...</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>We obtain our target parameter - the estimated effect of receiving an email on the purchase volume.</p>
+</section><section id="double-machine-learning-with-augmented-inverse-probability-weighting" class="level2"><h2 class="anchored" data-anchor-id="double-machine-learning-with-augmented-inverse-probability-weighting">Double machine learning with augmented inverse probability weighting</h2>
+<p>Now we want to make use of augmented inverse probability weighting, i.e.&nbsp;we want to combine outcome modeling and weighting with treatment probabilities. Again, <a href="https://doi.org/10.1111/ectj.12097">Chernozhukov et al.&nbsp;(2018)</a> propose a three step procedure.</p>
+<ol type="1">
+<li>For prediction model and obtain the fitted values of the propensity scores:
+<ul>
+<li><span class="math inline">\(\hat{e}_t(\mathbf{X_i})\)</span></li>
+</ul>
+</li>
+<li>For outcome models and obtain the fitted values of the outcome regressions:
+<ul>
+<li>
+<span class="math inline">\(\hat{\mu}(t, \mathbf{X_i})\)</span>.</li>
+</ul>
+</li>
+<li>Construct the doubly robust estimator:
+<ul>
+<li><p><span class="math inline">\(\hat{\tau}_{\text{ATE}} = \hat{\mu}_{1} - \hat{\mu}_{0}\)</span> with</p></li>
+<li><p><span class="math inline">\(\hat{\mu}_{1} = \frac{1}{n} \sum_{i=1}^n \left[\hat{\mu}(t= 1, \mathbf{X_i}) + \frac{\mathbb{1}(T_i = 1)(Y_i - \hat{\mu}(t = 1, \mathbf{ X_i})}{\hat{e}_1(\mathbf{X_i})}\right]\)</span></p></li>
+<li><p><span class="math inline">\(\hat{\mu}_{0} = \frac{1}{n} \sum_{i=1}^n \left[\hat{\mu}(t= 0, \mathbf{X_i}) + \frac{\mathbb{1}(T_i = 0)(Y_i - \hat{\mu}(t = 0, \mathbf{ X_i})}{\hat{e}_0(\mathbf{X_i})}\right]\)</span> and</p></li>
+<li><p><span class="math inline">\(\hat{e}_0(\mathbf{X_i}) = 1 - \hat{e}_1(\mathbf{X_i})\)</span></p></li>
+</ul>
+</li>
+</ol>
+<p>Again, we initialize our nuisance vectors, but this time, we need to differentiate between a model for the untreated and one for the treated outcomes because we estimate the <span class="math inline">\(APO\)</span> for all units and all outcomes, separately.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Initialize nuisance vectors</span></span>
+<span><span class="va">e_hat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="cn">NA</span>,<span class="va">n</span><span class="op">)</span></span>
+<span><span class="va">m0_hat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="cn">NA</span>,<span class="va">n</span><span class="op">)</span> <span class="co"># untreated</span></span>
+<span><span class="va">m1_hat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="cn">NA</span>,<span class="va">n</span><span class="op">)</span> <span class="co"># treated</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Therefore, we also filter on whether some received the treatment or not.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Treatment indices</span></span>
+<span><span class="va">ids_d0</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/which.html">which</a></span><span class="op">(</span><span class="va">email</span><span class="op">$</span><span class="va">mkt_email</span><span class="op">==</span><span class="fl">0</span><span class="op">)</span></span>
+<span><span class="va">ids_d1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/which.html">which</a></span><span class="op">(</span><span class="va">email</span><span class="op">$</span><span class="va">mkt_email</span><span class="op">==</span><span class="fl">1</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Then, again using cross-fitting, because we do not rely on structural assumptions, we train and predict.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Iteration 1:</span></span>
+<span><span class="co"># Train in S1, predict in S2</span></span>
+<span><span class="co"># D ~ X</span></span>
+<span><span class="va">lrnr_e</span><span class="op">$</span><span class="fu">train</span><span class="op">(</span><span class="va">task_e</span>, row_ids <span class="op">=</span> <span class="va">ids_s1</span><span class="op">)</span></span>
+<span><span class="va">e_hat</span><span class="op">[</span><span class="va">ids_s2</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">lrnr_e</span><span class="op">$</span><span class="fu">predict</span><span class="op">(</span><span class="va">task_e</span>, row_ids <span class="op">=</span> <span class="va">ids_s2</span><span class="op">)</span><span class="op">$</span><span class="va">prob</span><span class="op">[</span>, <span class="fl">2</span><span class="op">]</span></span>
+<span><span class="co"># Y0 ~ X</span></span>
+<span><span class="va">lrnr_m</span><span class="op">$</span><span class="fu">train</span><span class="op">(</span><span class="va">task_m</span>, row_ids <span class="op">=</span> <span class="fu"><a href="https://generics.r-lib.org/reference/setops.html">intersect</a></span><span class="op">(</span><span class="va">ids_s1</span>, <span class="va">ids_d0</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">m0_hat</span><span class="op">[</span><span class="va">ids_s2</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">lrnr_m</span><span class="op">$</span><span class="fu">predict</span><span class="op">(</span><span class="va">task_m</span>, row_ids <span class="op">=</span> <span class="va">ids_s2</span><span class="op">)</span><span class="op">$</span><span class="va">response</span></span>
+<span><span class="co"># Y1 ~ X</span></span>
+<span><span class="va">lrnr_m</span><span class="op">$</span><span class="fu">train</span><span class="op">(</span><span class="va">task_m</span>, row_ids <span class="op">=</span> <span class="fu"><a href="https://generics.r-lib.org/reference/setops.html">intersect</a></span><span class="op">(</span><span class="va">ids_s1</span>, <span class="va">ids_d1</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">m1_hat</span><span class="op">[</span><span class="va">ids_s2</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">lrnr_m</span><span class="op">$</span><span class="fu">predict</span><span class="op">(</span><span class="va">task_m</span>, row_ids <span class="op">=</span> <span class="va">ids_s2</span><span class="op">)</span><span class="op">$</span><span class="va">response</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><strong><em>Q4. Run the second iteration.</em></strong></p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># ...</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>And finally, using the formula from above, we obtain the potential outcomes for each unit. The ATE obtains as the difference between those two.</p>
+<p><strong><em>Q5. Calculate the potential outcomes and the ATE.</em></strong></p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># ...</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>A trick to obtain the same statistical information as we are used to, is by simply regressing the variable <code>Y_ate</code> on the constant 1.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Obtain statistical inference (same as t-test)</span></span>
+<span><span class="va">mod_aipw</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">Y_ate</span> <span class="op">~</span> <span class="fl">1</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">mod_aipw</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = Y_ate ~ 1)
+
+Residuals:
+   Min     1Q Median     3Q    Max 
+-19694   -309    -32    264 117421 
+
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)   1336.1       19.2    69.5   &lt;2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 1920 on 9999 degrees of freedom</code></pre>
+</div>
+</div>
+</section><section id="doubleml" class="level2"><h2 class="anchored" data-anchor-id="doubleml">DoubleML</h2>
+<p>In the previous examples, we manually coded the estimation procedures, which involved splitting the sample and executing all steps ourselves. However, employing a function to automate these tasks offers numerous advantages. For instance, it enables easy adjustment of the number of folds <span class="math inline">\(K\)</span>, streamlines the process of changing the models for estimation, and significantly reduces the risk of errors by preventing confusion regarding which sample to use for training and prediction.</p>
+<p>The R package <code>DoubleML</code> provides an implementation of the double / debiased machine learning framework and is built on top of the <code>mlr3</code> framework we have already used. It also has a <a href="https://github.com/DoubleML/doubleml-for-py">Python twin</a>.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"DoubleML"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>A little different than before, we need to specify the data object first. The object contains the data frame, the outcome column <code>y_col</code> and the treatment column <code>d_cols</code>.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Load package</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://docs.doubleml.org/stable/index.html">DoubleML</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Specify data object</span></span>
+<span><span class="va">email_dml_data</span> <span class="op">&lt;-</span> <span class="va"><a href="https://rdrr.io/pkg/DoubleML/man/DoubleMLData.html">DoubleMLData</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span>
+<span>  data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="va">email</span><span class="op">)</span>,</span>
+<span>  y_col <span class="op">=</span> <span class="st">"next_mnth_pv"</span>, </span>
+<span>  d_cols <span class="op">=</span> <span class="st">"mkt_email"</span></span>
+<span>  <span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="partially-linear-regression" class="level3"><h3 class="anchored" data-anchor-id="partially-linear-regression">Partially linear regression</h3>
+<p>We choose the class <code>DoubleMLPLR</code>, which is short for “partially linear regression” and provide the data object and specify what estimators to use. We can just reuse the estimators from before. The methods <code>fit()</code> and <code><a href="https://rdrr.io/r/base/summary.html">summary()</a></code> are self-explanatory.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Specify task</span></span>
+<span><span class="va">dml_plr_obj</span> <span class="op">&lt;-</span> <span class="va"><a href="https://rdrr.io/pkg/DoubleML/man/DoubleMLPLR.html">DoubleMLPLR</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span>
+<span>  data <span class="op">=</span>  <span class="va">email_dml_data</span>, <span class="co"># data object</span></span>
+<span>  ml_l <span class="op">=</span> <span class="va">lrnr_m</span>, <span class="co"># outcome model</span></span>
+<span>  ml_m <span class="op">=</span> <span class="va">lrnr_e</span>, <span class="co"># exposure model</span></span>
+<span>  apply_cross_fitting <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  n_folds <span class="op">=</span> <span class="fl">10</span></span>
+<span>  <span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Fit and return summary</span></span>
+<span><span class="va">dml_plr_obj</span><span class="op">$</span><span class="fu">fit</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="va">dml_plr_obj</span><span class="op">$</span><span class="fu">summary</span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Estimates and significance testing of the effect of target variables
+          Estimate. Std. Error t value Pr(&gt;|t|)    
+mkt_email   1315.72       3.86     341   &lt;2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+</div>
+</section><section id="augmented-inverse-probablity-weighting" class="level3"><h3 class="anchored" data-anchor-id="augmented-inverse-probablity-weighting">Augmented inverse probablity weighting</h3>
+<p>The steps are the same for our AIPW estimator, only that we use the class <code>DoubleMLIRM</code> and additionally need to specify the <code>score</code> argument which we set to <span class="math inline">\(ATE\)</span>.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Specify task</span></span>
+<span><span class="va">dml_aipw_obj</span> <span class="op">=</span> <span class="va"><a href="https://rdrr.io/pkg/DoubleML/man/DoubleMLIRM.html">DoubleMLIRM</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span>
+<span>  data <span class="op">=</span> <span class="va">email_dml_data</span>,</span>
+<span>  ml_g <span class="op">=</span> <span class="va">lrnr_m</span>,</span>
+<span>  ml_m <span class="op">=</span> <span class="va">lrnr_e</span>,</span>
+<span>  score <span class="op">=</span> <span class="st">"ATE"</span>,</span>
+<span>  trimming_threshold <span class="op">=</span> <span class="fl">0.01</span>, <span class="co"># to prevent too extreme weights</span></span>
+<span>  apply_cross_fitting <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  n_folds <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Fit and return summary</span></span>
+<span><span class="va">dml_aipw_obj</span><span class="op">$</span><span class="fu">fit</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="va">dml_aipw_obj</span><span class="op">$</span><span class="fu">summary</span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Estimates and significance testing of the effect of target variables
+          Estimate. Std. Error t value Pr(&gt;|t|)    
+mkt_email    1334.7       19.4    68.7   &lt;2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+</div>
+</section></section><section id="assignment" class="level2"><h2 class="anchored" data-anchor-id="assignment">Assignment</h2>
 <div class="assignment">
-<p>…</p>
+<p>Will be published at ~19:00.</p>
 </div>
 
 
+<div class="hidden" aria-hidden="true">
+<span class="glightbox-desc lightbox-desc-1">K-fold cross fitting with K = 5</span>
+</div>
 </section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
@@ -674,7 +1089,31 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       &nbsp;
     </div>
   </div>
-</footer>
+</footer><script>var lightboxQuarto = GLightbox({"selector":".lightbox","loop":false,"openEffect":"zoom","descPosition":"bottom","closeEffect":"zoom"});
+window.onload = () => {
+  lightboxQuarto.on('slide_before_load', (data) => {
+    const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+    const href = trigger.getAttribute('href');
+    if (href !== null) {
+      const imgEl = window.document.querySelector(`a[href="${href}"] img`);
+      if (imgEl !== null) {
+        const srcAttr = imgEl.getAttribute("src");
+        if (srcAttr && srcAttr.startsWith("data:")) {
+          slideConfig.href = srcAttr;
+        }
+      }
+    } 
+  });
+
+  lightboxQuarto.on('slide_after_load', (data) => {
+    const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+    if (window.Quarto?.typesetMath) {
+      window.Quarto.typesetMath(slideNode);
+    }
+  });
+
+};
+          </script>
 
 
 </body></html>

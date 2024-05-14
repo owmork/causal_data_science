@@ -1,0 +1,27 @@
+/***************************************************
+**** Tooltip on title slide - Toggle Fullscreen ****
+****************************************************/
+.tippy-box {
+  font-family: $font-family-sans-serif;
+  background-color: var(--r-background-color);
+  border: 0.1rem solid var(--r-link-color);
+  color: var(--r-link-color);
+}
+
+.tippy-arrow {
+    transform-style: preserve-3d;
+}
+
+.tippy-arrow::after {
+      content: '';
+      position: absolute;
+      top: 17px;
+      transform: translateZ(-1px);
+      border-left: 8px solid transparent;
+      border-right: 8px solid transparent;
+      border-top: 8px solid var(--r-link-color);
+}
+
+.tippy-box[data-placement^='top'] > .tippy-arrow::before {
+  border-top-color: var(--r-background-color);
+}

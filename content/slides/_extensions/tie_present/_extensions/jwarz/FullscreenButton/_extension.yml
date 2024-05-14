@@ -1,0 +1,12 @@
+title: FullscreenButton
+author: Joschka Schwarz
+version: 1.0.0
+quarto-required: ">=1.2.0"
+contributes:
+  revealjs-plugins:
+    - name: RevealFullscreenButton
+      script:
+        - FullscreenButton.js
+        - screenfull.min.js
+      stylesheet:
+        - FullscreenButton.css

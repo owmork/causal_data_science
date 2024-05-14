@@ -214,5 +214,26 @@
   },
   "content/course_weeks/week_04/week_4_Matching.qmd": {
     "week_4_Matching.html": "9e36b841"
+  },
+  "slides/01_intro.qmd": {
+    "01_intro.html": "11b5edeb"
+  },
+  "slides/03_exper.qmd": {
+    "03_exper.html": "ac62ba5a"
+  },
+  "slides/04_ob_conf.qmd": {
+    "04_ob_conf.html": "4dcc3cb4"
+  },
+  "slides/02_graphs.qmd": {
+    "02_graphs.html": "b754fdac"
+  },
+  "slides/05_dml.qmd": {
+    "05_dml.html": "316545b6"
+  },
+  "content/slides/01_intro.qmd": {
+    "01_intro.html": "e3656d1d"
+  },
+  "content/course_weeks/week_05/week_5_full.qmd": {
+    "week_5_full.html": "abc26d49"
   }
 }

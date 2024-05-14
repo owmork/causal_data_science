@@ -1,0 +1,30 @@
+title: "YOUR ORGANIZATION TITLE"
+author: "YOU"
+institute: "TUHH Institute of Entrepreneurship"
+contributes:
+  formats:
+    revealjs:
+      theme: [custom.scss, tie-logo.scss]
+      css: fonts.css
+      slide-number: true
+      chalkboard: true
+      hide-inactive-cursor: true
+      controls: true
+      preview-links: auto
+      highlight-style: tie_code.theme
+      include-in-header:
+        - text: |
+            <link rel = "icon" type="image/svg" sizes="16x16" href = "https://raw.githubusercontent.com/christophihl/TIE_website/main/assets/images/icon.svg" type="image/svg+xml"/>
+      ## <link rel= "icon" type="image/png" sizes="16x16" href="https://raw.githubusercontent.com/christophihl/TIE_website/main/assets/images/_favicon/favicon_16x16.png">
+      ## <link rel = "icon" type="image/x-icon" href= "https://raw.githubusercontent.com/christophihl/TIE_website/main/assets/images/favicon.ico" sizes="any"/>
+      from: markdown+emoji
+      mainfont: PublicaSans
+      ## EXECUTION
+      execute:
+        echo: true
+      revealjs-plugins:
+        - jwarz/FullscreenButton
+        - jwarz/ToggleDarkMode
+        - jwarz/SimpleMenu
+      format-resources:
+        - author_pic.jpg

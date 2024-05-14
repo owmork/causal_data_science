@@ -1,0 +1,33 @@
+# {.center .center-x data-state="hide-menubar"}
+<style>
+.table-text {
+  text-align: center !important;
+  font-size: 2em;
+  padding-bottom: 1em !important;
+}
+.row-bottom {
+  text-align: center !important;
+  padding-top: 2em !important;
+}
+</style>
+<table width = "100%">
+<tbody>
+  <tr>
+    <td colspan="2" class="table-text">Thank you for your attention!</td>
+  </tr>
+  <tr >
+    <td class="row-bottom" style="vertical-align: baseline; width: 50%;">
+          <img src="https://raw.githubusercontent.com/christophihl/TIE_website/main/assets/images/logo.svg" style="vertical-align: middle; width: 60%; height: auto;" />
+          <img src="author_pic.jpg" class="picture" style="vertical-align: middle; horizontal-align: right; width: 30%; height: auto;" />
+    </td>
+    <td class = "row-bottom" style = "vertical-align: middle; width = 50%">
+      <ul style = "list-style:none;">
+        <li><a href = "https://www.startupengineer.io/authors/ihl/" target = "_blank"><i class = "fas fa-home"></i> startupengineer.io/authors/ihl</a></li>
+        <li><a href = "https://www.linkedin.com/in/christoph-ihl/" target = "_blank"><i class = "fab fa-linkedin"></i> christoph-ihl</a></li>
+        <li><a href = "https://github.com/christophihl" target = "_blank"><i class = "fab fa-github"></i> christophihl</a></li>
+        <li><a href = "https://twitter.com/Ihluminate/" target = "_blank"><i class = "fab fa-twitter"></i> Ihluminate</a></li>
+      </ul>
+    </td>
+  </tr>
+</tbody>
+</table>
