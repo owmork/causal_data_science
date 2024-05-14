@@ -88,7 +88,7 @@ Difference between the observed value and the value predicted by the fitted mode
 ***Q1. Estimate the treatment effect using the FWL theorem.***
 
 ```{r}
-#| code-fold: true
+#| include: false
 # Frisch–Waugh–Lovell Theorem: 3-step procedure
 
 # (1) Debiasing:
@@ -219,7 +219,7 @@ e_hat[ids_s2] <- lrnr_e$predict(task_e, row_ids = ids_s2)$prob[, 2] # col 2 for 
 ***Q2. Run the second iteration.***
 
 ```{r}
-#| code-fold: true
+#| include: false
 
 # Iteration 2:
 # Train: S2 - Predict: S1
@@ -231,12 +231,16 @@ lrnr_e$train(task_e, row_ids = ids_s2)
 e_hat[ids_s1] <- lrnr_e$predict(task_e, row_ids = ids_s1)$prob[, 2]
 ```
 
+```{r}
+# ...
+```
+
 Having obtained our nuisance parameters, we can move to step 3 and estimate the residuals-on-residuals regression.
 
 ***Q3a. Obtain the residuals and store them as `Y_hat` and `D_hat`.***
 
 ```{r}
-#| code-fold: true
+#| include: false
 
 # Obtain outcome and treatment residuals
 Y <- email$next_mnth_pv
@@ -245,14 +249,22 @@ Y_hat <- Y - m_hat
 D_hat <- D - e_hat
 ```
 
+```{r}
+# ...
+```
+
 ***Q3b. Run the residual-on-residual regression.***
 
 ```{r}
-#| code-fold: true
+#| include: false
 
 # Residual-on-residual regression
 mod_plr <- lm(Y_hat ~ 0 + D_hat)
 summary(mod_plr)
+```
+
+```{r}
+# ...
 ```
 
 We obtain our target parameter - the estimated effect of receiving an email on the purchase volume.
@@ -310,7 +322,7 @@ m1_hat[ids_s2] <- lrnr_m$predict(task_m, row_ids = ids_s2)$response
 ***Q4. Run the second iteration.***
 
 ```{r}
-#| code-fold: true
+#| include: false
 
 # Iteration 2:
 # Train in S2, predict in S1
@@ -325,12 +337,16 @@ lrnr_m$train(task_m, row_ids = intersect(ids_s2, ids_d1))
 m1_hat[ids_s1] <- lrnr_m$predict(task_m, row_ids = ids_s1)$response
 ```
 
+```{r}
+# ...
+```
+
 And finally, using the formula from above, we obtain the potential outcomes for each unit. The ATE obtains as the difference between those two.
 
 ***Q5. Calculate the potential outcomes and the ATE.***
 
 ```{r}
-#| code-fold: true
+#| include: false
 
 # Potential outcomes with AIPW
 Y_0_PO <- m0_hat + (1-D) * (Y-m0_hat) / (1-e_hat)
@@ -338,6 +354,10 @@ Y_1_PO <- m1_hat + D * (Y-m1_hat) / e_hat
 
 # ATE
 Y_ate <- Y_1_PO - Y_0_PO
+```
+
+```{r}
+# ...
 ```
 
 A trick to obtain the same statistical information as we are used to, is by simply regressing the variable `Y_ate` on the constant 1.
@@ -423,7 +443,7 @@ dml_aipw_obj$summary()
 ```
 
 ```{r}
-#| code-fold: true
+#| include: false
 
 # Table of all estimates and standard errors
 tbl_coef <- tibble(
@@ -456,45 +476,5 @@ ggplot(tbl_coef, aes(x = estimator, y = coef, ymin = coef - 1.96*se, ymax = coef
 ## Assignment
 
 ::: assignment
-Accept the [**Week 5 - Assignment**](https://classroom.github.com/a/m7oLFvnr) and follow the same steps as last week and as described in the organization chapter.
-
-For the purpose of introduction, we have just used logistic and linear regression. But as we mentioned, the usage of more flexible ML methods can have benefits.
-
-1.  Use the commands from the `DoubleML` package but swap out the estimators with ML methods for
-
-    -   partially linear regression and
-
-    -   augmented inverse probability weighting.
-
-You can find an overview of more ML-like estimators [here](https://mlr-org.com/learners.html). Please note, that for some of the learners, you have to install the package `mlr3extralearners` which is just available from GitHub via ...
-
-```{r}
-#| eval: false
-
-# You can ignore this for now.
-install.packages("remotes")
-remotes::install_github("mlr-org/mlr3extralearners")
-```
-
-load it via ...
-
-```{r}
-#| eval: false
-
-library(mlr3extralearners)
-```
-
-and, in some cases, install learners via ...
-
-```{r}
-#| eval: false
-
-install_learners("..")
-```
-
-2.  A few weeks later you are able to run an AB-test with perfectly randomized groups that either receive a marketing email or do not. Load `email_rnd.csv`, recall, how to retrieve the $ATE$ in randomized experiments and report it.
-
-3.  Compare the treatment effects from task 1 and 2 visually using `ggplot` and shortly discuss what estimate you have the most trust in.
-
-4.  Explain why in double machine learning cross-fitting plays such a crucial role. What would happen if you left out the step of cross-fitting?
+Will be published at ~19:00.
 :::
