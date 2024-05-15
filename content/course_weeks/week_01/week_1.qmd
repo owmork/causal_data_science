@@ -48,7 +48,7 @@ Please make sure to read and follow the instructions in [**Organization**](../..
 
 # Slides & Recap
 
-[**Slides - Week 1**](../../../lecture/01.pdf)
+<iframe style="width: 100%; height: 45vw; max-height: 50vh;" frameborder="0" allowfullscreen src="https://jschwarz.me/presentations/slides/01_intro.html"></iframe>
 
 # Practical example
 

@@ -44,7 +44,7 @@ source(paste0(here::here(), "/code/dag_theme.R"))
 
 ## Slides & Recap
 
-[**Slides - Week 5**](../../../lecture/05.pdf)
+<iframe style="width: 100%; height: 45vw; max-height: 50vh;" frameborder="0" allowfullscreen src="https://jschwarz.me/presentations/slides/05_dml.html"></iframe>
 
 Last week, we delved into strategies for managing observed confounders, exploring techniques such as estimating conditional outcomes and re-weighting data based on propensity scores. Building on that foundation, we'll now explore doubly robust methods. These approaches combine modeling of both the conditional outcome and the likelihood of treatment, offering the advantage of consistency even if only one model is accurately specified. Additionally, we'll introduce machine learning (ML) models into our toolkit. ML enables us to perform data-driven model selection and tackle complex non-linear relationships while still allowing for statistical inference. Primarily, ML methods help us model nuisance parameters --- factors that aren't our main focus but assist in estimating our target parameter: the treatment's effect on an outcome.
 
