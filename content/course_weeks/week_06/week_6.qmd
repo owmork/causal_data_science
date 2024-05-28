@@ -20,7 +20,7 @@ options("digits" = 2, "width" = 150)
 options(dplyr.summarise.inform = FALSE)
 
 # custom ggplot theme
-# colors from TUHH brand identitiy
+# colors from TUHH brand identity
 tuhh_colors <- c("#D0D0CE", "#00C1D4", "#FF4F4F", "#5AFFC5",
                  "#FFDE36", "#143BFF", "#FF7E15", "#FFAEA2")
 
@@ -44,11 +44,432 @@ source(paste0(here::here(), "/code/dag_theme.R"))
 
 ## Slides & Recap
 
-Coming soon.
+<iframe style="width: 100%; height: 45vw; max-height: 50vh;" frameborder="0" allowfullscreen src="https://tuhhstartupengineers-classroom.github.io/ss24-causal-data-science/slides/06_hte.html"></iframe>
 
-## Practical example
+Up until now, we have primarily discussed the general impact of a treatment. Let's shift our focus to how treatments can affect different units in various ways. This involves the concept of personalized treatment effects and the improved assignment of treatments, especially in situations where it’s not feasible to treat everyone and prioritization is necessary. This topic is closely related to predictive problems, cross-validation, and model selection, with effect validation being more challenging than for a simple predictive model.
 
-Coming soon.
+In recent weeks, we have occasionally estimated Conditional Average Treatment Effects (CATE) by manually assuming group-level heterogeneity.
+
+$$
+\tau(\mathbf{x}) = \mathbb{E}[Y_i(1) - Y_i(0) | \mathbf{X_i = x}]
+$$
+
+## Metalearners
+
+Now predict individualized treatment effects based on all covariates $X_i$ under the assumption of observed confounding using metalearners.
+
+::: callout-tip
+**No proper cross-fitting**
+
+In the next steps, you are going to code the metalearners by hand. For simplicity, you don't need to perform proper cross-fitting because the focus is on understanding the mechanisms of metalearners.
+:::
+
+We will focus on the R-learner and the DR-learner, which have the advantage of minimizing only one loss function. However, there are also other types of metalearners, such as the S-learner, T-learner, and X-learner.
+
+In general, metalearners combine multiple supervised machine learning steps into a pipeline that outputs predicted Conditional Average Treatment Effects (CATEs). The typical process involves:
+
+1. Estimating nuisance parameters.
+2. Plugging these estimates into a minimization problem targeting CATE.
+3. Solving the minimization problem.
+4. Using the model learned in step 3 to predict CATE.
+    
+### R-learner 
+
+A robust and flexible approach to estimating heterogeneous treatment effects is the R-learner, which we will now examine. We will explore two specifications: the partially linear R-learner and the generic machine learning (ML) R-learner.
+
+#### Partially linear R-learner
+
+Related to the FWL theorem and the double machine learning with partially linear regression, which we discussed last time, the R-learner slightly adjusts the minimization problem by allowing the treatment effects to vary with the covariates $mathbf{X}$.
+
+$$
+\underbrace{Y_i - \overbrace{\mathbb{E}[Y_i \mid \mathbf{X_i}]}^{\mu(\mathbf{X_i})}}_{\text{outcome residual}} = \tau(\mathbf{X_i}) \underbrace{( T_i - \overbrace{\mathbb{E}[T_i \mid \mathbf{X_i}]}^{e(\mathbf{X_i})})}_{\text{treatment residual}} + \epsilon_{Y_i}
+$$
+The minimization problem is the same except for the potentially heterogeneous treatment effect $\tau(\mathbf{X_i})$ instead of the homogeneous treatment effect $\tau)$.
+
+$$
+\hat{\tau}_{\text{RL}}(\mathbf{x}) = \arg \min_{\tau} \sum_{i=1}^n ( Y_i - \hat{\mu}(\mathbf{X_i}) - \tau(\mathbf{X_i}) ( T_i - \hat{e}(\mathbf{X_i})))^2
+$$
+With some modifications, we can see that by using a modified covariate $\mathbf{X_i}$, we can estimate with a linear model that minimize squares and solves the minimization problem in the final step.
+
+$$
+\begin{align*}
+\hat{\beta}_{RL} &= \underset{\beta}{\operatorname{arg\,min}} \sum_{i=1}^N( Y_i - \hat{\mu}(\mathbf{X_i}) - \mathbf{\beta'} \underbrace{(T_i - \hat{e}(\mathbf{X_i})) \mathbf{X_i}}_{=\mathbf{\tilde{X}_i}})^2 \\
+&= \underset{\beta}{\operatorname{arg\,min}} \sum_{i=1}^N \left( Y_i - \hat{\mu}(\mathbf{X_i}) - \mathbf{\beta'} \mathbf{\tilde{X}_i} \right)^2
+\end{align*}
+$$
+For estimating the outcome model $\hat{\mu}(\mathbf{X_i})$ and the exposure model $\hat{e}(\mathbf{X_i})$, we can use well suited ML functions.
+
+::: callout-tip
+Of course, there are packages and functions to just specify your data, treatment, outcome and covariates and you'll get the result. But to better understand what's going on under the hood, we are going to perform it manually here.
+:::
+
+*Imagine the following situation. You are operating an online shop, and a year ago, introduced a plus membership aimed at binding customers and driving revenue growth. The plus memberships comes at a small cost for the customers, which is why not all of the customers subscribed. Now you want to examine whether binding customers by this membership program in fact increases your sales with subscribed customers. However, it's essential to consider potential confounding variables such as age, gender, or previous average purchase amounts. And this time you also measure a bunch of other variables which might let ML methods be more advantageous due to their way of handling high-dimensional data.*
+
+Each row in your [dataset](https://cloud.tuhh.de/index.php/s/N85C6xAerg7SaE9) corresponds to a different customer, with accompanying demographic details, their average purchase sum before the introduction of the plus membership, their current average purchase, an indication of their participation in the plus membership program, and the categories they have bought in.
+
+```{r}
+#| message: false
+
+library(tidyverse)
+
+membership <- readRDS("membership.rds")
+glimpse(membership)
+```
+
+Again, we are going to rely on the `mlr3` packages for ML models.
+
+```{r}
+#| message: false
+#| warning: false
+
+# Load packages
+library(mlr3)
+library(mlr3learners)
+```
+
+In the first step, we train the models for the nuisance parameters $\hat{\mu}(\mathbf{X_i})$ and $\hat{e}(\mathbf{X_i})$.
+
+**Q1: Specify the nuisance models. Then, train and predict to obtain the residualized outcomes.**
+
+```{r}
+#| code-fold: false
+
+## Specify
+# Prediction model for the treatment/exposure
+# ...
+
+# Prediction model for the outcome
+# ...
+
+## Train
+# ...
+
+## Predict
+# ...
+
+## Residualize
+# True values
+# ...
+
+# Residuals
+# ...
+```
+
+Now, you can construct the modified covariates as obtained in the minimization problem.
+
+$$
+\mathbf{\tilde{X}_i} = (T_i - \hat{e}(\mathbf{X_i})) \mathbf{X_i}
+$$
+Please note, that you also have to include the intercept column with all values equal to 1, e.g. by using `rep(1, n)` or `mutate(intercept = 1)`.
+
+**Q2: Construct a data frame or matrix that contains the modified covariates and the intercept.**
+
+```{r}
+#| code-fold: false
+
+# Get matrix of unmodified covariates
+# ...
+
+# Modify by multiplying with residuals
+# ...
+```
+
+Now, you need to solve the minimization problem. Since we are focusing on a linear model, you can use the `lm()` function. Alternatively, you can apply linear shrinkage estimators, such as Lasso.
+
+**Q3: Run a regression of the residualized outcome on the modified covariates and report the results.**
+
+```{r}
+#| code-fold: false
+
+# Partially linear R-Learner
+# ...
+```
+
+Having trained the model, you obtain coefficients which you can multiply with $\mathbf{X}$ (not $\mathbf{\tilde{X}}$) to get the $CATE$.
+
+::: callout-note
+Matrix multiplication in R is done using `mn %*% nm`. Make sure to use the correct order.
+:::
+
+$$
+\hat{\tau}_{\text{RL}}(\mathbf{x}) = \mathbf{\hat{\beta}_{RL} x} \neq \mathbf{\hat{\beta}_{RL} \tilde{x}}
+$$
+<!-- Why cant I use : predict(r_learner_mod, newdata = as.data.frame(X_raw)) ??? because I did not use data =  in lm. -->
+
+**Q4: Get the predicted conditional average treatment effects CATE.**
+
+```{r}
+#| code-fold: false
+
+# Multiply covariates with coefficient vector
+# ...
+```
+
+#### Generic ML R-learner
+
+In the previous estimation, we imposed linearity on the CATE. However, sometimes you might not want to assume linearity. By rearranging the minimization problem, you can see that you can use any machine learning method capable of handling weighted minimization.
+
+<!-- ```{r} -->
+<!-- # pseudo_rl <- Y_res / D_res -->
+<!-- # weights_rl <- D_res^2 -->
+<!-- #  -->
+<!-- # r_learner_mod2 <- lm(pseudo_rl ~ 0 + X_raw, weights = weights_rl) -->
+<!-- # summary(r_learner_mod2) -->
+<!-- # all.equal(as.numeric(r_learner_mod$coefficients), as.numeric(r_learner_mod2$coefficients)) -->
+<!-- ``` -->
+
+
+$$
+\begin{align*}
+\hat{\tau}_{\text{RL}}(\mathbf{x}) &= \arg \min_{\tau} \sum_{i=1}^n ( Y_i - \hat{\mu}(\mathbf{X_i}) - \tau(\mathbf{X_i}) ( T_i - \hat{e}(\mathbf{X_i})))^2 \\
+
+&= ... \\
+&= \arg \min_{\tau} \sum_{i=1}^n (T_i - \hat{e}(\mathbf{X_i}))^2 \bigg(\frac{Y_i - \hat{\mu}(\mathbf{X_i})}{ T_i - \hat{e}(\mathbf{X_i})} - \tau(\mathbf{X_i})\bigg)^2 \\
+\end{align*}
+$$
+
+The estimation procedure again requires the outcome and treatment model estimated as a first step to obtain residuals. Then, however, you proceed with the (1) weights 
+
+$$
+(T_i - \hat{e}(\mathbf{X_i}))^2,
+$$
+
+(2) a pseudo-outcome 
+
+$$\frac{Y_i - \hat{\mu}(\mathbf{X_i})}{ T_i - \hat{e}(\mathbf{X_i})}$$
+and (3) unmodified covariates.
+
+**Q5: Construct the weights and the pseudo-outcome.**
+
+```{r}
+#| code-fold: false
+
+# Pseudo - outcome
+# ...
+
+# Weight
+# ...
+
+# Add pseudo-outcome, weights and unmodified covariates to a matrix/data frame
+# ...
+```
+
+::: callout-tip
+**Hints:**
+ML methods capable of performing weighted minimization are e.g. `lrn("regr.xgboost")` or `lrn("regr.randomForest")`. To specify the weight, you can use: `task_rl$set_col_roles(col = "weight_rl", roles = "weight")`.
+:::
+
+**Q6: Specify a ML method capable of performing weighted minimization. Then, train and predict.**
+
+```{r}
+#| code-fold: false
+
+## Specify task and learner
+# Task
+# ...
+# Assign weight column
+# ...
+
+# Specify learner
+# ...
+
+# Train
+# ...
+
+# Predict CATEs
+# ...
+```
+
+### DR-learner
+
+The doubly robust learner we discussed in the previous chapter is also a metalearner we can exploit to estimate heterogeneous effects. 
+
+$$
+\tau_{\text{DR}}(\mathbf{x}) = \mathbb{E}\bigg[ \underbrace{\hat{\mu}(1, \mathbf{X_i}) - \hat{\mu}(0, \mathbf{X_i}) + \frac{T_i(Y_i - \hat{\mu}(1, \mathbf{X_i}))}{ \hat{e}_1(\mathbf{X_i})} - \frac{(1-T_i)(Y_i - \hat{\mu}(0, \mathbf{X_i})}{\hat{e}_0(\mathbf{X_i}))}}_{\tilde{\tau_i}_{\text{ATE}}^{\text{AIPW}}} \bigg| \mathbf{X_i= x} \bigg]
+$$
+
+You might remember that we predicted both potential outcomes and obtained estimates of the individual treatment effect.
+
+$$
+\tau_{\text{DR}}(\mathbf{x}) = \mathbb{E}\bigg[ \tilde{\tau_i}_{\text{ATE}}^{\text{AIPW}} \bigg| \mathbf{X_i= x} \bigg]
+$$
+
+The only step left is then to regress these estimates on the assumed drivers of heterogeneity in effects.
+
+$$
+\hat{\tau}_{RL}(\mathbf{x}) = \underset{\tau}{\operatorname{arg\,min}} \sum_{i=1}^N \left( \tilde{\tau_i}_{\text{ATE}}^{\text{AIPW}} - \tau(\mathbf{X_i})\right)^2
+$$
+
+**Q7: Specify your nuisance parameters. Then, train and predict to obtain `m0_hat`, `m1_hat` and `e_hat`.**
+
+```{r}
+#| code-fold: false
+
+## Train outcome models
+# Y0 ~ X
+# ...
+
+# Y1 ~ X
+# ...
+
+# D ~ X (already trained)
+# ...
+```
+
+**Q8: Construct the pseudo-outcome used to compute the ATE ${\text{ATE}}^{\text{AIPW}}$. Regress it on $X$ and obtain the fitted values.**
+
+```{r}
+#| code-fold: false
+
+# Pseudo-outcome
+# ...
+
+# Fit regression
+# ...
+# "Predict" or get fitted values
+# ...
+
+# Plot histogram
+# ...
+```
+
+### Comparison
+
+...
+
+
+## Evaluation of effect heterogeneity
+
+While we have learned to estimate the CATE and observe variation in the estimated individual response to the treatment, we have not yet determined whether this heterogeneity is systematic or merely noise. Evaluating our estimated CATEs is challenging because we cannot use the typical out-of-sample approach due to the missing counterfactual. Additionally, using ML methods in the final step provides no statistical inference.
+
+To address this, we can derive summary statistics for the distribution of CATEs and jointly test for the presence of heterogeneity and our ability to detect it. Three methods we will explore are:
+
+- **BLP:** Best Linear Predictor
+- **GATES:** High-vs-low Sorted Group Average Treatment Effect
+- **CLAN:** Classification Analysis
+
+For the further analysis, we will rely on the `GenericML` package, which provides the functions `get_BLP()`, `get_GATES()` and `getCLAN()` which we can apply on a `GenericML` object.
+
+```{r}
+#| eval: false
+
+install.packages("GenericML")
+```
+
+```{r}
+# Load package
+library(GenericML)
+```
+
+It also builds upon the `mlr3` package and we can again specify our learners. Here, we can also specify more than one learner and let `GenericML` figure out which one performs best.
+
+```{r}
+# Specify set of learners
+lrnr <- c("mlr3::lrn('svm')", 'mlr3::lrn("ranger", num.trees = 100)')
+```
+
+Then, we need to setup the variables.
+
+```{r}
+# X
+X <- membership |> select(-avg_purch, -card) |> mutate(intercept = 1)
+X <- as.matrix(X)
+
+# D
+D <- membership$card
+
+# Y
+Y <- membership$avg_purch
+
+# Specify covariates to use
+X1 <- setup_X1(funs_Z = c("S", "B", "p"))
+```
+
+::: callout-note
+You might get a warning saying that some of your propensity scores are outside the interval [0.35, 0.65]. Generally, it is only recommended to use the package when having randomized data. For the sake of demonstration, we will ignore the warning here.
+:::
+
+```{r}
+#| warning: false
+#| message: false
+
+gen_ML <- GenericML(
+  # data
+  Z = X, 
+  D = D,
+  Y = Y,
+  # learners
+  learners_GenericML = lrnr,
+  learner_propensity_score = "lasso",
+  # algorithm
+  num_splits = 10,
+  quantile_cutoffs = c(0.2, 0.4, 0.6, 0.8),
+  # regression setup
+  X1_BLP = X1,
+  X1_GATES = X1,
+  # computational issues
+  parallel = TRUE, 
+  num_cores = 6, 
+  seed = 11
+)
+
+```
+
+### Best linear predictor
+
+First, we take a look at the best linear predictor (BLP). It aims to provide the solution of the hypothetical regression of the true CATE on the demeaned predicted CATE. Thereby, it attempts to answer whether heterogeneity is present and we are able to detect it. It is a straightforward way to check the quality of our predictions.
+
+$$
+\mathbb{E}[\tau(\mathbf{X_i}) | \hat{\tau}(\mathbf{X_i}) ] := \beta_1 + \beta_2\underbrace{(\hat{\tau}(\mathbf{X_i}) - \mathbb{E}[\hat{\tau}(\mathbf{X_i})])}_{\text{demeaned prediction}}
+$$
+Because we do not know the actual true treatment effect, we use a pseudo-response that we regress on the demeaned CATE.
+
+Using `GenericML`, we just have to run: 
+
+```{r}
+get_BLP(gen_ML, plot = TRUE)
+```
+
+**Question: What does $\beta_1$ represent?**
+
+**Question: What does $\beta_2$ represent? What, if $\beta_2 = 0$?** 
+
+### Sorted group average treatment effects
+
+Sorted group average treatment effects (GATES) offers insights into the distribution and heterogeneity of treatment effects. The procedure involves sorting and slicing the distribution of the predicted treatment effects $\hat{\tau}(\mathbf{X_i})$ into $K$ parts and then compute $ATE$s for each of the slices. When these slices are different from each other, we can identify subgroups which response differently to the treatment.
+
+Mathematically, we ran
+
+$$
+\gamma_k := \mathbb{E}[ \tau(\mathbf{X_i}) | G_k].
+$$
+
+When the estimator approximates well, we expect to see monotonicity in estimates:
+
+$$
+\gamma_1 \leq \gamma_2 \leq \ldots \leq \gamma_K
+$$
+Using `GenericML`, we just have to run: 
+
+```{r}
+get_GATES(gen_ML, plot = TRUE)
+```
+
+**Question: Discuss the output. Do you see the assumed monotonicity in the estimates?** 
+
+### Classification analysis
+
+The purpose of classification analysis (CLAN) is to explore what drives the heterogeneous effects. Instead of regressing a pseudo-outcome as in GATES, covariates, which are potential drivers of heterogeneity in treatment effect are regressed upon. In other words, CLAN is a simple mean comparison of covariates in groups split by the size of their treatment effect.
+
+```{r}
+get_CLAN(gen_ML, variable = "age", plot = TRUE)
+```
+
+```{r}
+get_CLAN(gen_ML, variable = "sex", plot = TRUE)
+```
+
+**Question: Interpret the plots.**
 
 ## Assignment
 

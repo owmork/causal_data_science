@@ -44,7 +44,7 @@ source(paste0(here::here(), "/code/dag_theme.R"))
 
 ## Slides & Recap
 
-<iframe style="width: 100%; height: 45vw; max-height: 50vh;" frameborder="0" allowfullscreen src="https://jschwarz.me/presentations/slides/03_exper.html"></iframe>
+<iframe style="width: 100%; height: 45vw; max-height: 50vh;" frameborder="0" allowfullscreen src="https://tuhhstartupengineers-classroom.github.io/ss24-causal-data-science/slides/03_exper.html"></iframe>
 
 Last week, our attention was dedicated to identification with the aid of graphical models. This week, our focus shifts to establishing the connection between causal identification and estimation. This section delves into **randomized experiments**, widely regarded as the gold standard for causal inference, and **linear regression**, recognized as the workhorse of causal inference. Randomization is the best way to make treatment and control group comparable, allowing us to go from mere association to causation. Linear regression equips us with the tools to extract statistical information necessary to assess the level of confidence level we have in our estimates.
 
