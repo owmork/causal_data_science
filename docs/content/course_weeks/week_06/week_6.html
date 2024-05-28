@@ -443,27 +443,34 @@ $ health             &lt;int&gt; 0, 0, 2, 2, 6, 0, 4, 2, 2, 2, 2, 0, 3, 1, 0, 2,
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://mlr3learners.mlr-org.com">mlr3learners</a></span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>In the first step, we train the models for the nuisance parameters <span class="math inline">\(\hat{\mu}(\mathbf{X_i})\)</span> and <span class="math inline">\(\hat{e}(\mathbf{X_i})\)</span>.</p>
-<p><strong>Q1: Specify the nuisance models. Then, train and predict to obtain the residualized outcomes.</strong></p>
+<p><strong>Q1: Specify the nuisance models. Then, train and predict to obtain the residuals.</strong></p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## Specify</span></span>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## Specify</span></span>
 <span><span class="co"># Prediction model for the treatment/exposure</span></span>
-<span><span class="co"># ...</span></span>
+<span><span class="va">task_e</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://mlr3.mlr-org.com/reference/as_task_classif.html">as_task_classif</a></span><span class="op">(</span><span class="va">membership</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="op">-</span><span class="va">avg_purch</span><span class="op">)</span>, target <span class="op">=</span> <span class="st">"card"</span><span class="op">)</span></span>
+<span><span class="va">lrnr_e</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://mlr3.mlr-org.com/reference/mlr_sugar.html">lrn</a></span><span class="op">(</span><span class="st">"classif.log_reg"</span>, predict_type <span class="op">=</span> <span class="st">"prob"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Prediction model for the outcome</span></span>
-<span><span class="co"># ...</span></span>
+<span><span class="va">task_m</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://mlr3.mlr-org.com/reference/as_task_regr.html">as_task_regr</a></span><span class="op">(</span><span class="va">membership</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="op">-</span><span class="va">card</span><span class="op">)</span>, target <span class="op">=</span> <span class="st">"avg_purch"</span><span class="op">)</span></span>
+<span><span class="va">lrnr_m</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://mlr3.mlr-org.com/reference/mlr_sugar.html">lrn</a></span><span class="op">(</span><span class="st">"regr.lm"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">## Train</span></span>
-<span><span class="co"># ...</span></span>
+<span><span class="va">lrnr_m</span><span class="op">$</span><span class="fu">train</span><span class="op">(</span><span class="va">task_m</span><span class="op">)</span></span>
+<span><span class="va">lrnr_e</span><span class="op">$</span><span class="fu">train</span><span class="op">(</span><span class="va">task_e</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">## Predict</span></span>
-<span><span class="co"># ...</span></span>
+<span><span class="va">m_pred_tbl</span> <span class="op">&lt;-</span> <span class="va">lrnr_m</span><span class="op">$</span><span class="fu">predict</span><span class="op">(</span><span class="va">task_m</span><span class="op">)</span></span>
+<span><span class="va">e_pred_tbl</span> <span class="op">&lt;-</span> <span class="va">lrnr_e</span><span class="op">$</span><span class="fu">predict</span><span class="op">(</span><span class="va">task_e</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">## Residualize</span></span>
 <span><span class="co"># True values</span></span>
-<span><span class="co"># ...</span></span>
+<span><span class="va">D</span> <span class="op">&lt;-</span> <span class="va">membership</span><span class="op">$</span><span class="va">card</span></span>
+<span><span class="va">Y</span> <span class="op">&lt;-</span> <span class="va">membership</span><span class="op">$</span><span class="va">avg_purch</span></span>
 <span></span>
 <span><span class="co"># Residuals</span></span>
-<span><span class="co"># ...</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="va">Y_res</span> <span class="op">&lt;-</span> <span class="va">Y</span> <span class="op">-</span> <span class="va">m_pred_tbl</span><span class="op">$</span><span class="va">response</span></span>
+<span><span class="va">D_res</span> <span class="op">&lt;-</span> <span class="va">D</span> <span class="op">-</span> <span class="va">e_pred_tbl</span><span class="op">$</span><span class="va">prob</span><span class="op">[</span>, <span class="fl">2</span><span class="op">]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
 <p>Now, you can construct the modified covariates as obtained in the minimization problem.</p>
 <p><span class="math display">\[
@@ -471,17 +478,64 @@ $ health             &lt;int&gt; 0, 0, 2, 2, 6, 0, 4, 2, 2, 2, 2, 0, 3, 1, 0, 2,
 \]</span> Please note, that you also have to include the intercept column with all values equal to 1, e.g.&nbsp;by using <code>rep(1, n)</code> or <code>mutate(intercept = 1)</code>.</p>
 <p><strong>Q2: Construct a data frame or matrix that contains the modified covariates and the intercept.</strong></p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Get matrix of unmodified covariates</span></span>
-<span><span class="co"># ...</span></span>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Get matrix of unmodified covariates</span></span>
+<span><span class="va">X</span> <span class="op">&lt;-</span> <span class="va">membership</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="op">-</span><span class="va">avg_purch</span>, <span class="op">-</span><span class="va">card</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>intercept <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
+<span><span class="va">X</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">as.matrix</a></span><span class="op">(</span><span class="va">X</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Modify by multiplying with residuals</span></span>
-<span><span class="co"># ...</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="va">X_tilde</span> <span class="op">&lt;-</span> <span class="va">X</span> <span class="op">*</span> <span class="va">D_res</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
 <p>Now, you need to solve the minimization problem. Since we are focusing on a linear model, you can use the <code><a href="https://rdrr.io/r/stats/lm.html">lm()</a></code> function. Alternatively, you can apply linear shrinkage estimators, such as Lasso.</p>
 <p><strong>Q3: Run a regression of the residualized outcome on the modified covariates and report the results.</strong></p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Partially linear R-Learner</span></span>
-<span><span class="co"># ...</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Partially linear R-Learner</span></span>
+<span><span class="va">rl_pl</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">Y_res</span> <span class="op">~</span> <span class="fl">0</span> <span class="op">+</span> <span class="va">X_tilde</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">rl_pl</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = Y_res ~ 0 + X_tilde)
+
+Residuals:
+   Min     1Q Median     3Q    Max 
+-46.41 -10.92   0.22  10.49  39.31 
+
+Coefficients:
+                          Estimate Std. Error t value Pr(&gt;|t|)    
+X_tildeage                 -1.1424     0.0842  -13.56  &lt; 2e-16 ***
+X_tildesex                  6.6572     1.9958    3.34  0.00088 ***
+X_tildepre_avg_purch       -0.1253     0.1014   -1.24  0.21698    
+X_tildevehicle              0.5023     3.2101    0.16  0.87568    
+X_tildefood                -0.5471     1.0029   -0.55  0.58550    
+X_tildebeverage            -0.2443     1.0019   -0.24  0.80743    
+X_tildeart                  0.7067     0.9858    0.72  0.47365    
+X_tildebaby                -0.9090     1.0073   -0.90  0.36707    
+X_tildepersonal_care       -1.1645     0.9598   -1.21  0.22533    
+X_tildetoys                 1.2214     0.9722    1.26  0.20928    
+X_tildeclothing            -0.0405     0.7201   -0.06  0.95517    
+X_tildedecor                0.6599     0.9482    0.70  0.48663    
+X_tildecell_phones         -0.1243     0.5666   -0.22  0.82637    
+X_tildeconstruction         0.2585     0.9667    0.27  0.78921    
+X_tildehome_appliances      0.3960     1.0720    0.37  0.71192    
+X_tildeelectronics         -0.2746     0.6926   -0.40  0.69184    
+X_tildesports              -0.1140     0.9825   -0.12  0.90769    
+X_tildetools               -0.9351     1.0366   -0.90  0.36723    
+X_tildegames               -0.4941     0.6857   -0.72  0.47133    
+X_tildeindustry             0.8194     1.0548    0.78  0.43744    
+X_tildepc                   1.1932     0.7115    1.68  0.09384 .  
+X_tildejewel                0.8425     0.9792    0.86  0.38978    
+X_tildebooks               -0.3454     0.9799   -0.35  0.72454    
+X_tildemusic_books_movies   0.9734     0.9791    0.99  0.32035    
+X_tildehealth               0.4330     0.7162    0.60  0.54560    
+X_tildeintercept           52.0186     6.3475    8.20  7.8e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 15 on 974 degrees of freedom
+Multiple R-squared:  0.26,  Adjusted R-squared:  0.24 
+F-statistic: 13.1 on 26 and 974 DF,  p-value: &lt;2e-16</code></pre>
+</div>
 </div>
 <p>Having trained the model, you obtain coefficients which you can multiply with <span class="math inline">\(\mathbf{X}\)</span> (not <span class="math inline">\(\mathbf{\tilde{X}}\)</span>) to get the <span class="math inline">\(CATE\)</span>.</p>
 <div class="callout callout-style-default callout-note callout-titled">
@@ -502,43 +556,46 @@ Note
 \]</span> <!-- Why cant I use : predict(r_learner_mod, newdata = as.data.frame(X_raw)) ??? because I did not use data =  in lm. --></p>
 <p><strong>Q4: Get the predicted conditional average treatment effects CATE.</strong></p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Multiply covariates with coefficient vector</span></span>
-<span><span class="co"># ...</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Multiply covariates with coefficient vector</span></span>
+<span><span class="va">rl_pl_CATE</span> <span class="op">&lt;-</span> <span class="va">X</span> <span class="op"><a href="https://rdrr.io/r/base/matmult.html">%*%</a></span> <span class="va">rl_pl</span><span class="op">$</span><span class="va">coefficients</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/hist.html">hist</a></span><span class="op">(</span><span class="va">rl_pl_CATE</span>, breaks <span class="op">=</span> <span class="fl">30</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><a href="week_6_files/figure-html/unnamed-chunk-6-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1"><img src="week_6_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:75.0%"></a></p>
+</figure>
+</div>
+</div>
 </div>
 </section><section id="generic-ml-r-learner" class="level4"><h4 class="anchored" data-anchor-id="generic-ml-r-learner">Generic ML R-learner</h4>
 <p>In the previous estimation, we imposed linearity on the CATE. However, sometimes you might not want to assume linearity. By rearranging the minimization problem, you can see that you can use any machine learning method capable of handling weighted minimization.</p>
-<!-- ```{r} -->
-<!-- # pseudo_rl <- Y_res / D_res -->
-<!-- # weights_rl <- D_res^2 -->
-<!-- #  -->
-<!-- # r_learner_mod2 <- lm(pseudo_rl ~ 0 + X_raw, weights = weights_rl) -->
-<!-- # summary(r_learner_mod2) -->
-<!-- # all.equal(as.numeric(r_learner_mod$coefficients), as.numeric(r_learner_mod2$coefficients)) -->
-<!-- ``` -->
 <p>$$ <span class="math display">\[\begin{align*}
 \hat{\tau}_{\text{RL}}(\mathbf{x}) &amp;= \arg \min_{\tau} \sum_{i=1}^n ( Y_i - \hat{\mu}(\mathbf{X_i}) - \tau(\mathbf{X_i}) ( T_i - \hat{e}(\mathbf{X_i})))^2 \\
 
 &amp;= ... \\
 &amp;= \arg \min_{\tau} \sum_{i=1}^n (T_i - \hat{e}(\mathbf{X_i}))^2 \bigg(\frac{Y_i - \hat{\mu}(\mathbf{X_i})}{ T_i - \hat{e}(\mathbf{X_i})} - \tau(\mathbf{X_i})\bigg)^2 \\
 \end{align*}\]</span> $$</p>
-<p>The estimation procedure again requires the outcome and treatment model estimated as a first step to obtain residuals. Then, however, you proceed with the (1) weights</p>
+<p>The estimation procedure again requires the outcome and treatment model estimated as a first step to obtain residuals. Then, however, you proceed with the</p>
+<ol type="1">
+<li>weights</li>
+</ol>
 <p><span class="math display">\[
 (T_i - \hat{e}(\mathbf{X_i}))^2,
 \]</span></p>
 <ol start="2" type="1">
 <li>a pseudo-outcome</li>
 </ol>
-<p><span class="math display">\[\frac{Y_i - \hat{\mu}(\mathbf{X_i})}{ T_i - \hat{e}(\mathbf{X_i})}\]</span> and (3) unmodified covariates.</p>
+<p><span class="math display">\[\frac{Y_i - \hat{\mu}(\mathbf{X_i})}{ T_i - \hat{e}(\mathbf{X_i})}\]</span> and 3. unmodified covariates <span class="math inline">\(X\)</span>.</p>
 <p><strong>Q5: Construct the weights and the pseudo-outcome.</strong></p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Pseudo - outcome</span></span>
-<span><span class="co"># ...</span></span>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Pseudo - outcome</span></span>
+<span><span class="va">Y_pseudo_rl</span> <span class="op">&lt;-</span> <span class="va">Y_res</span> <span class="op">/</span> <span class="va">D_res</span></span>
 <span></span>
 <span><span class="co"># Weight</span></span>
-<span><span class="co"># ...</span></span>
+<span><span class="va">weight_rl</span> <span class="op">&lt;-</span> <span class="va">D_res</span><span class="op">^</span><span class="fl">2</span></span>
 <span></span>
 <span><span class="co"># Add pseudo-outcome, weights and unmodified covariates to a matrix/data frame</span></span>
-<span><span class="co"># ...</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="va">data_rl</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html">cbind</a></span><span class="op">(</span><span class="va">X</span>, <span class="va">Y_pseudo_rl</span>, <span class="va">weight_rl</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -555,20 +612,27 @@ Tip
 </div>
 <p><strong>Q6: Specify a ML method capable of performing weighted minimization. Then, train and predict.</strong></p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## Specify task and learner</span></span>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## Specify task and learner</span></span>
 <span><span class="co"># Task</span></span>
-<span><span class="co"># ...</span></span>
+<span><span class="va">task_rl</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://mlr3.mlr-org.com/reference/as_task_regr.html">as_task_regr</a></span><span class="op">(</span><span class="va">data_rl</span>, target <span class="op">=</span> <span class="st">"Y_pseudo_rl"</span><span class="op">)</span></span>
 <span><span class="co"># Assign weight column</span></span>
-<span><span class="co"># ...</span></span>
+<span><span class="va">task_rl</span><span class="op">$</span><span class="fu">set_col_roles</span><span class="op">(</span>col <span class="op">=</span> <span class="st">"weight_rl"</span>, roles <span class="op">=</span> <span class="st">"weight"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Specify learner</span></span>
-<span><span class="co"># ...</span></span>
+<span><span class="va">lrnr_rl</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://mlr3.mlr-org.com/reference/mlr_sugar.html">lrn</a></span><span class="op">(</span><span class="st">"regr.xgboost"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Train</span></span>
-<span><span class="co"># ...</span></span>
+<span><span class="va">lrnr_rl</span><span class="op">$</span><span class="fu">train</span><span class="op">(</span><span class="va">task_rl</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Predict CATEs</span></span>
-<span><span class="co"># ...</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="va">rl_ml_CATE</span> <span class="op">&lt;-</span> <span class="va">lrnr_rl</span><span class="op">$</span><span class="fu">predict</span><span class="op">(</span><span class="va">task_rl</span><span class="op">)</span><span class="op">$</span><span class="va">response</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/hist.html">hist</a></span><span class="op">(</span><span class="va">rl_ml_CATE</span>, breaks <span class="op">=</span> <span class="fl">30</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><a href="week_6_files/figure-html/unnamed-chunk-8-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2"><img src="week_6_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:75.0%"></a></p>
+</figure>
+</div>
+</div>
 </div>
 </section></section><section id="dr-learner" class="level3"><h3 class="anchored" data-anchor-id="dr-learner">DR-learner</h3>
 <p>The doubly robust learner we discussed in the previous chapter is also a metalearner we can exploit to estimate heterogeneous effects.</p>
@@ -585,31 +649,91 @@ Tip
 \]</span></p>
 <p><strong>Q7: Specify your nuisance parameters. Then, train and predict to obtain <code>m0_hat</code>, <code>m1_hat</code> and <code>e_hat</code>.</strong></p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## Train outcome models</span></span>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## Train outcome models</span></span>
 <span><span class="co"># Y0 ~ X</span></span>
-<span><span class="co"># ...</span></span>
+<span><span class="va">lrnr_m</span><span class="op">$</span><span class="fu">train</span><span class="op">(</span><span class="va">task_m</span>, row_ids <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/which.html">which</a></span><span class="op">(</span><span class="va">membership</span><span class="op">$</span><span class="va">card</span> <span class="op">==</span> <span class="fl">0</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">m0_hat</span> <span class="op">&lt;-</span> <span class="va">lrnr_m</span><span class="op">$</span><span class="fu">predict</span><span class="op">(</span><span class="va">task_m</span><span class="op">)</span><span class="op">$</span><span class="va">response</span></span>
 <span></span>
 <span><span class="co"># Y1 ~ X</span></span>
-<span><span class="co"># ...</span></span>
+<span><span class="va">lrnr_m</span><span class="op">$</span><span class="fu">train</span><span class="op">(</span><span class="va">task_m</span>, row_ids <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/which.html">which</a></span><span class="op">(</span><span class="va">membership</span><span class="op">$</span><span class="va">card</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">m1_hat</span> <span class="op">&lt;-</span> <span class="va">lrnr_m</span><span class="op">$</span><span class="fu">predict</span><span class="op">(</span><span class="va">task_m</span><span class="op">)</span><span class="op">$</span><span class="va">response</span></span>
 <span></span>
 <span><span class="co"># D ~ X (already trained)</span></span>
-<span><span class="co"># ...</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="va">e_hat</span> <span class="op">&lt;-</span> <span class="va">e_pred_tbl</span><span class="op">$</span><span class="va">prob</span><span class="op">[</span>, <span class="fl">2</span><span class="op">]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
 <p><strong>Q8: Construct the pseudo-outcome used to compute the ATE <span class="math inline">\({\text{ATE}}^{\text{AIPW}}\)</span>. Regress it on <span class="math inline">\(X\)</span> and obtain the fitted values.</strong></p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Pseudo-outcome</span></span>
-<span><span class="co"># ...</span></span>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Pseudo-outcome</span></span>
+<span><span class="va">tau_dr</span> <span class="op">&lt;-</span> <span class="va">m1_hat</span> <span class="op">-</span> <span class="va">m0_hat</span> <span class="op">+</span> <span class="va">D</span> <span class="op">*</span> <span class="op">(</span><span class="va">Y</span> <span class="op">-</span> <span class="va">m1_hat</span><span class="op">)</span> <span class="op">/</span> <span class="va">e_hat</span> <span class="op">-</span> <span class="op">(</span><span class="fl">1</span> <span class="op">-</span> <span class="va">D</span><span class="op">)</span> <span class="op">*</span> <span class="op">(</span><span class="va">Y</span> <span class="op">-</span> <span class="va">m0_hat</span><span class="op">)</span> <span class="op">/</span> <span class="op">(</span><span class="fl">1</span><span class="op">-</span><span class="va">e_hat</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Fit regression</span></span>
-<span><span class="co"># ...</span></span>
-<span><span class="co"># "Predict" or get fitted values</span></span>
-<span><span class="co"># ...</span></span>
+<span><span class="va">drl_mod</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">tau_dr</span> <span class="op">~</span> <span class="fl">0</span> <span class="op">+</span> <span class="va">X</span><span class="op">)</span></span>
+<span><span class="co"># "Predict"</span></span>
+<span><span class="va">drl_CATE</span> <span class="op">&lt;-</span> <span class="va">drl_mod</span><span class="op">$</span><span class="va">fitted.values</span></span>
 <span></span>
 <span><span class="co"># Plot histogram</span></span>
-<span><span class="co"># ...</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/hist.html">hist</a></span><span class="op">(</span><span class="va">drl_CATE</span>, breaks <span class="op">=</span> <span class="fl">30</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><a href="week_6_files/figure-html/unnamed-chunk-10-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-3"><img src="week_6_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:75.0%"></a></p>
+</figure>
+</div>
+</div>
 </div>
 </section><section id="comparison" class="level3"><h3 class="anchored" data-anchor-id="comparison">Comparison</h3>
-<p>…</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Store and plot predictions</span></span>
+<span><span class="va">results</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span><span class="op">(</span></span>
+<span>  <span class="st">"R-learner (partially linear)"</span> <span class="op">=</span> <span class="va">rl_pl_CATE</span>,</span>
+<span>  <span class="st">"R-learner (ML)"</span> <span class="op">=</span> <span class="va">rl_ml_CATE</span>,</span>
+<span>  <span class="st">"DR-learner"</span> <span class="op">=</span> <span class="va">drl_CATE</span></span>
+<span>  <span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Correlation of CATEs by different methods</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/stats/cor.html">cor</a></span><span class="op">(</span><span class="va">results</span>, method <span class="op">=</span> <span class="st">"pearson"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                             R-learner (partially linear) R-learner (ML) DR-learner
+R-learner (partially linear)                          1.0            0.8        1.0
+R-learner (ML)                                        0.8            1.0        0.8
+DR-learner                                            1.0            0.8        1.0</code></pre>
+</div>
+</div>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Summary statistics</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">results</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> R-learner (partially linear).V1 R-learner (ML)    DR-learner 
+ Min.   :-57                     Min.   :-12.2   Min.   :-57  
+ 1st Qu.: -5                     1st Qu.: -2.0   1st Qu.: -5  
+ Median :  8                     Median :  1.9   Median :  8  
+ Mean   :  7                     Mean   :  2.3   Mean   :  7  
+ 3rd Qu.: 20                     3rd Qu.:  5.7   3rd Qu.: 20  
+ Max.   : 45                     Max.   : 12.4   Max.   : 46  </code></pre>
+</div>
+</div>
+<div class="cell" data-layout-align="center">
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Reshape data to long format</span></span>
+<span><span class="va">results_long</span> <span class="op">&lt;-</span> <span class="va">results</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://tidyr.tidyverse.org/reference/pivot_longer.html">pivot_longer</a></span><span class="op">(</span>cols <span class="op">=</span> <span class="fu"><a href="https://tidyselect.r-lib.org/reference/everything.html">everything</a></span><span class="op">(</span><span class="op">)</span>, names_to <span class="op">=</span> <span class="st">"Method"</span>, values_to <span class="op">=</span> <span class="st">"Value"</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>Method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">Method</span>, levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"R-learner (partially linear)"</span>, <span class="st">"R-learner (ML)"</span>, <span class="st">"DR-learner"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Create the histograms</span></span>
+<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">results_long</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">Value</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_histogram.html">geom_histogram</a></span><span class="op">(</span>binwidth <span class="op">=</span> <span class="fl">0.5</span>, alpha <span class="op">=</span> <span class="fl">0.75</span><span class="op">)</span> <span class="op">+</span> <span class="co"># Adjust binwidth as needed</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html">facet_wrap</a></span><span class="op">(</span><span class="op">~</span> <span class="va">Method</span>, scales <span class="op">=</span> <span class="st">"free_x"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_minimal</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Histograms of CATE Estimates by Method"</span>,</span>
+<span>       x <span class="op">=</span> <span class="st">"CATE"</span>,</span>
+<span>       y <span class="op">=</span> <span class="st">"Frequency"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><a href="week_6_files/figure-html/unnamed-chunk-14-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-4"><img src="week_6_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:75.0%"></a></p>
+</figure>
+</div>
+</div>
+</div>
 </section></section><section id="evaluation-of-effect-heterogeneity" class="level2"><h2 class="anchored" data-anchor-id="evaluation-of-effect-heterogeneity">Evaluation of effect heterogeneity</h2>
 <p>While we have learned to estimate the CATE and observe variation in the estimated individual response to the treatment, we have not yet determined whether this heterogeneity is systematic or merely noise. Evaluating our estimated CATEs is challenging because we cannot use the typical out-of-sample approach due to the missing counterfactual. Additionally, using ML methods in the final step provides no statistical inference.</p>
 <p>To address this, we can derive summary statistics for the distribution of CATEs and jointly test for the presence of heterogeneity and our ability to detect it. Three methods we will explore are:</p>
@@ -623,30 +747,20 @@ Tip
 </ul>
 <p>For the further analysis, we will rely on the <code>GenericML</code> package, which provides the functions <code><a href="https://rdrr.io/pkg/GenericML/man/get_BLP.html">get_BLP()</a></code>, <code><a href="https://rdrr.io/pkg/GenericML/man/get_GATES.html">get_GATES()</a></code> and <code>getCLAN()</code> which we can apply on a <code>GenericML</code> object.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"GenericML"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"GenericML"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Load package</span></span>
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Load package</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/mwelz/GenericML/">GenericML</a></span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>It also builds upon the <code>mlr3</code> package and we can again specify our learners. Here, we can also specify more than one learner and let <code>GenericML</code> figure out which one performs best.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Specify set of learners</span></span>
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Specify set of learners</span></span>
 <span><span class="va">lrnr</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"mlr3::lrn('svm')"</span>, <span class="st">'mlr3::lrn("ranger", num.trees = 100)'</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Then, we need to setup the variables.</p>
+<p>ADD good explanation</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># X</span></span>
-<span><span class="va">X</span> <span class="op">&lt;-</span> <span class="va">membership</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="op">-</span><span class="va">avg_purch</span>, <span class="op">-</span><span class="va">card</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>intercept <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
-<span><span class="va">X</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">as.matrix</a></span><span class="op">(</span><span class="va">X</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># D</span></span>
-<span><span class="va">D</span> <span class="op">&lt;-</span> <span class="va">membership</span><span class="op">$</span><span class="va">card</span></span>
-<span></span>
-<span><span class="co"># Y</span></span>
-<span><span class="va">Y</span> <span class="op">&lt;-</span> <span class="va">membership</span><span class="op">$</span><span class="va">avg_purch</span></span>
-<span></span>
-<span><span class="co"># Specify covariates to use</span></span>
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Specify covariates to use</span></span>
 <span><span class="va">X1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/GenericML/man/setup_X1.html">setup_X1</a></span><span class="op">(</span>funs_Z <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"S"</span>, <span class="st">"B"</span>, <span class="st">"p"</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="callout callout-style-default callout-note callout-titled">
@@ -663,7 +777,7 @@ Note
 </div>
 </div>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">gen_ML</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/GenericML/man/GenericML.html">GenericML</a></span><span class="op">(</span></span>
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">gen_ML</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/GenericML/man/GenericML.html">GenericML</a></span><span class="op">(</span></span>
 <span>  <span class="co"># data</span></span>
 <span>  Z <span class="op">=</span> <span class="va">X</span>, </span>
 <span>  D <span class="op">=</span> <span class="va">D</span>,</span>
@@ -690,7 +804,7 @@ Note
 \]</span> Because we do not know the actual true treatment effect, we use a pseudo-response that we regress on the demeaned CATE.</p>
 <p>Using <code>GenericML</code>, we just have to run:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/GenericML/man/get_BLP.html">get_BLP</a></span><span class="op">(</span><span class="va">gen_ML</span>, plot <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/GenericML/man/get_BLP.html">get_BLP</a></span><span class="op">(</span><span class="va">gen_ML</span>, plot <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>BLP generic targets
 ---
@@ -702,7 +816,7 @@ Confidence level of confidence interval [CI lower, CI upper]: 90 %</code></pre>
 </div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><a href="week_6_files/figure-html/unnamed-chunk-16-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1"><img src="week_6_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:75.0%"></a></p>
+<figure class="figure"><p><a href="week_6_files/figure-html/unnamed-chunk-20-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-5"><img src="week_6_files/figure-html/unnamed-chunk-20-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:75.0%"></a></p>
 </figure>
 </div>
 </div>
@@ -720,7 +834,7 @@ Confidence level of confidence interval [CI lower, CI upper]: 90 %</code></pre>
 \gamma_1 \leq \gamma_2 \leq \ldots \leq \gamma_K
 \]</span> Using <code>GenericML</code>, we just have to run:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/GenericML/man/get_GATES.html">get_GATES</a></span><span class="op">(</span><span class="va">gen_ML</span>, plot <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/GenericML/man/get_GATES.html">get_GATES</a></span><span class="op">(</span><span class="va">gen_ML</span>, plot <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>GATES generic targets
 ---
@@ -736,7 +850,7 @@ Confidence level of confidence interval [CI lower, CI upper]: 90 %</code></pre>
 </div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><a href="week_6_files/figure-html/unnamed-chunk-17-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2"><img src="week_6_files/figure-html/unnamed-chunk-17-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:75.0%"></a></p>
+<figure class="figure"><p><a href="week_6_files/figure-html/unnamed-chunk-21-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-6"><img src="week_6_files/figure-html/unnamed-chunk-21-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:75.0%"></a></p>
 </figure>
 </div>
 </div>
@@ -745,7 +859,7 @@ Confidence level of confidence interval [CI lower, CI upper]: 90 %</code></pre>
 </section><section id="classification-analysis" class="level3"><h3 class="anchored" data-anchor-id="classification-analysis">Classification analysis</h3>
 <p>The purpose of classification analysis (CLAN) is to explore what drives the heterogeneous effects. Instead of regressing a pseudo-outcome as in GATES, covariates, which are potential drivers of heterogeneity in treatment effect are regressed upon. In other words, CLAN is a simple mean comparison of covariates in groups split by the size of their treatment effect.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/GenericML/man/get_CLAN.html">get_CLAN</a></span><span class="op">(</span><span class="va">gen_ML</span>, variable <span class="op">=</span> <span class="st">"age"</span>, plot <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/GenericML/man/get_CLAN.html">get_CLAN</a></span><span class="op">(</span><span class="va">gen_ML</span>, variable <span class="op">=</span> <span class="st">"age"</span>, plot <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>CLAN generic targets for variable 'age' 
 ---
@@ -761,13 +875,13 @@ Confidence level of confidence interval [CI lower, CI upper]: 90 %</code></pre>
 </div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><a href="week_6_files/figure-html/unnamed-chunk-18-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-3"><img src="week_6_files/figure-html/unnamed-chunk-18-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:75.0%"></a></p>
+<figure class="figure"><p><a href="week_6_files/figure-html/unnamed-chunk-22-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-7"><img src="week_6_files/figure-html/unnamed-chunk-22-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:75.0%"></a></p>
 </figure>
 </div>
 </div>
 </div>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/GenericML/man/get_CLAN.html">get_CLAN</a></span><span class="op">(</span><span class="va">gen_ML</span>, variable <span class="op">=</span> <span class="st">"sex"</span>, plot <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/GenericML/man/get_CLAN.html">get_CLAN</a></span><span class="op">(</span><span class="va">gen_ML</span>, variable <span class="op">=</span> <span class="st">"sex"</span>, plot <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>CLAN generic targets for variable 'sex' 
 ---
@@ -783,7 +897,7 @@ Confidence level of confidence interval [CI lower, CI upper]: 90 %</code></pre>
 </div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><a href="week_6_files/figure-html/unnamed-chunk-19-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-4"><img src="week_6_files/figure-html/unnamed-chunk-19-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:75.0%"></a></p>
+<figure class="figure"><p><a href="week_6_files/figure-html/unnamed-chunk-23-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-8"><img src="week_6_files/figure-html/unnamed-chunk-23-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:75.0%"></a></p>
 </figure>
 </div>
 </div>
@@ -792,7 +906,14 @@ Confidence level of confidence interval [CI lower, CI upper]: 90 %</code></pre>
 </section></section><section id="assignment" class="level2"><h2 class="anchored" data-anchor-id="assignment">Assignment</h2>
 <p>Coming soon.</p>
 <div class="assignment">
-<p>…</p>
+<p>Accept the <a href="https://classroom.github.com/a/oPhGwOmd"><strong>Week 6 - Assignment</strong></a> and follow the same steps as last week and as described in the organization chapter.</p>
+<p>For the assignments you are going to use <code>music.rds</code>. Consider the following scenario: you are a data scientist at a music streaming company. Naturally, you’re keen to engage users for as long as possible and encourage them to become avid users of your streaming app. Your colleagues from the department responsible for recommendation algorithms have developed a new fancy algorithm which aims to enhance the daily number of minutes of music listening by offering particularly well tailored recommendations. Following common practice of A/B testing, you randomly assign your users into a treatment group (new algorithm) and a control group (no new algorithm). The outcome variable is <code>minutes_spent</code> and the treatment variable is <code>new_algo</code>.</p>
+<ol type="1">
+<li><p>As you’ve learned, regress the outcome on the treatment and interpret the estimated ATE.</p></li>
+<li><p>Take a look at the two formula rearrangements for the R-learner. Based on both rearrangements, construct what is needed to run the final regression. Prove the equivalence of both rearrangements by comparing both the coefficients and individual treatment effects from both approaches.</p></li>
+<li><p>Using the <code>DoubleML</code> package, run the DR-learner and check for CATEs based on your available covariates. Do you find heterogeneous treatment effects? If yes, interpret them (also with regard to your coefficient in the first task. Please note that to extract the doubly robust <span class="math inline">\(\tilde{\tau_i}_{\text{ATE}}\)</span>, you need to access <code>dr_mod$psi_b</code>.</p></li>
+<li><p>For the covariate <code>app_usage_frequency</code>, use the package <code>np</code> to check for non-linear heterogeneous treatment effects. Check lecture slide 12 for more details. Discuss the result.</p></li>
+</ol>
 </div>
 
 
@@ -1200,7 +1321,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       &nbsp;
     </div>
   </div>
-</footer><script>var lightboxQuarto = GLightbox({"openEffect":"zoom","selector":".lightbox","closeEffect":"zoom","descPosition":"bottom","loop":false});
+</footer><script>var lightboxQuarto = GLightbox({"loop":false,"openEffect":"zoom","closeEffect":"zoom","selector":".lightbox","descPosition":"bottom"});
 window.onload = () => {
   lightboxQuarto.on('slide_before_load', (data) => {
     const { slideIndex, slideNode, slideConfig, player, trigger } = data;

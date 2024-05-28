@@ -20,7 +20,7 @@ options("digits" = 2, "width" = 150)
 options(dplyr.summarise.inform = FALSE)
 
 # custom ggplot theme
-# colors from TUHH brand identity
+# colors from TUHH brand identitiy
 tuhh_colors <- c("#D0D0CE", "#00C1D4", "#FF4F4F", "#5AFFC5",
                  "#FFDE36", "#143BFF", "#FF7E15", "#FFAEA2")
 
@@ -129,30 +129,36 @@ library(mlr3learners)
 
 In the first step, we train the models for the nuisance parameters $\hat{\mu}(\mathbf{X_i})$ and $\hat{e}(\mathbf{X_i})$.
 
-**Q1: Specify the nuisance models. Then, train and predict to obtain the residualized outcomes.**
+**Q1: Specify the nuisance models. Then, train and predict to obtain the residuals.**
 
 ```{r}
-#| code-fold: false
+#| code-fold: true
 
 ## Specify
 # Prediction model for the treatment/exposure
-# ...
+task_e <- as_task_classif(membership |> select(-avg_purch), target = "card")
+lrnr_e <- lrn("classif.log_reg", predict_type = "prob")
 
 # Prediction model for the outcome
-# ...
+task_m <- as_task_regr(membership |> select(-card), target = "avg_purch")
+lrnr_m <- lrn("regr.lm")
 
 ## Train
-# ...
+lrnr_m$train(task_m)
+lrnr_e$train(task_e)
 
 ## Predict
-# ...
+m_pred_tbl <- lrnr_m$predict(task_m)
+e_pred_tbl <- lrnr_e$predict(task_e)
 
 ## Residualize
 # True values
-# ...
+D <- membership$card
+Y <- membership$avg_purch
 
 # Residuals
-# ...
+Y_res <- Y - m_pred_tbl$response
+D_res <- D - e_pred_tbl$prob[, 2]
 ```
 
 Now, you can construct the modified covariates as obtained in the minimization problem.
@@ -165,13 +171,14 @@ Please note, that you also have to include the intercept column with all values 
 **Q2: Construct a data frame or matrix that contains the modified covariates and the intercept.**
 
 ```{r}
-#| code-fold: false
+#| code-fold: true
 
 # Get matrix of unmodified covariates
-# ...
+X <- membership |> select(-avg_purch, -card) |> mutate(intercept = 1)
+X <- as.matrix(X)
 
 # Modify by multiplying with residuals
-# ...
+X_tilde <- X * D_res
 ```
 
 Now, you need to solve the minimization problem. Since we are focusing on a linear model, you can use the `lm()` function. Alternatively, you can apply linear shrinkage estimators, such as Lasso.
@@ -179,10 +186,11 @@ Now, you need to solve the minimization problem. Since we are focusing on a line
 **Q3: Run a regression of the residualized outcome on the modified covariates and report the results.**
 
 ```{r}
-#| code-fold: false
+#| code-fold: true
 
 # Partially linear R-Learner
-# ...
+rl_pl <- lm(Y_res ~ 0 + X_tilde)
+summary(rl_pl)
 ```
 
 Having trained the model, you obtain coefficients which you can multiply with $\mathbf{X}$ (not $\mathbf{\tilde{X}}$) to get the $CATE$.
@@ -199,25 +207,16 @@ $$
 **Q4: Get the predicted conditional average treatment effects CATE.**
 
 ```{r}
-#| code-fold: false
+#| code-fold: true
 
 # Multiply covariates with coefficient vector
-# ...
+rl_pl_CATE <- X %*% rl_pl$coefficients
+hist(rl_pl_CATE, breaks = 30)
 ```
 
 #### Generic ML R-learner
 
 In the previous estimation, we imposed linearity on the CATE. However, sometimes you might not want to assume linearity. By rearranging the minimization problem, you can see that you can use any machine learning method capable of handling weighted minimization.
-
-<!-- ```{r} -->
-<!-- # pseudo_rl <- Y_res / D_res -->
-<!-- # weights_rl <- D_res^2 -->
-<!-- #  -->
-<!-- # r_learner_mod2 <- lm(pseudo_rl ~ 0 + X_raw, weights = weights_rl) -->
-<!-- # summary(r_learner_mod2) -->
-<!-- # all.equal(as.numeric(r_learner_mod$coefficients), as.numeric(r_learner_mod2$coefficients)) -->
-<!-- ``` -->
-
 
 $$
 \begin{align*}
@@ -228,30 +227,32 @@ $$
 \end{align*}
 $$
 
-The estimation procedure again requires the outcome and treatment model estimated as a first step to obtain residuals. Then, however, you proceed with the (1) weights 
+The estimation procedure again requires the outcome and treatment model estimated as a first step to obtain residuals. Then, however, you proceed with the 
+
+1. weights 
 
 $$
 (T_i - \hat{e}(\mathbf{X_i}))^2,
 $$
 
-(2) a pseudo-outcome 
+2. a pseudo-outcome 
 
 $$\frac{Y_i - \hat{\mu}(\mathbf{X_i})}{ T_i - \hat{e}(\mathbf{X_i})}$$
-and (3) unmodified covariates.
+and 3. unmodified covariates $X$.
 
 **Q5: Construct the weights and the pseudo-outcome.**
 
 ```{r}
-#| code-fold: false
+#| code-fold: true
 
 # Pseudo - outcome
-# ...
+Y_pseudo_rl <- Y_res / D_res
 
 # Weight
-# ...
+weight_rl <- D_res^2
 
 # Add pseudo-outcome, weights and unmodified covariates to a matrix/data frame
-# ...
+data_rl <- cbind(X, Y_pseudo_rl, weight_rl)
 ```
 
 ::: callout-tip
@@ -262,22 +263,23 @@ ML methods capable of performing weighted minimization are e.g. `lrn("regr.xgboo
 **Q6: Specify a ML method capable of performing weighted minimization. Then, train and predict.**
 
 ```{r}
-#| code-fold: false
+#| code-fold: true
 
 ## Specify task and learner
 # Task
-# ...
+task_rl <- as_task_regr(data_rl, target = "Y_pseudo_rl")
 # Assign weight column
-# ...
+task_rl$set_col_roles(col = "weight_rl", roles = "weight")
 
 # Specify learner
-# ...
+lrnr_rl <- lrn("regr.xgboost")
 
 # Train
-# ...
+lrnr_rl$train(task_rl)
 
 # Predict CATEs
-# ...
+rl_ml_CATE <- lrnr_rl$predict(task_rl)$response
+hist(rl_ml_CATE, breaks = 30)
 ```
 
 ### DR-learner
@@ -303,39 +305,78 @@ $$
 **Q7: Specify your nuisance parameters. Then, train and predict to obtain `m0_hat`, `m1_hat` and `e_hat`.**
 
 ```{r}
-#| code-fold: false
+#| code-fold: true
 
 ## Train outcome models
 # Y0 ~ X
-# ...
+lrnr_m$train(task_m, row_ids = which(membership$card == 0))
+m0_hat <- lrnr_m$predict(task_m)$response
 
 # Y1 ~ X
-# ...
+lrnr_m$train(task_m, row_ids = which(membership$card == 1))
+m1_hat <- lrnr_m$predict(task_m)$response
 
 # D ~ X (already trained)
-# ...
+e_hat <- e_pred_tbl$prob[, 2]
 ```
 
 **Q8: Construct the pseudo-outcome used to compute the ATE ${\text{ATE}}^{\text{AIPW}}$. Regress it on $X$ and obtain the fitted values.**
 
 ```{r}
-#| code-fold: false
+#| code-fold: true
 
 # Pseudo-outcome
-# ...
+tau_dr <- m1_hat - m0_hat + D * (Y - m1_hat) / e_hat - (1 - D) * (Y - m0_hat) / (1-e_hat)
 
 # Fit regression
-# ...
-# "Predict" or get fitted values
-# ...
+drl_mod <- lm(tau_dr ~ 0 + X)
+# "Predict"
+drl_CATE <- drl_mod$fitted.values
 
 # Plot histogram
-# ...
+hist(drl_CATE, breaks = 30)
 ```
 
 ### Comparison
 
-...
+```{r}
+# Store and plot predictions
+results <- tibble(
+  "R-learner (partially linear)" = rl_pl_CATE,
+  "R-learner (ML)" = rl_ml_CATE,
+  "DR-learner" = drl_CATE
+  )
+```
+
+
+```{r}
+# Correlation of CATEs by different methods
+cor(results, method = "pearson")
+```
+
+
+```{r}
+# Summary statistics
+summary(results)
+```
+
+```{r}
+#| code-fold: true
+
+# Reshape data to long format
+results_long <- results %>%
+  pivot_longer(cols = everything(), names_to = "Method", values_to = "Value") |> 
+  mutate(Method = factor(Method, levels = c("R-learner (partially linear)", "R-learner (ML)", "DR-learner")))
+
+# Create the histograms
+ggplot(results_long, aes(x = Value)) +
+  geom_histogram(binwidth = 0.5, alpha = 0.75) + # Adjust binwidth as needed
+  facet_wrap(~ Method, scales = "free_x") +
+  theme_minimal() +
+  labs(title = "Histograms of CATE Estimates by Method",
+       x = "CATE",
+       y = "Frequency")
+```
 
 
 ## Evaluation of effect heterogeneity
@@ -368,19 +409,9 @@ It also builds upon the `mlr3` package and we can again specify our learners. He
 lrnr <- c("mlr3::lrn('svm')", 'mlr3::lrn("ranger", num.trees = 100)')
 ```
 
-Then, we need to setup the variables.
+ADD good explanation
 
 ```{r}
-# X
-X <- membership |> select(-avg_purch, -card) |> mutate(intercept = 1)
-X <- as.matrix(X)
-
-# D
-D <- membership$card
-
-# Y
-Y <- membership$avg_purch
-
 # Specify covariates to use
 X1 <- setup_X1(funs_Z = c("S", "B", "p"))
 ```
@@ -476,6 +507,15 @@ get_CLAN(gen_ML, variable = "sex", plot = TRUE)
 Coming soon.
 
 ::: assignment
-...
-:::
+Accept the [**Week 6 - Assignment**](https://classroom.github.com/a/oPhGwOmd) and follow the same steps as last week and as described in the organization chapter.
 
+For the assignments you are going to use `music.rds`. Consider the following scenario: you are a data scientist at a music streaming company. Naturally, you’re keen to engage users for as long as possible and encourage them to become avid users of your streaming app. Your colleagues from the department responsible for recommendation algorithms have developed a new fancy algorithm which aims to enhance the daily number of minutes of music listening by offering particularly well tailored recommendations. Following common practice of A/B testing, you randomly assign your users into a treatment group (new algorithm) and a control group (no new algorithm). The outcome variable is `minutes_spent` and the treatment variable is `new_algo`.
+
+1. As you've learned, regress the outcome on the treatment and interpret the estimated ATE.
+
+2. Take a look at the two formula rearrangements for the R-learner. Based on both rearrangements, construct what is needed to run the final regression. Prove the equivalence of both rearrangements by comparing both the coefficients and individual treatment effects from both approaches.
+
+3. Using the `DoubleML` package, run the DR-learner and check for CATEs based on your available covariates. Do you find heterogeneous treatment effects? If yes, interpret them (also with regard to your coefficient in the first task. Please note that to extract the doubly robust $\tilde{\tau_i}_{\text{ATE}}$, you need to access `dr_mod$psi_b`.
+
+4. For the covariate `app_usage_frequency`, use the package `np` to check for non-linear heterogeneous treatment effects. Check lecture slide 12 for more details. Discuss the result.
+:::
