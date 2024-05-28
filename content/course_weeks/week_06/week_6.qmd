@@ -513,7 +513,7 @@ For the assignments you are going to use `music.rds`. Consider the following sce
 
 1. As you've learned, in an A/B test you just need to regress the outcome on the treatment. Follow that and interpret the estimated ATE.
 
-2. Take a look at the two formula rearrangements for the R-learner. For both approaches, construct the predicted treatment effects and coefficients and show the equivalence.
+2. Take a look at the two formula rearrangements for the R-learner. For both approaches, construct the predicted treatment effects and coefficients and show the equivalence. (You don't need to use cross-fitting)
 
 3. Using the `DoubleML` package, run the DR-learner and check for CATEs based on your available covariates. Do you find heterogeneous treatment effects? If yes, interpret them (also with regard to your coefficient in the first task). Please note that to extract the doubly robust $\tilde{\tau_i}_{\text{ATE}}$, you need to access `dr_mod$psi_b`.
 
