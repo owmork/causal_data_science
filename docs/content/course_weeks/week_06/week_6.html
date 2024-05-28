@@ -909,9 +909,9 @@ Confidence level of confidence interval [CI lower, CI upper]: 90 %</code></pre>
 <p>Accept the <a href="https://classroom.github.com/a/oPhGwOmd"><strong>Week 6 - Assignment</strong></a> and follow the same steps as last week and as described in the organization chapter.</p>
 <p>For the assignments you are going to use <code>music.rds</code>. Consider the following scenario: you are a data scientist at a music streaming company. Naturally, you’re keen to engage users for as long as possible and encourage them to become avid users of your streaming app. Your colleagues from the department responsible for recommendation algorithms have developed a new fancy algorithm which aims to enhance the daily number of minutes of music listening by offering particularly well tailored recommendations. Following common practice of A/B testing, you randomly assign your users into a treatment group (new algorithm) and a control group (no new algorithm). The outcome variable is <code>minutes_spent</code> and the treatment variable is <code>new_algo</code>.</p>
 <ol type="1">
-<li><p>As you’ve learned, regress the outcome on the treatment and interpret the estimated ATE.</p></li>
-<li><p>Take a look at the two formula rearrangements for the R-learner. Based on both rearrangements, construct what is needed to run the final regression. Prove the equivalence of both rearrangements by comparing both the coefficients and individual treatment effects from both approaches.</p></li>
-<li><p>Using the <code>DoubleML</code> package, run the DR-learner and check for CATEs based on your available covariates. Do you find heterogeneous treatment effects? If yes, interpret them (also with regard to your coefficient in the first task. Please note that to extract the doubly robust <span class="math inline">\(\tilde{\tau_i}_{\text{ATE}}\)</span>, you need to access <code>dr_mod$psi_b</code>.</p></li>
+<li><p>As you’ve learned, in an A/B test you just need to regress the outcome on the treatment. Follow that and interpret the estimated ATE.</p></li>
+<li><p>Take a look at the two formula rearrangements for the R-learner. For both approaches, construct the predicted treatment effects and coefficients and show the equivalence.</p></li>
+<li><p>Using the <code>DoubleML</code> package, run the DR-learner and check for CATEs based on your available covariates. Do you find heterogeneous treatment effects? If yes, interpret them (also with regard to your coefficient in the first task). Please note that to extract the doubly robust <span class="math inline">\(\tilde{\tau_i}_{\text{ATE}}\)</span>, you need to access <code>dr_mod$psi_b</code>.</p></li>
 <li><p>For the covariate <code>app_usage_frequency</code>, use the package <code>np</code> to check for non-linear heterogeneous treatment effects. Check lecture slide 12 for more details. Discuss the result.</p></li>
 </ol>
 </div>
@@ -1321,7 +1321,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       &nbsp;
     </div>
   </div>
-</footer><script>var lightboxQuarto = GLightbox({"loop":false,"openEffect":"zoom","closeEffect":"zoom","selector":".lightbox","descPosition":"bottom"});
+</footer><script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","descPosition":"bottom","loop":false,"openEffect":"zoom","selector":".lightbox"});
 window.onload = () => {
   lightboxQuarto.on('slide_before_load', (data) => {
     const { slideIndex, slideNode, slideConfig, player, trigger } = data;

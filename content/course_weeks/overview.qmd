@@ -33,7 +33,7 @@ editor:
 | 4 | May 6 & 7 | Matching | [{{< fa book-open >}}](https://tuhhstartupengineers-classroom.github.io/ss24-causal-data-science/slides/04_ob_conf.html) | [{{< fa laptop >}}](week_04/week_4.html) | [{{< fa brands github >}}](https://classroom.github.com/a/ZY_8r4KL) |
 | 5 | May 13 & 14 | Double Machine Learning | [{{< fa book-open >}}](https://tuhhstartupengineers-classroom.github.io/ss24-causal-data-science/slides/05_dml.html) | [{{< fa laptop >}}](week_05/week_5.html) | [{{< fa brands github >}}](https://classroom.github.com/a/m7oLFvnr) | 
 | - | May 20 & 21 | Holiday | - | - | - |
-| 6 | May 27 & 28 | Effect Heterogeneity | [{{< fa book-open >}}](https://tuhhstartupengineers-classroom.github.io/ss24-causal-data-science/slides/06_hte.html) | [{{< fa laptop >}}](week_05/week_6.html) | [{{< fa brands github >}}](https://classroom.github.com/a/oPhGwOmd) |
+| 6 | May 27 & 28 | Effect Heterogeneity | [{{< fa book-open >}}](https://tuhhstartupengineers-classroom.github.io/ss24-causal-data-science/slides/06_hte.html) | [{{< fa laptop >}}](week_06/week_6.html) | [{{< fa brands github >}}](https://classroom.github.com/a/oPhGwOmd) |
 | 7 | June 3 & 4 | Unobserved Confounding & Instrumental Variables | {{< fa book-open >}} | {{< fa laptop >}} | {{< fa brands github >}} |
 | 8 | June 10 & 11 | Difference-in-Difference | {{< fa book-open >}} | {{< fa laptop >}} | {{< fa brands github >}} |
 | 9 | June 17 & 18 | Synthetic Control | {{< fa book-open >}} | {{< fa laptop >}} | {{< fa brands github >}} |
