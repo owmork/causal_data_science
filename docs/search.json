@@ -910,7 +910,7 @@
     "href": "content/course_weeks/overview.html",
     "title": "Overview",
     "section": "",
-    "text": "Schedule\n\n\n\nSession\nDate\nTopic\nSlides\nTutorial\nAssignment\n\n\n\n\n1\nApril 15 & 16\nIntroduction to Causal Inference\n\n\n\n\n\n2\nApril 22 & 21\nGraphical Causal Models\n\n\n\n\n\n3\nApril 29 & 30\nRandomized Experiments & Linear Regression\n\n\n\n\n\n4\nMay 6 & 7\nMatching\n\n\n\n\n\n5\nMay 13 & 14\nDouble Machine Learning\n\n\n\n\n\n-\nMay 20 & 21\nHoliday\n-\n-\n-\n\n\n6\nMay 27 & 28\nEffect Heterogeneity\n\n\n\n\n\n7\nJune 3 & 4\nUnobserved Confounding & Instrumental Variables\n\n\n\n\n\n8\nJune 10 & 11\nDifference-in-Difference\n\n\n\n\n\n9\nJune 17 & 18\nSynthetic Control\n\n\n\n\n\n10\nJune 24 & 25\nRegression Discontinuity\n\n\n\n\n\n11\nJuly 1 & 2\nCausal Mediation\n\n\n\n\n\n12\nJuly 8 & 9\nFurther Topics in Causal Machine Learning",
+    "text": "Schedule\n\n\n\n\n\n\n\n\n\n\n\nSession\nDate\nTopic\n\n\n\n\n\n\n\n1\nApril 15 & 16\nIntroduction to Causal Inference\n\n\n\n\n\n2\nApril 22 & 21\nGraphical Causal Models\n\n\n\n\n\n3\nApril 29 & 30\nRandomized Experiments & Linear Regression\n\n\n\n\n\n4\nMay 6 & 7\nMatching\n\n\n\n\n\n5\nMay 13 & 14\nDouble Machine Learning\n\n\n\n\n\n-\nMay 20 & 21\nHoliday\n-\n-\n-\n\n\n6\nMay 27 & 28\nEffect Heterogeneity\n\n\n\n\n\n7\nJune 3 & 4\nUnobserved Confounding & Instrumental Variables\n\n\n\n\n\n8\nJune 10 & 11\nDifference-in-Difference\n\n\n\n\n\n9\nJune 17 & 18\nSynthetic Control\n\n\n\n\n\n10\nJune 24 & 25\nRegression Discontinuity\n\n\n\n\n\n11\nJuly 1 & 2\nCausal Mediation\n\n\n\n\n\n12\nJuly 8 & 9\nFurther Topics in Causal Machine Learning",
     "crumbs": [
       "Content",
       "Overview"

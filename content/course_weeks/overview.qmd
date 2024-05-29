@@ -21,12 +21,12 @@ editor:
 :::
 
 
-::: {.g-col-8}
+::: {.g-col-12}
 
 ### Schedule
 
-| Session | Date | Topic | Slides | Tutorial | Assignment
-| --- | --- | --- | --- | --- | --- |
+| Session | Date | Topic |  |  | 
+|---|---|---|---|---|---:
 | 1 | April 15 & 16 | Introduction to Causal Inference | [{{< fa book-open >}}](https://tuhhstartupengineers-classroom.github.io/ss24-causal-data-science/slides/01_intro.html) | [{{< fa laptop >}}](week_01/week_1.html) | [{{< fa brands github >}}](https://classroom.github.com/a/qKNVakO4) |
 | 2 | April 22 & 21 | Graphical Causal Models | [{{< fa book-open >}}](https://tuhhstartupengineers-classroom.github.io/ss24-causal-data-science/slides/02_graphs.html) | [{{< fa laptop >}}](week_02/week_2.html) | [{{< fa brands github >}}](https://classroom.github.com/a/eNvelq2Z) |
 | 3 | April 29 & 30 | Randomized Experiments & Linear Regression | [{{< fa book-open >}}](https://tuhhstartupengineers-classroom.github.io/ss24-causal-data-science/slides/03_exper.html) | [{{< fa laptop >}}](week_03/week_3.html) | [{{< fa brands github >}}](https://classroom.github.com/a/Fnvwjrn_) |
@@ -40,6 +40,8 @@ editor:
 | 10 | June 24 & 25 | Regression Discontinuity | {{< fa book-open >}} | {{< fa laptop >}} | {{< fa brands github >}} |
 | 11 | July 1 & 2 | Causal Mediation  | {{< fa book-open >}} | {{< fa laptop >}} | {{< fa brands github >}} |
 | 12 | July 8 & 9 | Further Topics in Causal Machine Learning | {{< fa book-open >}} | {{< fa laptop >}} | {{< fa brands github >}} |
+
+: {tbl-colwidths="[10, 40, 90, 10, 10, 10]"}
 
 :::
 
