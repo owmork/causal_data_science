@@ -44,16 +44,17 @@ source(paste0(here::here(), "/code/dag_theme.R"))
 
 ## Slides & Recap
 
-<iframe style="width: 100%; height: 45vw; max-height: 50vh;" frameborder="0" allowfullscreen src="https://tuhhstartupengineers-classroom.github.io/ss24-causal-data-science/slides/07_unob_conf.html"></iframe>
+<iframe style="width: 100%; height: 45vw; max-height: 50vh;" frameborder="0" allowfullscreen src="https://tuhhstartupengineers-classroom.github.io/ss24-causal-data-science/slides/07_unob_conf.html">
 
+</iframe>
 
 ![](dag_assumptions.png)
 
 **Assumptions:**
 
-  1. **Relevance**: $Z$ is significantly correlated with $T$, i.e. $Cov(Z, T) \neq 0$. <span style="color:#00C1D4">Path 1</span> must exist.
-  2. **Exclusion Restriction**: $Z$ affects $Y$ only through $T$. A direct <span style="color:#FF7E15">path 2</span> must **not** exist.
-  3. **Unconfoundedness** (Exogeneity, Validity): $Z$ is independent of $U$, i.e. $Cov(Z, \epsilon_Y) = 0$. Conditioning on $\mathbf{X}$ required in some contexts (will cover this later). <span style="color:#FF7E15">Path 3</span> must **not** exist.
+1.  **Relevance**: $Z$ is significantly correlated with $T$, i.e. $Cov(Z, T) \neq 0$. [Path 1]{style="color:#00C1D4"} must exist.
+2.  **Exclusion Restriction**: $Z$ affects $Y$ only through $T$. A direct [path 2]{style="color:#FF7E15"} must **not** exist.
+3.  **Unconfoundedness** (Exogeneity, Validity): $Z$ is independent of $U$, i.e. $Cov(Z, \epsilon_Y) = 0$. Conditioning on $\mathbf{X}$ required in some contexts (will cover this later). [Path 3]{style="color:#FF7E15"} must **not** exist.
 
 For our practical example, imagine the following situation: you have developed an app and you are already having an active user base. Of course, some users are more active than other users. Also, users might use the app for different purposes. In general, user behavior likely depends on a lot of unobserved characteristics.
 
@@ -63,13 +64,12 @@ Therefore, you perform a so called randomized encouragement trial, where for a r
 
 After a while you collect data on users’ activity and also if they were encouraged and if they used the new feature. [Download](https://cloud.tuhh.de/index.php/s/MifsryCfsqRXG3B) the data and load it.
 
-- **Causal Effect:** The impact of a new feature on the time spent in the app.
-- **Treatment:** Usage of the new feature.
-- **Outcome:** Time spent in the app.
-- **Instrument:** Randomized encouragement (e.g., a popup message encouraging users to try the new feature).
+-   **Causal Effect:** The impact of a new feature on the time spent in the app.
+-   **Treatment:** Usage of the new feature.
+-   **Outcome:** Time spent in the app.
+-   **Instrument:** Randomized encouragement (e.g., a popup message encouraging users to try the new feature).
 
 This setup avoids running an A/B test on the feature itself by using an encouragement design, which is often more acceptable from a business perspective, particularly when there is a desire to roll out a feature to all users.
-
 
 ```{r}
 #| message: false
@@ -83,34 +83,32 @@ df <- readRDS("rand_enc.rds")
 print(df)
 ```
 
-
-<span style="color:#FF7E15">**Task 1:**</span> Evaluate the IV assumptions.
-
-<details>
-
-<summary><span style="color:#00C1D4">**Relevance**</span></summary>
-
-- *Question:* ...
-- *Evaluation:* ...
-
-</details>
-
+[**Task 1:**]{style="color:#FF7E15"} Evaluate the IV assumptions.
 
 <details>
 
-<summary><span style="color:#00C1D4">**Exclusion Restriction**</span></summary>
+<summary>[**Relevance**]{style="color:#00C1D4"}</summary>
 
-- *Question:* ...
-- *Evaluation:* ...
+-   *Question:* Does the randomized encouragement (popup message) affect the likelihood of using the new feature?
+-   *Evaluation:* It is plausible that the encouragement message will increase the probability that users try the new feature, satisfying the relevance condition.
 
 </details>
 
 <details>
 
-<summary><span style="color:#00C1D4">**Unconfoundedness**</span></summary>
+<summary>[**Exclusion Restriction**]{style="color:#00C1D4"}</summary>
 
-- *Question:* ...
-- *Evaluation:* ...
+-   *Question:* Does the randomized encouragement affect the time spent in the app only through its effect on the usage of the new feature?
+-   *Evaluation:* Assuming the only reason the encouragement affects the time spent in the app is by increasing the use of the new feature, this condition holds. The popup message should not directly affect time spent in the app other than by leading users to use the new feature.
+
+</details>
+
+<details>
+
+<summary>[**Unconfoundedness**]{style="color:#00C1D4"}</summary>
+
+-   *Question:* Is the random assignment of encouragement independent of potential outcomes and treatments?
+-   *Evaluation:* Since the encouragement is randomized, it should be independent of other factors that could influence both the usage of the new feature and the time spent in the app, satisfying this condition.
 
 </details>
 
@@ -120,8 +118,7 @@ As in our practical example, we will derive the ATE for the binary case, i.e. a 
 
 $$
 Y_i = \beta_0 + \tau T_i + \beta_U U_i + \epsilon_i
-$$
-Please note, that there is no $Z$ in this formula due to the exclusion restriction.
+$$ Please note, that there is no $Z$ in this formula due to the exclusion restriction.
 
 Let's go through the identification procedure step by step. You will see and use the other assumptions there, as well.
 
@@ -134,9 +131,10 @@ $$
 $$
 
 <details>
+
 <summary>**Explanation**</summary>
 
-...
+Assumption of linearity.
 
 </details>
 
@@ -147,9 +145,10 @@ $$
 $$
 
 <details>
+
 <summary>**Explanation**</summary>
 
-...
+Linearity of expectation.
 
 </details>
 
@@ -160,9 +159,10 @@ $$
 $$
 
 <details>
+
 <summary>**Explanation**</summary>
 
-...
+Re-arranging, removing $\epsilon_i$ and $\beta_0$.
 
 </details>
 
@@ -171,10 +171,12 @@ $$
 &= \tau (\mathbb{E}[T_i | Z_i = 1] - \mathbb{E}[T_i | Z_i = 0]) + \beta_u (\mathbb{E}[U_i | Z_i = 1] - \mathbb{E}[U_i | Z_i = 0]) \\
 \end{align*}
 $$
+
 <details>
+
 <summary>**Explanation**</summary>
 
-...
+Unconfoundedness assumption.
 
 </details>
 
@@ -185,9 +187,10 @@ $$
 $$
 
 <details>
+
 <summary>**Explanation**</summary>
 
-...
+Re-arranging/removing terms.
 
 </details>
 
@@ -197,14 +200,16 @@ $$
 \end{align*}
 $$
 
-<span style="color:#FF7E15">**Task 2:**</span> Solve for $\tau$ and compute sample version of the Wald estimand.
+[**Task 2:**]{style="color:#FF7E15"} Solve for $\tau$ and compute sample version of the Wald estimand.
 
 ```{r}
-#| include: false
-
+# Numerator
 num <- mean(df[df$popup == 1, ]$time_spent) - mean(df[df$popup == 0, ]$time_spent)
+
+# Denominator
 den <- mean(df[df$popup == 1, ]$used_ftr) - mean(df[df$popup == 0, ]$used_ftr)
 
+# Wald estimate
 num/den
 ```
 
@@ -214,30 +219,30 @@ num/den
 
 A more practical way of estimating the treatment effect is the two-stage least squares estimator (2SLS) which returns an estimate equivalent to the one just computed. 2SLS splits the estimation procedure in two stages:
 
-- 1st stage: regress $T$ on $Z$ to obtain $\hat{T}$, where $\hat{T}$ are the fitted values.
-- 2nd stage: regress $Y$ on $\hat{T}$ to obtain the coefficient $\hat{\tau}$, which is the treatment effect.
+-   1st stage: regress $T$ on $Z$ to obtain $\hat{T}$, where $\hat{T}$ are the fitted values.
+-   2nd stage: regress $Y$ on $\hat{T}$ to obtain the coefficient $\hat{\tau}$, which is the treatment effect.
 
 In the graphs below, you can see how the 2SLS estimator works. First, $U$ is an unobserved confounder of $T$ on $Y$. When replacing $T$ with $\hat{T}$, there is no arrow from $U$ on the adjusted treatment, because there is no dependence.
 
-<img src="dag_IV_2sls_1.png" width="425"/> <img height="350" hspace="20"/> <img src="dag_IV_2sls_2.png" width="425"/> 
+<img src="dag_IV_2sls_1.png" width="425"/> <img height="350" hspace="20"/> <img src="dag_IV_2sls_2.png" width="425"/>
 
-<span style="color:#FF7E15">**Task 3:**</span> Compute the treatment effect using the 2SLS estimator as described. (1) First, do it by running the two regressions. (2) Then, use the `R` package `AER` and the function `ivreg()`. The syntax for the formula is: `Y ~ T | Z`. (Note: for method (1) your standard errors will be wrong. You can ignore that for now.)
+[**Task 3:**]{style="color:#FF7E15"} Compute the treatment effect using the 2SLS estimator as described. (1) First, do it by running the two regressions. (2) Then, use the `R` package `AER` and the function `ivreg()`. The syntax for the formula is: `Y ~ T | Z`. (Note: for method (1) your standard errors will be wrong. You can ignore that for now.)
 
 ```{r}
-#| include: false
-
 # (a) with wrong standard errors
+
+# First stage
 stage_1 <- lm(used_ftr ~ popup, data = df)
 summary(stage_1)
-df$used_ftr_hat <- stage_1$fitted.values
 
+# Second stage
+df$used_ftr_hat <- stage_1$fitted.values
 stage_2 <- lm(time_spent ~ used_ftr_hat, data = df)
 summary(stage_2)
 ```
 
 ```{r}
 #| eval: false
-#| include: false
 
 install.packages("AER") # (Applied Economics with R)
 ```
@@ -245,15 +250,15 @@ install.packages("AER") # (Applied Economics with R)
 ```{r}
 #| message: false
 #| warnings: false
-#| include: false
 
 # (b) with correct standard errors
 
 # Load package
 library(AER)
 
+# Two-stage least squares
 tsls <- ivreg(time_spent ~ used_ftr | popup, data = df)
-summary(tsls, vcov = vcovHC)
+summary(tsls, vcov = vcovHC) # with robust standard errors
 ```
 
 ## Nonparametric identification of Local ATE
@@ -264,44 +269,48 @@ The linearity assumption is a very strong parametric assumption, as it e.g. requ
 
 We segment population into four segments. E.g. $T_i(Z = 1) = 1$ represents unit's $i$ decision to "get the treatment" when being encouraged. Based on all possible combinations, four different exist:
 
-  - `Compliers` always take the treatment that they're encouraged to take: $T_i(1) = 1$ and $T_i(0) = 0$.
-  - `Always-Takers` always take the treatment, regardless of encouragement: $T_i(1) = 1$ and $T_i(0) = 1$.
-  - `Never-Takers` never take the treatment, regardless of encouragement: $T_i(1) = 0$ and $T_i(0) = 0$.
-  - `Defiers` always take the opposite treatment that they're encouraged to take: $T_i(1) = 0$ and $T_i(0) = 1$.
-  
+-   `Compliers` always take the treatment that they're encouraged to take: $T_i(1) = 1$ and $T_i(0) = 0$.
+-   `Always-Takers` always take the treatment, regardless of encouragement: $T_i(1) = 1$ and $T_i(0) = 1$.
+-   `Never-Takers` never take the treatment, regardless of encouragement: $T_i(1) = 0$ and $T_i(0) = 0$.
+-   `Defiers` always take the opposite treatment that they're encouraged to take: $T_i(1) = 0$ and $T_i(0) = 1$.
+
 Applied to our example, usere who receive the encouragement (popup message) and use it are compliers.
 
-<span style="color:#FF7E15">**Task 4:**</span> We are not able to observe whether a unit is a complier, always-taker, never-taker or defier. For each observed combination of $Z$ and $T$, there are always two options. For the following combinations, answer what segments could be possible.
+[**Task 4:**]{style="color:#FF7E15"} We are not able to observe whether a unit is a complier, always-taker, never-taker or defier. For each observed combination of $Z$ and $T$, there are always two options. For the following combinations, answer what segments could be possible.
 
 <details>
-<summary><span style="color:#FFFFFF">**$Z=0, T=0$**</span></summary>
 
-...
+<summary>[$Z=0, T=0$]{style="color:#FFFFFF"}</summary>
+
+Compliers or never-takers
 
 </details>
 
 <details>
-<summary><span style="color:#FFFFFF">**$Z=0, T=1$**</span></summary>
 
-...
+<summary>[$Z=0, T=1$]{style="color:#FFFFFF"}</summary>
 
-</details>
-
-<details>
-<summary><span style="color:#FFFFFF">**$Z=1, T=0$**</span></summary>
-
-...
+Defiers or always-takers
 
 </details>
 
 <details>
-<summary><span style="color:#FFFFFF">**$Z=1, T=1$**</span></summary>
 
-...
+<summary>[$Z=1, T=0$]{style="color:#FFFFFF"}</summary>
+
+Defiers or never-takers
 
 </details>
 
-<span style="color:#FF7E15">**Task 5:**</span> [Draw the DAGs](https://dagitty.net/dags.html#) for complier and never-takers.
+<details>
+
+<summary>[$Z=1, T=1$]{style="color:#FFFFFF"}</summary>
+
+Compliers or always-takers
+
+</details>
+
+[**Task 5:**]{style="color:#FF7E15"} [Draw the DAGs](https://dagitty.net/dags.html#) for complier and never-takers.
 
 ### Local ATE
 
@@ -325,94 +334,102 @@ For the estimation of the LATE, if $Z_i$ and $T_i$ are binary instrument and tre
 
 $$
 \mathbb{E}[Y_i(1) - Y_i(0) | T_i(1) = 1, T_i(0) = 0] = \frac{\mathbb{E}[Y_i | Z_i = 1] - \mathbb{E}[Y_i | Z_i = 0]}{\mathbb{E}[T_i | Z_i = 1] - \mathbb{E}[T_i | Z_i = 0]}
-$$
+$$ 
+
 The numerator term is also called *Intention-to-Treat (ITT) Effect*, while the denominator is 1st-stage effect or *Complier Share*.
 
-<span style="color:#FF7E15">**Task 6:**</span> Compute ITT and complier share for our example. How would the LATE vary with a lower or higher complier share?
+[**Task 6:**]{style="color:#FF7E15"} Compute ITT and complier share for our example. How would the LATE vary with a lower or higher complier share?
 
 ## Identification examples
 
-<span style="color:#FF7E15">**Task 7:**</span> Finding a good instrument is often times quite difficult due to the requirements discussed above. Read the following identification strategies and evalute their validity.
+[**Task 7:**]{style="color:#FF7E15"} Finding a good instrument is often times quite difficult due to the requirements discussed above. Read the following identification strategies and evalute their validity.
 
-::: {.grid}
-
-::: {.g-col-9}
-
+::: grid
+::: g-col-9
 **Case 1: Effect of R&D Expenditure on Innovation Output**
 
-| Variable | Description |
-|---|---:
-| Treatment | R&D expenditure |
-| Outcome | Number of patents filed |
-| Instrument | Firm size |
+| Variable   |             Description |
+|------------|------------------------:|
+| Treatment  |         R&D expenditure |
+| Outcome    | Number of patents filed |
+| Instrument |               Firm size |
 
 <details>
+
 <summary>**Evaluation**</summary>
 
-...
+Firm size affects R&D expenditure (relevance) but also likely directly affects innovation output due to economies of scale and other factors, violating the exclusion restriction. \[invalid\]
 
 </details>
- 
+
 **Case 2: Effect of Training Programs on Employee Productivity**
 
-| Variable | Description |
-|---|---:
-| Treatment | Participation in a training program |
-| Outcome | Employee productivity measured by output per hour |
+| Variable   |                                              Description |
+|------------|---------------------------------------------------------:|
+| Treatment  |                      Participation in a training program |
+| Outcome    |        Employee productivity measured by output per hour |
 | Instrument | Distance from the employee's home to the training center |
 
 <details>
+
 <summary>**Evaluation**</summary>
 
-...
+Distance from home to the training center is likely to influence participation in the training program (relevance) but should not directly affect productivity except through participation in the training program (exclusion restriction). \[valid\]
 
 </details>
 
 **Case 3: Effect of Marketing Spend on Sales**
 
-| Variable | Description |
-|---|---:
-| Treatment | Marketing expenditure by a firm |
-| Outcome | Sales revenue |
+| Variable   |                                                                                                     Description |
+|-------------------------------|----------------------------------------:|
+| Treatment  |                                                                                 Marketing expenditure by a firm |
+| Outcome    |                                                                                                   Sales revenue |
 | Instrument | Introduction of a new marketing budget rule that allocates more funds to marketing based on predefined criteria |
 
 <details>
+
 <summary>**Evaluation**</summary>
 
-...
+The new budget rule affects marketing expenditure (relevance) and is assumed to affect sales only through changes in marketing expenditure (exclusion restriction). Independence holds if the rule is exogenous to other factors affecting sales. \[valid\]
 
 </details>
 
 **Case 4: Effect of Employee Benefits on Job Satisfaction**
 
-| Variable | Description |
-|---|---:
-| Treatment | Generosity of employee benefits |
-| Outcome | Job satisfaction score |
-| Instrument | Firm's overall profitability |
+| Variable   |                     Description |
+|------------|--------------------------------:|
+| Treatment  | Generosity of employee benefits |
+| Outcome    |          Job satisfaction score |
+| Instrument |    Firm's overall profitability |
 
 <details>
+
 <summary>**Evaluation**</summary>
 
-...
+Firm profitability may influence the ability to offer generous benefits (relevance), but it also directly affects job satisfaction through other channels like job security and working conditions, violating the exclusion restriction. \[invalid\]
 
 </details>
-
 :::
 :::
 
 ## Assignment
 
-Coming soon.
-
 ::: assignment
-...
+Accept the [Week 7 - Assignment](https://classroom.github.com/a/R80VGxLm) and follow the same steps as last week and as described in the organization chapter.
 
-<!-- Why can't we regress Y on T? -->
-<!-- Why can't we regress Y on Z? -->
-<!-- What bias to expect? -->
-<!-- Bounds -->
-<!-- Sensitivity analysis -->
+1.  Take the example from the tutorial.
 
+    1.  Regress $Y$ on $T$.
+
+    2.  Regress $Y$ on $Z$.
+
+    3.  Compare the estimates to the one obtained by instrumental variable regression and argue why the size differs. Why are the two regressions not valid estimates of the treatment effect?
+
+2.  Compute the different bounds presented in the lecture and for each bound, explain in one sentence, in your own words, what is assumed.
+
+3.  Using the data `task_3.rds`, perform a sensitivity analysis using the package `sensemakr` as presented in the lecture. The outcome and treatment is the same as in the tutorial, but you have one additional covariate, `age`. With the results from the sensitivity analysis, answer the following questions.
+
+    1.  How sensitive is your estimate to a potential unobserved confounder which is 1x, 2x, or 3x as strong as the variable `age`?
+
+    2.  Interpret the robustness value and explain, in your own words, what it expresses.
 :::
-

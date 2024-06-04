@@ -321,15 +321,6 @@ Y_i = \beta_0 + \tau T_i + \beta_U U_i + \epsilon_i
 \end{align*}
 \]</span></p>
 <p><span style="color:#FF7E15"><strong>Task 2:</strong></span> Solve for <span class="math inline">\(\tau\)</span> and compute sample version of the Wald estimand.</p>
-<div class="cell" data-layout-align="center">
-<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">num</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">df</span><span class="op">[</span><span class="va">df</span><span class="op">$</span><span class="va">popup</span> <span class="op">==</span> <span class="fl">1</span>, <span class="op">]</span><span class="op">$</span><span class="va">time_spent</span><span class="op">)</span> <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">df</span><span class="op">[</span><span class="va">df</span><span class="op">$</span><span class="va">popup</span> <span class="op">==</span> <span class="fl">0</span>, <span class="op">]</span><span class="op">$</span><span class="va">time_spent</span><span class="op">)</span></span>
-<span><span class="va">den</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">df</span><span class="op">[</span><span class="va">df</span><span class="op">$</span><span class="va">popup</span> <span class="op">==</span> <span class="fl">1</span>, <span class="op">]</span><span class="op">$</span><span class="va">used_ftr</span><span class="op">)</span> <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">df</span><span class="op">[</span><span class="va">df</span><span class="op">$</span><span class="va">popup</span> <span class="op">==</span> <span class="fl">0</span>, <span class="op">]</span><span class="op">$</span><span class="va">used_ftr</span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">num</span><span class="op">/</span><span class="va">den</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details><div class="cell-output cell-output-stdout">
-<pre><code>[1] 9.3</code></pre>
-</div>
-</div>
 <!-- *Question:* In which case is the denominator zero and we cannot identify the estimate? What assumption is violated? -->
 </section><section id="sls-two-stage-least-squares" class="level2"><h2 class="anchored" data-anchor-id="sls-two-stage-least-squares">2SLS (Two-stage least squares)</h2>
 <p>A more practical way of estimating the treatment effect is the two-stage least squares estimator (2SLS) which returns an estimate equivalent to the one just computed. 2SLS splits the estimation procedure in two stages:</p>
@@ -339,85 +330,7 @@ Y_i = \beta_0 + \tau T_i + \beta_U U_i + \epsilon_i
 </ul>
 <p>In the graphs below, you can see how the 2SLS estimator works. First, <span class="math inline">\(U\)</span> is an unobserved confounder of <span class="math inline">\(T\)</span> on <span class="math inline">\(Y\)</span>. When replacing <span class="math inline">\(T\)</span> with <span class="math inline">\(\hat{T}\)</span>, there is no arrow from <span class="math inline">\(U\)</span> on the adjusted treatment, because there is no dependence.</p>
 <p><img src="dag_IV_2sls_1.png" width="425"><img height="350" hspace="20"><img src="dag_IV_2sls_2.png" width="425"></p>
-<p><span style="color:#FF7E15"><strong>Task 3:</strong></span> Compute the treatment effect using the 2SLS estimator as described. (1) First, do it by running the two regressions. (2) Then, use the <code>R</code> package <code>AER</code> and the function <code><a href="https://rdrr.io/pkg/AER/man/ivreg.html">ivreg()</a></code>. The syntax for the formula is: <code>Y ~ T | Z</code>. (Note: for method (1) your standard errors will be wrong. You can ignore that for now.)</p>
-<div class="cell" data-layout-align="center">
-<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># (a) with wrong standard errors</span></span>
-<span><span class="va">stage_1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">used_ftr</span> <span class="op">~</span> <span class="va">popup</span>, data <span class="op">=</span> <span class="va">df</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">stage_1</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details><div class="cell-output cell-output-stdout">
-<pre><code>
-Call:
-lm(formula = used_ftr ~ popup, data = df)
-
-Residuals:
-   Min     1Q Median     3Q    Max 
--0.659 -0.309 -0.309  0.341  0.691 
-
-Coefficients:
-            Estimate Std. Error t value Pr(&gt;|t|)    
-(Intercept)  0.30941    0.00667    46.4   &lt;2e-16 ***
-popup        0.35002    0.00937    37.4   &lt;2e-16 ***
----
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-
-Residual standard error: 0.47 on 9998 degrees of freedom
-Multiple R-squared:  0.123, Adjusted R-squared:  0.122 
-F-statistic: 1.4e+03 on 1 and 9998 DF,  p-value: &lt;2e-16</code></pre>
-</div>
-<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">df</span><span class="op">$</span><span class="va">used_ftr_hat</span> <span class="op">&lt;-</span> <span class="va">stage_1</span><span class="op">$</span><span class="va">fitted.values</span></span>
-<span></span>
-<span><span class="va">stage_2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">time_spent</span> <span class="op">~</span> <span class="va">used_ftr_hat</span>, data <span class="op">=</span> <span class="va">df</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">stage_2</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details><div class="cell-output cell-output-stdout">
-<pre><code>
-Call:
-lm(formula = time_spent ~ used_ftr_hat, data = df)
-
-Residuals:
-   Min     1Q Median     3Q    Max 
--41.66  -7.36   0.28   7.87  31.94 
-
-Coefficients:
-             Estimate Std. Error t value Pr(&gt;|t|)    
-(Intercept)    62.273      0.322   193.2   &lt;2e-16 ***
-used_ftr_hat    9.309      0.623    14.9   &lt;2e-16 ***
----
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-
-Residual standard error: 11 on 9998 degrees of freedom
-Multiple R-squared:  0.0218,    Adjusted R-squared:  0.0217 
-F-statistic:  223 on 1 and 9998 DF,  p-value: &lt;2e-16</code></pre>
-</div>
-</div>
-<div class="cell" data-layout-align="center" data-warnings="false">
-<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># (b) with correct standard errors</span></span>
-<span></span>
-<span><span class="co"># Load package</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">AER</span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">tsls</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/AER/man/ivreg.html">ivreg</a></span><span class="op">(</span><span class="va">time_spent</span> <span class="op">~</span> <span class="va">used_ftr</span> <span class="op">|</span> <span class="va">popup</span>, data <span class="op">=</span> <span class="va">df</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">tsls</span>, vcov <span class="op">=</span> <span class="va">vcovHC</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details><div class="cell-output cell-output-stdout">
-<pre><code>
-Call:
-ivreg(formula = time_spent ~ used_ftr | popup, data = df)
-
-Residuals:
-   Min     1Q Median     3Q    Max 
--35.52  -6.03   0.62   6.63  27.28 
-
-Coefficients:
-            Estimate Std. Error t value Pr(&gt;|t|)    
-(Intercept)   62.273      0.270   230.5   &lt;2e-16 ***
-used_ftr       9.309      0.524    17.8   &lt;2e-16 ***
----
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-
-Residual standard error: 9.2 on 9998 degrees of freedom
-Multiple R-Squared: 0.308,  Adjusted R-squared: 0.308 
-Wald test:  316 on 1 and 9998 DF,  p-value: &lt;2e-16 </code></pre>
-</div>
-</div>
+<p><span style="color:#FF7E15"><strong>Task 3:</strong></span> Compute the treatment effect using the 2SLS estimator as described. (1) First, do it by running the two regressions. (2) Then, use the <code>R</code> package <code>AER</code> and the function <code>ivreg()</code>. The syntax for the formula is: <code>Y ~ T | Z</code>. (Note: for method (1) your standard errors will be wrong. You can ignore that for now.)</p>
 </section><section id="nonparametric-identification-of-local-ate" class="level2"><h2 class="anchored" data-anchor-id="nonparametric-identification-of-local-ate">Nonparametric identification of Local ATE</h2>
 <p>The linearity assumption is a very strong parametric assumption, as it e.g.&nbsp;requires homogeneous treatment effects. Therefore, we would like to nonparametrically identify the treatment effect, and in fact, we can. However, we are not able to identify the average treatment effect ATE, but instead a local version of the average treatment effect, known as LATE. While we can drop the linearity assumption, now the assumption of monotonicity is needed. But first, we have to introduce a bit of new notation to express the relationship between instrument and treatment. The notation is similar to the potential outcome notation.</p>
 <section id="principal-stratification" class="level3"><h3 class="anchored" data-anchor-id="principal-stratification">Principal stratification</h3>
@@ -540,30 +453,7 @@ T_i(Z_i=1) \geq T_i(Z_i=0) \,\, \forall i
 </table>
 <details><summary><strong>Evaluation</strong>
 </summary><p>The new budget rule affects marketing expenditure (relevance) and is assumed to affect sales only through changes in marketing expenditure (exclusion restriction). Independence holds if the rule is exogenous to other factors affecting sales. [valid]</p>
-</details><p><strong>Case 4: Effect of IT Investments on Firm Performance</strong></p>
-<table class="table">
-<thead><tr class="header">
-<th>Variable</th>
-<th style="text-align: right;">Description</th>
-</tr></thead>
-<tbody>
-<tr class="odd">
-<td>Treatment</td>
-<td style="text-align: right;">Investment in IT infrastructure</td>
-</tr>
-<tr class="even">
-<td>Outcome</td>
-<td style="text-align: right;">Firm performance measured by return on assets (ROA)</td>
-</tr>
-<tr class="odd">
-<td>Instrument</td>
-<td style="text-align: right;">Changes in IT tax credits available to firms</td>
-</tr>
-</tbody>
-</table>
-<details><summary><strong>Evaluation</strong>
-</summary><p>Changes in IT tax credits directly affect IT investments (relevance) and are presumed to affect firm performance only through IT investments (exclusion restriction). [valid]</p>
-</details><p><strong>Case 5: Effect of Employee Benefits on Job Satisfaction</strong></p>
+</details><p><strong>Case 4: Effect of Employee Benefits on Job Satisfaction</strong></p>
 <table class="table">
 <thead><tr class="header">
 <th>Variable</th>
@@ -995,7 +885,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       &nbsp;
     </div>
   </div>
-</footer><script>var lightboxQuarto = GLightbox({"descPosition":"bottom","closeEffect":"zoom","openEffect":"zoom","loop":false,"selector":".lightbox"});
+</footer><script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","openEffect":"zoom","loop":false,"descPosition":"bottom","selector":".lightbox"});
 window.onload = () => {
   lightboxQuarto.on('slide_before_load', (data) => {
     const { slideIndex, slideNode, slideConfig, player, trigger } = data;
