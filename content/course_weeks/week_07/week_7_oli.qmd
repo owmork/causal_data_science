@@ -383,22 +383,7 @@ The new budget rule affects marketing expenditure (relevance) and is assumed to 
 
 </details>
 
-**Case 4: Effect of IT Investments on Firm Performance**
-
-| Variable | Description |
-|---|---:
-| Treatment | Investment in IT infrastructure |
-| Outcome | Firm performance measured by return on assets (ROA) |
-| Instrument | Changes in IT tax credits available to firms |
-
-<details>
-<summary>**Evaluation**</summary>
-
-Changes in IT tax credits directly affect IT investments (relevance) and are presumed to affect firm performance only through IT investments (exclusion restriction). [valid]
-
-</details>
-
-**Case 5: Effect of Employee Benefits on Job Satisfaction**
+**Case 4: Effect of Employee Benefits on Job Satisfaction**
 
 | Variable | Description |
 |---|---:

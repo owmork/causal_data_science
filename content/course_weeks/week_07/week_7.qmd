@@ -383,22 +383,7 @@ The numerator term is also called *Intention-to-Treat (ITT) Effect*, while the d
 
 </details>
 
-**Case 4: Effect of IT Investments on Firm Performance**
-
-| Variable | Description |
-|---|---:
-| Treatment | Investment in IT infrastructure |
-| Outcome | Firm performance measured by return on assets (ROA) |
-| Instrument | Changes in IT tax credits available to firms |
-
-<details>
-<summary>**Evaluation**</summary>
-
-...
-
-</details>
-
-**Case 5: Effect of Employee Benefits on Job Satisfaction**
+**Case 4: Effect of Employee Benefits on Job Satisfaction**
 
 | Variable | Description |
 |---|---:
