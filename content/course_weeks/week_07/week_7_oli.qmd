@@ -90,8 +90,8 @@ print(df)
 
 <summary><span style="color:#00C1D4">**Relevance**</span></summary>
 
-- *Question:* ...
-- *Evaluation:* ...
+- *Question:* Does the randomized encouragement (popup message) affect the likelihood of using the new feature?
+- *Evaluation:* It is plausible that the encouragement message will increase the probability that users try the new feature, satisfying the relevance condition.
 
 </details>
 
@@ -100,8 +100,8 @@ print(df)
 
 <summary><span style="color:#00C1D4">**Exclusion Restriction**</span></summary>
 
-- *Question:* ...
-- *Evaluation:* ...
+- *Question:* Does the randomized encouragement affect the time spent in the app only through its effect on the usage of the new feature?
+- *Evaluation:* Assuming the only reason the encouragement affects the time spent in the app is by increasing the use of the new feature, this condition holds. The popup message should not directly affect time spent in the app other than by leading users to use the new feature.
 
 </details>
 
@@ -109,8 +109,8 @@ print(df)
 
 <summary><span style="color:#00C1D4">**Unconfoundedness**</span></summary>
 
-- *Question:* ...
-- *Evaluation:* ...
+- *Question:* Is the random assignment of encouragement independent of potential outcomes and treatments?
+- *Evaluation:* Since the encouragement is randomized, it should be independent of other factors that could influence both the usage of the new feature and the time spent in the app, satisfying this condition.
 
 </details>
 
@@ -136,7 +136,7 @@ $$
 <details>
 <summary>**Explanation**</summary>
 
-...
+Assumption of linearity.
 
 </details>
 
@@ -149,7 +149,7 @@ $$
 <details>
 <summary>**Explanation**</summary>
 
-...
+Linearity of expectation.
 
 </details>
 
@@ -162,7 +162,7 @@ $$
 <details>
 <summary>**Explanation**</summary>
 
-...
+Re-arranging, removing $\e_i$ and $\beta_0$.
 
 </details>
 
@@ -174,7 +174,7 @@ $$
 <details>
 <summary>**Explanation**</summary>
 
-...
+Unconfoundedness assumption.
 
 </details>
 
@@ -187,7 +187,7 @@ $$
 <details>
 <summary>**Explanation**</summary>
 
-...
+Re-arranging/removing terms.
 
 </details>
 
@@ -200,7 +200,7 @@ $$
 <span style="color:#FF7E15">**Task 2:**</span> Solve for $\tau$ and compute sample version of the Wald estimand.
 
 ```{r}
-#| include: false
+#| code-fold: true
 
 num <- mean(df[df$popup == 1, ]$time_spent) - mean(df[df$popup == 0, ]$time_spent)
 den <- mean(df[df$popup == 1, ]$used_ftr) - mean(df[df$popup == 0, ]$used_ftr)
@@ -224,7 +224,7 @@ In the graphs below, you can see how the 2SLS estimator works. First, $U$ is an 
 <span style="color:#FF7E15">**Task 3:**</span> Compute the treatment effect using the 2SLS estimator as described. (1) First, do it by running the two regressions. (2) Then, use the `R` package `AER` and the function `ivreg()`. The syntax for the formula is: `Y ~ T | Z`. (Note: for method (1) your standard errors will be wrong. You can ignore that for now.)
 
 ```{r}
-#| include: false
+#| code-fold: true
 
 # (a) with wrong standard errors
 stage_1 <- lm(used_ftr ~ popup, data = df)
@@ -245,7 +245,7 @@ install.packages("AER") # (Applied Economics with R)
 ```{r}
 #| message: false
 #| warnings: false
-#| include: false
+#| code-fold: true
 
 # (b) with correct standard errors
 
@@ -276,28 +276,28 @@ Applied to our example, usere who receive the encouragement (popup message) and 
 <details>
 <summary><span style="color:#FFFFFF">**$Z=0, T=0$**</span></summary>
 
-...
+Compliers or never-takers
 
 </details>
 
 <details>
 <summary><span style="color:#FFFFFF">**$Z=0, T=1$**</span></summary>
 
-...
+Defiers or always-takers
 
 </details>
 
 <details>
 <summary><span style="color:#FFFFFF">**$Z=1, T=0$**</span></summary>
 
-...
+Defiers or never-takers
 
 </details>
 
 <details>
 <summary><span style="color:#FFFFFF">**$Z=1, T=1$**</span></summary>
 
-...
+Compliers or always-takers
 
 </details>
 
@@ -349,7 +349,7 @@ The numerator term is also called *Intention-to-Treat (ITT) Effect*, while the d
 <details>
 <summary>**Evaluation**</summary>
 
-...
+Firm size affects R&D expenditure (relevance) but also likely directly affects innovation output due to economies of scale and other factors, violating the exclusion restriction. [invalid]
 
 </details>
  
@@ -364,7 +364,7 @@ The numerator term is also called *Intention-to-Treat (ITT) Effect*, while the d
 <details>
 <summary>**Evaluation**</summary>
 
-...
+Distance from home to the training center is likely to influence participation in the training program (relevance) but should not directly affect productivity except through participation in the training program (exclusion restriction). [valid]
 
 </details>
 
@@ -379,7 +379,7 @@ The numerator term is also called *Intention-to-Treat (ITT) Effect*, while the d
 <details>
 <summary>**Evaluation**</summary>
 
-...
+The new budget rule affects marketing expenditure (relevance) and is assumed to affect sales only through changes in marketing expenditure (exclusion restriction). Independence holds if the rule is exogenous to other factors affecting sales. [valid]
 
 </details>
 
@@ -394,7 +394,7 @@ The numerator term is also called *Intention-to-Treat (ITT) Effect*, while the d
 <details>
 <summary>**Evaluation**</summary>
 
-...
+Changes in IT tax credits directly affect IT investments (relevance) and are presumed to affect firm performance only through IT investments (exclusion restriction). [valid]
 
 </details>
 
@@ -409,7 +409,7 @@ The numerator term is also called *Intention-to-Treat (ITT) Effect*, while the d
 <details>
 <summary>**Evaluation**</summary>
 
-...
+Firm profitability may influence the ability to offer generous benefits (relevance), but it also directly affects job satisfaction through other channels like job security and working conditions, violating the exclusion restriction. [invalid]
 
 </details>
 

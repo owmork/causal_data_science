@@ -503,7 +503,7 @@ Tip
 </div>
 </div>
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><a href="cross_val.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1" data-glightbox="description: .lightbox-desc-1" title="K-fold cross fitting with K = 5"><img src="cross_val.png" class="img-fluid figure-img" width="400" alt="K-fold cross fitting with K = 5"></a></p>
+<figure class="figure"><p><a href="cross_val.png" class="lightbox" data-glightbox="description: .lightbox-desc-1" data-gallery="quarto-lightbox-gallery-1" title="K-fold cross fitting with K = 5"><img src="cross_val.png" class="img-fluid figure-img" width="400" alt="K-fold cross fitting with K = 5"></a></p>
 <figcaption>K-fold cross fitting with K = 5</figcaption></figure>
 </div>
 <p>For the sake of simplicity and demonstration, we select <span class="math inline">\(K=2\)</span>. Common values for smaller data sets are <span class="math inline">\(K=5\)</span> or <span class="math inline">\(K=10\)</span>, while for larger data sets, you will also see <span class="math inline">\(K=20\)</span> quite often. Generally, the choice of <span class="math inline">\(K\)</span> is associated with bias-variance trade-off and empirically, the values have shown to perform well.</p>
@@ -1229,7 +1229,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       &nbsp;
     </div>
   </div>
-</footer><script>var lightboxQuarto = GLightbox({"loop":false,"selector":".lightbox","descPosition":"bottom","openEffect":"zoom","closeEffect":"zoom"});
+</footer><script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","openEffect":"zoom","descPosition":"bottom","selector":".lightbox","loop":false});
 window.onload = () => {
   lightboxQuarto.on('slide_before_load', (data) => {
     const { slideIndex, slideNode, slideConfig, player, trigger } = data;
