@@ -309,14 +309,14 @@ and $\tau_{\text{ATE}} = -\frac{\mathbb{E}[\psi_b(W; \eta)]}{\mathbb{E}[\psi_a(W
 ```{r}
 #| eval: false
 
-theta <- ...
+tau <- ...
 ```
 
 ```{r}
 #| code-fold: true
 
-theta <- -sum(psi_b) / sum(psi_a)
-theta
+tau <- -sum(psi_b) / sum(psi_a)
+tau
 ```
 
 ### Step 4
@@ -326,10 +326,10 @@ In the fourth step, compute statistical information such as standard errors. It 
 ```{r}
 summary_dml <- function(psi_a, psi_b) {
   # compute ATE
-  theta <- -sum(psi_b) / sum(psi_a)
+  tau <- -sum(psi_b) / sum(psi_a)
   
   # compute variance
-  psi <- theta * psi_a + psi_b
+  psi <- tau * psi_a + psi_b
   Psi <- - psi / mean(psi_a)
   sigma2 <- var(Psi)
 
@@ -338,11 +338,11 @@ summary_dml <- function(psi_a, psi_b) {
 
   # t-statistic and p-value
   se <- sqrt(sigma2 / n)
-  t <- theta / se
+  t <- tau / se
   p <- 2 * pt(abs(t), n ,lower = FALSE)
   
   # bind together
-  return(data.frame(theta = round(theta, 3), t = round(t, 3), se = round(se, 3), p = round(p, 5)))
+  return(data.frame(tau = round(tau, 3), t = round(t, 3), se = round(se, 3), p = round(p, 5)))
 }
 ```
 
@@ -350,8 +350,8 @@ Apply function to our estimated vectors.
 
 ```{r}
 # Inference
-theta_stats <- summary_dml(psi_a, psi_b)
-print(theta_stats)
+tau_stats <- summary_dml(psi_a, psi_b)
+print(tau_stats)
 ```
 
 ### DoubleML 
