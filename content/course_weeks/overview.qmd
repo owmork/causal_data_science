@@ -35,11 +35,11 @@ editor:
 | - | May 20 & 21 | Holiday | - | - | - |
 | 6 | May 27 & 28 | Effect Heterogeneity | [{{< fa book-open >}}](https://tuhhstartupengineers-classroom.github.io/ss24-causal-data-science/slides/06_hte.html) | [{{< fa laptop >}}](week_06/week_6.html) | [{{< fa brands github >}}](https://classroom.github.com/a/oPhGwOmd) |
 | 7 | June 3 & 4 | Unobserved Confounding & Instrumental Variables | [{{< fa book-open >}}](https://tuhhstartupengineers-classroom.github.io/ss24-causal-data-science/slides/07_unob_conf.html) | [{{< fa laptop >}}](week_07/week_7.html) | [{{< fa brands github >}}](https://classroom.github.com/a/R80VGxLm) |
-| 8 | June 10 & 11 | Difference-in-Difference | {{< fa book-open >}} | {{< fa laptop >}} | {{< fa brands github >}} |
-| 9 | June 17 & 18 | Synthetic Control | {{< fa book-open >}} | {{< fa laptop >}} | {{< fa brands github >}} |
-| 10 | June 24 & 25 | Regression Discontinuity | {{< fa book-open >}} | {{< fa laptop >}} | {{< fa brands github >}} |
-| 11 | July 1 & 2 | Causal Mediation  | {{< fa book-open >}} | {{< fa laptop >}} | {{< fa brands github >}} |
-| 12 | July 8 & 9 | Further Topics in Causal Machine Learning | {{< fa book-open >}} | {{< fa laptop >}} | {{< fa brands github >}} |
+| 8 | June 10 & 11 | Recap | {{< fa book-open >}} | {{< fa laptop >}} | {{< fa brands github >}} |
+| 9 | June 17 & 18 | Difference-in-Difference | {{< fa book-open >}} | {{< fa laptop >}} | {{< fa brands github >}} |
+| 10 | June 24 & 25 | Synthetic Control | {{< fa book-open >}} | {{< fa laptop >}} | {{< fa brands github >}} |
+| 11 | July 1 & 2 | Regression Discontinuity  | {{< fa book-open >}} | {{< fa laptop >}} | {{< fa brands github >}} |
+| 12 | July 8 & 9 | Causal Mediation | {{< fa book-open >}} | {{< fa laptop >}} | {{< fa brands github >}} |
 
 : {tbl-colwidths="[10, 40, 90, 10, 10, 10]"}
 

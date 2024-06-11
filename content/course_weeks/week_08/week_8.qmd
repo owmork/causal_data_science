@@ -59,6 +59,12 @@ This week, we will do a recap of topics from week 5, week 6 and week 7. More pre
 Let's directly start using the following [data set](https://cloud.tuhh.de/index.php/s/DTK7j3Wcej84Trr). Data very similar to what we have used last week but extended by a few covariates. For now, ignore the instrument `popup`, which you will need for your assignment.
 
 ```{r}
+#| code-fold: true
+#df <- readRDS("~/my_drive/02_TUHH/03_github/causal_ds_ss24/content/course_weeks/week_08/rand_enc_w8.rds")
+```
+
+
+```{r}
 #| message: false
 #| warning: false
 
@@ -145,7 +151,7 @@ lrnr_mu <- ...
 ```
 
 ```{r}
-#| include: false
+#| code-fold: true
 
 # Define prediction model for the treatment/exposure
 task_e <- as_task_classif(df |> select(-time_spent, -popup), target = "used_ftr")
@@ -187,7 +193,7 @@ for (i in 1:nfolds){
 ```
 
 ```{r}
-#| include: false
+#| code-fold: true
 
 # cross fitting of nuisance parameters
 for (i in 1:nfolds){
@@ -239,7 +245,7 @@ psi_b_mu <- ...
 ```
 
 ```{r}
-#| include: false
+#| code-fold: true
 
 psi_b_mu <- muhat1 - muhat0
 ```
@@ -257,7 +263,7 @@ psi_b_res1 <- ...
 ```
 
 ```{r}
-#| include: false
+#| code-fold: true
 
 psi_b_res1 <- D * (Y - muhat1) / ehat
 ```
@@ -275,7 +281,7 @@ psi_b_res0 <- ...
 ```
 
 ```{r}
-#| include: false
+#| code-fold: true
 
 psi_b_res0 <- (1 - D) * (Y - muhat0) / (1 - ehat)
 ```
@@ -291,7 +297,7 @@ psi_b <- ...
 ```
 
 ```{r}
-#| include: false
+#| code-fold: true
 
 psi_b <- psi_b_mu + psi_b_res1 - psi_b_res0
 ```
@@ -307,7 +313,7 @@ theta <- ...
 ```
 
 ```{r}
-#| include: false
+#| code-fold: true
 
 theta <- -sum(psi_b) / sum(psi_a)
 theta
@@ -379,7 +385,7 @@ lgr::get_logger("mlr3")$set_threshold("warn")
 ```
 
 ```{r}
-#| include: false
+#| code-fold: true
 #| message: false
 #| warning: false
 
@@ -464,7 +470,7 @@ Then, we can simplify the expression from above and see we are left with a binar
 ```
 
 ```{r}
-#| include: false
+#| code-fold: true
 
 ## Specify task and learner
 # Task
@@ -533,10 +539,25 @@ $$
 $$
 
 ::: assignment
-
+Accept the [Week 8 - Assignment](https://classroom.github.com/a/1DoD8H5P) and follow the same steps as last week and as described in the organization chapter.
 
 Please also remember to fill out the [course evaluation](https://evaluating.tuhh.de/evasys/online.php?pswd=597RW) if you have not done so already.
 
-Coming soon.
+1.  Using the data from the tutorial include the instrument `popup` and compute the local average treatment effect (LATE) using interactive (AIPW) instrumental variable estimation. Follow the general recipe and answer the following questions. (You can choose any learner available in the `mlr3` environment.)
+
+    1.  What nuisance parameters do you need to estimate? Answer in the following style: "Regress ... on ... conditional on ...".
+
+    2.  Plug your estimates in to the moment condition of the Neyman-orthogonal score to retrieve the estimate.
+
+    3.  Additionally, perform the estimation using the `DoubleML` package.
+
+    4.  Compare the estimates to the estimate obtained in the tutorial.
+
+2.  Having obtained a pseudo outcome in the previous steps, use it to do offline policy learning with a decision tree  `lrn("classif.rpart")`. 
+
+    1. Consider the following restriction: for the treatment effect to be beneficial for an individual, he/she needs to spend at least two more times on the app. Put differently, the cost of the treatment can be translated to two minutes. Integrate this restriction into your problem and train the decision tree.
+    
+    2.  Use the function `rpart.plot()` from the `rpart.plot` package to interpret the result. Describe what you can infer from the plot.
+    
     
 :::
