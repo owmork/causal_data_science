@@ -412,7 +412,7 @@
     "href": "content/course_weeks/overview.html",
     "title": "Overview",
     "section": "",
-    "text": "Schedule\n\n\n\n\n\n\n\n\n\n\n\nSession\nDate\nTopic\n\n\n\n\n\n\n\n1\nApril 15 & 16\nIntroduction to Causal Inference\n\n\n\n\n\n2\nApril 22 & 21\nGraphical Causal Models\n\n\n\n\n\n3\nApril 29 & 30\nRandomized Experiments & Linear Regression\n\n\n\n\n\n4\nMay 6 & 7\nMatching\n\n\n\n\n\n5\nMay 13 & 14\nDouble Machine Learning\n\n\n\n\n\n-\nMay 20 & 21\nHoliday\n-\n-\n-\n\n\n6\nMay 27 & 28\nEffect Heterogeneity\n\n\n\n\n\n7\nJune 3 & 4\nUnobserved Confounding & Instrumental Variables\n\n\n\n\n\n8\nJune 10 & 11\nRecap\n\n\n\n\n\n9\nJune 17 & 18\nDifference-in-Difference\n\n\n\n\n\n10\nJune 24 & 25\nSynthetic Control\n\n\n\n\n\n11\nJuly 1 & 2\nRegression Discontinuity\n\n\n\n\n\n12\nJuly 8 & 9\nCausal Mediation",
+    "text": "Important\n\n\n\nDue to an unexpected scheduling conflict, we have to cancel today’s lecture (17 June). Instead, the lecture will take place tomorrow (18 June) from 15:00 to 16:30 in room O-0.007. Following the lecture, the tutorial will be held from 16:45 to 18:15 in room A-0.19.\nSorry for the inconvenience. See you tomorrow!\n\n\n\n\n\n\n\nSchedule\n\n\n\n\n\n\n\n\n\n\n\nSession\nDate\nTopic\n\n\n\n\n\n\n\n1\nApril 15 & 16\nIntroduction to Causal Inference\n\n\n\n\n\n2\nApril 22 & 21\nGraphical Causal Models\n\n\n\n\n\n3\nApril 29 & 30\nRandomized Experiments & Linear Regression\n\n\n\n\n\n4\nMay 6 & 7\nMatching\n\n\n\n\n\n5\nMay 13 & 14\nDouble Machine Learning\n\n\n\n\n\n-\nMay 20 & 21\nHoliday\n-\n-\n-\n\n\n6\nMay 27 & 28\nEffect Heterogeneity\n\n\n\n\n\n7\nJune 3 & 4\nUnobserved Confounding & Instrumental Variables\n\n\n\n\n\n8\nJune 10 & 11\nRecap\n\n\n\n\n\n9\nJune 18\nDifference-in-Difference\n\n\n\n\n\n10\nJune 24 & 25\nSynthetic Control\n\n\n\n\n\n11\nJuly 1 & 2\nRegression Discontinuity\n\n\n\n\n\n12\nJuly 8 & 9\nCausal Mediation",
     "crumbs": [
       "Content",
       "Overview"
@@ -1227,7 +1227,7 @@
     "href": "content/course_weeks/week_08/week_8.html",
     "title": "8 - Recap from week 5, 6, 7",
     "section": "",
-    "text": "Important\n\n\n\nBefore start, please fill out course evaluation.\n\n\nThis week, we will do a recap of topics from week 5, week 6 and week 7. More precisely, the focus of this week’s tutorial will be on:\n\nDouble Machine Learning: General Recipe\nHeterogeneous Treatment Effect: Optimal Policy Learning\nUnobserved Confounding: Instrument Variable Estimation with Double Machine Learning",
+    "text": "Important\n\n\n\nDue to an unexpected scheduling conflict, we have to cancel today’s lecture (17 June). Instead, the lecture will take place tomorrow (18 June) from 15:00 to 16:30 in room O-0.007. Following the lecture, the tutorial will be held from 16:45 to 18:15 in room A-0.19.\nSorry for the inconvenience. See you tomorrow!\n\n\n\n\n\n\n\n\nImportant\n\n\n\nBefore start, please fill out course evaluation.\n\n\nThis week, we will do a recap of topics from week 5, week 6 and week 7. More precisely, the focus of this week’s tutorial will be on:\n\nDouble Machine Learning: General Recipe\nHeterogeneous Treatment Effect: Optimal Policy Learning\nUnobserved Confounding: Instrument Variable Estimation with Double Machine Learning",
     "crumbs": [
       "Content",
       "<b>Weekly content</b>",
@@ -1239,7 +1239,7 @@
     "href": "content/course_weeks/week_08/week_8.html#slides-recap",
     "title": "8 - Recap from week 5, 6, 7",
     "section": "",
-    "text": "Important\n\n\n\nBefore start, please fill out course evaluation.\n\n\nThis week, we will do a recap of topics from week 5, week 6 and week 7. More precisely, the focus of this week’s tutorial will be on:\n\nDouble Machine Learning: General Recipe\nHeterogeneous Treatment Effect: Optimal Policy Learning\nUnobserved Confounding: Instrument Variable Estimation with Double Machine Learning",
+    "text": "Important\n\n\n\nDue to an unexpected scheduling conflict, we have to cancel today’s lecture (17 June). Instead, the lecture will take place tomorrow (18 June) from 15:00 to 16:30 in room O-0.007. Following the lecture, the tutorial will be held from 16:45 to 18:15 in room A-0.19.\nSorry for the inconvenience. See you tomorrow!\n\n\n\n\n\n\n\n\nImportant\n\n\n\nBefore start, please fill out course evaluation.\n\n\nThis week, we will do a recap of topics from week 5, week 6 and week 7. More precisely, the focus of this week’s tutorial will be on:\n\nDouble Machine Learning: General Recipe\nHeterogeneous Treatment Effect: Optimal Policy Learning\nUnobserved Confounding: Instrument Variable Estimation with Double Machine Learning",
     "crumbs": [
       "Content",
       "<b>Weekly content</b>",

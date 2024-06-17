@@ -45,6 +45,12 @@ source(paste0(here::here(), "/code/dag_theme.R"))
 ## Slides & Recap
 
 ::: callout-important
+Due to an unexpected scheduling conflict, we have to **cancel today's lecture** (17 June). Instead, the lecture will take place tomorrow (18 June) from 15:00 to 16:30 in room O-0.007. Following the lecture, the tutorial will be held from 16:45 to 18:15 in room A-0.19.
+
+Sorry for the inconvenience. See you tomorrow! 
+:::
+
+::: callout-important
 Before start, please fill out [course evaluation](https://evaluating.tuhh.de/evasys/online.php?pswd=597RW).
 :::
 

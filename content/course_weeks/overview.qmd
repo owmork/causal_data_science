@@ -15,6 +15,12 @@ editor:
     wrap: 72
 ---
 
+::: callout-important
+Due to an unexpected scheduling conflict, we have to **cancel today's lecture** (17 June). Instead, the lecture will take place tomorrow (18 June) from 15:00 to 16:30 in room O-0.007. Following the lecture, the tutorial will be held from 16:45 to 18:15 in room A-0.19.
+
+Sorry for the inconvenience. See you tomorrow! 
+:::
+
 ::: {.grid}
 
 ::: {.g-col-1}
@@ -36,7 +42,7 @@ editor:
 | 6 | May 27 & 28 | Effect Heterogeneity | [{{< fa book-open >}}](https://tuhhstartupengineers-classroom.github.io/ss24-causal-data-science/slides/06_hte.html) | [{{< fa laptop >}}](week_06/week_6.html) | [{{< fa brands github >}}](https://classroom.github.com/a/oPhGwOmd) |
 | 7 | June 3 & 4 | Unobserved Confounding & Instrumental Variables | [{{< fa book-open >}}](https://tuhhstartupengineers-classroom.github.io/ss24-causal-data-science/slides/07_unob_conf.html) | [{{< fa laptop >}}](week_07/week_7.html) | [{{< fa brands github >}}](https://classroom.github.com/a/R80VGxLm) |
 | 8 | June 10 & 11 | Recap | {{< fa book-open >}} | {{< fa laptop >}} | {{< fa brands github >}} |
-| 9 | June 17 & 18 | Difference-in-Difference | {{< fa book-open >}} | {{< fa laptop >}} | {{< fa brands github >}} |
+| 9 | June 18 | Difference-in-Difference | {{< fa book-open >}} | {{< fa laptop >}} | {{< fa brands github >}} |
 | 10 | June 24 & 25 | Synthetic Control | {{< fa book-open >}} | {{< fa laptop >}} | {{< fa brands github >}} |
 | 11 | July 1 & 2 | Regression Discontinuity  | {{< fa book-open >}} | {{< fa laptop >}} | {{< fa brands github >}} |
 | 12 | July 8 & 9 | Causal Mediation | {{< fa book-open >}} | {{< fa laptop >}} | {{< fa brands github >}} |
