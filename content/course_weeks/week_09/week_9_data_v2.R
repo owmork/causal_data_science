@@ -142,3 +142,7 @@ df <- sim_panel |>
   select(-time_to_treat)
 
 saveRDS(df, "content/course_weeks/week_09/mkt_panel.rds")
+
+
+
+

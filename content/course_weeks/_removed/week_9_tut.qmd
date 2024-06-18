@@ -143,7 +143,11 @@ In a slightly different and cleaned up notation, we see that the difference we o
 [**Task 1:**]{style="color:#FF7E15"} With the help of the formula/table, compute $\tau_{\text{DiD}}$. What is the interpretation with regard to our example?
 
 ```{r}
-#| code-fold: true
+# ...
+```
+
+```{r}
+#| include: false
 
 # Step 1: group by treatment group and period
 did_p2 <- df_2p |> 
@@ -184,7 +188,15 @@ $$
 [**Task 2:**]{style="color:#FF7E15"} Perform both approaches and report the estimated coefficient.
 
 ```{r}
-#| code-fold: true
+# ...
+```
+
+```{r}
+# ...
+```
+
+```{r}
+#| include: false
 
 # (1)
 mod_1 <- lm(downloads ~ ever_treated:post + as.factor(city) + as.factor(month), data = df_2p)
@@ -195,7 +207,7 @@ sprintf("%.2f", coef_mod_1)
 ```
 
 ```{r}
-#| code-fold: true
+#| include: false
 
 # (2)
 mod_2 <- lm(downloads ~ ever_treated*post, data = df_2p)
@@ -264,6 +276,8 @@ However, even that cannot provide full certainty about the parallel trends assum
 Let's now switch back to the dataset with multiple pre-treatment periods and begin by plotting the observed outcomes over time. This will help us determine if there are converging or diverging trends between the treatment and control groups. By visualizing these trends, we can already assess whether the parallel trends assumption holds before the treatment.
 
 ```{r}
+#| code-fold: true
+
 # Outcomes across time by group
 df |> 
   ggplot(aes(
@@ -285,7 +299,11 @@ At the first glance, prior to the treatment, the outcomes seem to evolve in para
 [**Task 3a:**]{style="color:#FF7E15"} Subset the data so you can perform test for pre-trends between the pre-treatment months 7 and 8 using the TWFE approach from above.
 
 ```{r}
-#| code-fold: true
+# ...
+```
+
+```{r}
+#| include: false
 
 df_placebo <- df |> 
   filter(month %in% c(7, 8)) |> 
@@ -297,7 +315,11 @@ summary(feols(downloads ~ ever_treated:post | city + month, data = df_placebo))
 [**Task 3b:**]{style="color:#FF7E15"} Subset the data so you can perform test for pre-trends between the pre-treatment months 3 and 8 using the TWFE approach from above.
 
 ```{r}
-#| code-fold: true
+# ...
+```
+
+```{r}
+#| include: false
 
 df_placebo <- df |> 
   filter(month %in% c(8, 3)) |> 
@@ -311,7 +333,11 @@ With this approach, you would have to iterate through quite a lot of combination
 [**Task 4:**]{style="color:#FF7E15"} Subset the data so you can perform test for pre-trends between ALL two arbitrary pre-treatment periods using the TWFE approach from above. You'll need to create new columns with e.g. `post_t = if_else(month == t, 1, 0)`, where `t` is a treatment period and introduce new interactions into the formula.
 
 ```{r}
-#| code-fold: true
+# ...
+```
+
+```{r}
+#| include: false
 
 df_placebo_all <- df |> 
   mutate(
@@ -342,7 +368,7 @@ An even more programmatic way to test for pre-trends is to run an event study to
 We can do so with the help of `i()` from the `fixest` package and a newly created variable that measures the time distance to the treatment period.
 
 ```{r}
-#| code-fold: true
+#| include: false
 
 # Create time distance column
 treat_month <- 9
@@ -383,7 +409,11 @@ $$
 [**Task 5:**]{style="color:#FF7E15"} Include the covariates into the event study and consider that they have time-varying effects.
 
 ```{r}
-#| code-fold: true
+# ...
+```
+
+```{r}
+#| include: false
 
 # Time-invariant, therefore multicollinearity.
 evt_stdy_cond_1 <- feols(
@@ -396,7 +426,7 @@ evt_stdy_cond_1
 
 
 ```{r}
-#| code-fold: true
+#| include: false
 
 # Time-invariant, but time-varying effects.
 evt_stdy_cond_2 <- feols(
@@ -413,7 +443,7 @@ iplot(evt_stdy_cond_2)
 ```
 
 ```{r}
-#| echo: false
+#| include: false
 
 ggfixest::ggiplot(evt_stdy_cond_2)
 ```
@@ -425,7 +455,11 @@ ggfixest::ggiplot(evt_stdy_cond_2)
 [**Task 6:**]{style="color:#FF7E15"} Use the TWFE approach to estimate the ATT by under the assumption of parallel trend conditional on the covariates.
 
 ```{r}
-#| code-fold: true
+# ...
+```
+
+```{r}
+#| include: false
 
 feols(downloads ~ post:ever_treated +
                     age:month + user_share:month + population_size:month + competitor_price: month
@@ -457,10 +491,14 @@ drdid(
 
 [**Task 7:**]{style="color:#FF7E15"} Following the same syntax, use the outcome regression adjustment with `ordid()` and the inverse probability weighting approach `ipwdid()` to estimate the treatment effect.
 
+```{r}
+# ...
+```
+
 ### Outcome regression
 
 ```{r}
-#| code-fold: true
+#| include: false
 
 ordid(
   yname = "downloads",
@@ -475,7 +513,7 @@ ordid(
 ### Inverse probability weighting regression
 
 ```{r}
-#| code-fold: true
+#| include: false
 
 ipwdid(
   yname = "downloads",
@@ -493,11 +531,6 @@ ipwdid(
 Coming soon.
 
 ::: assignment
-- only controlling for covariate change
-- soaked up by FE
-- competitor price can be affected by treatment?
-- what advantage of DR?
-
-
+Coming soon.
 :::
 
