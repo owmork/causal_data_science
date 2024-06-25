@@ -99,7 +99,7 @@ This week, we'll tackle a more realistic scenario compared to previous weeks. In
 - How many treated, not-yet treated and untreated/never treated periods did we observe?
 
 ```{r}
-#| include: false
+#| code-fold: true
 
 # Task 1: Answer the following questions:
 # - How many periods?
@@ -127,7 +127,7 @@ stream <- stream |>
 
 
 ```{r}
-#| include: false
+#| code-fold: true
 
 # Then group by treatment indicator to retrieve information
 units_d <- stream |> group_by(group, d_it) |> summarise(n_unit = n_distinct(unit)) |> ungroup()
@@ -136,7 +136,7 @@ print(units_d)
 
 
 ```{r}
-#| include: false
+#| code-fold: true
 
 units_k <- stream |> group_by(group, d_it_k) |> summarise(n_unit = n_distinct(unit)) |> ungroup()
 print(units_k)
@@ -148,7 +148,7 @@ print(units_k)
 - and for each period.
 
 ```{r}
-#| include: false
+#| code-fold: true
 #| warning: false
 
 # Task 2: compute plot evolution of average outcomes across cohorts.
@@ -197,7 +197,7 @@ Let's run an event study to assess the plausibility of our assumption of paralle
 [**Task 3:**]{style="color:#FF7E15"} Without including covariates, run an event study and assess whether the assumption of parallel trends holds.
 
 ```{r}
-#| include: false
+#| code-fold: true
 
 # Task 3: Run an event-study without covariates to assess the parallel trends
 # assumption.
@@ -209,7 +209,7 @@ fixest::iplot(evt_stdy_wo)
 [**Task 4:**]{style="color:#FF7E15"} Including covariates, run an event study and assess whether the assumption of parallel trends holds.
 
 ```{r}
-#| include: false
+#| code-fold: true
 
 # Task 4: Run an event-study with covariates to assess the conditional parallel trends
 # assumption.
@@ -223,7 +223,7 @@ fixest::iplot(evt_stdy_w)
 [**Task 5:**]{style="color:#FF7E15"} Including covariates, run an event study and assess whether the assumption of parallel trends holds.
 
 ```{r}
-#| include: false
+#| code-fold: true
 
 # Task 6: Compute the static treatment effect using TWFE (w and w/o).
 twfe_wo <- fixest::feols(minutes_watched ~ i(d_it, ref = c(0)) | unit + time, data = stream)
@@ -267,7 +267,7 @@ ggplot(df_bacon$two_by_twos) +
 #### Sun and Abraham (2021)
 
 ```{r}
-#| include: false
+#| code-fold: true
 
 # (a) Sun-Abraham
 sunab <- fixest::feols(minutes_watched ~ sunab(group, time) + age + gender + account_tenure + num_drama_watched + num_comedy_watched + num_action_watched | unit + time, data = stream)
@@ -279,7 +279,7 @@ summary(sunab, agg = "ATT")
 #### Callaway & Sant’Anna (2021)
 
 ```{r}
-#| include: false
+#| code-fold: true
 
 # (b) Doubly robust
 drdid <- did::att_gt(
@@ -303,7 +303,7 @@ did::ggdid(drdid_evt_sty)
 #### Gardner, Thakral, Tô, and Yap (2024)
 
 ```{r}
-#| include: false
+#| code-fold: true
 
 # (c) Two-Stage DiD
 # Static model
@@ -321,7 +321,7 @@ twsdid
 
 
 ```{r}
-#| include: false
+#| code-fold: true
 
 # Event Study
 twsdid_k <- did2s::did2s(
@@ -339,7 +339,7 @@ fixest::iplot(twsdid_k)
 #### Comparison
 
 ```{r}
-#| include: false
+#| code-fold: true
 
 estimators_comparison <- tibble(
   "TWFE" = twfe_w$coeftable$Estimate[1],

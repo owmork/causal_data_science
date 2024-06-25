@@ -1,0 +1,355 @@
+set.seed(123) # For reproducibility
+
+# Parameters
+G <- 4 # Number of groups (3 treatment groups + 1 control group)
+TT <- 15 # Number of time periods (from 0 to 20)
+N <- 100 # Number of units
+
+# Coefficients
+gamma <- matrix(seq(0.5, by=0.5, length.out=(G-1) * 3) / (G-1), nrow=(G-1), byrow=TRUE)
+beta <- matrix(seq(0.05, by=0.005, length.out=TT * 8), ncol=8, byrow=TRUE) # Adjust beta to match the number of covariates
+
+# Generate time-invariant covariates
+age <- rnorm(N, mean=35, sd=10)
+gender <- rbinom(N, 1, 0.5) # 0 for female, 1 for male
+account_tenure <- sample(1:120, N, replace=TRUE)
+
+# Generate time-varying covariates
+num_drama_watched <- array(0, dim=c(N, TT))
+num_comedy_watched <- array(0, dim=c(N, TT))
+num_action_watched <- array(0, dim=c(N, TT))
+for (i in 1:N) {
+  for (t in 1:TT) {
+    num_drama_watched[i, t] <- rpois(1, lambda=2)
+    num_comedy_watched[i, t] <- rpois(1, lambda=2)
+    num_action_watched[i, t] <- rpois(1, lambda=2)
+  }
+}
+
+# Combine all covariates
+x <- array(0, dim=c(N, TT, 8))
+for (i in 1:N) {
+  for (t in 1:TT) {
+    x[i, t, 1] <- age[i]
+    x[i, t, 2] <- gender[i]
+    x[i, t, 3] <- account_tenure[i]
+    x[i, t, 4] <- num_drama_watched[i, t]
+    x[i, t, 5] <- num_comedy_watched[i, t]
+    x[i, t, 6] <- num_action_watched[i, t]
+    x[i, t, 7:8] <- rnorm(2) # Adding two more continuous covariates
+  }
+}
+
+# Compute group probabilities for treatment groups only (excluding control group) using initial values of age, gender, account_tenure
+exp_x_gamma <- exp(x[, 1, 1:3] %*% t(gamma)) # Use only time-invariant covariates for gamma
+P_G_given_X_treatment <- exp_x_gamma / rowSums(exp_x_gamma)
+P_G_given_X <- cbind(P_G_given_X_treatment * 0.75, 0.25) # Add control group with fixed probability
+
+# Adjust group memberships to ensure an even distribution
+desired_counts <- N / G
+current_counts <- rep(0, G)
+group_membership <- integer(N)
+
+for (i in 1:N) {
+  prob <- P_G_given_X[i,]
+  remaining_slots <- desired_counts - current_counts
+  remaining_slots[remaining_slots < 0] <- 0
+  
+  if (sum(remaining_slots) == 0) {
+    remaining_slots <- rep(1, G)
+  }
+  
+  adjusted_prob <- prob * remaining_slots
+  adjusted_prob <- adjusted_prob / sum(adjusted_prob)
+  
+  group_membership[i] <- sample(c(8, 9, 10, 0), 1, prob=adjusted_prob)
+  current_counts[ifelse(group_membership[i] == 0, 4, group_membership[i] - 7)] <- current_counts[ifelse(group_membership[i] == 0, 4, group_membership[i] - 7)] + 1
+}
+
+# Generate \eta_i based on group memberships
+eta <- rnorm(N, mean=group_membership, sd=15)
+
+# Generate untreated potential outcomes Yit(0)
+y_0 <- matrix(0, nrow=N, ncol=TT)
+for (t in 1:TT) {
+  u_it <- rnorm(N, mean=0, sd=25) # Increase noise
+  y_0[,t] <- 120 + 0.02 * t + eta + rowSums(x[, t, ] * beta[t, ]) + u_it # Small time trend
+}
+
+# Define a treatment effect that starts negative and converges to zero
+delta_e <- function(e) {
+  initial_effect <- -45
+  final_effect <- 0
+  duration <- 5
+  if (e < duration) {
+    return(initial_effect * (1 - e / duration))
+  } else {
+    return(final_effect)
+  }
+}
+
+# Generate treated outcomes Yit(g) for treatment groups only
+y_treated <- array(0, dim=c(N, TT, 4)) # Include all four groups for simplicity
+for (i in 1:N) {
+  g <- group_membership[i]
+  group_index <- if (g == 0) 0 else g - 7
+  if (group_index != 0) {
+    start_period <- g
+    for (t in 1:TT) {
+      if (t >= start_period) { # Treatment groups and post-treatment periods
+        v_it <- rnorm(1, mean=0, sd=2) # Increase noise
+        e <- t - start_period
+        y_treated[i,t,group_index] <- y_0[i,t] + delta_e(e) + (v_it - rnorm(1, mean=0, sd=2))
+      } else {
+        y_treated[i,t,group_index] <- y_0[i,t] # Pre-treatment periods
+      }
+    }
+  } else {
+    for (t in 1:TT) {
+      y_treated[i,t,group_index] <- y_0[i,t] # Control group
+    }
+  }
+}
+
+# Create a data frame with the observed outcomes
+data_list <- list()
+for (i in 1:N) {
+  for (t in 1:TT) {
+    g <- group_membership[i]
+    group_index <- if (g == 0) 0 else g - 7
+    y <- if (group_index == 0) y_0[i,t] else y_treated[i,t,group_index]
+    x_t <- x[i, t, ]
+    data_list[[length(data_list) + 1]] <- data.frame(
+      unit = i, time = t, group = g, y = y, 
+      age = x_t[1], gender = x_t[2], account_tenure = x_t[3], 
+      num_drama_watched = x_t[4], num_comedy_watched = x_t[5], num_action_watched = x_t[6],
+      covariate1 = x_t[7], covariate2 = x_t[8]
+    )
+  }
+}
+stream <- do.call(rbind, data_list)
+
+# Display the first few rows of the generated data
+head(stream)
+stream <- tibble::as_tibble(stream) |> 
+  dplyr::rename(minutes_watched = y)
+
+# Save
+saveRDS(stream, "content/course_weeks/week_10/stream.rds")
+
+library(tidyverse)
+ggplot(stream, aes(
+  x = time, y = minutes_watched, group = as.factor(group), color = as.factor(group)
+)) + 
+  geom_point() +
+  geom_smooth()
+
+
+# Task 1: Understand data
+head(stream)
+summary(stream)
+glimpse(stream)
+
+# Task 1: Answer the following questions:
+# - How many periods?
+unique(stream$time)
+# - How many units?
+unique(stream$unit)
+# - How many cohorts/treatment groups?
+unique(stream$group)
+# - How many units in each cohort?
+stream |> group_by(group) |> summarise(n_unit = n_distinct(unit)) |> ungroup()
+# - How many treated, not-yet treated and untreated/never treated periods
+# do we observe?
+stream <- stream |> 
+  # create time-variant treatment indicator D_it
+  mutate(d_it = case_when(
+    group == 0 ~ 0,
+    time >= group ~ 1,
+    .default = 0)) |>
+  # create relative event-time indicator D_it_k
+  mutate(d_it_k = case_when(
+    group == 0 ~ Inf,
+    .default = time - group))
+
+stream |> group_by(group, d_it) |> summarise(n_unit = n_distinct(unit)) |> ungroup()
+
+# Task 2: plot evolution of average outcomes across cohorts.
+Y_gt <- stream |>
+  group_by(group, time) |> 
+  summarise(mean_y = mean(minutes_watched)) |> 
+  ungroup() |> 
+  mutate(group = if_else(group == 0, NA, group))
+
+# One plot
+ggplot(Y_gt, aes(
+  x = time, 
+  y = mean_y,
+  color = as.factor(group))) + 
+  geom_line() + 
+  geom_point() +
+  xlab("Week") + 
+  ylab("Minutes watched") +
+  geom_vline(aes(xintercept = group - .5, color = as.factor(group)), linetype = "dashed")
+
+# Facet plot
+ggplot(Y_gt, aes(
+  x = time, 
+  y = mean_y)) + 
+  geom_point() +
+  geom_line() +
+  geom_vline(aes(xintercept = group - .5), linetype = "dashed", colour = "red") +
+  xlab("Week") + 
+  ylab("Minutes watched") +
+  facet_wrap(~group)
+
+# Task 3: Run an event-study without covariates to assess the parallel trends
+# assumption.
+evt_stdy_wo <- fixest::feols(minutes_watched ~ i(d_it_k, ref = c(-1, Inf)) | unit + time, data = stream)
+summary(evt_stdy_wo)
+fixest::iplot(evt_stdy_wo)
+
+# Task 4: Run an event-study with covariates to assess the conditional parallel trends
+# assumption.
+evt_stdy_w <- fixest::feols(minutes_watched ~ i(d_it_k, ref = c(-1, Inf)) +
+                              age + gender + account_tenure + num_drama_watched + num_comedy_watched + num_action_watched
+                            | unit + time, data = stream)
+summary(evt_stdy_w)
+fixest::iplot(evt_stdy_w)
+
+# Task 5: check for overlap of covariates (question: when to use regression adjustment?)
+stream |>
+  group_by(group) |>
+  summarise(across(c(
+    age,
+    gender,
+    account_tenure,
+    num_drama_watched,
+    num_comedy_watched,
+    num_action_watched), mean)) |> 
+  ungroup()
+
+# Task 6: Compute the static treatment effect using TWFE (w and w/o).
+twfe_wo <- fixest::feols(minutes_watched ~ i(d_it, ref = c(0)) | unit + time, data = stream)
+twfe_w <- fixest::feols(minutes_watched ~ i(d_it, ref = c(0)) + age + gender + account_tenure + num_drama_watched + num_comedy_watched + num_action_watched| unit + time, data = stream)
+
+summary(twfe_wo)
+summary(twfe_w)
+
+# Task 7: Any robust method
+# (a) Sun-Abraham
+sunab <- fixest::feols(minutes_watched ~ fixest:::sunab(group, time) + age + gender + account_tenure + num_drama_watched + num_comedy_watched + num_action_watched | unit + time, data = stream)
+summary(sunab)
+fixest::iplot(sunab)
+summary(sunab, agg = "ATT")
+
+# (b) Doubly robust
+drdid <- did::att_gt(
+  yname = "minutes_watched",
+  tname = "time",
+  idname = "unit",
+  gname = "group",
+  xformla = ~ age + gender + account_tenure + num_drama_watched + num_comedy_watched + num_action_watched,# + unit, #  ~ 1 
+  data = stream,
+  allow_unbalanced_panel = TRUE,
+  control_group = "nevertreated", # "notyettreated"
+  anticipation = 0,
+  clustervars = "unit",
+  est_method = "dr", # "reg", "ipw"
+)
+
+did::aggte(drdid, type="simple")
+did::aggte(drdid, type="group")
+drdid_evt_sty <- did::aggte(drdid, type="dynamic")
+did::ggdid(drdid_evt_sty)
+
+
+# (c) Two-Stage DiD
+# Static model
+twsdid <- did2s::did2s(
+  stream,
+  yname = "minutes_watched",
+  first_stage = ~ age + gender + account_tenure + num_drama_watched + num_comedy_watched + num_action_watched | unit + time, # only time-variant covariates
+  second_stage = ~ i(d_it, ref = 0),
+  treatment = "d_it",
+  cluster_var = "unit"
+)
+
+fixest::etable(twsdid)
+twsdid
+
+# Event Study
+twsdid_k <- did2s::did2s(
+  stream,
+  yname = "minutes_watched",
+  first_stage = ~ age + gender + account_tenure + num_drama_watched + num_comedy_watched + num_action_watched | unit + time, # only time-variant covariates
+  second_stage = ~ i(d_it_k, ref = c(-1, Inf)),
+  treatment = "d_it",
+  cluster_var = "unit"
+)
+
+fixest::etable(twsdid_k)
+fixest::iplot(twsdid_k)
+
+# Comparison plot
+fixest::iplot(list(twsdid_k, evt_stdy_w, sunab))
+did::ggdid(drdid_evt_sty)
+
+tibble(
+  "TWFE" = twfe_w$coeftable$Estimate[1],
+  "Sun-Abraham" = summary(sunab, agg = "ATT")$coeftable[[1]],
+  "Callaway & Sant’Anna" = did::aggte(drdid, type="simple")[[1]],
+  "Gardner, Thakral, Tô, and Yap" = twsdid$coeftable[[1]]
+)
+
+
+
+
+
+# TODO: comparison plot
+# TODO: testing for parallel trends
+# TODO: make PT implausible and CPT plausible
+# TODO: goodman bacon?
+
+# devtools::install_github("jonathandroth/pretrends")
+# remotes::install_github("asheshrambachan/HonestDiD")
+
+summary(evt_stdy_wo)
+betahat <- summary(evt_stdy_wo)$coefficients #save the coefficients
+sigma <- summary(evt_stdy_wo)$cov.scaled #save the covariance matrix
+
+delta_rm_results <-
+  HonestDiD::createSensitivityResults_relativeMagnitudes(
+    betahat = betahat, #coefficients
+    sigma = sigma, #covariance matrix
+    numPrePeriods = 9, #num. of pre-treatment coefs
+    numPostPeriods = 13, #num. of post-treatment coefs
+    Mbarvec = seq(0.5,2, by = 0.5) #values of Mbar
+  )
+
+delta_rm_results
+
+originalResults <- HonestDiD::constructOriginalCS(betahat = betahat,
+                                                  sigma = sigma,
+                                                  numPrePeriods = 9,
+                                                  numPostPeriods = 13)
+
+HonestDiD::createSensitivityPlot_relativeMagnitudes(delta_rm_results, originalResults)
+
+# Bacon-Decomposition
+install.packages("bacondecomp")
+library(bacondecomp)
+
+df_bacon <- bacondecomp::bacon(minutes_watched ~ d_it + age + gender + account_tenure + num_drama_watched + num_comedy_watched + num_action_watched,
+                  data = stream,
+                  id_var = "unit",
+                  time_var = "time")
+df_bacon
+
+
+ggplot(df_bacon$two_by_twos) +
+  aes(x = weight, y = estimate, shape = factor(type)) +
+  geom_point() +
+  geom_hline(yintercept = 0) + 
+  theme_minimal() +
+  labs(x = "Weight", y = "Estimate", shape = "Type")
