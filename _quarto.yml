@@ -42,6 +42,7 @@ website:
           - content/course_weeks/week_09/week_9.qmd
           - content/course_weeks/week_10/week_10.qmd
           - content/course_weeks/week_11/week_11.qmd
+          - content/course_weeks/week_12/week_12.qmd
           - section: "<b>Optional reads</b>"
             contents: 
             - content/optional_read/motivation.qmd

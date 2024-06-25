@@ -1,6 +1,6 @@
 ---
-title: "11 - Synthetic Control & Regression Discontinuity"
-linktitle: "11 - Synthetic Control & Regression Discontinuity"
+title: "12 - Causal Mediation"
+linktitle: "12 - Causal Mediation"
 output:
   blogdown::html_page:
     toc: true

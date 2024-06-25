@@ -99,7 +99,7 @@ This week, we'll tackle a more realistic scenario compared to previous weeks. In
 - How many treated, not-yet treated and untreated/never treated periods did we observe?
 
 ```{r}
-#| code-fold: true
+#| code-fold: false
 
 # Task 1: Answer the following questions:
 # - How many periods?
@@ -127,7 +127,7 @@ stream <- stream |>
 
 
 ```{r}
-#| code-fold: true
+#| code-fold: false
 
 # Then group by treatment indicator to retrieve information
 units_d <- stream |> group_by(group, d_it) |> summarise(n_unit = n_distinct(unit)) |> ungroup()
@@ -136,7 +136,7 @@ print(units_d)
 
 
 ```{r}
-#| code-fold: true
+#| code-fold: false
 
 units_k <- stream |> group_by(group, d_it_k) |> summarise(n_unit = n_distinct(unit)) |> ungroup()
 print(units_k)
@@ -148,7 +148,7 @@ print(units_k)
 - and for each period.
 
 ```{r}
-#| code-fold: true
+#| code-fold: false
 #| warning: false
 
 # Task 2: compute plot evolution of average outcomes across cohorts.
@@ -197,7 +197,7 @@ Let's run an event study to assess the plausibility of our assumption of paralle
 [**Task 3:**]{style="color:#FF7E15"} Without including covariates, run an event study and assess whether the assumption of parallel trends holds.
 
 ```{r}
-#| code-fold: true
+#| code-fold: false
 
 # Task 3: Run an event-study without covariates to assess the parallel trends
 # assumption.
@@ -209,7 +209,7 @@ fixest::iplot(evt_stdy_wo)
 [**Task 4:**]{style="color:#FF7E15"} Including covariates, run an event study and assess whether the assumption of parallel trends holds.
 
 ```{r}
-#| code-fold: true
+#| code-fold: false
 
 # Task 4: Run an event-study with covariates to assess the conditional parallel trends
 # assumption.
@@ -223,7 +223,7 @@ fixest::iplot(evt_stdy_w)
 [**Task 5:**]{style="color:#FF7E15"} Compute the static treatment effect using TWFE (w and w/o).
 
 ```{r}
-#| code-fold: true
+#| code-fold: false
 
 # Task 6: Compute the static treatment effect using TWFE (w and w/o).
 twfe_wo <- fixest::feols(minutes_watched ~ i(d_it, ref = c(0)) | unit + time, data = stream)
@@ -267,7 +267,7 @@ ggplot(df_bacon$two_by_twos) +
 #### Callaway & Sant’Anna (2021)
 
 ```{r}
-#| code-fold: true
+#| code-fold: false
 
 # (b) Doubly robust
 drdid <- did::att_gt(
@@ -291,7 +291,7 @@ did::ggdid(drdid_evt_sty)
 #### Gardner, Thakral, Tô, and Yap (2024)
 
 ```{r}
-#| code-fold: true
+#| code-fold: false
 
 # (c) Two-Stage DiD
 # Static model
@@ -309,7 +309,7 @@ twsdid
 
 
 ```{r}
-#| code-fold: true
+#| code-fold: false
 
 # Event Study
 twsdid_k <- did2s::did2s(
@@ -327,7 +327,7 @@ fixest::iplot(twsdid_k)
 #### Comparison
 
 ```{r}
-#| code-fold: true
+#| code-fold: false
 
 estimators_comparison <- tibble(
   "TWFE" = twfe_w$coeftable$Estimate[1],
@@ -354,5 +354,3 @@ Please also remember to fill out the [course evaluation](https://evaluating.tuhh
 3. Using the robust estimator from the `did` package (Callaway & Sant’Anna (2021)), perform a sensitivity analysis using the [`HonestDiD`](https://github.com/asheshrambachan/HonestDiD) package. Additional to the lecture slides, you can find instructions on installation, functionality, and theory on [GitHub](https://github.com/asheshrambachan/HonestDiD). Run the sensitivity analysis based on "bounds on relative magnitudes" and explain the result in your own words (3-4 sentences). Please note that you have to set `base_period = "universal"` in `att_gt()`.
 
 :::
-
-## Optional read

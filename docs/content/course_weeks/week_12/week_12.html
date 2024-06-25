@@ -1,13 +1,10 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
-
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
 <meta name="generator" content="quarto-1.4.536">
-
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-
-
-<title>CAUSAL DATA SCIENCE FOR BUSINESS ANALYTICS - Overview</title>
+<title>CAUSAL DATA SCIENCE FOR BUSINESS ANALYTICS - 12 - Causal Mediation</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -22,28 +19,26 @@ ul.task-list li input[type="checkbox"] {
 }
 </style>
 
-
-<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
-<script src="../../site_libs/clipboard/clipboard.min.js"></script>
-<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="../../site_libs/quarto-search/fuse.min.js"></script>
-<script src="../../site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="../../">
-<link href="../../images/favicon_cds_16x16.png" rel="icon" type="image/png">
-<script src="../../site_libs/quarto-html/quarto.js"></script>
-<script src="../../site_libs/quarto-html/popper.min.js"></script>
-<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="../../site_libs/quarto-html/anchor.min.js"></script>
-<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="dark">
-<link href="../../site_libs/quarto-contrib/fontawesome6-0.1.0/all.css" rel="stylesheet">
-<link href="../../site_libs/quarto-contrib/fontawesome6-0.1.0/latex-fontsize.css" rel="stylesheet">
-<script src="../../site_libs/quarto-contrib/iconify-1.0.7/iconify-icon.min.js"></script>
-<script id="quarto-search-options" type="application/json">{
+<script src="../../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../../">
+<link href="../../../content/optional_read/motivation.html" rel="next">
+<link href="../../../content/course_weeks/week_11/week_11.html" rel="prev">
+<link href="../../../images/favicon_cds_16x16.png" rel="icon" type="image/png">
+<script src="../../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="dark">
+<script src="../../../site_libs/quarto-contrib/iconify-1.0.7/iconify-icon.min.js"></script><script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
   "collapse-after": 3,
@@ -69,23 +64,17 @@ ul.task-list li input[type="checkbox"] {
     "search-submit-button-title": "Submit",
     "search-label": "Search"
   }
-}</script>
-
-
-<link rel="stylesheet" href="../../styles.css">
+}</script><link href="../../../site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet">
+<script src="../../../site_libs/pagedtable-1.1/js/pagedtable.js"></script><link rel="stylesheet" href="../../../styles.css">
 </head>
-
 <body class="nav-sidebar docked nav-fixed">
 
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top">
-    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
-      <div class="navbar-container container-fluid">
+  <header id="quarto-header" class="headroom fixed-top"><nav class="navbar navbar-expand-lg " data-bs-theme="dark"><div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a href="../../index.html" class="navbar-brand navbar-brand-logo">
-    <img src="../../images/icon_cds.svg" alt="" class="navbar-logo">
-    </a>
-    <a class="navbar-brand" href="../../index.html">
+    <a href="../../../index.html" class="navbar-brand navbar-brand-logo">
+    <img src="../../../images/icon_cds.svg" alt="" class="navbar-logo"></a>
+    <a class="navbar-brand" href="../../../index.html">
     <span class="navbar-title"><b>CAUSAL DATA SCIENCE FOR BUSINESS ANALYTICS</b></span>
     </a>
   </div>
@@ -95,16 +84,16 @@ ul.task-list li input[type="checkbox"] {
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
-  <li class="nav-item">
-    <a class="nav-link" href="../../index.html"> 
+<li class="nav-item">
+    <a class="nav-link" href="../../../index.html"> 
 <span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link active" href="../../content/course_weeks/overview.html" aria-current="page"> 
+    <a class="nav-link active" href="../../../content/course_weeks/overview.html" aria-current="page"> 
 <span class="menu-text">Content</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../../content/organization/mattermost.html"> 
+    <a class="nav-link" href="../../../content/organization/mattermost.html"> 
 <span class="menu-text">Organization</span></a>
   </li>  
   <li class="nav-item">
@@ -112,31 +101,25 @@ ul.task-list li input[type="checkbox"] {
 <span class="menu-text"><iconify-icon inline="" icon="cib:mattermost" style="font-size: 1.25em;"></iconify-icon></span></a>
   </li>  
 </ul>
-          </div> <!-- /navcollapse -->
+</div> <!-- /navcollapse -->
           <div class="quarto-navbar-tools">
 </div>
       </div> <!-- /container-fluid -->
-    </nav>
-  <nav class="quarto-secondary-nav">
-    <div class="container-fluid d-flex">
+    </nav><nav class="quarto-secondary-nav"><div class="container-fluid d-flex">
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../content/course_weeks/overview.html">Overview</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../../content/course_weeks/week_01/week_1.html"><b>Weekly content</b></a></li><li class="breadcrumb-item"><a href="../../../content/course_weeks/week_12/week_12.html">12 - Causal Mediation</a></li></ol></nav>
         <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
     </div>
-  </nav>
-</header>
-<!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+  </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
-    <div class="sidebar-menu-container"> 
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto"><div class="sidebar-menu-container"> 
     <ul class="list-unstyled mt-1">
-        <li class="sidebar-item">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../content/course_weeks/overview.html" class="sidebar-item-text sidebar-link active">
+  <a href="../../../content/course_weeks/overview.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Overview</span></a>
   </div>
 </li>
@@ -149,76 +132,76 @@ ul.task-list li input[type="checkbox"] {
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../content/course_weeks/week_01/week_1.html" class="sidebar-item-text sidebar-link">
+  <a href="../../../content/course_weeks/week_01/week_1.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">1 - Introduction to Causal Inference</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../content/course_weeks/week_02/week_2.html" class="sidebar-item-text sidebar-link">
+  <a href="../../../content/course_weeks/week_02/week_2.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">2 - Graphical Causal Models</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../content/course_weeks/week_03/week_3.html" class="sidebar-item-text sidebar-link">
+  <a href="../../../content/course_weeks/week_03/week_3.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">3 - Randomized Experiments &amp; Linear Regression</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../content/course_weeks/week_04/week_4.html" class="sidebar-item-text sidebar-link">
+  <a href="../../../content/course_weeks/week_04/week_4.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">4 - Matching</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../content/course_weeks/week_05/week_5.html" class="sidebar-item-text sidebar-link">
+  <a href="../../../content/course_weeks/week_05/week_5.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">5 - Double Machine Learning</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../content/course_weeks/week_06/week_6.html" class="sidebar-item-text sidebar-link">
+  <a href="../../../content/course_weeks/week_06/week_6.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">6 - Effect Heterogeneity</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../content/course_weeks/week_07/week_7.html" class="sidebar-item-text sidebar-link">
+  <a href="../../../content/course_weeks/week_07/week_7.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">7 - Unobserved Confounding &amp; Instrumental Variables</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../content/course_weeks/week_08/week_8.html" class="sidebar-item-text sidebar-link">
+  <a href="../../../content/course_weeks/week_08/week_8.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">8 - Recap from week 5, 6, 7</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../content/course_weeks/week_09/week_9.html" class="sidebar-item-text sidebar-link">
+  <a href="../../../content/course_weeks/week_09/week_9.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">9 - Difference-in-Differences (1/2)</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../content/course_weeks/week_10/week_10.html" class="sidebar-item-text sidebar-link">
+  <a href="../../../content/course_weeks/week_10/week_10.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">10 - Difference-in-Differences (2/2)</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../content/course_weeks/week_11/week_11.html" class="sidebar-item-text sidebar-link">
+  <a href="../../../content/course_weeks/week_11/week_11.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">11 - Synthetic Control &amp; Regression Discontinuity</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../content/course_weeks/week_12/week_12.html" class="sidebar-item-text sidebar-link">
+  <a href="../../../content/course_weeks/week_12/week_12.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">12 - Causal Mediation</span></a>
   </div>
 </li>
@@ -230,43 +213,45 @@ ul.task-list li input[type="checkbox"] {
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth2 ">  
-          <li class="sidebar-item">
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth2 ">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../content/optional_read/motivation.html" class="sidebar-item-text sidebar-link">
+  <a href="../../../content/optional_read/motivation.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Motivation</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../content/optional_read/prob.html" class="sidebar-item-text sidebar-link">
+  <a href="../../../content/optional_read/prob.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Probability Theory</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../content/optional_read/stats.html" class="sidebar-item-text sidebar-link">
+  <a href="../../../content/optional_read/stats.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Statistical Concepts</span></a>
   </div>
 </li>
       </ul>
-  </li>
+</li>
       </ul>
-  </li>
+</li>
     </ul>
-    </div>
-</nav>
-<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+</div>
+</nav><div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
+        <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">On this page</h2>
+   
+  <ul>
+<li><a href="#slides-recap" id="toc-slides-recap" class="nav-link active" data-scroll-target="#slides-recap">Slides &amp; Recap</a></li>
+  <li><a href="#practical-example" id="toc-practical-example" class="nav-link" data-scroll-target="#practical-example">Practical example</a></li>
+  <li><a href="#assignment" id="toc-assignment" class="nav-link" data-scroll-target="#assignment">Assignment</a></li>
+  </ul></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
-
-<header id="title-block-header" class="quarto-title-block default">
-<div class="quarto-title">
-<h1 class="title">Overview</h1>
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../../content/course_weeks/week_01/week_1.html"><b>Weekly content</b></a></li><li class="breadcrumb-item"><a href="../../../content/course_weeks/week_12/week_12.html">12 - Causal Mediation</a></li></ol></nav><div class="quarto-title">
+<h1 class="title">12 - Causal Mediation</h1>
 </div>
 
 
@@ -280,165 +265,18 @@ ul.task-list li input[type="checkbox"] {
   
 
 
-</header>
-
-
-<div class="callout callout-style-default callout-important callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Important
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>Due to an unexpected scheduling conflict, we have to <strong>cancel today’s lecture</strong> (17 June). Instead, the lecture will take place tomorrow (18 June) from 15:00 to 16:30 in room O-0.007. Following the lecture, the tutorial will be held from 16:45 to 18:15 in room A-0.19.</p>
-<p>Sorry for the inconvenience. See you tomorrow!</p>
-</div>
-</div>
-<div class="grid">
-<div class="g-col-1">
-
-</div>
-<section id="schedule" class="level3 g-col-12">
-<h3 class="anchored" data-anchor-id="schedule">Schedule</h3>
-<table class="table">
-<colgroup>
-<col style="width: 6%">
-<col style="width: 24%">
-<col style="width: 53%">
-<col style="width: 6%">
-<col style="width: 6%">
-<col style="width: 6%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Session</th>
-<th>Date</th>
-<th>Topic</th>
-<th></th>
-<th></th>
-<th style="text-align: right;"></th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>1</td>
-<td>April 15 &amp; 16</td>
-<td>Introduction to Causal Inference</td>
-<td><a href="https://tuhhstartupengineers-classroom.github.io/ss24-causal-data-science/slides/01_intro.html"><i class="fa-solid fa-book-open" aria-label="book-open"></i></a></td>
-<td><a href="week_01/week_1.html"><i class="fa-solid fa-laptop" aria-label="laptop"></i></a></td>
-<td style="text-align: right;"><a href="https://classroom.github.com/a/qKNVakO4"><i class="fa-brands fa-github" aria-label="github"></i></a></td>
-</tr>
-<tr class="even">
-<td>2</td>
-<td>April 22 &amp; 21</td>
-<td>Graphical Causal Models</td>
-<td><a href="https://tuhhstartupengineers-classroom.github.io/ss24-causal-data-science/slides/02_graphs.html"><i class="fa-solid fa-book-open" aria-label="book-open"></i></a></td>
-<td><a href="week_02/week_2.html"><i class="fa-solid fa-laptop" aria-label="laptop"></i></a></td>
-<td style="text-align: right;"><a href="https://classroom.github.com/a/eNvelq2Z"><i class="fa-brands fa-github" aria-label="github"></i></a></td>
-</tr>
-<tr class="odd">
-<td>3</td>
-<td>April 29 &amp; 30</td>
-<td>Randomized Experiments &amp; Linear Regression</td>
-<td><a href="https://tuhhstartupengineers-classroom.github.io/ss24-causal-data-science/slides/03_exper.html"><i class="fa-solid fa-book-open" aria-label="book-open"></i></a></td>
-<td><a href="week_03/week_3.html"><i class="fa-solid fa-laptop" aria-label="laptop"></i></a></td>
-<td style="text-align: right;"><a href="https://classroom.github.com/a/Fnvwjrn_"><i class="fa-brands fa-github" aria-label="github"></i></a></td>
-</tr>
-<tr class="even">
-<td>4</td>
-<td>May 6 &amp; 7</td>
-<td>Matching</td>
-<td><a href="https://tuhhstartupengineers-classroom.github.io/ss24-causal-data-science/slides/04_ob_conf.html"><i class="fa-solid fa-book-open" aria-label="book-open"></i></a></td>
-<td><a href="week_04/week_4.html"><i class="fa-solid fa-laptop" aria-label="laptop"></i></a></td>
-<td style="text-align: right;"><a href="https://classroom.github.com/a/ZY_8r4KL"><i class="fa-brands fa-github" aria-label="github"></i></a></td>
-</tr>
-<tr class="odd">
-<td>5</td>
-<td>May 13 &amp; 14</td>
-<td>Double Machine Learning</td>
-<td><a href="https://tuhhstartupengineers-classroom.github.io/ss24-causal-data-science/slides/05_dml.html"><i class="fa-solid fa-book-open" aria-label="book-open"></i></a></td>
-<td><a href="week_05/week_5.html"><i class="fa-solid fa-laptop" aria-label="laptop"></i></a></td>
-<td style="text-align: right;"><a href="https://classroom.github.com/a/m7oLFvnr"><i class="fa-brands fa-github" aria-label="github"></i></a></td>
-</tr>
-<tr class="even">
-<td>-</td>
-<td>May 20 &amp; 21</td>
-<td>Holiday</td>
-<td>-</td>
-<td>-</td>
-<td style="text-align: right;">-</td>
-</tr>
-<tr class="odd">
-<td>6</td>
-<td>May 27 &amp; 28</td>
-<td>Effect Heterogeneity</td>
-<td><a href="https://tuhhstartupengineers-classroom.github.io/ss24-causal-data-science/slides/06_hte.html"><i class="fa-solid fa-book-open" aria-label="book-open"></i></a></td>
-<td><a href="week_06/week_6.html"><i class="fa-solid fa-laptop" aria-label="laptop"></i></a></td>
-<td style="text-align: right;"><a href="https://classroom.github.com/a/oPhGwOmd"><i class="fa-brands fa-github" aria-label="github"></i></a></td>
-</tr>
-<tr class="even">
-<td>7</td>
-<td>June 3 &amp; 4</td>
-<td>Unobserved Confounding &amp; Instrumental Variables</td>
-<td><a href="https://tuhhstartupengineers-classroom.github.io/ss24-causal-data-science/slides/07_unob_conf.html"><i class="fa-solid fa-book-open" aria-label="book-open"></i></a></td>
-<td><a href="week_07/week_7.html"><i class="fa-solid fa-laptop" aria-label="laptop"></i></a></td>
-<td style="text-align: right;"><a href="https://classroom.github.com/a/R80VGxLm"><i class="fa-brands fa-github" aria-label="github"></i></a></td>
-</tr>
-<tr class="odd">
-<td>8</td>
-<td>June 10 &amp; 11</td>
-<td>Recap</td>
-<td>-</td>
-<td><a href="week_08/week_8.html"><i class="fa-solid fa-laptop" aria-label="laptop"></i></a></td>
-<td style="text-align: right;"><a href="https://classroom.github.com/a/1DoD8H5P"><i class="fa-brands fa-github" aria-label="github"></i></a></td>
-</tr>
-<tr class="even">
-<td>9</td>
-<td>June 18</td>
-<td>Difference-in-Differences (1/2)</td>
-<td><a href="https://tuhhstartupengineers-classroom.github.io/ss24-causal-data-science/slides/08_did.html"><i class="fa-solid fa-book-open" aria-label="book-open"></i></a></td>
-<td><a href="week_09/week_9.html"><i class="fa-solid fa-laptop" aria-label="laptop"></i></a></td>
-<td style="text-align: right;"><a href="https://classroom.github.com/a/TvLAqy53"><i class="fa-brands fa-github" aria-label="github"></i></a></td>
-</tr>
-<tr class="odd">
-<td>10</td>
-<td>June 24 &amp; 25</td>
-<td>Difference-in-Differences (2/2)</td>
-<td><a href="https://tuhhstartupengineers-classroom.github.io/ss24-causal-data-science/slides/08_did.html"><i class="fa-solid fa-book-open" aria-label="book-open"></i></a></td>
-<td><a href="week_09/week_9.html"><i class="fa-solid fa-laptop" aria-label="laptop"></i></a></td>
-<td style="text-align: right;"><a href="https://classroom.github.com/a/AUAr8zj4"><i class="fa-brands fa-github" aria-label="github"></i></a></td>
-</tr>
-<tr class="even">
-<td>11</td>
-<td>July 1 &amp; 2</td>
-<td>Synthetic Control &amp; Regression Discontinuity</td>
-<td><p><i class="fa-solid fa-book-open" aria-label="book-open"></i></p></td>
-<td><p><i class="fa-solid fa-laptop" aria-label="laptop"></i></p></td>
-<td style="text-align: right;"><p><i class="fa-brands fa-github" aria-label="github"></i></p></td>
-</tr>
-<tr class="odd">
-<td>12</td>
-<td>July 8 &amp; 9</td>
-<td>Causal Mediation</td>
-<td><p><i class="fa-solid fa-book-open" aria-label="book-open"></i></p></td>
-<td><p><i class="fa-solid fa-laptop" aria-label="laptop"></i></p></td>
-<td style="text-align: right;"><p><i class="fa-brands fa-github" aria-label="github"></i></p></td>
-</tr>
-</tbody>
-</table>
-</section>
-<div class="g-col-1">
-
-</div>
+</header><section id="slides-recap" class="level2"><h2 class="anchored" data-anchor-id="slides-recap">Slides &amp; Recap</h2>
+<p>Coming soon.</p>
+</section><section id="practical-example" class="level2"><h2 class="anchored" data-anchor-id="practical-example">Practical example</h2>
+<p>Coming soon.</p>
+</section><section id="assignment" class="level2"><h2 class="anchored" data-anchor-id="assignment">Assignment</h2>
+<p>Coming soon.</p>
+<div class="assignment">
+<p>…</p>
 </div>
 
 
-
-</main> <!-- /main -->
-<script id="quarto-html-after-body" type="application/javascript">
+</section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
     const mode = bsSheetEl.getAttribute("data-mode");
@@ -819,10 +657,19 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
   }
 });
-</script>
+</script><nav class="page-navigation"><div class="nav-page nav-page-previous">
+      <a href="../../../content/course_weeks/week_11/week_11.html" class="pagination-link  aria-label=" synthetic="" control="" regression="" discontinuity="">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">11 - Synthetic Control &amp; Regression Discontinuity</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../../../content/optional_read/motivation.html" class="pagination-link" aria-label="Motivation">
+        <span class="nav-page-text">Motivation</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
 </div> <!-- /content -->
-<footer class="footer">
-  <div class="nav-footer">
+<footer class="footer"><div class="nav-footer">
     <div class="nav-footer-left">
 <p>lv3095_s24: Causal Data Science for Business Analytics</p>
 </div>   
@@ -834,8 +681,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     </div>
   </div>
 </footer>
-
-
 
 
 </body></html>

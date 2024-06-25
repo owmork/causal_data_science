@@ -43,8 +43,8 @@ Sorry for the inconvenience. See you tomorrow!
 | 7 | June 3 & 4 | Unobserved Confounding & Instrumental Variables | [{{< fa book-open >}}](https://tuhhstartupengineers-classroom.github.io/ss24-causal-data-science/slides/07_unob_conf.html) | [{{< fa laptop >}}](week_07/week_7.html) | [{{< fa brands github >}}](https://classroom.github.com/a/R80VGxLm) |
 | 8 | June 10 & 11 | Recap | - | [{{< fa laptop >}}](week_08/week_8.html) | [{{< fa brands github >}}](https://classroom.github.com/a/1DoD8H5P) |
 | 9 | June 18 | Difference-in-Differences (1/2) | [{{< fa book-open >}}](https://tuhhstartupengineers-classroom.github.io/ss24-causal-data-science/slides/08_did.html) | [{{< fa laptop >}}](week_09/week_9.html) | [{{< fa brands github >}}](https://classroom.github.com/a/TvLAqy53) |
-| 10 | June 24 & 25 | Difference-in-Differences [{{< fa book-open >}}](https://tuhhstartupengineers-classroom.github.io/ss24-causal-data-science/slides/08_did.html) | [{{< fa laptop >}}](week_09/week_9.html) | [{{< fa brands github >}}](https://classroom.github.com/a/AUAr8zj4) |
-| 11 | July 1 & 2 | Regression Discontinuity  | {{< fa book-open >}} | {{< fa laptop >}} | {{< fa brands github >}} |
+| 10 | June 24 & 25 | Difference-in-Differences (2/2) | [{{< fa book-open >}}](https://tuhhstartupengineers-classroom.github.io/ss24-causal-data-science/slides/08_did.html) | [{{< fa laptop >}}](week_09/week_9.html) | [{{< fa brands github >}}](https://classroom.github.com/a/AUAr8zj4) |
+| 11 | July 1 & 2 | Synthetic Control & Regression Discontinuity  | {{< fa book-open >}} | {{< fa laptop >}} | {{< fa brands github >}} |
 | 12 | July 8 & 9 | Causal Mediation | {{< fa book-open >}} | {{< fa laptop >}} | {{< fa brands github >}} |
 
 : {tbl-colwidths="[10, 40, 90, 10, 10, 10]"}
