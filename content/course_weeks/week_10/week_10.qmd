@@ -69,7 +69,7 @@ $\mathbb{E}[Y_{i,t}(g) - Y_{i,t}(\infty) | T_i=1] = 0 \quad$ or $\quad Y_{i,t}(g
 
 ## Practical example
 
-Imagine you are working as an analyst for a streaming company. Over several weeks, you have introduced unskippable ads to boost ad revenue. However, you suspect that this change may have caused some customers to watch less content. Your task is to [take the data](https://cloud.tuhh.de/index.php/s/YzKj5EpS8Ncs5NA) and measure the impact of unskippable ads on customer viewing behavior.
+Imagine you are working as an analyst for a streaming company. Over several weeks, you have introduced unskippable ads to boost ad revenue. However, you suspect that this change may have caused some customers to watch less content. Your task is to [take the data](https://cloud.tuhh.de/index.php/s/QtxmReNk3ePwS5t) and measure the impact of unskippable ads on customer viewing behavior.
 
 ```{r}
 #| message: false
@@ -99,7 +99,7 @@ This week, we'll tackle a more realistic scenario compared to previous weeks. In
 - How many treated, not-yet treated and untreated/never treated periods did we observe?
 
 ```{r}
-#| include: false
+#| code-fold: true
 
 # Task 1: Answer the following questions:
 # - How many periods?
@@ -127,7 +127,7 @@ stream <- stream |>
 
 
 ```{r}
-#| include: false
+#| code-fold: true
 
 # Then group by treatment indicator to retrieve information
 units_d <- stream |> group_by(group, d_it) |> summarise(n_unit = n_distinct(unit)) |> ungroup()
@@ -136,7 +136,7 @@ print(units_d)
 
 
 ```{r}
-#| include: false
+#| code-fold: true
 
 units_k <- stream |> group_by(group, d_it_k) |> summarise(n_unit = n_distinct(unit)) |> ungroup()
 print(units_k)
@@ -148,7 +148,7 @@ print(units_k)
 - and for each period.
 
 ```{r}
-#| include: false
+#| code-fold: true
 #| warning: false
 
 # Task 2: compute plot evolution of average outcomes across cohorts.
@@ -197,7 +197,7 @@ Let's run an event study to assess the plausibility of our assumption of paralle
 [**Task 3:**]{style="color:#FF7E15"} Without including covariates, run an event study and assess whether the assumption of parallel trends holds.
 
 ```{r}
-#| include: false
+#| code-fold: true
 
 # Task 3: Run an event-study without covariates to assess the parallel trends
 # assumption.
@@ -209,7 +209,7 @@ fixest::iplot(evt_stdy_wo)
 [**Task 4:**]{style="color:#FF7E15"} Including covariates, run an event study and assess whether the assumption of parallel trends holds.
 
 ```{r}
-#| include: false
+#| code-fold: true
 
 # Task 4: Run an event-study with covariates to assess the conditional parallel trends
 # assumption.
@@ -220,10 +220,10 @@ summary(evt_stdy_w)
 fixest::iplot(evt_stdy_w)
 ```
 
-[**Task 5:**]{style="color:#FF7E15"} Including covariates, run an event study and assess whether the assumption of parallel trends holds.
+[**Task 5:**]{style="color:#FF7E15"} Compute the static treatment effect using TWFE (w and w/o).
 
 ```{r}
-#| include: false
+#| code-fold: true
 
 # Task 6: Compute the static treatment effect using TWFE (w and w/o).
 twfe_wo <- fixest::feols(minutes_watched ~ i(d_it, ref = c(0)) | unit + time, data = stream)
@@ -264,22 +264,10 @@ ggplot(df_bacon$two_by_twos) +
 
 [**Task 6:**]{style="color:#FF7E15"} Use any method that is robust to treatment effect heterogeneity for staggered treatment adoption. Retrieve a static and a dynamic estimate and plot your result. Using the result from the Bacon-Decomposition, compare the estimate to the TWFE estimate.
 
-#### Sun and Abraham (2021)
-
-```{r}
-#| include: false
-
-# (a) Sun-Abraham
-sunab <- fixest::feols(minutes_watched ~ sunab(group, time) + age + gender + account_tenure + num_drama_watched + num_comedy_watched + num_action_watched | unit + time, data = stream)
-summary(sunab)
-fixest::iplot(sunab)
-summary(sunab, agg = "ATT")
-```
-
 #### Callaway & Sant’Anna (2021)
 
 ```{r}
-#| include: false
+#| code-fold: true
 
 # (b) Doubly robust
 drdid <- did::att_gt(
@@ -303,7 +291,7 @@ did::ggdid(drdid_evt_sty)
 #### Gardner, Thakral, Tô, and Yap (2024)
 
 ```{r}
-#| include: false
+#| code-fold: true
 
 # (c) Two-Stage DiD
 # Static model
@@ -321,7 +309,7 @@ twsdid
 
 
 ```{r}
-#| include: false
+#| code-fold: true
 
 # Event Study
 twsdid_k <- did2s::did2s(
@@ -339,11 +327,10 @@ fixest::iplot(twsdid_k)
 #### Comparison
 
 ```{r}
-#| include: false
+#| code-fold: true
 
 estimators_comparison <- tibble(
   "TWFE" = twfe_w$coeftable$Estimate[1],
-  "Sun-Abraham" = summary(sunab, agg = "ATT")$coeftable[[1]],
   "Callaway & Sant’Anna" = did::aggte(drdid, type="simple")[[1]],
   "Gardner, Thakral, Tô, and Yap" = twsdid$coeftable[[1]]
 )   
@@ -354,14 +341,18 @@ print(estimators_comparison)
 
 ## Assignment
 
-<!-- anticipation -->
-<!-- placebo testing -->
-<!-- advanced testing 1 (via GitHub) -->
-<!-- advanced testing 2 -->
+Accept the [Week 10 - Assignment](https://classroom.github.com/a/AUAr8zj4) and follow the same steps as last week and as described in the organization chapter.
 
-Coming soon.
+Please also remember to fill out the [course evaluation](https://evaluating.tuhh.de/evasys/online.php?pswd=597RW) if you have not done so already.
 
 ::: assignment
-...
+
+1. Explain in your own words in 3-4 sentences, when and why the estimation of treatment effects using TWFE yields biased estimate in the case of staggered adoption and multiple treatment periods.
+
+2. One week prior to introducing the unskippable ads, you notify your users in an email. Explain, how that could affect your estimation and the assumption it relies on. Independent of your conclusion, show how you can account for anticipation when using the estimator from the `did2s` package (Gardner, Thakral, Tô, and Yap (2024)).
+
+3. Using the robust estimator from the `did` package (Callaway & Sant’Anna (2021)), perform a sensitivity analysis using the [`HonestDiD`](https://github.com/asheshrambachan/HonestDiD) package. Additional to the lecture slides, you can find instructions on installation, functionality, and theory on [GitHub](https://github.com/asheshrambachan/HonestDiD). Run the sensitivity analysis based on "bounds on relative magnitudes" and explain the result in your own words (3-4 sentences). Please note that you have to set `base_period = "universal"` in `att_gt()`.
+
 :::
 
+## Optional read

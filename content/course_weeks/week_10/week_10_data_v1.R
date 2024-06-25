@@ -236,6 +236,24 @@ twfe_w <- fixest::feols(minutes_watched ~ i(d_it, ref = c(0)) + age + gender + a
 summary(twfe_wo)
 summary(twfe_w)
 
+
+# Bacon-Decomposition
+library(bacondecomp)
+
+df_bacon <- bacondecomp::bacon(minutes_watched ~ d_it + age + gender + account_tenure + num_drama_watched + num_comedy_watched + num_action_watched,
+                               data = stream,
+                               id_var = "unit",
+                               time_var = "time")
+df_bacon
+
+
+ggplot(df_bacon$two_by_twos) +
+  aes(x = weight, y = estimate, shape = factor(type)) +
+  geom_point() +
+  geom_hline(yintercept = 0) + 
+  theme_minimal() +
+  labs(x = "Weight", y = "Estimate", shape = "Type")
+
 # Task 7: Any robust method
 # (a) Sun-Abraham
 sunab <- fixest::feols(minutes_watched ~ fixest:::sunab(group, time) + age + gender + account_tenure + num_drama_watched + num_comedy_watched + num_action_watched | unit + time, data = stream)
@@ -260,8 +278,8 @@ drdid <- did::att_gt(
 
 did::aggte(drdid, type="simple")
 did::aggte(drdid, type="group")
-drdid_evt_sty <- did::aggte(drdid, type="dynamic")
-did::ggdid(drdid_evt_sty)
+drdid_evt_stdy <- did::aggte(drdid, type="dynamic")
+did::ggdid(drdid_evt_stdy)
 
 
 # (c) Two-Stage DiD
@@ -303,9 +321,6 @@ tibble(
 )
 
 
-
-
-
 # TODO: comparison plot
 # TODO: testing for parallel trends
 # TODO: make PT implausible and CPT plausible
@@ -314,42 +329,101 @@ tibble(
 # devtools::install_github("jonathandroth/pretrends")
 # remotes::install_github("asheshrambachan/HonestDiD")
 
-summary(evt_stdy_wo)
-betahat <- summary(evt_stdy_wo)$coefficients #save the coefficients
-sigma <- summary(evt_stdy_wo)$cov.scaled #save the covariance matrix
+# HonestDiD ----
+# HonestDiD
+#' @title honest_did
+#'
+#' @description a function to compute a sensitivity analysis
+#'  using the approach of Rambachan and Roth (2021)
+honest_did <- function(...) UseMethod("honest_did")
 
-delta_rm_results <-
-  HonestDiD::createSensitivityResults_relativeMagnitudes(
-    betahat = betahat, #coefficients
-    sigma = sigma, #covariance matrix
-    numPrePeriods = 9, #num. of pre-treatment coefs
-    numPostPeriods = 13, #num. of post-treatment coefs
-    Mbarvec = seq(0.5,2, by = 0.5) #values of Mbar
-  )
+#' @title honest_did.AGGTEobj
+#'
+#' @description a function to compute a sensitivity analysis
+#'  using the approach of Rambachan and Roth (2021) when
+#'  the event study is estimating using the `did` package
+#'
+#' @param e event time to compute the sensitivity analysis for.
+#'  The default value is `e=0` corresponding to the "on impact"
+#'  effect of participating in the treatment.
+#' @param type Options are "smoothness" (which conducts a
+#'  sensitivity analysis allowing for violations of linear trends
+#'  in pre-treatment periods) or "relative_magnitude" (which
+#'  conducts a sensitivity analysis based on the relative magnitudes
+#'  of deviations from parallel trends in pre-treatment periods).
+#' @inheritParams HonestDiD::createSensitivityResults
+#' @inheritParams HonestDid::createSensitivityResults_relativeMagnitudes
+honest_did.AGGTEobj <- function(es,
+                                e          = 0,
+                                type       = c("smoothness", "relative_magnitude"),
+                                gridPoints = 100,
+                                ...) {
+  
+  type <- match.arg(type)
+  
+  # Make sure that user is passing in an event study
+  if (es$type != "dynamic") {
+    stop("need to pass in an event study")
+  }
+  
+  # Check if used universal base period and warn otherwise
+  if (es$DIDparams$base_period != "universal") {
+    stop("Use a universal base period for honest_did")
+  }
+  
+  # Recover influence function for event study estimates
+  es_inf_func <- es$inf.function$dynamic.inf.func.e
+  
+  # Recover variance-covariance matrix
+  n <- nrow(es_inf_func)
+  V <- t(es_inf_func) %*% es_inf_func / n / n
+  
+  # Remove the coefficient normalized to zero
+  referencePeriodIndex <- which(es$egt == -1)
+  V    <- V[-referencePeriodIndex,-referencePeriodIndex]
+  beta <- es$att.egt[-referencePeriodIndex]
+  
+  nperiods <- nrow(V)
+  npre     <- sum(1*(es$egt < -1))
+  npost    <- nperiods - npre
+  baseVec1 <- basisVector(index=(e+1),size=npost)
+  orig_ci  <- constructOriginalCS(betahat        = beta,
+                                  sigma          = V,
+                                  numPrePeriods  = npre,
+                                  numPostPeriods = npost,
+                                  l_vec          = baseVec1)
+  
+  if (type=="relative_magnitude") {
+    robust_ci <- createSensitivityResults_relativeMagnitudes(betahat        = beta,
+                                                             sigma          = V,
+                                                             numPrePeriods  = npre,
+                                                             numPostPeriods = npost,
+                                                             l_vec          = baseVec1,
+                                                             gridPoints     = gridPoints,
+                                                             ...)
+    
+  } else if (type == "smoothness") {
+    robust_ci <- createSensitivityResults(betahat        = beta,
+                                          sigma          = V,
+                                          numPrePeriods  = npre,
+                                          numPostPeriods = npost,
+                                          l_vec          = baseVec1,
+                                          ...)
+  }
+  
+  return(list(robust_ci=robust_ci, orig_ci=orig_ci, type=type))
+}
 
-delta_rm_results
 
-originalResults <- HonestDiD::constructOriginalCS(betahat = betahat,
-                                                  sigma = sigma,
-                                                  numPrePeriods = 9,
-                                                  numPostPeriods = 13)
+library(HonestDiD)
+drdid_evt_stdy <- did::aggte(drdid, type="dynamic")
+hd_did <- honest_did(es = drdid_evt_stdy, e = 0, type="relative_magnitude")
 
-HonestDiD::createSensitivityPlot_relativeMagnitudes(delta_rm_results, originalResults)
+hd_did_relmag <- createSensitivityPlot_relativeMagnitudes(
+  hd_did$robust_ci,
+  hd_did$orig_ci)
 
-# Bacon-Decomposition
-install.packages("bacondecomp")
-library(bacondecomp)
-
-df_bacon <- bacondecomp::bacon(minutes_watched ~ d_it + age + gender + account_tenure + num_drama_watched + num_comedy_watched + num_action_watched,
-                  data = stream,
-                  id_var = "unit",
-                  time_var = "time")
-df_bacon
+hd_did_relmag
 
 
-ggplot(df_bacon$two_by_twos) +
-  aes(x = weight, y = estimate, shape = factor(type)) +
-  geom_point() +
-  geom_hline(yintercept = 0) + 
-  theme_minimal() +
-  labs(x = "Weight", y = "Estimate", shape = "Type")
+
