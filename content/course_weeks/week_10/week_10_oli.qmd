@@ -1,6 +1,6 @@
 ---
-title: "10 - Regression Discontinuity"
-linktitle: "10 - Regression Discontinuity"
+title: "10 - Difference-in-Differences (2/2)"
+linktitle: "10 - Difference-in-Differences (2/2)"
 output:
   blogdown::html_page:
     toc: true

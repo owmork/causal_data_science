@@ -246,13 +246,13 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../../content/course_weeks/week_09/week_9.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">9 - Difference-in-Differences</span></a>
+ <span class="menu-text">9 - Difference-in-Differences (1/2)</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../../content/course_weeks/week_10/week_10.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">10 - Regression Discontinuity</span></a>
+ <span class="menu-text">10 - Difference-in-Differences (2/2)</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -364,9 +364,14 @@ window.Quarto = {
 <p>Using the <code>tidyverse</code> allows us a versatile and flexible approach that we can extend later. We group by the treatment column and compute the group-specific means.</p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Load tidyverse package</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># Grouping by the treatment column and calculating the mean of the outcome</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Paket 'ggplot2' wurde unter R Version 4.3.2 erstellt</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Paket 'tidyr' wurde unter R Version 4.3.2 erstellt</code></pre>
+</div>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Grouping by the treatment column and calculating the mean of the outcome</span></span>
 <span><span class="co"># column by group</span></span>
 <span><span class="va">group_means</span> <span class="op">&lt;-</span> <span class="va">df</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">new_feature</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
@@ -385,7 +390,7 @@ window.Quarto = {
 </div>
 <p>To get the difference, we need to add one more step.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Compute the difference in means</span></span>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Compute the difference in means</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/diff.html">diff</a></span><span class="op">(</span><span class="va">group_means</span><span class="op">$</span><span class="va">mean_time_spent</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 2.5</code></pre>
@@ -401,7 +406,7 @@ window.Quarto = {
 \sigma = \sqrt{\sigma^2}
 \]</span> Let’s add the standard deviation to our summary table. We can use the built-in function <code><a href="https://rdrr.io/r/stats/sd.html">sd()</a></code>. If we would like to compute the variance, we could use <code><a href="https://rdrr.io/r/stats/cor.html">var()</a></code>.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Grouping by the treatment column and calculating the mean and the standard</span></span>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Grouping by the treatment column and calculating the mean and the standard</span></span>
 <span><span class="co"># deviation of the outcome</span></span>
 <span><span class="co"># column by group</span></span>
 <span><span class="va">group_stats</span> <span class="op">&lt;-</span> <span class="va">df</span> <span class="op">|&gt;</span></span>
@@ -454,7 +459,7 @@ Note
 </div>
 </div>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Custom function for the standard error</span></span>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Custom function for the standard error</span></span>
 <span><span class="va">se</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="co"># Standard deviation divided by the square root of the sample size</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/stats/sd.html">sd</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></span>
@@ -462,7 +467,7 @@ Note
 </div>
 <p>We need to update our table with the statistics by adding the number of observations <span class="math inline">\(n\)</span> per group (using the function <code><a href="https://dplyr.tidyverse.org/reference/context.html">n()</a></code>) and calculating the standard error of the mean.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Grouping by the treatment column and calculating the mean, standard deviation,</span></span>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Grouping by the treatment column and calculating the mean, standard deviation,</span></span>
 <span><span class="co"># sample size, and standard error of the mean</span></span>
 <span><span class="co"># column by group</span></span>
 <span><span class="va">group_stats</span> <span class="op">&lt;-</span> <span class="va">df</span> <span class="op">|&gt;</span></span>
@@ -492,7 +497,7 @@ Note
 <p>A profoundly useful mathematical theorem is the Central Limit Theorem, which states that the distribution of sample means tends towards normality. Understanding the mean and standard error of the mean equips us with all the necessary information to comprehend and illustrate the distribution.</p>
 <p>Here, we plot the standard normal distribution, characterized by a mean of zero and a standard deviation of one. By delineating the mass of the distribution limited by specific values, we can construct confidence intervals around our estimates. These intervals provide a range within which the true mean likely lies, with a chosen probability. While 95% confidence intervals are most commonly reported, values such as 90% or 99% are also frequently used For instance, approximately 95% of the area under the normal distribution falls within approximately two standard deviations below and above the mean.</p>
 <div class="cell" data-layout-align="center">
-<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">3</span>, <span class="fl">3</span><span class="op">)</span><span class="op">)</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">3</span>, <span class="fl">3</span><span class="op">)</span><span class="op">)</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_function.html">stat_function</a></span><span class="op">(</span>fun <span class="op">=</span> <span class="va">dnorm</span>,</span>
 <span>                geom <span class="op">=</span> <span class="st">"line"</span>,</span>
 <span>                xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">3</span>, <span class="fl">3</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
@@ -551,7 +556,7 @@ Tip
 </div>
 <p>Adding the confidence intervals to our table:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Grouping by the treatment column and calculating the mean, standard deviation,</span></span>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Grouping by the treatment column and calculating the mean, standard deviation,</span></span>
 <span><span class="co"># sample size, and standard error of the mean</span></span>
 <span><span class="co"># column by group</span></span>
 <span><span class="va">group_stats</span> <span class="op">&lt;-</span> <span class="va">df</span> <span class="op">|&gt;</span></span>
@@ -584,7 +589,7 @@ Tip
 </div>
 <p>Comparing the confidence intervals across the groups, we see some overlap. However, that does not yet mean that they are not statistically significant, although it is usually a good indication. And, in fact, if they did not overlap at all, you would be able to conclude that they are statistcally different.</p>
 <div class="cell" data-layout-align="center">
-<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">u0</span> <span class="op">&lt;-</span> <span class="va">group_stats</span><span class="op">[</span><span class="va">group_stats</span><span class="op">$</span><span class="va">new_feature</span> <span class="op">==</span> <span class="fl">0</span>, <span class="op">]</span><span class="op">$</span><span class="va">mean_time_spent</span></span>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">u0</span> <span class="op">&lt;-</span> <span class="va">group_stats</span><span class="op">[</span><span class="va">group_stats</span><span class="op">$</span><span class="va">new_feature</span> <span class="op">==</span> <span class="fl">0</span>, <span class="op">]</span><span class="op">$</span><span class="va">mean_time_spent</span></span>
 <span><span class="va">u1</span> <span class="op">&lt;-</span> <span class="va">group_stats</span><span class="op">[</span><span class="va">group_stats</span><span class="op">$</span><span class="va">new_feature</span> <span class="op">==</span> <span class="fl">1</span>, <span class="op">]</span><span class="op">$</span><span class="va">mean_time_spent</span></span>
 <span></span>
 <span><span class="va">o0</span> <span class="op">&lt;-</span> <span class="va">group_stats</span><span class="op">[</span><span class="va">group_stats</span><span class="op">$</span><span class="va">new_feature</span> <span class="op">==</span> <span class="fl">0</span>, <span class="op">]</span><span class="op">$</span><span class="va">se_time_spent</span></span>
@@ -643,7 +648,7 @@ Tip
 SE_{diff} = \sqrt{SE_1^2 + SE_0^2}.
 \]</span></p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Get means</span></span>
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Get means</span></span>
 <span><span class="va">mu_0</span> <span class="op">&lt;-</span> <span class="va">group_stats</span><span class="op">[</span><span class="va">group_stats</span><span class="op">$</span><span class="va">new_feature</span><span class="op">==</span><span class="fl">0</span>, <span class="op">]</span><span class="op">$</span><span class="va">mean_time_spent</span></span>
 <span><span class="va">mu_1</span> <span class="op">&lt;-</span> <span class="va">group_stats</span><span class="op">[</span><span class="va">group_stats</span><span class="op">$</span><span class="va">new_feature</span><span class="op">==</span><span class="fl">1</span>, <span class="op">]</span><span class="op">$</span><span class="va">mean_time_spent</span></span>
 <span></span>
@@ -652,7 +657,7 @@ SE_{diff} = \sqrt{SE_1^2 + SE_0^2}.
 <span><span class="va">se_1</span> <span class="op">&lt;-</span> <span class="va">group_stats</span><span class="op">[</span><span class="va">group_stats</span><span class="op">$</span><span class="va">new_feature</span><span class="op">==</span><span class="fl">1</span>, <span class="op">]</span><span class="op">$</span><span class="va">se_time_spent</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Mean</span></span>
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Mean</span></span>
 <span><span class="va">diff_mu</span> <span class="op">&lt;-</span> <span class="va">mu_1</span> <span class="op">-</span> <span class="va">mu_0</span></span>
 <span><span class="va">diff_mu</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -660,7 +665,7 @@ SE_{diff} = \sqrt{SE_1^2 + SE_0^2}.
 </div>
 </div>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Standard error</span></span>
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Standard error</span></span>
 <span><span class="va">diff_se</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span><span class="op">(</span><span class="va">se_1</span><span class="op">^</span><span class="fl">2</span> <span class="op">+</span> <span class="va">se_0</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span></span>
 <span><span class="va">diff_se</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -669,7 +674,7 @@ SE_{diff} = \sqrt{SE_1^2 + SE_0^2}.
 </div>
 <p>Let’s make another plot: the distribution of the difference. We can already do the visual hypothesis test.</p>
 <div class="cell" data-layout-align="center">
-<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb21"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">10</span>, <span class="fl">10</span><span class="op">)</span><span class="op">)</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb24"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">10</span>, <span class="fl">10</span><span class="op">)</span><span class="op">)</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_function.html">stat_function</a></span><span class="op">(</span>fun <span class="op">=</span> <span class="va">dnorm</span>,</span>
 <span>                alpha <span class="op">=</span> <span class="fl">.5</span>,</span>
 <span>                args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>mean <span class="op">=</span> <span class="va">diff_mu</span>, sd <span class="op">=</span> <span class="va">diff_se</span><span class="op">)</span>,</span>
@@ -692,7 +697,7 @@ SE_{diff} = \sqrt{SE_1^2 + SE_0^2}.
 </div>
 <p>What we can infer from the plot already, can be confirmed by computing the confidence intervals with the known formula.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">diff_ci_lb</span> <span class="op">=</span> <span class="va">diff_mu</span> <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">qnorm</a></span><span class="op">(</span><span class="fl">.975</span><span class="op">)</span> <span class="op">*</span> <span class="va">diff_se</span></span>
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">diff_ci_lb</span> <span class="op">=</span> <span class="va">diff_mu</span> <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">qnorm</a></span><span class="op">(</span><span class="fl">.975</span><span class="op">)</span> <span class="op">*</span> <span class="va">diff_se</span></span>
 <span><span class="va">diff_ci_ub</span> <span class="op">=</span> <span class="va">diff_mu</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">qnorm</a></span><span class="op">(</span><span class="fl">.975</span><span class="op">)</span> <span class="op">*</span> <span class="va">diff_se</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Lower CI"</span> <span class="op">=</span> <span class="va">diff_ci_lb</span>, <span class="st">"Upper CI"</span> <span class="op">=</span> <span class="va">diff_ci_ub</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -727,11 +732,11 @@ t_{ATE} = \frac{\mu_1 - \mu_0}{\sqrt{SE_1^2 + SE_0^2}} &amp;= \frac{\mu_{diff}}{
 \end{align}
 \]</span></p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">t_stat</span> <span class="op">=</span> <span class="op">(</span><span class="va">diff_mu</span> <span class="op">-</span> <span class="fl">0</span><span class="op">)</span> <span class="op">/</span> <span class="va">diff_se</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">t_stat</span> <span class="op">=</span> <span class="op">(</span><span class="va">diff_mu</span> <span class="op">-</span> <span class="fl">0</span><span class="op">)</span> <span class="op">/</span> <span class="va">diff_se</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Knowing the t-statistic, we provide it in to the following command.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="op">(</span><span class="fl">1</span> <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">pnorm</a></span><span class="op">(</span><span class="va">t_stat</span><span class="op">)</span><span class="op">)</span> <span class="op">*</span> <span class="fl">2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="op">(</span><span class="fl">1</span> <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">pnorm</a></span><span class="op">(</span><span class="va">t_stat</span><span class="op">)</span><span class="op">)</span> <span class="op">*</span> <span class="fl">2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.18</code></pre>
 </div>
@@ -746,7 +751,7 @@ Y_i = \beta_0 + \beta_1*D+e_i
 \]</span></p>
 <p>We’ve already encountered the syntax before, but if you do not recall: <code>y ~ x</code>, where <span class="math inline">\(y\)</span> is the outcome and <span class="math inline">\(x\)</span> the explaining variable. We specify the respective variables in our data: we want to explain the effect of <code>new_feature</code> on <code>time_spent</code>, fit the model using <code><a href="https://rdrr.io/r/stats/lm.html">lm()</a></code> and assign it to a variable. Then, for a good summary of the estimates and statistical measures, we apply the <code><a href="https://rdrr.io/r/base/summary.html">summary()</a></code> function to the fitted object.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">lr</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">time_spent</span> <span class="op">~</span> <span class="va">new_feature</span>, data <span class="op">=</span> <span class="va">df</span><span class="op">)</span></span>
+<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">lr</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">time_spent</span> <span class="op">~</span> <span class="va">new_feature</span>, data <span class="op">=</span> <span class="va">df</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">lr</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
@@ -779,7 +784,7 @@ F-statistic: 1.73 on 1 and 998 DF,  p-value: 0.188</code></pre>
 </ul>
 <p>The output contains a p-value but does not contain confidence intervals because it is agnostic to the confidence level. However, if you are interested in confidence intervals for a specific confidence level, you can use the <code>confint(model, level)</code> function to calculate them. Or just simply calculate them by hand as you have learned.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/confint.html">confint</a></span><span class="op">(</span><span class="va">lr</span>, level <span class="op">=</span> <span class="fl">.95</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/confint.html">confint</a></span><span class="op">(</span><span class="va">lr</span>, level <span class="op">=</span> <span class="fl">.95</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>            2.5 % 97.5 %
 (Intercept)  58.7   63.4
@@ -1245,7 +1250,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       &nbsp;
     </div>
   </div>
-</footer><script>var lightboxQuarto = GLightbox({"descPosition":"bottom","loop":false,"selector":".lightbox","openEffect":"zoom","closeEffect":"zoom"});
+</footer><script>var lightboxQuarto = GLightbox({"descPosition":"bottom","selector":".lightbox","loop":false,"closeEffect":"zoom","openEffect":"zoom"});
 window.onload = () => {
   lightboxQuarto.on('slide_before_load', (data) => {
     const { slideIndex, slideNode, slideConfig, player, trigger } = data;

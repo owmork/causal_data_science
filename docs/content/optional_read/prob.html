@@ -246,13 +246,13 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../content/course_weeks/week_09/week_9.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">9 - Difference-in-Differences</span></a>
+ <span class="menu-text">9 - Difference-in-Differences (1/2)</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../content/course_weeks/week_10/week_10.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">10 - Regression Discontinuity</span></a>
+ <span class="menu-text">10 - Difference-in-Differences (2/2)</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -520,9 +520,14 @@ Note
 </div>
 <div class="cell" data-layout-align="center">
 <details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Load tidyverse package</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># Number of obervations</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output cell-output-stderr">
+<pre><code>Warning: Paket 'ggplot2' wurde unter R Version 4.3.2 erstellt</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Paket 'tidyr' wurde unter R Version 4.3.2 erstellt</code></pre>
+</div>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Number of obervations</span></span>
 <span><span class="va">n</span> <span class="op">&lt;-</span> <span class="fl">1000</span></span>
 <span></span>
 <span><span class="co"># Create tibble</span></span>
@@ -558,7 +563,7 @@ Note
 </div>
 </div>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Show first ten lines</span></span>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Show first ten lines</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">app_usage</span>, <span class="fl">10</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div data-pagedtable="false">
@@ -583,7 +588,7 @@ Note
 </div>
 </div>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Show column sums</span></span>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Show column sums</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/colSums.html">colSums</a></span><span class="op">(</span><span class="va">app_usage</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>   user_id smartphone     tablet   computer 
@@ -605,7 +610,7 @@ Note
 </div>
 </div>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Equivalent commands to select specific columns</span></span>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Equivalent commands to select specific columns</span></span>
 <span><span class="co">#colSums(app_usage[, 2:4])</span></span>
 <span><span class="co">#colSums(app_usage[, c("smartphone", "tablet", "computer")])</span></span>
 <span><span class="va">app_usage</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">smartphone</span>, <span class="va">tablet</span>, <span class="va">computer</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/colSums.html">colSums</a></span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -616,7 +621,7 @@ Note
 </div>
 <p>Now let’s see what the Venn diagram says, which is a diagram showing the relation between sets. We can see the union, intersection differences and complements in the diagram.</p>
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><a href="../../images/01_venn_diag.png" class="lightbox" data-gallery="quarto-lightbox-gallery-3" data-glightbox="description: .lightbox-desc-3" title="Generic Venn diagram"><img src="../../images/01_venn_diag.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="520" alt="Generic Venn diagram"></a></p>
+<figure class="figure"><p><a href="../../images/01_venn_diag.png" class="lightbox" data-glightbox="description: .lightbox-desc-3" data-gallery="quarto-lightbox-gallery-3" title="Generic Venn diagram"><img src="../../images/01_venn_diag.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="520" alt="Generic Venn diagram"></a></p>
 <figcaption>Generic Venn diagram</figcaption></figure>
 </div>
 <div class="callout callout-style-default callout-note callout-titled">
@@ -634,7 +639,7 @@ Note
 </div>
 </div>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Set of phone, tablet and computer users</span></span>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Set of phone, tablet and computer users</span></span>
 <span><span class="va">set_phon</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/which.html">which</a></span><span class="op">(</span><span class="va">app_usage</span><span class="op">$</span><span class="va">smartphone</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span></span>
 <span><span class="va">set_tabl</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/which.html">which</a></span><span class="op">(</span><span class="va">app_usage</span><span class="op">$</span><span class="va">tablet</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span></span>
 <span><span class="va">set_comp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/which.html">which</a></span><span class="op">(</span><span class="va">app_usage</span><span class="op">$</span><span class="va">computer</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span></span>
@@ -643,10 +648,21 @@ Note
 <span><span class="va">sets_all</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="va">set_phon</span>, <span class="va">set_tabl</span>, <span class="va">set_comp</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Load additional package for plotting Venn diagrams</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/gaospecial/ggVennDiagram">ggVennDiagram</a></span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># Plot Venn diagram</span></span>
-<span><span class="fu"><a href="https://rdrr.io/pkg/ggVennDiagram/man/ggVennDiagram.html">ggVennDiagram</a></span><span class="op">(</span><span class="va">sets_all</span>, category.names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Smartphone"</span>, <span class="st">"Tablet"</span>, <span class="st">"Computer"</span><span class="op">)</span>,</span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/gaospecial/ggVennDiagram">ggVennDiagram</a></span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Paket 'ggVennDiagram' wurde unter R Version 4.3.2 erstellt</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attache Paket: 'ggVennDiagram'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Das folgende Objekt ist maskiert 'package:tidyr':
+
+    unite</code></pre>
+</div>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Plot Venn diagram</span></span>
+<span><span class="fu"><a href="https://gaospecial.github.io/ggVennDiagram/reference/ggVennDiagram.html">ggVennDiagram</a></span><span class="op">(</span><span class="va">sets_all</span>, category.names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Smartphone"</span>, <span class="st">"Tablet"</span>, <span class="st">"Computer"</span><span class="op">)</span>,</span>
 <span>              label_percent_digit <span class="op">=</span> <span class="fl">2</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="co"># Customizing appearance</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span><span class="op">(</span>legend.position <span class="op">=</span> <span class="st">"none"</span>, </span>
@@ -1183,7 +1199,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       &nbsp;
     </div>
   </div>
-</footer><script>var lightboxQuarto = GLightbox({"descPosition":"bottom","selector":".lightbox","closeEffect":"zoom","loop":false,"openEffect":"zoom"});
+</footer><script>var lightboxQuarto = GLightbox({"loop":false,"closeEffect":"zoom","descPosition":"bottom","selector":".lightbox","openEffect":"zoom"});
 window.onload = () => {
   lightboxQuarto.on('slide_before_load', (data) => {
     const { slideIndex, slideNode, slideConfig, player, trigger } = data;

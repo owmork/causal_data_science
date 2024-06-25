@@ -1,6 +1,6 @@
 ---
-title: "9 - Difference-in-Differences"
-linktitle: "9 - Difference-in-Differences"
+title: "9 - Difference-in-Differences (1/2)"
+linktitle: "9 - Difference-in-Differences (1/2)"
 output:
   blogdown::html_page:
     toc: true

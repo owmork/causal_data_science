@@ -246,13 +246,13 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../../content/course_weeks/week_09/week_9.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">9 - Difference-in-Differences</span></a>
+ <span class="menu-text">9 - Difference-in-Differences (1/2)</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../../content/course_weeks/week_10/week_10.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">10 - Regression Discontinuity</span></a>
+ <span class="menu-text">10 - Difference-in-Differences (2/2)</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -360,9 +360,14 @@ window.Quarto = {
 <p>This setup avoids running an A/B test on the feature itself by using an encouragement design, which is often more acceptable from a business perspective, particularly when there is a desire to roll out a feature to all users.</p>
 <div class="cell" data-layout-align="center" data-warnings="false">
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Load tidyverse</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># Load data and print</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Paket 'ggplot2' wurde unter R Version 4.3.2 erstellt</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Paket 'tidyr' wurde unter R Version 4.3.2 erstellt</code></pre>
+</div>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Load data and print</span></span>
 <span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html">readRDS</a></span><span class="op">(</span><span class="st">"rand_enc.rds"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -450,7 +455,7 @@ Y_i = \beta_0 + \tau T_i + \beta_U U_i + \epsilon_i
 \]</span></p>
 <p><span style="color:#FF7E15"><strong>Task 2:</strong></span> Solve for <span class="math inline">\(\tau\)</span> and compute sample version of the Wald estimand.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Numerator</span></span>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Numerator</span></span>
 <span><span class="va">num</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">df</span><span class="op">[</span><span class="va">df</span><span class="op">$</span><span class="va">popup</span> <span class="op">==</span> <span class="fl">1</span>, <span class="op">]</span><span class="op">$</span><span class="va">time_spent</span><span class="op">)</span> <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">df</span><span class="op">[</span><span class="va">df</span><span class="op">$</span><span class="va">popup</span> <span class="op">==</span> <span class="fl">0</span>, <span class="op">]</span><span class="op">$</span><span class="va">time_spent</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Denominator</span></span>
@@ -473,7 +478,7 @@ Y_i = \beta_0 + \tau T_i + \beta_U U_i + \epsilon_i
 <p><img src="dag_IV_2sls_1.png" width="425"><img height="350" hspace="20"><img src="dag_IV_2sls_2.png" width="425"></p>
 <p><span style="color:#FF7E15"><strong>Task 3:</strong></span> Compute the treatment effect using the 2SLS estimator as described. (1) First, do it by running the two regressions. (2) Then, use the <code>R</code> package <code>AER</code> and the function <code><a href="https://rdrr.io/pkg/AER/man/ivreg.html">ivreg()</a></code>. The syntax for the formula is: <code>Y ~ T | Z</code>. (Note: for method (1) your standard errors will be wrong. You can ignore that for now.)</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># (a) with wrong standard errors</span></span>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># (a) with wrong standard errors</span></span>
 <span></span>
 <span><span class="co"># First stage</span></span>
 <span><span class="va">stage_1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">used_ftr</span> <span class="op">~</span> <span class="va">popup</span>, data <span class="op">=</span> <span class="va">df</span><span class="op">)</span></span>
@@ -498,7 +503,7 @@ Residual standard error: 0.47 on 9998 degrees of freedom
 Multiple R-squared:  0.123, Adjusted R-squared:  0.122 
 F-statistic: 1.4e+03 on 1 and 9998 DF,  p-value: &lt;2e-16</code></pre>
 </div>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Second stage</span></span>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Second stage</span></span>
 <span><span class="va">df</span><span class="op">$</span><span class="va">used_ftr_hat</span> <span class="op">&lt;-</span> <span class="va">stage_1</span><span class="op">$</span><span class="va">fitted.values</span></span>
 <span><span class="va">stage_2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">time_spent</span> <span class="op">~</span> <span class="va">used_ftr_hat</span>, data <span class="op">=</span> <span class="va">df</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">stage_2</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -524,15 +529,20 @@ F-statistic:  223 on 1 and 9998 DF,  p-value: &lt;2e-16</code></pre>
 </div>
 </div>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"AER"</span><span class="op">)</span> <span class="co"># (Applied Economics with R)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"AER"</span><span class="op">)</span> <span class="co"># (Applied Economics with R)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell" data-layout-align="center" data-warnings="false">
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># (b) with correct standard errors</span></span>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># (b) with correct standard errors</span></span>
 <span></span>
 <span><span class="co"># Load package</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">AER</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># Two-stage least squares</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">AER</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Paket 'AER' wurde unter R Version 4.3.2 erstellt</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Paket 'survival' wurde unter R Version 4.3.3 erstellt</code></pre>
+</div>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Two-stage least squares</span></span>
 <span><span class="va">tsls</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/AER/man/ivreg.html">ivreg</a></span><span class="op">(</span><span class="va">time_spent</span> <span class="op">~</span> <span class="va">used_ftr</span> <span class="op">|</span> <span class="va">popup</span>, data <span class="op">=</span> <span class="va">df</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">tsls</span>, vcov <span class="op">=</span> <span class="va">vcovHC</span><span class="op">)</span> <span class="co"># with robust standard errors</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -1133,7 +1143,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       &nbsp;
     </div>
   </div>
-</footer><script>var lightboxQuarto = GLightbox({"openEffect":"zoom","loop":false,"selector":".lightbox","descPosition":"bottom","closeEffect":"zoom"});
+</footer><script>var lightboxQuarto = GLightbox({"loop":false,"selector":".lightbox","descPosition":"bottom","closeEffect":"zoom","openEffect":"zoom"});
 window.onload = () => {
   lightboxQuarto.on('slide_before_load', (data) => {
     const { slideIndex, slideNode, slideConfig, player, trigger } = data;

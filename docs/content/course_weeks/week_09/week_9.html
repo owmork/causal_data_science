@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="generator" content="quarto-1.4.536">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<title>CAUSAL DATA SCIENCE FOR BUSINESS ANALYTICS - 9 - Difference-in-Differences</title>
+<title>CAUSAL DATA SCIENCE FOR BUSINESS ANALYTICS - 9 - Difference-in-Differences (1/2)</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -171,7 +171,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../../content/course_weeks/week_01/week_1.html"><b>Weekly content</b></a></li><li class="breadcrumb-item"><a href="../../../content/course_weeks/week_09/week_9.html">9 - Difference-in-Differences</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../../content/course_weeks/week_01/week_1.html"><b>Weekly content</b></a></li><li class="breadcrumb-item"><a href="../../../content/course_weeks/week_09/week_9.html">9 - Difference-in-Differences (1/2)</a></li></ol></nav>
         <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
     </div>
@@ -246,13 +246,13 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../../content/course_weeks/week_09/week_9.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text">9 - Difference-in-Differences</span></a>
+ <span class="menu-text">9 - Difference-in-Differences (1/2)</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../../content/course_weeks/week_10/week_10.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">10 - Regression Discontinuity</span></a>
+ <span class="menu-text">10 - Difference-in-Differences (2/2)</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -319,8 +319,8 @@ window.Quarto = {
   </ul></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../../content/course_weeks/week_01/week_1.html"><b>Weekly content</b></a></li><li class="breadcrumb-item"><a href="../../../content/course_weeks/week_09/week_9.html">9 - Difference-in-Differences</a></li></ol></nav><div class="quarto-title">
-<h1 class="title">9 - Difference-in-Differences</h1>
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../../content/course_weeks/week_01/week_1.html"><b>Weekly content</b></a></li><li class="breadcrumb-item"><a href="../../../content/course_weeks/week_09/week_9.html">9 - Difference-in-Differences (1/2)</a></li></ol></nav><div class="quarto-title">
+<h1 class="title">9 - Difference-in-Differences (1/2)</h1>
 </div>
 
 
@@ -624,7 +624,10 @@ RMSE: 10.4     Adj. R2: 0.98258
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html">geom_vline</a></span><span class="op">(</span>xintercept <span class="op">=</span> <span class="fl">.5</span>, linetype <span class="op">=</span> <span class="st">"dashed"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_x_continuous</a></span><span class="op">(</span>breaks<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span><span class="op">(</span>legend.position <span class="op">=</span> <span class="st">"bottom"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details><div class="cell-output-display">
+</details><div class="cell-output cell-output-stderr">
+<pre><code>Warning: The `scale_name` argument of `discrete_scale()` is deprecated as of ggplot2 3.5.0.</code></pre>
+</div>
+<div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure"><p><a href="week_9_files/figure-html/unnamed-chunk-10-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1"><img src="week_9_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:75.0%"></a></p>
 </figure>
@@ -636,7 +639,7 @@ RMSE: 10.4     Adj. R2: 0.98258
 <p>However, even that cannot provide full certainty about the parallel trends assumption. There may still be unobserved factors that could affect the treatment. Nevertheless, event studies are a useful tool for arguing that the treatment and control groups are comparable.</p>
 <p>Let’s now switch back to the dataset with multiple pre-treatment periods and begin by plotting the observed outcomes over time. This will help us determine if there are converging or diverging trends between the treatment and control groups. By visualizing these trends, we can already assess whether the parallel trends assumption holds before the treatment.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Outcomes across time by group</span></span>
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Outcomes across time by group</span></span>
 <span><span class="va">df</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span></span>
 <span>    x <span class="op">=</span> <span class="va">month</span>,</span>
@@ -660,7 +663,7 @@ RMSE: 10.4     Adj. R2: 0.98258
 <p>At the first glance, prior to the treatment, the outcomes seem to evolve in parallel. However, a better way is to actually perform statistical tests and check the hypothesis that the evolution of both groups is parallel. For each difference between two pre-treatment periods, the should be no difference in the evolution of the outcomes across the treatment groups.</p>
 <p><span style="color:#FF7E15"><strong>Task 3a:</strong></span> Subset the data so you can perform test for pre-trends between the pre-treatment months 7 and 8 using the TWFE approach from above.</p>
 <div class="cell" data-layout-align="center">
-<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb20"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">df_placebo</span> <span class="op">&lt;-</span> <span class="va">df</span> <span class="op">|&gt;</span> </span>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb21"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">df_placebo</span> <span class="op">&lt;-</span> <span class="va">df</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">month</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">7</span>, <span class="fl">8</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>post <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/if_else.html">if_else</a></span><span class="op">(</span><span class="va">month</span> <span class="op">==</span> <span class="fl">8</span>, <span class="fl">1</span>, <span class="fl">0</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
@@ -680,7 +683,7 @@ RMSE: 10.4     Adj. R2: 0.980199
 </div>
 <p><span style="color:#FF7E15"><strong>Task 3b:</strong></span> Subset the data so you can perform test for pre-trends between the pre-treatment months 3 and 8 using the TWFE approach from above.</p>
 <div class="cell" data-layout-align="center">
-<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb22"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">df_placebo</span> <span class="op">&lt;-</span> <span class="va">df</span> <span class="op">|&gt;</span> </span>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb23"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">df_placebo</span> <span class="op">&lt;-</span> <span class="va">df</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">month</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">8</span>, <span class="fl">3</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>post <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/if_else.html">if_else</a></span><span class="op">(</span><span class="va">month</span> <span class="op">==</span> <span class="fl">8</span>, <span class="fl">1</span>, <span class="fl">0</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
@@ -701,7 +704,7 @@ RMSE: 16.7     Adj. R2: 0.95883
 <p>With this approach, you would have to iterate through quite a lot of combinations. Another approach would be to add “fake” post columns to the data frame and interact them with the treatment indicator.</p>
 <p><span style="color:#FF7E15"><strong>Task 4:</strong></span> Subset the data so you can perform test for pre-trends between ALL two arbitrary pre-treatment periods using the TWFE approach from above. You’ll need to create new columns with e.g.&nbsp;<code>post_t = if_else(month == t, 1, 0)</code>, where <code>t</code> is a treatment period and introduce new interactions into the formula.</p>
 <div class="cell" data-layout-align="center">
-<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb24"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">df_placebo_all</span> <span class="op">&lt;-</span> <span class="va">df</span> <span class="op">|&gt;</span> </span>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb25"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">df_placebo_all</span> <span class="op">&lt;-</span> <span class="va">df</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span></span>
 <span>    post_1 <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/if_else.html">if_else</a></span><span class="op">(</span><span class="va">month</span> <span class="op">==</span> <span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">0</span><span class="op">)</span>,</span>
 <span>    post_2 <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/if_else.html">if_else</a></span><span class="op">(</span><span class="va">month</span> <span class="op">==</span> <span class="fl">2</span>, <span class="fl">1</span>, <span class="fl">0</span><span class="op">)</span>,</span>
@@ -746,7 +749,7 @@ RMSE: 19.6     Adj. R2: 0.967926
 <p>An even more programmatic way to test for pre-trends is to run an event study to perform the tests all in one command. We only have to slightly change the input. Instead of the single treatment indicator <code>ever_treated:post</code>, which is only active for the treated group after treatment, we include several interactions which cover all periods for the treated group.</p>
 <p>We can do so with the help of <code><a href="https://lrberge.github.io/fixest/reference/i.html">i()</a></code> from the <code>fixest</code> package and a newly created variable that measures the time distance to the treatment period.</p>
 <div class="cell" data-layout-align="center">
-<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb26"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Create time distance column</span></span>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb27"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Create time distance column</span></span>
 <span><span class="va">treat_month</span> <span class="op">&lt;-</span> <span class="fl">9</span></span>
 <span><span class="va">df</span> <span class="op">&lt;-</span> <span class="va">df</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>time_to_treat <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/if_else.html">if_else</a></span><span class="op">(</span><span class="va">ever_treated</span> <span class="op">==</span> <span class="fl">1</span>, <span class="va">month</span> <span class="op">-</span> <span class="va">treat_month</span>, <span class="fl">0</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
@@ -774,7 +777,7 @@ RMSE: 19.6     Adj. R2: 0.967926
 </div>
 <p>Using <code><a href="https://lrberge.github.io/fixest/reference/coefplot.html">iplot()</a></code> we can visualize the multiple treatment effects. Any treatment effect prior to the treatment is a big cause of concern with regards to the parallel trends assumption.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Plot event study</span></span>
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Plot event study</span></span>
 <span><span class="fu"><a href="https://lrberge.github.io/fixest/reference/coefplot.html">iplot</a></span><span class="op">(</span><span class="va">evt_stdy</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell" data-layout-align="center">
@@ -793,7 +796,7 @@ RMSE: 19.6     Adj. R2: 0.967926
 \]</span></p>
 <p><span style="color:#FF7E15"><strong>Task 5:</strong></span> Include the covariates into the event study and consider that they have time-varying effects.</p>
 <div class="cell" data-layout-align="center">
-<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb29"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Time-invariant, therefore multicollinearity.</span></span>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb30"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Time-invariant, therefore multicollinearity.</span></span>
 <span><span class="va">evt_stdy_cond_1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://lrberge.github.io/fixest/reference/feols.html">feols</a></span><span class="op">(</span></span>
 <span>  <span class="va">downloads</span> <span class="op">~</span> <span class="fu"><a href="https://lrberge.github.io/fixest/reference/i.html">i</a></span><span class="op">(</span><span class="va">time_to_treat</span>, <span class="va">ever_treated</span>, ref <span class="op">=</span> <span class="op">-</span><span class="fl">1</span><span class="op">)</span> <span class="op">+</span></span>
 <span>    <span class="va">age</span> <span class="op">+</span> <span class="va">user_share</span> <span class="op">+</span> <span class="va">population_size</span> <span class="op">+</span> <span class="va">competitor_price</span></span>
@@ -801,7 +804,7 @@ RMSE: 19.6     Adj. R2: 0.967926
 </details><div class="cell-output cell-output-stderr">
 <pre><code>The variables 'age', 'user_share', 'population_size' and 'competitor_price' have been removed because of collinearity (see $collin.var).</code></pre>
 </div>
-<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb31"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">evt_stdy_cond_1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb32"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">evt_stdy_cond_1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output cell-output-stdout">
 <pre><code>OLS estimation, Dep. Var.: downloads
 Observations: 1,800
@@ -824,7 +827,7 @@ RMSE: 19.6     Adj. R2: 0.967926
 </div>
 </div>
 <div class="cell" data-layout-align="center">
-<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb33"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Time-invariant, but time-varying effects.</span></span>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb34"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Time-invariant, but time-varying effects.</span></span>
 <span><span class="va">evt_stdy_cond_2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://lrberge.github.io/fixest/reference/feols.html">feols</a></span><span class="op">(</span></span>
 <span>  <span class="va">downloads</span> <span class="op">~</span> <span class="fu"><a href="https://lrberge.github.io/fixest/reference/i.html">i</a></span><span class="op">(</span><span class="va">time_to_treat</span>, <span class="va">ever_treated</span>, ref <span class="op">=</span> <span class="op">-</span><span class="fl">1</span><span class="op">)</span> <span class="op">+</span></span>
 <span>    <span class="va">age</span><span class="op">:</span><span class="va">month</span> <span class="op">+</span> <span class="va">user_share</span><span class="op">:</span><span class="va">month</span> <span class="op">+</span> <span class="va">population_size</span><span class="op">:</span><span class="va">month</span> <span class="op">+</span> <span class="va">competitor_price</span><span class="op">:</span> <span class="va">month</span></span>
@@ -855,7 +858,7 @@ RMSE: 14.1     Adj. R2: 0.983262
 </div>
 </div>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Plot event study</span></span>
+<div class="sourceCode" id="cb36"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Plot event study</span></span>
 <span><span class="fu"><a href="https://lrberge.github.io/fixest/reference/coefplot.html">iplot</a></span><span class="op">(</span><span class="va">evt_stdy_cond_2</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell" data-layout-align="center">
@@ -870,7 +873,7 @@ RMSE: 14.1     Adj. R2: 0.983262
 <section id="twfe" class="level3"><h3 class="anchored" data-anchor-id="twfe">TWFE</h3>
 <p><span style="color:#FF7E15"><strong>Task 6:</strong></span> Use the TWFE approach to estimate the ATT by under the assumption of parallel trend conditional on the covariates.</p>
 <div class="cell" data-layout-align="center">
-<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb36"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://lrberge.github.io/fixest/reference/feols.html">feols</a></span><span class="op">(</span><span class="va">downloads</span> <span class="op">~</span> <span class="va">post</span><span class="op">:</span><span class="va">ever_treated</span> <span class="op">+</span></span>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb37"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://lrberge.github.io/fixest/reference/feols.html">feols</a></span><span class="op">(</span><span class="va">downloads</span> <span class="op">~</span> <span class="va">post</span><span class="op">:</span><span class="va">ever_treated</span> <span class="op">+</span></span>
 <span>                    <span class="va">age</span><span class="op">:</span><span class="va">month</span> <span class="op">+</span> <span class="va">user_share</span><span class="op">:</span><span class="va">month</span> <span class="op">+</span> <span class="va">population_size</span><span class="op">:</span><span class="va">month</span> <span class="op">+</span> <span class="va">competitor_price</span><span class="op">:</span> <span class="va">month</span></span>
 <span>                  <span class="op">|</span> <span class="va">city</span> <span class="op">+</span> <span class="va">month</span>, data <span class="op">=</span> <span class="va">df</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output cell-output-stdout">
@@ -893,10 +896,10 @@ RMSE: 14.2     Adj. R2: 0.983281
 </section><section id="doubly-robust-estimator" class="level3"><h3 class="anchored" data-anchor-id="doubly-robust-estimator">Doubly robust estimator</h3>
 <p>During the last weeks we have already learned the advantages of doubly robust estimation and in fact, there is a doubly robust DiD estimator proposed by <a href="https://www.sciencedirect.com/science/article/abs/pii/S0304407620301901">Sant’Anna and Zhao, 2020</a> and implemented in the <code>DRDID</code> package.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb38"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"DRDID"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb39"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"DRDID"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb39"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://psantanna.com/DRDID/">DRDID</a></span><span class="op">)</span></span>
+<div class="sourceCode" id="cb40"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://psantanna.com/DRDID/">DRDID</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://psantanna.com/DRDID/reference/drdid.html">drdid</a></span><span class="op">(</span></span>
 <span>  yname <span class="op">=</span> <span class="st">"downloads"</span>,</span>
@@ -928,7 +931,7 @@ drdid(yname = "downloads", tname = "post", idname = "city", dname = "ever_treate
 <p><span style="color:#FF7E15"><strong>Task 7:</strong></span> Following the same syntax, use the outcome regression adjustment with <code><a href="https://psantanna.com/DRDID/reference/ordid.html">ordid()</a></code> and the inverse probability weighting approach <code><a href="https://psantanna.com/DRDID/reference/ipwdid.html">ipwdid()</a></code> to estimate the treatment effect.</p>
 </section><section id="outcome-regression" class="level3"><h3 class="anchored" data-anchor-id="outcome-regression">Outcome regression</h3>
 <div class="cell" data-layout-align="center">
-<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb41"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://psantanna.com/DRDID/reference/ordid.html">ordid</a></span><span class="op">(</span></span>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb42"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://psantanna.com/DRDID/reference/ordid.html">ordid</a></span><span class="op">(</span></span>
 <span>  yname <span class="op">=</span> <span class="st">"downloads"</span>,</span>
 <span>  tname <span class="op">=</span> <span class="st">"post"</span>,</span>
 <span>  idname <span class="op">=</span> <span class="st">"city"</span>,</span>
@@ -956,7 +959,7 @@ ordid(yname = "downloads", tname = "post", idname = "city", dname = "ever_treate
 </div>
 </section><section id="inverse-probability-weighting-regression" class="level3"><h3 class="anchored" data-anchor-id="inverse-probability-weighting-regression">Inverse probability weighting regression</h3>
 <div class="cell" data-layout-align="center">
-<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb43"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://psantanna.com/DRDID/reference/ipwdid.html">ipwdid</a></span><span class="op">(</span></span>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb44"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://psantanna.com/DRDID/reference/ipwdid.html">ipwdid</a></span><span class="op">(</span></span>
 <span>  yname <span class="op">=</span> <span class="st">"downloads"</span>,</span>
 <span>  tname <span class="op">=</span> <span class="st">"post"</span>,</span>
 <span>  idname <span class="op">=</span> <span class="st">"city"</span>,</span>
@@ -1384,8 +1387,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../../../content/course_weeks/week_10/week_10.html" class="pagination-link" aria-label="10 - Regression Discontinuity">
-        <span class="nav-page-text">10 - Regression Discontinuity</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../../../content/course_weeks/week_10/week_10.html" class="pagination-link" aria-label="10 - Difference-in-Differences (2/2)">
+        <span class="nav-page-text">10 - Difference-in-Differences (2/2)</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
@@ -1401,7 +1404,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       &nbsp;
     </div>
   </div>
-</footer><script>var lightboxQuarto = GLightbox({"descPosition":"bottom","selector":".lightbox","openEffect":"zoom","loop":false,"closeEffect":"zoom"});
+</footer><script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","openEffect":"zoom","descPosition":"bottom","loop":false,"selector":".lightbox"});
 window.onload = () => {
   lightboxQuarto.on('slide_before_load', (data) => {
     const { slideIndex, slideNode, slideConfig, player, trigger } = data;
