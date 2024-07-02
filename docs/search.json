@@ -184,85 +184,85 @@
   {
     "objectID": "content/course_weeks/week_11/week_11.html",
     "href": "content/course_weeks/week_11/week_11.html",
-    "title": "11 - Synthetic Control & Regression Discontinuity",
+    "title": "11 - Synthetic Control (1/2)",
     "section": "",
     "text": "Over the past two weeks, we’ve explored how to use panel data to estimate causal effects with variations of the difference-in-differences estimator. This week, we’ll dive into another popular estimation technique: the synthetic control (SC) method. Originally designed for scenarios with very few treated units—often just one, like a single country—this method constructs a synthetic control unit by combining control units. This synthetic unit closely replicates the behavior of the treated unit before the intervention and acts as a counterfactual after the treatment. When the treated unit and the synthetic control unit align perfectly, we can relax the parallel trends assumption.",
     "crumbs": [
       "Content",
       "<b>Weekly content</b>",
-      "11 - Synthetic Control & Regression Discontinuity"
+      "11 - Synthetic Control (1/2)"
     ]
   },
   {
     "objectID": "content/course_weeks/week_11/week_11.html#exploration",
     "href": "content/course_weeks/week_11/week_11.html#exploration",
-    "title": "11 - Synthetic Control & Regression Discontinuity",
+    "title": "11 - Synthetic Control (1/2)",
     "section": "Exploration",
     "text": "Exploration\nConsider the following example: you are working at a ride-sharing platform and you want to understand the effect of introducing a new feature on revenue, i.e. let’s say the introduction of self-driving cars. 1\nLet’s directly take a look at the data.\n\nlibrary(tidyverse)\n\nride &lt;- readRDS(\"ride.rds\")\n\nprint(head(ride))\n\n# A tibble: 6 × 9\n  city    density employment   gdp population treated post  revenue period    \n  &lt;chr&gt;     &lt;int&gt;      &lt;dbl&gt; &lt;dbl&gt;      &lt;dbl&gt; &lt;lgl&gt;   &lt;lgl&gt;   &lt;dbl&gt; &lt;date&gt;    \n1 Atlanta     290      0.630  6.45       4.27 FALSE   FALSE    23.5 2003-01-01\n2 Atlanta     290      0.630  6.45       4.27 FALSE   FALSE    24.3 2003-02-01\n3 Atlanta     290      0.630  6.45       4.27 FALSE   FALSE    23.3 2003-03-01\n4 Atlanta     290      0.630  6.45       4.27 FALSE   FALSE    27.7 2003-04-01\n5 Atlanta     290      0.630  6.45       4.27 FALSE   FALSE    26.4 2003-05-01\n6 Atlanta     290      0.630  6.45       4.27 FALSE   FALSE    28.3 2003-06-01\n\n\nAs we approach the end of this module, I’ll be providing less guidance. Therefore, similar to last week, let’s dive into some data exploration.\nTask 1: Answer the following questions:\n\nHow many periods did we observe?\nHow many units did we observe?\nHow many units are in the treatment and how many are in the control group?\nWhat is the treatment period?\n\n\nCode# Exploration\n# How many pre- and post periods?\nT_pre &lt;- n_distinct(ride[ride$post == 0, ]$period)\nT_post &lt;- n_distinct(ride[ride$post == 1, ]$period)\n\n# How many units?\nN1 &lt;- n_distinct(ride[ride$treated == 1, ]$city)\nN0 &lt;- n_distinct(ride[ride$treated == 0, ]$city)\n\n# What is first treatment period?\nT0 &lt;- min(ride[ride$post == 1, ]$period)\n\nprint(c(T_pre, T_post, N1, N0))\n\n[1]  84 120   1  12\n\nCodeprint(T0)\n\n[1] \"2010-01-01\"\n\n\nTask 2: Plot the revenue evolution over time.\n\nCode# Revenue over time\nggplot(\n  ride,\n  aes(\n    x = period,\n    y = revenue,\n    group = city,\n    color = factor(treated),\n    linewidth = factor(treated)\n  )) +\n  geom_line(aes(alpha = factor(treated))) + \n  geom_vline(xintercept = T0, linetype = \"dashed\") + \n  scale_alpha_manual(values = c(.15, 1)) +\n  scale_linewidth_manual(values = c(.3, .5)) + \n  labs(color = \"Treatment group\", alpha = \"Treatment group\", linewidth = \"Treatment group\")\n\n\n\n\n\n\n\nTask 3: Compare the treated city to the control cities in terms of the covariate and outcome distribution.\n\nCode# Treatment group comparison\nbalance_df &lt;- ride |&gt; \n  group_by(treated) |&gt; \n  summarise(across(c(\"density\", \"employment\", \"gdp\", \"population\", \"revenue\"), mean)) |&gt; \n  ungroup()\n\nprint(balance_df)\n\n# A tibble: 2 × 6\n  treated density employment   gdp population revenue\n  &lt;lgl&gt;     &lt;dbl&gt;      &lt;dbl&gt; &lt;dbl&gt;      &lt;dbl&gt;   &lt;dbl&gt;\n1 FALSE      218.      0.641  6.14       2.54    27.6\n2 TRUE       498.      0.608  6.36       9.43    27.0",
     "crumbs": [
       "Content",
       "<b>Weekly content</b>",
-      "11 - Synthetic Control & Regression Discontinuity"
+      "11 - Synthetic Control (1/2)"
     ]
   },
   {
     "objectID": "content/course_weeks/week_11/week_11.html#synthetic-control",
     "href": "content/course_weeks/week_11/week_11.html#synthetic-control",
-    "title": "11 - Synthetic Control & Regression Discontinuity",
+    "title": "11 - Synthetic Control (1/2)",
     "section": "Synthetic control",
     "text": "Synthetic control\nAs we explore the synthetic control method, we’ll start by doing it manually. While you’ll most likely use pre-built packages in practice, performing the calculations by hand can provide a deeper understanding of the underlying mechanics of the method.\nHere is a useful perspective to consider as we approach the data:\n\\[\n\\begin{equation}\n\\left(\n\\begin{array}{c|c}\n\\begin{matrix}\nX_{11} & X_{12} & \\cdots & X_{1T_0} \\\\\n\\hline\nX_{21} & X_{22} & \\cdots & X_{2T_0} \\\\\n\\vdots & \\vdots & \\ddots & \\vdots \\\\\nX_{N1} & X_{N2} & \\cdots & X_{NT_0}\n\\end{matrix}\n&\n\\begin{matrix}\nY_{1T} \\\\\n\\hline\nY_{2T} \\\\\n\\vdots \\\\\nY_{NT}\n\\end{matrix}\n\\end{array}\n\\right)\n\\equiv\n\\left(\n\\begin{array}{c|c}\n\\begin{matrix}\n\\mathbf{X}_{1} \\\\\n\\hline\n\\mathbf{X}_{0}  \\\\\n\\end{matrix}\n&\n\\begin{matrix}\nY_{1T} \\\\\n\\hline\n\\mathbf{Y}_{0T} \\\\\n\\end{matrix}\n\\end{array}\n\\right)\n\\end{equation}\n\\]\nWe utilize the control units, often referred to as the “donor pool,” to replicate the pre-treatment observations of the treated unit. For each control unit, we assign a weight, which is then used to impute the counterfactual outcome for the treated unit. Specifically, \\(Y_{1T_t}(0)\\) is imputed using a weighted average of \\(\\mathbf{Y}_{0T_t}\\).\nFor our initial step, we’ll focus solely on pre-treatment outcomes, setting aside covariates for now. Our goal is to accurately reproduce the pre-treatment outcome of the treated unit by adjusting the weights assigned to the pre-treatment outcomes of the control units.\nLet’s begin by organizing our data into four distinct blocks:\n\nPre-treatment control \\(\\mathbf{X}_{0}\\)\n\nPre-treatment treated \\(\\mathbf{X}_{1}\\)\n\nPost-treatment control \\(Y_{0T}\\)\n\nPost-treatment treated \\(Y_{1T}\\)\n\n\nInitially, we’ll focus on revenue as our primary outcome variable and introduce covariates later in the analysis to refine our model.\nTask 4: Split the data and extract the four blocks.\n\nCode# Split and extract 4 matrices\ny0_pre &lt;- ride |&gt;\n  filter(post == 0, treated == 0) |&gt; \n  pivot_wider(id_cols = \"period\", names_from = \"city\", values_from = \"revenue\") |&gt; \n  select(-period) |&gt; \n  as.matrix()\n\ny1_pre &lt;- ride |&gt;\n  filter(post == 0, treated == 1) |&gt; \n  pivot_wider(id_cols = \"period\", names_from = \"city\", values_from = \"revenue\") |&gt; \n  select(-period) |&gt; \n  as.matrix()\n\ny0_post &lt;- ride |&gt;\n  filter(post == 1, treated == 0) |&gt; \n  pivot_wider(id_cols = \"period\", names_from = \"city\", values_from = \"revenue\") |&gt; \n  select(-period) |&gt; \n  as.matrix()\n\ny1_post &lt;- ride |&gt;\n  filter(post == 1, treated == 1) |&gt; \n  pivot_wider(id_cols = \"period\", names_from = \"city\", values_from = \"revenue\") |&gt; \n  select(-period) |&gt; \n  as.matrix()\n\n# Print \"donor pool\"\nprint(head(y0_pre))\n\n     Atlanta Columbus Davidson Indianapolis Jackson Jacksonville Memphis Orange Pittsburgh San Diego San Francisco St. Louis\n[1,]      23       25       28           25      22           21      22     24         21        24            25        23\n[2,]      24       24       25           23      24           22      24     22         22        22            25        23\n[3,]      23       23       26           26      26           23      24     24         23        23            27        24\n[4,]      28       26       27           25      27           24      25     26         22        24            26        25\n[5,]      26       29       30           26      25           26      26     27         24        25            26        26\n[6,]      28       29       29           30      29           26      27     29         25        29            31        30",
     "crumbs": [
       "Content",
       "<b>Weekly content</b>",
-      "11 - Synthetic Control & Regression Discontinuity"
+      "11 - Synthetic Control (1/2)"
     ]
   },
   {
     "objectID": "content/course_weeks/week_11/week_11.html#horizontal-regression",
     "href": "content/course_weeks/week_11/week_11.html#horizontal-regression",
-    "title": "11 - Synthetic Control & Regression Discontinuity",
+    "title": "11 - Synthetic Control (1/2)",
     "section": "Horizontal regression",
     "text": "Horizontal regression\nTo find the synthetic control weights, \\(\\mathbf{W}* = (w_2^*, \\ldots, w_{N+1}^*)\\) that minimizes \\(\\|  \\mathbf{X}_1 - \\mathbf{X}_0 \\mathbf{W} \\|\\), a simple way is to run an ordinary linear regression. At first, it might be a bit confusing, but, prior to the treatment, we can regress the treated unit on the control units and see which control units can explain the treated unit best. You just need two of the blocks you just created.\nTask 5: Run the linear regression and print the obtained weights. What is an observation in this setup? What is the meaning of the coefficients?\n\nCode# Weights from OLS\nols &lt;- lm(y1_pre ~ 0 + y0_pre)\nw_ols &lt;- coef(ols)\n\nprint(as.data.frame(w_ols) |&gt; arrange(-w_ols))\n\n                      w_ols\ny0_preSan Francisco  0.2766\ny0_preSt. Louis      0.2322\ny0_preAtlanta        0.2236\ny0_preMemphis        0.1639\ny0_preOrange         0.1452\ny0_preJackson        0.1334\ny0_prePittsburgh     0.0590\ny0_preJacksonville   0.0410\ny0_preDavidson       0.0064\ny0_preColumbus      -0.0881\ny0_preSan Diego     -0.1183\ny0_preIndianapolis  -0.1408\n\n\nHaving obtained the weights, we can now proceed to calculate the estimate that we are ultimately interested in, the \\(ATT\\). For the periods following the treatment, we subtract the synthetic outcome from the observed outcome for the treated unit:\n\\[\n\\hat{\\tau}_{1t} = Y_{1t} - \\sum_{i=2}^{N+1} w_i^* Y_{it} \\quad \\forall \\quad t &gt; T_0\n\\]\nThis expression yields the treatment effect per period. By averaging across the treatment periods, you retrieve the \\(ATT\\).\n\n\n\n\n\n\nNote\n\n\n\nMatrix multiplication with %*% in R performs a dot product of rows and columns, where each element of the resulting matrix is the sum of the products of corresponding elements from the rows of the first matrix and the columns of the second matrix. This operation requires that the number of columns in the first matrix matches the number of rows in the second matrix.\n\n\nTask 6: Calculate the ATT.\n\nCode# Counterfactual / Synthetic control unit\ny_sc_post &lt;- y0_post %*% w_ols\n\n# ATT\nmean(y1_post - y_sc_post)\n\n[1] 1.6\n\n\nTask 7: Calculate the pseudo-ATT before the treatment takes place. What value do you expect?\n\nCode# Counterfactual / Synthetic control unit\ny_sc_pre &lt;- y0_pre %*% w_ols\n\n# Pseudo-ATT\nmean(y1_pre - y_sc_pre)\n\n[1] -0.019\n\n\nLet’s plot the synthetic and observed unit.\n\n# Create data frame with synthetic control and treated unit\nsc_vs_trt &lt;- tibble(\n  period = unique(ride$period),\n  y_synth = c(y_sc_pre, y_sc_post),\n  y_treat = c(y1_pre, y1_post)\n) |&gt; \n  pivot_longer(cols = c(\"y_synth\", \"y_treat\"))\n\n# Line plot with treatment date highlighted\nggplot(sc_vs_trt, aes(x = period, y = value, group = name, color = name)) +\n  geom_line() +\n  geom_vline(xintercept = T0, linetype = \"dashed\")\n\n\n\n\n\n\n\nBecause we will want to plot in the subsequent steps as well, let’s create a function that helps us avoiding to rewrite the code. The only thing that is variable in these lines of codes is the estimated synthetic control unit. Check for yourself that you can reproduce the previous plot using the function.\n\n# Generate plot of synthetic unit and observed treated unit\nplot_synth &lt;- function(y_sc_pre, y_sc_post) {\n  # Data to plot\n  sc_vs_trt &lt;- tibble(\n    period = unique(ride$period), # periods (will be replicated)\n    y_synth = c(y_sc_pre, y_sc_post), # synthetic outcomes\n    y_treat = c(y1_pre, y1_post) # observed outcomes of treated unit\n  ) |&gt; \n    # long format for ggplot\n    pivot_longer(cols = c(\"y_synth\", \"y_treat\"))\n  \n  ggplot(sc_vs_trt,\n         aes(\n           x = period, \n           y = value, \n           group = name, \n           color = name)\n         ) +\n    geom_line() +\n    geom_vline(xintercept = T0, linetype = \"dashed\")\n}",
     "crumbs": [
       "Content",
       "<b>Weekly content</b>",
-      "11 - Synthetic Control & Regression Discontinuity"
+      "11 - Synthetic Control (1/2)"
     ]
   },
   {
     "objectID": "content/course_weeks/week_11/week_11.html#period-weights",
     "href": "content/course_weeks/week_11/week_11.html#period-weights",
-    "title": "11 - Synthetic Control & Regression Discontinuity",
+    "title": "11 - Synthetic Control (1/2)",
     "section": "Period weights",
     "text": "Period weights\nWe have successfully replicated the pre-treatment outcomes quite closely. In doing so, we’ve implicitly assumed that each period leading up to the treatment carries equal significance for our analysis. However, it’s reasonable to consider that more recent periods might be more indicative of the trends following the treatment. To accommodate this insight, we can simply adjust our methodology to place greater emphasis on these more recent periods. This minor modification will help refine our approach and potentially yield more accurate predictions.\n\\[\n\\begin{aligned}\n\\mathbf{W}^* = \\arg\\min_{\\mathbf{W}} \\| \\sqrt{V}\\mathbf{X}_1 - \\mathbf{X}_0 \\mathbf{W} \\|_2^2 &= \\arg\\min_{\\mathbf{W}} [(\\mathbf{X}_1 - \\mathbf{X}_0 \\mathbf{W})' \\mathbf{V} (\\mathbf{X}_1 - \\mathbf{X}_0 \\mathbf{W})] \\\\\n&= \\arg\\min_{\\mathbf{W}} \\sum_{m=1}^{k} v_m \\bigg( X_{1m} - \\sum_{i=2}^{N+1} w_iX_{im}\\bigg)^2 \\\\\n\\end{aligned}\n\\]\n\n\n\n\n\n\nNote\n\n\n\nThe sweep() function in R applies an operation (such as addition, subtraction, multiplication, or division) to the rows or columns of a matrix or array, using a corresponding vector of values, effectively “sweeping” the operation across the specified margin (rows or columns) of the data. In R, the margin 1 and 2 refer to rows and columns, respectively.\n\n\nFirst, we just replicate the previous estimate by having uniform weights (each period receives weight = 1).\n\n# Including weights with uniform weights\na_uni &lt;- rep(1, T_pre)\ny0_pre_uni &lt;- sweep(y0_pre, 1, a_uni, \"*\")\ny1_pre_uni &lt;- sweep(y1_pre, 1, a_uni, \"*\")\n\nols_uni &lt;- lm(y1_pre_uni ~ 0 + y0_pre_uni)\n\n# Check for equality\nall(coef(ols) == coef(ols_uni))\n\n[1] TRUE\n\n\nFor now, we’ll pause here and move to the next section. But you will need period weights for your assignment.",
     "crumbs": [
       "Content",
       "<b>Weekly content</b>",
-      "11 - Synthetic Control & Regression Discontinuity"
+      "11 - Synthetic Control (1/2)"
     ]
   },
   {
     "objectID": "content/course_weeks/week_11/week_11.html#weight-constraints",
     "href": "content/course_weeks/week_11/week_11.html#weight-constraints",
-    "title": "11 - Synthetic Control & Regression Discontinuity",
+    "title": "11 - Synthetic Control (1/2)",
     "section": "Weight constraints",
     "text": "Weight constraints\nSo far, we have not taken into account that, as discussed in the lecture, weights are subject to two conditions:\n\\(\\mathbf{W} = (w_2, \\ldots, w_{N+1})'\\), with \\(w_i \\geq 0\\) and \\(\\sum_{i=2}^{N+1} w_i = 1\\).\nHowever, the sum of weights from before are:\n\n# Sum of weights\nsum(w_ols)\n\n[1] 0.93\n\n\nFor optimization subject to constraints, we need to install and load CVXR, a package of convex optimization. Defining the objective and the constraint, we can solve for the optimal weights \\(w\\) for the synthetic control unit.\n\nlibrary(CVXR)\n\n# Optimization procedure\nw &lt;- Variable(ncol(y0_pre))\nobjective &lt;- Minimize(sum_squares(y0_pre %*% w - y1_pre))\nconstraints &lt;- list(sum(w) == 1, w &gt;= 0)\nproblem &lt;- Problem(objective, constraints)\nw_star &lt;- as.vector(solve(problem)$getValue(w))\n\nLet’s check whether the weights fulfill the constraints.\n\n# Check constraints\nsum(w_star)\n\n[1] 1\n\nsum(w_star &gt;= 0)\n\n[1] 4\n\nround(w_star, 2)\n\n [1] 0.00 0.00 0.00 0.00 0.00 0.24 0.10 0.21 0.45 0.00 0.00 0.00\n\nprint(tibble(city = unique(ride[ride$treated == 0, ]$city), round(w_star, 2)))\n\n# A tibble: 12 × 2\n   city          `round(w_star, 2)`\n   &lt;chr&gt;                      &lt;dbl&gt;\n 1 Atlanta                     0   \n 2 Columbus                    0   \n 3 Davidson                    0   \n 4 Indianapolis                0   \n 5 Jackson                     0   \n 6 Jacksonville                0.24\n 7 Memphis                     0.1 \n 8 Orange                      0.21\n 9 Pittsburgh                  0.45\n10 San Diego                   0   \n11 San Francisco               0   \n12 St. Louis                   0   \n\n\nTask 8: Plot the treated unit and synthetic control prior to and after the treatment.\n\nCode# Synthetic control\ny_sc_star_pre &lt;- y0_pre %*% w_star\ny_sc_star_post &lt;- y0_post %*% w_star\n\n# Plot\nplot_synth(y_sc_pre = y_sc_star_pre, y_sc_post = y_sc_star_post)",
     "crumbs": [
       "Content",
       "<b>Weekly content</b>",
-      "11 - Synthetic Control & Regression Discontinuity"
+      "11 - Synthetic Control (1/2)"
     ]
   },
   {
     "objectID": "content/course_weeks/week_11/week_11.html#footnotes",
     "href": "content/course_weeks/week_11/week_11.html#footnotes",
-    "title": "11 - Synthetic Control & Regression Discontinuity",
+    "title": "11 - Synthetic Control (1/2)",
     "section": "Footnotes",
     "text": "Footnotes\n\nInspired by: https://matteocourthoud.github.io/post/synth/↩︎",
     "crumbs": [
       "Content",
       "<b>Weekly content</b>",
-      "11 - Synthetic Control & Regression Discontinuity"
+      "11 - Synthetic Control (1/2)"
     ]
   },
   {

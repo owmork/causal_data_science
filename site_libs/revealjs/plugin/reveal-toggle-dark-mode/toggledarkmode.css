@@ -1,0 +1,123 @@
+/* TOGGLE BUTTON*/
+.reveal-viewport:not(.light) .theme-icon .fa-toggle-off {
+  display: none;
+}
+.reveal-viewport:not(.light) .theme-icon .fa-toggle-on {
+  display: inline-block;
+}
+.reveal-viewport.light .theme-icon .fa-toggle-off {
+  display: inline-block;
+}
+.reveal-viewport.light .theme-icon .fa-toggle-on {
+  display: none;
+}
+
+/* LIGHT MODE*/
+.reveal-viewport.light {
+
+}
+
+/* DARK MODE */
+.reveal-viewport:not(.light) div.sourceCode pre.sourceCode code span {
+  transition: color 2s;
+}
+
+.reveal-viewport:not(.light) {
+  --r-background-color: #272935;
+  --r-heading-color: #00C1D4;
+  --r-link-color: #00C1D4;
+  --r-main-color: #fff;
+}
+
+
+
+/* CODE */
+.reveal-viewport:not(.light) pre code {
+    transition: color 2s;
+    background-color: #005e73;
+    color:#e1e4e8;
+}
+
+.reveal-viewport:not(.light) code span.an,
+.reveal-viewport:not(.light) code span.co,
+.reveal-viewport:not(.light) code span.cv,
+.reveal-viewport:not(.light) code span.do,
+.reveal-viewport:not(.light) code span.in,
+.reveal-viewport:not(.light) code span.re {
+  transition: color 2s;
+  color: #A8968C;
+}
+
+.reveal-viewport:not(.light) code span.bn,
+.reveal-viewport:not(.light) code span.cn,
+.reveal-viewport:not(.light) code span.dv,
+.reveal-viewport:not(.light) code span.fl,
+.reveal-viewport:not(.light) code span.sc {
+  transition: color 2s;
+  color: #5AFFC5;
+}
+
+.reveal-viewport:not(.light) code span.ch,
+.reveal-viewport:not(.light) code span.im,
+.reveal-viewport:not(.light) code span.ss,
+.reveal-viewport:not(.light) code span.st,
+.reveal-viewport:not(.light) code span.vs {
+  transition: color 2s;
+  color: #5AFFC5;
+}
+
+.reveal-viewport:not(.light) code span.fu {
+  transition: color 2s;
+  color: #00C1D4;
+}
+
+.reveal-viewport:not(.light) code span,
+.reveal-viewport:not(.light) code span.op,
+.reveal-viewport:not(.light) code.sourceCode > span,
+.reveal-viewport:not(.light) pre > code.sourceCode > span,
+.reveal-viewport:not(.light) div.sourceCode,
+.reveal-viewport:not(.light) div.sourceCode pre.sourceCode {
+  transition: color 2s;
+  color: #e1e4e8;
+}
+
+.reveal-viewport:not(.light) code span.at,
+.reveal-viewport:not(.light) code span.bu,
+.reveal-viewport:not(.light) code span.cf,
+.reveal-viewport:not(.light) code span.dt,
+.reveal-viewport:not(.light) code span.ex,
+.reveal-viewport:not(.light) code span.kw,
+.reveal-viewport:not(.light) code span.pp {
+  transition: color 2s;
+  color: #FF7E15;
+}
+
+.reveal-viewport:not(.light) code span.wa,
+.reveal-viewport:not(.light) code span.al,
+.reveal-viewport:not(.light) code span.er {
+  transition: color 2s;
+  color: #FF4F4F;
+}
+
+.reveal-viewport:not(.light) code span.va {
+  transition: color 2s;
+  color: #FF7E15;
+}
+
+.reveal-viewport:not(.light) code span.al,
+.reveal-viewport:not(.light) code span.ex {
+  transition: color 2s;
+  font-weight: bold;
+}
+
+.reveal-viewport:not(.light) code span.er {
+  transition: color 2s;
+  text-decoration: underline;
+}
+
+/* TRANSITION */
+.reveal,
+.reveal h1,
+.reveal h2 {
+  transition: color 1s ease;   
+}
