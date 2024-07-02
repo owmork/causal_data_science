@@ -17,6 +17,40 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 <script src="../../../site_libs/quarto-nav/quarto-nav.js"></script>
@@ -38,7 +72,10 @@ ul.task-list li input[type="checkbox"] {
 <script src="../../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="../../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="dark">
-<script src="../../../site_libs/quarto-contrib/iconify-1.0.7/iconify-icon.min.js"></script><script id="quarto-search-options" type="application/json">{
+<script src="../../../site_libs/quarto-contrib/iconify-1.0.7/iconify-icon.min.js"></script>
+<script src="../../../site_libs/quarto-contrib/glightbox/glightbox.min.js"></script>
+<link href="../../../site_libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
+<link href="../../../site_libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet"><script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
   "collapse-after": 3,
@@ -65,7 +102,32 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script><link href="../../../site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet">
-<script src="../../../site_libs/pagedtable-1.1/js/pagedtable.js"></script><link rel="stylesheet" href="../../../styles.css">
+<script src="../../../site_libs/pagedtable-1.1/js/pagedtable.js"></script><script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script><script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script><script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script><link rel="stylesheet" href="../../../styles.css">
 </head>
 <body class="nav-sidebar docked nav-fixed">
 
@@ -245,7 +307,16 @@ ul.task-list li input[type="checkbox"] {
    
   <ul>
 <li><a href="#slides-recap" id="toc-slides-recap" class="nav-link active" data-scroll-target="#slides-recap">Slides &amp; Recap</a></li>
-  <li><a href="#practical-example" id="toc-practical-example" class="nav-link" data-scroll-target="#practical-example">Practical example</a></li>
+  <li>
+<a href="#practical-example" id="toc-practical-example" class="nav-link" data-scroll-target="#practical-example">Practical example</a>
+  <ul class="collapse">
+<li><a href="#exploration" id="toc-exploration" class="nav-link" data-scroll-target="#exploration">Exploration</a></li>
+  <li><a href="#synthetic-control" id="toc-synthetic-control" class="nav-link" data-scroll-target="#synthetic-control">Synthetic control</a></li>
+  <li><a href="#horizontal-regression" id="toc-horizontal-regression" class="nav-link" data-scroll-target="#horizontal-regression">Horizontal regression</a></li>
+  <li><a href="#period-weights" id="toc-period-weights" class="nav-link" data-scroll-target="#period-weights">Period weights</a></li>
+  <li><a href="#weight-constraints" id="toc-weight-constraints" class="nav-link" data-scroll-target="#weight-constraints">Weight constraints</a></li>
+  </ul>
+</li>
   <li><a href="#assignment" id="toc-assignment" class="nav-link" data-scroll-target="#assignment">Assignment</a></li>
   </ul></nav>
     </div>
@@ -265,18 +336,275 @@ ul.task-list li input[type="checkbox"] {
   
 
 
-</header><section id="slides-recap" class="level2"><h2 class="anchored" data-anchor-id="slides-recap">Slides &amp; Recap</h2>
-<p>Coming soon.</p>
-</section><section id="practical-example" class="level2"><h2 class="anchored" data-anchor-id="practical-example">Practical example</h2>
-<p>Coming soon.</p>
-</section><section id="assignment" class="level2"><h2 class="anchored" data-anchor-id="assignment">Assignment</h2>
+</header><section id="slides-recap" class="level1"><h1>Slides &amp; Recap</h1>
+<iframe style="width: 100%; height: 45vw; max-height: 50vh;" frameborder="0" allowfullscreen="" src="https://tuhhstartupengineers-classroom.github.io/ss24-causal-data-science/slides/09_synth_c.html">
+</iframe>
+<p>Over the past two weeks, we’ve explored how to use panel data to estimate causal effects with variations of the difference-in-differences estimator. This week, we’ll dive into another popular estimation technique: the synthetic control (SC) method. Originally designed for scenarios with very few treated units—often just one, like a single country—this method constructs a synthetic control unit by combining control units. This synthetic unit closely replicates the behavior of the treated unit before the intervention and acts as a counterfactual after the treatment. When the treated unit and the synthetic control unit align perfectly, we can relax the parallel trends assumption.</p>
+</section><section id="practical-example" class="level1"><h1>Practical example</h1>
+<section id="exploration" class="level2"><h2 class="anchored" data-anchor-id="exploration">Exploration</h2>
+<p>Consider the following example: you are working at a ride-sharing platform and you want to understand the effect of introducing a new feature on revenue, i.e.&nbsp;let’s say the introduction of self-driving cars. <a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
+<p>Let’s directly take a look at the <a href="https://cloud.tuhh.de/index.php/s/dcTRYT6Rp7JRxg8">data</a>.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">ride</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html">readRDS</a></span><span class="op">(</span><span class="st">"ride.rds"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">ride</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 9
+  city    density employment   gdp population treated post  revenue period    
+  &lt;chr&gt;     &lt;int&gt;      &lt;dbl&gt; &lt;dbl&gt;      &lt;dbl&gt; &lt;lgl&gt;   &lt;lgl&gt;   &lt;dbl&gt; &lt;date&gt;    
+1 Atlanta     290      0.630  6.45       4.27 FALSE   FALSE    23.5 2003-01-01
+2 Atlanta     290      0.630  6.45       4.27 FALSE   FALSE    24.3 2003-02-01
+3 Atlanta     290      0.630  6.45       4.27 FALSE   FALSE    23.3 2003-03-01
+4 Atlanta     290      0.630  6.45       4.27 FALSE   FALSE    27.7 2003-04-01
+5 Atlanta     290      0.630  6.45       4.27 FALSE   FALSE    26.4 2003-05-01
+6 Atlanta     290      0.630  6.45       4.27 FALSE   FALSE    28.3 2003-06-01</code></pre>
+</div>
+</div>
+<p>As we approach the end of this module, I’ll be providing less guidance. Therefore, similar to last week, let’s dive into some data exploration.</p>
+<p><span style="color:#FF7E15"><strong>Task 1:</strong></span> Answer the following questions:</p>
+<ul>
+<li>How many periods did we observe?</li>
+<li>How many units did we observe?</li>
+<li>How many units are in the treatment and how many are in the control group?</li>
+<li>What is the treatment period?</li>
+</ul>
+<p><span style="color:#FF7E15"><strong>Task 2:</strong></span> Plot the revenue evolution over time.</p>
+<p><span style="color:#FF7E15"><strong>Task 3:</strong></span> Compare the treated city to the control cities in terms of the covariate and outcome distribution.</p>
+</section><section id="synthetic-control" class="level2"><h2 class="anchored" data-anchor-id="synthetic-control">Synthetic control</h2>
+<p>As we explore the synthetic control method, we’ll start by doing it manually. While you’ll most likely use pre-built packages in practice, performing the calculations by hand can provide a deeper understanding of the underlying mechanics of the method.</p>
+<p>Here is a useful perspective to consider as we approach the data:</p>
+<p><span class="math display">\[
+\begin{equation}
+\left(
+\begin{array}{c|c}
+\begin{matrix}
+X_{11} &amp; X_{12} &amp; \cdots &amp; X_{1T_0} \\
+\hline
+X_{21} &amp; X_{22} &amp; \cdots &amp; X_{2T_0} \\
+\vdots &amp; \vdots &amp; \ddots &amp; \vdots \\
+X_{N1} &amp; X_{N2} &amp; \cdots &amp; X_{NT_0}
+\end{matrix}
+&amp;
+\begin{matrix}
+Y_{1T} \\
+\hline
+Y_{2T} \\
+\vdots \\
+Y_{NT}
+\end{matrix}
+\end{array}
+\right)
+\equiv
+\left(
+\begin{array}{c|c}
+\begin{matrix}
+\mathbf{X}_{1} \\
+\hline
+\mathbf{X}_{0}  \\
+\end{matrix}
+&amp;
+\begin{matrix}
+Y_{1T} \\
+\hline
+\mathbf{Y}_{0T} \\
+\end{matrix}
+\end{array}
+\right)
+\end{equation}
+\]</span></p>
+<p>We utilize the control units, often referred to as the “donor pool,” to replicate the pre-treatment observations of the treated unit. For each control unit, we assign a weight, which is then used to impute the counterfactual outcome for the treated unit. Specifically, <span class="math inline">\(Y_{1T_t}(0)\)</span> is imputed using a weighted average of <span class="math inline">\(\mathbf{Y}_{0T_t}\)</span>.</p>
+<p>For our initial step, we’ll focus solely on pre-treatment outcomes, setting aside covariates for now. Our goal is to accurately reproduce the pre-treatment outcome of the treated unit by adjusting the weights assigned to the pre-treatment outcomes of the control units.</p>
+<p>Let’s begin by organizing our data into four distinct blocks:</p>
+<ul>
+<li>Pre-treatment control <span class="math inline">\(\mathbf{X}_{0}\)</span>
+</li>
+<li>Pre-treatment treated <span class="math inline">\(\mathbf{X}_{1}\)</span>
+</li>
+<li>Post-treatment control <span class="math inline">\(Y_{0T}\)</span>
+</li>
+<li>Post-treatment treated <span class="math inline">\(Y_{1T}\)</span>
+</li>
+</ul>
+<p>Initially, we’ll focus on revenue as our primary outcome variable and introduce covariates later in the analysis to refine our model.</p>
+<p><span style="color:#FF7E15"><strong>Task 4:</strong></span> Split the data and extract the for blocks.</p>
+</section><section id="horizontal-regression" class="level2"><h2 class="anchored" data-anchor-id="horizontal-regression">Horizontal regression</h2>
+<p>To find the synthetic control weights, <span class="math inline">\(\mathbf{W}* = (w_2^*, \ldots, w_{N+1}^*)\)</span> that minimizes <span class="math inline">\(\|  \mathbf{X}_1 - \mathbf{X}_0 \mathbf{W} \|\)</span>, a simple way is to run an ordinary linear regression. At first, it might be a bit confusing, but, prior to the treatment, we can regress the treated unit on the control units and see which control units can explain the treated unit best. You just need two of the blocks you just created.</p>
+<p><span style="color:#FF7E15"><strong>Task 5:</strong></span> Run the linear regression and print the obtained weights. What is an observation in this setup? What is the meaning of the coefficients?</p>
+<p>Having obtained the weights, we can now proceed to calculate the estimate that we are ultimately interested in, the <span class="math inline">\(ATT\)</span>. For the periods following the treatment, we subtract the synthetic outcome from the observed outcome for the treated unit:</p>
+<p><span class="math display">\[
+\hat{\tau}_{1t} = Y_{1t} - \sum_{i=2}^{N+1} w_i^* Y_{it} \quad \forall \quad t &gt; T_0
+\]</span></p>
+<p>This expression yields the treatment effect per period. By averaging across the treatment periods, you retrieve the <span class="math inline">\(ATT\)</span>.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Matrix multiplication with <code>%*%</code> in R performs a dot product of rows and columns, where each element of the resulting matrix is the sum of the products of corresponding elements from the rows of the first matrix and the columns of the second matrix. This operation requires that the number of columns in the first matrix matches the number of rows in the second matrix.</p>
+</div>
+</div>
+<p><span style="color:#FF7E15"><strong>Task 6:</strong></span> Calculate the ATT.</p>
+<p><span style="color:#FF7E15"><strong>Task 7:</strong></span> Calculate the pseudo-ATT before the treatment takes place. What value do you expect?</p>
+<p>Let’s plot the synthetic and observed unit.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Create data frame with synthetic control and treated unit</span></span>
+<span><span class="va">sc_vs_trt</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span><span class="op">(</span></span>
+<span>  period <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span><span class="op">(</span><span class="va">ride</span><span class="op">$</span><span class="va">period</span><span class="op">)</span>,</span>
+<span>  y_synth <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">y_sc_pre</span>, <span class="va">y_sc_post</span><span class="op">)</span>,</span>
+<span>  y_treat <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">y1_pre</span>, <span class="va">y1_post</span><span class="op">)</span></span>
+<span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://tidyr.tidyverse.org/reference/pivot_longer.html">pivot_longer</a></span><span class="op">(</span>cols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"y_synth"</span>, <span class="st">"y_treat"</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Line plot with treatment date highlighted</span></span>
+<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">sc_vs_trt</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">period</span>, y <span class="op">=</span> <span class="va">value</span>, group <span class="op">=</span> <span class="va">name</span>, color <span class="op">=</span> <span class="va">name</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html">geom_vline</a></span><span class="op">(</span>xintercept <span class="op">=</span> <span class="va">T0</span>, linetype <span class="op">=</span> <span class="st">"dashed"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><a href="week_11_files/figure-html/unnamed-chunk-9-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1"><img src="week_11_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:75.0%"></a></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Because we will want to plot in the subsequent steps as well, let’s create a function that helps us avoiding to rewrite the code. The only thing that is variable in these lines of codes is the estimated synthetic control unit. Check for yourself that you can reproduce the previous plot using the function.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Generate plot of synthetic unit and observed treated unit</span></span>
+<span><span class="va">plot_synth</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">y_sc_pre</span>, <span class="va">y_sc_post</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="co"># Data to plot</span></span>
+<span>  <span class="va">sc_vs_trt</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span><span class="op">(</span></span>
+<span>    period <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span><span class="op">(</span><span class="va">ride</span><span class="op">$</span><span class="va">period</span><span class="op">)</span>, <span class="co"># periods (will be replicated)</span></span>
+<span>    y_synth <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">y_sc_pre</span>, <span class="va">y_sc_post</span><span class="op">)</span>, <span class="co"># synthetic outcomes</span></span>
+<span>    y_treat <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">y1_pre</span>, <span class="va">y1_post</span><span class="op">)</span> <span class="co"># observed outcomes of treated unit</span></span>
+<span>  <span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>    <span class="co"># long format for ggplot</span></span>
+<span>    <span class="fu"><a href="https://tidyr.tidyverse.org/reference/pivot_longer.html">pivot_longer</a></span><span class="op">(</span>cols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"y_synth"</span>, <span class="st">"y_treat"</span><span class="op">)</span><span class="op">)</span></span>
+<span>  </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">sc_vs_trt</span>,</span>
+<span>         <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span></span>
+<span>           x <span class="op">=</span> <span class="va">period</span>, </span>
+<span>           y <span class="op">=</span> <span class="va">value</span>, </span>
+<span>           group <span class="op">=</span> <span class="va">name</span>, </span>
+<span>           color <span class="op">=</span> <span class="va">name</span><span class="op">)</span></span>
+<span>         <span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html">geom_vline</a></span><span class="op">(</span>xintercept <span class="op">=</span> <span class="va">T0</span>, linetype <span class="op">=</span> <span class="st">"dashed"</span><span class="op">)</span></span>
+<span><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section><section id="period-weights" class="level2"><h2 class="anchored" data-anchor-id="period-weights">Period weights</h2>
+<p>We have successfully replicated the pre-treatment outcomes quite closely. In doing so, we’ve implicitly assumed that each period leading up to the treatment carries equal significance for our analysis. However, it’s reasonable to consider that more recent periods might be more indicative of the trends following the treatment. To accommodate this insight, we can simply adjust our methodology to place greater emphasis on these more recent periods. This minor modification will help refine our approach and potentially yield more accurate predictions.</p>
+<p><span class="math display">\[
+\begin{aligned}
+\mathbf{W}^* = \arg\min_{\mathbf{W}} \| \sqrt{V}\mathbf{X}_1 - \mathbf{X}_0 \mathbf{W} \|_2^2 &amp;= \arg\min_{\mathbf{W}} [(\mathbf{X}_1 - \mathbf{X}_0 \mathbf{W})' \mathbf{V} (\mathbf{X}_1 - \mathbf{X}_0 \mathbf{W})] \\
+&amp;= \arg\min_{\mathbf{W}} \sum_{m=1}^{k} v_m \bigg( X_{1m} - \sum_{i=2}^{N+1} w_iX_{im}\bigg)^2 \\
+\end{aligned}
+\]</span></p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The sweep() function in R applies an operation (such as addition, subtraction, multiplication, or division) to the rows or columns of a matrix or array, using a corresponding vector of values, effectively “sweeping” the operation across the specified margin (rows or columns) of the data. In R, the margin 1 and 2 refer to rows and columns, respectively.</p>
+</div>
+</div>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Including weights with uniform weights</span></span>
+<span><span class="va">a_uni</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fl">1</span>, <span class="va">T_pre</span><span class="op">)</span></span>
+<span><span class="va">y0_pre_uni</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sweep.html">sweep</a></span><span class="op">(</span><span class="va">y0_pre</span>, <span class="fl">1</span>, <span class="va">a_uni</span>, <span class="st">"*"</span><span class="op">)</span></span>
+<span><span class="va">y1_pre_uni</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sweep.html">sweep</a></span><span class="op">(</span><span class="va">y1_pre</span>, <span class="fl">1</span>, <span class="va">a_uni</span>, <span class="st">"*"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">ols_uni</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">y1_pre_uni</span> <span class="op">~</span> <span class="fl">0</span> <span class="op">+</span> <span class="va">y0_pre_uni</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Check for equality</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/all.html">all</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/coef.html">coef</a></span><span class="op">(</span><span class="va">ols</span><span class="op">)</span> <span class="op">==</span> <span class="fu"><a href="https://rdrr.io/r/stats/coef.html">coef</a></span><span class="op">(</span><span class="va">ols_uni</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] TRUE</code></pre>
+</div>
+</div>
+<p><span style="color:#FF7E15"><strong>Task 8:</strong></span> Assign higher weight to more recent periods (no specific form required) and report the weights and ATT.</p>
+</section><section id="weight-constraints" class="level2"><h2 class="anchored" data-anchor-id="weight-constraints">Weight constraints</h2>
+<p>So far, we have not taken into account that, as discussed in the lecture, weights are subject to two conditions:</p>
+<p><span class="math inline">\(\mathbf{W} = (w_2, \ldots, w_{N+1})'\)</span>, with <span class="math inline">\(w_i \geq 0\)</span> and <span class="math inline">\(\sum_{i=2}^{N+1} w_i = 1\)</span>.</p>
+<p>However, the sum of weights from before are:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Sum of weights</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">w_ols</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.93</code></pre>
+</div>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">w_adj</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.93</code></pre>
+</div>
+</div>
+<p>For optimization subject to constraints, we need to install and load <code>CVXR</code>, a package of convex optimization. Defining the objective and the constraint, we can solve for the optimal weights <span class="math inline">\(w\)</span> for the synthetic control unit.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://cvxr.rbind.io">CVXR</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Optimization procedure</span></span>
+<span><span class="va">w</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://www.cvxgrp.org/CVXR/reference/Variable-class.html">Variable</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">ncol</a></span><span class="op">(</span><span class="va">y0_pre</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">objective</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://www.cvxgrp.org/CVXR/reference/Minimize-class.html">Minimize</a></span><span class="op">(</span><span class="fu"><a href="https://www.cvxgrp.org/CVXR/reference/sum_squares.html">sum_squares</a></span><span class="op">(</span><span class="va">y0_pre</span> <span class="op"><a href="https://rdrr.io/r/base/matmult.html">%*%</a></span> <span class="va">w</span> <span class="op">-</span> <span class="va">y1_pre</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">constraints</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">w</span><span class="op">)</span> <span class="op">==</span> <span class="fl">1</span>, <span class="va">w</span> <span class="op">&gt;=</span> <span class="fl">0</span><span class="op">)</span></span>
+<span><span class="va">problem</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://www.cvxgrp.org/CVXR/reference/Problem-class.html">Problem</a></span><span class="op">(</span><span class="va">objective</span>, <span class="va">constraints</span><span class="op">)</span></span>
+<span><span class="va">w_star</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/vector.html">as.vector</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/solve.html">solve</a></span><span class="op">(</span><span class="va">problem</span><span class="op">)</span><span class="op">$</span><span class="fu">getValue</span><span class="op">(</span><span class="va">w</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Let’s check whether the weights fulfill the constraints.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Check constraints</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">w_star</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1</code></pre>
+</div>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">w_star</span> <span class="op">&gt;=</span> <span class="fl">0</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 4</code></pre>
+</div>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="va">w_star</span>, <span class="fl">2</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] 0.00 0.00 0.00 0.00 0.00 0.24 0.10 0.21 0.45 0.00 0.00 0.00</code></pre>
+</div>
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span><span class="op">(</span>city <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span><span class="op">(</span><span class="va">ride</span><span class="op">[</span><span class="va">ride</span><span class="op">$</span><span class="va">treated</span> <span class="op">==</span> <span class="fl">0</span>, <span class="op">]</span><span class="op">$</span><span class="va">city</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="va">w_star</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 12 × 2
+   city          `round(w_star, 2)`
+   &lt;chr&gt;                      &lt;dbl&gt;
+ 1 Atlanta                     0   
+ 2 Columbus                    0   
+ 3 Davidson                    0   
+ 4 Indianapolis                0   
+ 5 Jackson                     0   
+ 6 Jacksonville                0.24
+ 7 Memphis                     0.1 
+ 8 Orange                      0.21
+ 9 Pittsburgh                  0.45
+10 San Diego                   0   
+11 San Francisco               0   
+12 St. Louis                   0   </code></pre>
+</div>
+</div>
+<p><span style="color:#FF7E15"><strong>Task 9:</strong></span> Plot the treated unit and synthetic control prior to and after the treatment.</p>
+</section></section><section id="assignment" class="level1"><h1>Assignment</h1>
 <p>Coming soon.</p>
 <div class="assignment">
-<p>…</p>
+<p>… <!-- Argue why not A/B test. --> <!-- Summarize what we have done in the tutorial. --> <!-- Pseudo effects for inference. --> <!-- plot? --> <!-- wrap into function --></p>
 </div>
 
 
-</section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+</section><div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+<ol>
+<li id="fn1"><p>Inspired by: https://matteocourthoud.github.io/post/synth/<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol></section></div></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
     const mode = bsSheetEl.getAttribute("data-mode");
@@ -680,7 +1008,31 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       &nbsp;
     </div>
   </div>
-</footer>
+</footer><script>var lightboxQuarto = GLightbox({"selector":".lightbox","openEffect":"zoom","descPosition":"bottom","loop":false,"closeEffect":"zoom"});
+window.onload = () => {
+  lightboxQuarto.on('slide_before_load', (data) => {
+    const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+    const href = trigger.getAttribute('href');
+    if (href !== null) {
+      const imgEl = window.document.querySelector(`a[href="${href}"] img`);
+      if (imgEl !== null) {
+        const srcAttr = imgEl.getAttribute("src");
+        if (srcAttr && srcAttr.startsWith("data:")) {
+          slideConfig.href = srcAttr;
+        }
+      }
+    } 
+  });
+
+  lightboxQuarto.on('slide_after_load', (data) => {
+    const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+    if (window.Quarto?.typesetMath) {
+      window.Quarto.typesetMath(slideNode);
+    }
+  });
+
+};
+          </script>
 
 
 </body></html>
