@@ -1,6 +1,6 @@
 ---
-title: "11 - Synthetic Control & Regression Discontinuity"
-linktitle: "11 - Synthetic Control & Regression Discontinuity"
+title: "11 - Synthetic Control (1/2)"
+linktitle: "11 - Synthetic Control (1/2)"
 output:
   blogdown::html_page:
     toc: true
@@ -85,7 +85,7 @@ As we approach the end of this module, I'll be providing less guidance. Therefor
 -   What is the treatment period?
 
 ```{r}
-#| code-fold: true
+#| include: false
 
 # Exploration
 # How many pre- and post periods?
@@ -106,7 +106,7 @@ print(T0)
 [**Task 2:**]{style="color:#FF7E15"} Plot the revenue evolution over time.
 
 ```{r}
-#| code-fold: true
+#| include: false
 #| warning: false
 
 # Revenue over time
@@ -129,7 +129,7 @@ ggplot(
 [**Task 3:**]{style="color:#FF7E15"} Compare the treated city to the control cities in terms of the covariate and outcome distribution.
 
 ```{r}
-#| code-fold: true
+#| include: false
 
 # Treatment group comparison
 balance_df <- ride |> 
@@ -202,7 +202,7 @@ Initially, we'll focus on revenue as our primary outcome variable and introduce 
 [**Task 4:**]{style="color:#FF7E15"} Split the data and extract the for blocks.
 
 ```{r}
-#| code-fold: true
+#| include: false
 
 # Split and extract 4 matrices
 y0_pre <- ride |>
@@ -240,7 +240,7 @@ To find the synthetic control weights, $\mathbf{W}* = (w_2^*, \ldots, w_{N+1}^*)
 [**Task 5:**]{style="color:#FF7E15"} Run the linear regression and print the obtained weights. What is an observation in this setup? What is the meaning of the coefficients?
 
 ```{r}
-#| code-fold: true
+#| include: false
 
 # Weights from OLS
 ols <- lm(y1_pre ~ 0 + y0_pre)
@@ -265,7 +265,7 @@ This operation requires that the number of columns in the first matrix matches t
 [**Task 6:**]{style="color:#FF7E15"} Calculate the ATT.
 
 ```{r}
-#| code-fold: true
+#| include: false
 
 # Counterfactual / Synthetic control unit
 y_sc_post <- y0_post %*% w_ols
@@ -277,7 +277,7 @@ mean(y1_post - y_sc_post)
 [**Task 7:**]{style="color:#FF7E15"} Calculate the pseudo-ATT before the treatment takes place. What value do you expect?
 
 ```{r}
-#| code-fold: true
+#| include: false
 
 # Counterfactual / Synthetic control unit
 y_sc_pre <- y0_pre %*% w_ols
@@ -361,7 +361,7 @@ all(coef(ols) == coef(ols_uni))
 [**Task 8:**]{style="color:#FF7E15"} Assign higher weight to more recent periods (no specific form required) and report the weights and ATT.
 
 ```{r}
-#| code-fold: true
+#| include: false
 
 # Weights decreasing with distance to treatment period
 a_adj <- seq(1, T_pre, 1)
@@ -423,7 +423,7 @@ print(tibble(city = unique(ride[ride$treated == 0, ]$city), round(w_star, 2)))
 [**Task 9:**]{style="color:#FF7E15"} Plot the treated unit and synthetic control prior to and after the treatment.
 
 ```{r}
-#| code-fold: true
+#| include: false
 
 # Synthetic control
 y_sc_star_pre <- y0_pre %*% w_star

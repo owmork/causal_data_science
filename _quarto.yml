@@ -1,7 +1,10 @@
 project:
   type: website
   output-dir: docs
-
+  render:
+    - "*.qmd"
+    - "!content/course_weeks/_removed"
+    
 website:
   title: "<b>CAUSAL DATA SCIENCE FOR BUSINESS ANALYTICS</b>"
   page-navigation: true

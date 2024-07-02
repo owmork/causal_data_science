@@ -1,6 +1,6 @@
 ---
-title: "12 - Causal Mediation"
-linktitle: "12 - Causal Mediation"
+title: "12 - Synthetic Control (2/2)"
+linktitle: "12 - Synthetic Control (2/2)"
 output:
   blogdown::html_page:
     toc: true

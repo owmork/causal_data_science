@@ -1,6 +1,6 @@
 ---
-title: "11 - Synthetic Control (1/2)"
-linktitle: "11 - Synthetic Control (1/2)"
+title: "11 - Synthetic Control & Regression Discontinuity"
+linktitle: "11 - Synthetic Control & Regression Discontinuity"
 output:
   blogdown::html_page:
     toc: true
@@ -51,7 +51,11 @@ source(paste0(here::here(), "/code/dag_theme.R"))
 
 </iframe>
 
-Over the past two weeks, we've explored how to use panel data to estimate causal effects with variations of the difference-in-differences estimator. This week, we'll dive into another popular estimation technique: the synthetic control (SC) method. Originally designed for scenarios with very few treated units—often just one, like a single country—this method constructs a synthetic control unit by combining control units. This synthetic unit closely replicates the behavior of the treated unit before the intervention and acts as a counterfactual after the treatment. When the treated unit and the synthetic control unit align perfectly, we can relax the parallel trends assumption.
+Over the past two weeks, we've explored how to use panel data to estimate causal effects with variations of the difference-in-differences estimator.
+This week, we'll dive into another popular estimation technique: the synthetic control (SC) method.
+Originally designed for scenarios with very few treated units—often just one, like a single country—this method constructs a synthetic control unit by combining control units.
+This synthetic unit closely replicates the behavior of the treated unit before the intervention and acts as a counterfactual after the treatment.
+When the treated unit and the synthetic control unit align perfectly, we can relax the parallel trends assumption.
 
 # Practical example
 
@@ -75,7 +79,8 @@ ride <- readRDS("ride.rds")
 print(head(ride))
 ```
 
-As we approach the end of this module, I'll be providing less guidance. Therefore, similar to last week, let's dive into some data exploration.
+As we approach the end of this module, I'll be providing less guidance.
+Therefore, similar to last week, let's dive into some data exploration.
 
 [**Task 1:**]{style="color:#FF7E15"} Answer the following questions:
 
@@ -85,7 +90,7 @@ As we approach the end of this module, I'll be providing less guidance. Therefor
 -   What is the treatment period?
 
 ```{r}
-#| include: false
+#| code-fold: true
 
 # Exploration
 # How many pre- and post periods?
@@ -106,7 +111,7 @@ print(T0)
 [**Task 2:**]{style="color:#FF7E15"} Plot the revenue evolution over time.
 
 ```{r}
-#| include: false
+#| code-fold: true
 #| warning: false
 
 # Revenue over time
@@ -129,7 +134,7 @@ ggplot(
 [**Task 3:**]{style="color:#FF7E15"} Compare the treated city to the control cities in terms of the covariate and outcome distribution.
 
 ```{r}
-#| include: false
+#| code-fold: true
 
 # Treatment group comparison
 balance_df <- ride |> 
@@ -142,7 +147,8 @@ print(balance_df)
 
 ## Synthetic control
 
-As we explore the synthetic control method, we'll start by doing it manually. While you'll most likely use pre-built packages in practice, performing the calculations by hand can provide a deeper understanding of the underlying mechanics of the method.
+As we explore the synthetic control method, we'll start by doing it manually.
+While you'll most likely use pre-built packages in practice, performing the calculations by hand can provide a deeper understanding of the underlying mechanics of the method.
 
 Here is a useful perspective to consider as we approach the data:
 
@@ -184,25 +190,28 @@ Y_{1T} \\
 \end{array}
 \right)
 \end{equation}
-$$ 
+$$
 
-We utilize the control units, often referred to as the "donor pool," to replicate the pre-treatment observations of the treated unit. For each control unit, we assign a weight, which is then used to impute the counterfactual outcome for the treated unit. Specifically, $Y_{1T_t}(0)$ is imputed using a weighted average of $\mathbf{Y}_{0T_t}$.
+We utilize the control units, often referred to as the "donor pool," to replicate the pre-treatment observations of the treated unit.
+For each control unit, we assign a weight, which is then used to impute the counterfactual outcome for the treated unit.
+Specifically, $Y_{1T_t}(0)$ is imputed using a weighted average of $\mathbf{Y}_{0T_t}$.
 
-For our initial step, we'll focus solely on pre-treatment outcomes, setting aside covariates for now. Our goal is to accurately reproduce the pre-treatment outcome of the treated unit by adjusting the weights assigned to the pre-treatment outcomes of the control units.
+For our initial step, we'll focus solely on pre-treatment outcomes, setting aside covariates for now.
+Our goal is to accurately reproduce the pre-treatment outcome of the treated unit by adjusting the weights assigned to the pre-treatment outcomes of the control units.
 
 Let's begin by organizing our data into four distinct blocks:
 
-- Pre-treatment control $\mathbf{X}_{0}$
-- Pre-treatment treated $\mathbf{X}_{1}$
-- Post-treatment control $Y_{0T}$
-- Post-treatment treated $Y_{1T}$
+-   Pre-treatment control $\mathbf{X}_{0}$
+-   Pre-treatment treated $\mathbf{X}_{1}$
+-   Post-treatment control $Y_{0T}$
+-   Post-treatment treated $Y_{1T}$
 
 Initially, we'll focus on revenue as our primary outcome variable and introduce covariates later in the analysis to refine our model.
 
-[**Task 4:**]{style="color:#FF7E15"} Split the data and extract the for blocks.
+[**Task 4:**]{style="color:#FF7E15"} Split the data and extract the four blocks.
 
 ```{r}
-#| include: false
+#| code-fold: true
 
 # Split and extract 4 matrices
 y0_pre <- ride |>
@@ -230,17 +239,21 @@ y1_post <- ride |>
   as.matrix()
 
 # Print "donor pool"
-print(y0_pre)
+print(head(y0_pre))
 ```
 
 ## Horizontal regression
 
-To find the synthetic control weights, $\mathbf{W}* = (w_2^*, \ldots, w_{N+1}^*)$ that minimizes $\|  \mathbf{X}_1 - \mathbf{X}_0 \mathbf{W} \|$, a simple way is to run an ordinary linear regression. At first, it might be a bit confusing, but, prior to the treatment, we can regress the treated unit on the control units and see which control units can explain the treated unit best. You just need two of the blocks you just created. 
+To find the synthetic control weights, $\mathbf{W}* = (w_2^*, \ldots, w_{N+1}^*)$ that minimizes $\|  \mathbf{X}_1 - \mathbf{X}_0 \mathbf{W} \|$, a simple way is to run an ordinary linear regression.
+At first, it might be a bit confusing, but, prior to the treatment, we can regress the treated unit on the control units and see which control units can explain the treated unit best.
+You just need two of the blocks you just created.
 
-[**Task 5:**]{style="color:#FF7E15"} Run the linear regression and print the obtained weights. What is an observation in this setup? What is the meaning of the coefficients?
+[**Task 5:**]{style="color:#FF7E15"} Run the linear regression and print the obtained weights.
+What is an observation in this setup?
+What is the meaning of the coefficients?
 
 ```{r}
-#| include: false
+#| code-fold: true
 
 # Weights from OLS
 ols <- lm(y1_pre ~ 0 + y0_pre)
@@ -249,13 +262,15 @@ w_ols <- coef(ols)
 print(as.data.frame(w_ols) |> arrange(-w_ols))
 ```
 
-Having obtained the weights, we can now proceed to calculate the estimate that we are ultimately interested in, the $ATT$. For the periods following the treatment, we subtract the synthetic outcome from the observed outcome for the treated unit:
+Having obtained the weights, we can now proceed to calculate the estimate that we are ultimately interested in, the $ATT$.
+For the periods following the treatment, we subtract the synthetic outcome from the observed outcome for the treated unit:
 
 $$
 \hat{\tau}_{1t} = Y_{1t} - \sum_{i=2}^{N+1} w_i^* Y_{it} \quad \forall \quad t > T_0
 $$
 
-This expression yields the treatment effect per period. By averaging across the treatment periods, you retrieve the $ATT$.
+This expression yields the treatment effect per period.
+By averaging across the treatment periods, you retrieve the $ATT$.
 
 ::: callout-note
 Matrix multiplication with `%*%` in R performs a dot product of rows and columns, where each element of the resulting matrix is the sum of the products of corresponding elements from the rows of the first matrix and the columns of the second matrix.
@@ -265,7 +280,7 @@ This operation requires that the number of columns in the first matrix matches t
 [**Task 6:**]{style="color:#FF7E15"} Calculate the ATT.
 
 ```{r}
-#| include: false
+#| code-fold: true
 
 # Counterfactual / Synthetic control unit
 y_sc_post <- y0_post %*% w_ols
@@ -274,10 +289,11 @@ y_sc_post <- y0_post %*% w_ols
 mean(y1_post - y_sc_post)
 ```
 
-[**Task 7:**]{style="color:#FF7E15"} Calculate the pseudo-ATT before the treatment takes place. What value do you expect?
+[**Task 7:**]{style="color:#FF7E15"} Calculate the pseudo-ATT before the treatment takes place.
+What value do you expect?
 
 ```{r}
-#| include: false
+#| code-fold: true
 
 # Counterfactual / Synthetic control unit
 y_sc_pre <- y0_pre %*% w_ols
@@ -333,18 +349,25 @@ plot_synth <- function(y_sc_pre, y_sc_post) {
 
 ## Period weights
 
-We have successfully replicated the pre-treatment outcomes quite closely. In doing so, we've implicitly assumed that each period leading up to the treatment carries equal significance for our analysis. However, it's reasonable to consider that more recent periods might be more indicative of the trends following the treatment. To accommodate this insight, we can simply adjust our methodology to place greater emphasis on these more recent periods. This minor modification will help refine our approach and potentially yield more accurate predictions.
+We have successfully replicated the pre-treatment outcomes quite closely.
+In doing so, we've implicitly assumed that each period leading up to the treatment carries equal significance for our analysis.
+However, it's reasonable to consider that more recent periods might be more indicative of the trends following the treatment.
+To accommodate this insight, we can simply adjust our methodology to place greater emphasis on these more recent periods.
+This minor modification will help refine our approach and potentially yield more accurate predictions.
 
 $$
 \begin{aligned}
 \mathbf{W}^* = \arg\min_{\mathbf{W}} \| \sqrt{V}\mathbf{X}_1 - \mathbf{X}_0 \mathbf{W} \|_2^2 &= \arg\min_{\mathbf{W}} [(\mathbf{X}_1 - \mathbf{X}_0 \mathbf{W})' \mathbf{V} (\mathbf{X}_1 - \mathbf{X}_0 \mathbf{W})] \\
 &= \arg\min_{\mathbf{W}} \sum_{m=1}^{k} v_m \bigg( X_{1m} - \sum_{i=2}^{N+1} w_iX_{im}\bigg)^2 \\
 \end{aligned}
-$$ 
+$$
 
 ::: callout-note
-The sweep() function in R applies an operation (such as addition, subtraction, multiplication, or division) to the rows or columns of a matrix or array, using a corresponding vector of values, effectively "sweeping" the operation across the specified margin (rows or columns) of the data. In R, the margin 1 and 2 refer to rows and columns, respectively.
+The sweep() function in R applies an operation (such as addition, subtraction, multiplication, or division) to the rows or columns of a matrix or array, using a corresponding vector of values, effectively "sweeping" the operation across the specified margin (rows or columns) of the data.
+In R, the margin 1 and 2 refer to rows and columns, respectively.
 :::
+
+First, we just replicate the previous estimate by having uniform weights (each period receives weight = 1).
 
 ```{r}
 # Including weights with uniform weights
@@ -358,26 +381,8 @@ ols_uni <- lm(y1_pre_uni ~ 0 + y0_pre_uni)
 all(coef(ols) == coef(ols_uni))
 ```
 
-[**Task 8:**]{style="color:#FF7E15"} Assign higher weight to more recent periods (no specific form required) and report the weights and ATT.
-
-```{r}
-#| include: false
-
-# Weights decreasing with distance to treatment period
-a_adj <- seq(1, T_pre, 1)
-a_adj <- T_pre*a_adj / sum(a_adj)
-y0_pre_adj <- sweep(y0_pre, 1, a_adj, "*")
-y1_pre_adj <- sweep(y1_pre, 1, a_adj, "*")
-
-ols_adj <- lm(y1_pre ~ 0 + as.matrix(y0_pre_adj))
-
-# Check for equality
-w_adj <- coef(ols)
-all(w_adj == w_ols)
-
-# Show weights
-print(as.data.frame(w_adj) |> arrange(-w_adj))
-```
+For now, we'll pause here and move to the next section.
+But you will need period weights for your assignment.
 
 ## Weight constraints
 
@@ -390,10 +395,10 @@ However, the sum of weights from before are:
 ```{r}
 # Sum of weights
 sum(w_ols)
-sum(w_adj)
 ```
 
-For optimization subject to constraints, we need to install and load `CVXR`, a package of convex optimization. Defining the objective and the constraint, we can solve for the optimal weights $w$ for the synthetic control unit.
+For optimization subject to constraints, we need to install and load `CVXR`, a package of convex optimization.
+Defining the objective and the constraint, we can solve for the optimal weights $w$ for the synthetic control unit.
 
 ```{r}
 #| message: false
@@ -420,10 +425,10 @@ round(w_star, 2)
 print(tibble(city = unique(ride[ride$treated == 0, ]$city), round(w_star, 2)))
 ```
 
-[**Task 9:**]{style="color:#FF7E15"} Plot the treated unit and synthetic control prior to and after the treatment.
+[**Task 8:**]{style="color:#FF7E15"} Plot the treated unit and synthetic control prior to and after the treatment.
 
 ```{r}
-#| include: false
+#| code-fold: true
 
 # Synthetic control
 y_sc_star_pre <- y0_pre %*% w_star
@@ -438,10 +443,22 @@ plot_synth(y_sc_pre = y_sc_star_pre, y_sc_post = y_sc_star_post)
 Coming soon.
 
 ::: assignment
-...
-<!-- Argue why not A/B test. -->
-<!-- Summarize what we have done in the tutorial. -->
-<!-- Pseudo effects for inference. -->
-<!-- plot? -->
-<!-- wrap into function -->
+Accept the [Week 11 - Assignment](https://classroom.github.com/a/A7dxfkG_) and follow the same steps as last week and as described in the organization chapter.
+
+Please also remember to fill out the [course evaluation](https://evaluating.tuhh.de/evasys/online.php?pswd=597RW) if you have not done so already.
+
+1.  In 3-4 sentences, compare the assumptions required for difference-in-differences and synthetic control.
+
+2.  Argue why in this scenario, you cannot run an A/B test at the ride-level and are better of with the synthetic control method.
+
+3.  Combine what you have learned about the constrained minimization and weighting of periods and compute the $ATT$ by giving higher weight to more recent periods (please make sure that the sum of the period weights is equal to the number of periods: usually each period would have weight 1).
+    Additionally, plot the data.
+
+4.  So far, we have not done any inference.
+    A simple measure of the confidence we have in our estimate can be obtained by repeating the estimation procedure but swapping out the treated city.
+    This way we obtain a "pseudo" treatment effect $ATT_{pseudo}$ for each city and to reject the hypothesis of no treatment effect for our actually treated unit, the $ATT$ should be larger than most of the other "pseudo" treatment effects $ATT_{pseudo}$.
+
+    1.  Perform this so called permutation test and report the percentage ("p-value") of larger "pseudo" treatment effects.
+
+    2.  Plot the effects for all cities and highlight the actually treated city graphically.
 :::
