@@ -1,6 +1,6 @@
 ---
-title: "11 - Synthetic Control & Regression Discontinuity"
-linktitle: "11 - Synthetic Control & Regression Discontinuity"
+title: "11 - Synthetic Control (1/2)"
+linktitle: "11 - Synthetic Control (1/2)"
 output:
   blogdown::html_page:
     toc: true
