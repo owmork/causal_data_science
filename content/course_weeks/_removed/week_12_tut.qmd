@@ -63,7 +63,7 @@ Let's use the `augsynth()` method from the `augsynth` package for estimation. Yo
 ```{r}
 #| eval: false
 
-devtools::install_github("ebenmichael/augsynth")
+remotes::install_github("ebenmichael/augsynth")
 ```
 
 ```{r}
@@ -101,7 +101,7 @@ plot(sc_summ)
 ```
 
 ```{r}
-#| code-fold: true
+#| include: false
 
 library(augsynth)
 
@@ -120,7 +120,7 @@ plot(sc_summ)
 ```
 
 ```{r}
-#| code-fold: true
+#| include: false
 
 att_augsc <- augsynth(
   revenue ~ treat_post | gdp + population + log(gdp),
@@ -157,7 +157,7 @@ print(head(ride_multi))
 [**Task 2:**]{style="color:#FF7E15"} Read through the [tutorial](https://yiqingxu.org/packages/panelview/articles/tutorial.html) and reproduce the following plots. Describe what you can see.
 
 ```{r}
-#| code-fold: true
+#| include: false
 #| message: false
 #| warning: false
 
@@ -175,7 +175,7 @@ panelview(revenue ~ post,
 ```
 
 ```{r}
-#| code-fold: true
+#| include: false
 #| message: false
 #| warning: false
 
@@ -193,7 +193,7 @@ panelview(
 ```
 
 ```{r}
-#| code-fold: true
+#| include: false
 #| message: false
 #| warning: false
 
@@ -341,7 +341,7 @@ $$
 [**Task 3:**]{style="color:#FF7E15"} Run the regression to obtain the time weights. (Hint: you might need `t()` and `colMeans()`).
 
 ```{r}
-#| code-fold: true
+#| include: false
 
 # Initialize weights and add intercept
 t_y0_pre <- t(y0_pre) # transpose to get time coefficients/weights
@@ -357,7 +357,7 @@ l_star <- as.vector(solve(problem)$getValue(l))
 
 
 ```{r}
-#| code-fold: true
+#| include: false
 
 # Remove intercept
 l_star <- l_star[2:ncol(t_y0_pre)]

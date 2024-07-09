@@ -101,7 +101,7 @@ plot(sc_summ)
 ```
 
 ```{r}
-#| include: false
+#| code-fold: true
 
 library(augsynth)
 
@@ -120,7 +120,7 @@ plot(sc_summ)
 ```
 
 ```{r}
-#| include: false
+#| code-fold: true
 
 att_augsc <- augsynth(
   revenue ~ treat_post | gdp + population + log(gdp),
@@ -157,7 +157,7 @@ print(head(ride_multi))
 [**Task 2:**]{style="color:#FF7E15"} Read through the [tutorial](https://yiqingxu.org/packages/panelview/articles/tutorial.html) and reproduce the following plots. Describe what you can see.
 
 ```{r}
-#| include: false
+#| code-fold: true
 #| message: false
 #| warning: false
 
@@ -175,7 +175,7 @@ panelview(revenue ~ post,
 ```
 
 ```{r}
-#| include: false
+#| code-fold: true
 #| message: false
 #| warning: false
 
@@ -193,7 +193,7 @@ panelview(
 ```
 
 ```{r}
-#| include: false
+#| code-fold: true
 #| message: false
 #| warning: false
 
@@ -335,13 +335,13 @@ However, we don't want to have the estimate from the synthetic control method, b
 While we again restrict, the weights to be non-negative and sum to 1, we also allow for the inclusion of an intercept. Therefore, we'll just add a column of ones to the matrix.
 
 $$
-\{\hat{\lambda}_0, \hat{\lambda}\} = \sum_{i = 1}^{N_c}(\lambda_0 + \sum_{t = 1}^{T_{pre}} \lambda_t Y_{it} - \frac{1}{T_{post}} \sum_{t = T_{pre} + 1}^T Y_{it})^2
+\{\hat{\lambda}_0, \hat{\lambda}\} = \sum_{i = 2}^{N_c}(\lambda_0 + \sum_{t = 1}^{T_{pre}} \lambda_t Y_{it} - \frac{1}{T_{post}} \sum_{t = T_{pre} + 1}^T Y_{it})^2
 $$
 
 [**Task 3:**]{style="color:#FF7E15"} Run the regression to obtain the time weights. (Hint: you might need `t()` and `colMeans()`).
 
 ```{r}
-#| include: false
+#| code-fold: true
 
 # Initialize weights and add intercept
 t_y0_pre <- t(y0_pre) # transpose to get time coefficients/weights
@@ -357,7 +357,7 @@ l_star <- as.vector(solve(problem)$getValue(l))
 
 
 ```{r}
-#| include: false
+#| code-fold: true
 
 # Remove intercept
 l_star <- l_star[2:ncol(t_y0_pre)]
@@ -417,8 +417,18 @@ plot(tau.hat)
 
 # Assignment
 
-Coming soon.
+Accept the [Week 12 - Assignment](https://classroom.github.com/a/oQuAlVgM) and follow the same steps as last week and as described in the organization chapter.
+
+Please also remember to fill out the [course evaluation](https://evaluating.tuhh.de/evasys/online.php?pswd=597RW) if you have not done so already.
 
 ::: assignment
-...
+
+For the following tasks, you should use the `ride_12_multi.rds` data.
+
+1. The `synthdid` packages does not yet provide an implementation for staggered adoption. Build your own implementation that applies the estimator once for every adoption date and report the treatment effects.
+
+2. Find an appropriate measure that summarizes the treatment effects. Discuss in 1-2 sentences, what you think should be considered when constructing such a measure.
+
+3. Report the short-term (1 year) and mid-term (3 years) treatment effects and compare them in an appropriate plot using the `ggplot2` package.
+
 :::

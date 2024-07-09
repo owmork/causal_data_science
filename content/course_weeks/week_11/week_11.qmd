@@ -440,12 +440,11 @@ plot_synth(y_sc_pre = y_sc_star_pre, y_sc_post = y_sc_star_post)
 
 # Assignment
 
-Coming soon.
-
-::: assignment
 Accept the [Week 11 - Assignment](https://classroom.github.com/a/A7dxfkG_) and follow the same steps as last week and as described in the organization chapter.
 
 Please also remember to fill out the [course evaluation](https://evaluating.tuhh.de/evasys/online.php?pswd=597RW) if you have not done so already.
+
+::: assignment
 
 1.  In 3-4 sentences, compare the assumptions required for difference-in-differences and synthetic control.
 

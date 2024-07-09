@@ -384,11 +384,191 @@ window.Quarto = {
 <span><span class="va">sc_summ</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">att_sc</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">sc_summ</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<div class="cell" data-layout-align="center">
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">augsynth</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">att_sc</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/augsynth/man/augsynth.html">augsynth</a></span><span class="op">(</span></span>
+<span>  <span class="va">revenue</span> <span class="op">~</span> <span class="va">treat_post</span> <span class="op">|</span> <span class="va">gdp</span> <span class="op">+</span> <span class="va">population</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span><span class="op">(</span><span class="va">gdp</span><span class="op">)</span>,</span>
+<span>  unit <span class="op">=</span> <span class="va">city</span>,</span>
+<span>  time <span class="op">=</span> <span class="va">period</span>,</span>
+<span>  data <span class="op">=</span> <span class="va">ride</span>,</span>
+<span>  progfunc <span class="op">=</span> <span class="st">"None"</span>,</span>
+<span>  scm <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output cell-output-stderr">
+<pre><code>One outcome and one treatment time found. Running single_augsynth.</code></pre>
+</div>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">sc_summ</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">att_sc</span><span class="op">)</span></span>
+<span><span class="va">sc_summ</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+single_augsynth(form = form, unit = !!enquo(unit), time = !!enquo(time), 
+    t_int = t_int, data = data, progfunc = "None", scm = TRUE)
+
+Average ATT Estimate (p Value for Joint Null):  0.895   ( 0.83 )
+L2 Imbalance: 3.704
+Percent improvement from uniform weights: 28%
+
+Covariate L2 Imbalance: 4.467
+Percent improvement from uniform weights: 18%
+
+Avg Estimated Bias: NA
+
+Inference type: Conformal inference
+
+       Time Estimate 95% CI Lower Bound 95% CI Upper Bound p Value
+ 2010-01-01    0.931              -1.99               3.85   0.630
+ 2010-02-01    0.161              -2.76               3.08   1.000
+ 2010-03-01    0.472              -2.45               3.39   0.638
+ 2010-04-01    1.403              -1.52               4.32   0.316
+ 2010-05-01   -1.961              -4.88               0.96   0.162
+ 2010-06-01    0.939              -1.98               3.86   0.630
+ 2010-07-01    0.546              -2.38               3.47   0.622
+ 2010-08-01   -0.955              -3.88               1.97   0.564
+ 2010-09-01    0.410              -2.51               3.33   0.618
+ 2010-10-01   -0.225              -3.15               2.70   0.867
+ 2010-11-01   -0.668              -3.59               2.25   0.631
+ 2010-12-01    1.625              -1.30               4.55   0.391
+ 2011-01-01    1.769              -1.15               4.69   0.237
+ 2011-02-01    0.563              -2.36               3.48   0.626
+ 2011-03-01   -0.058              -2.98               2.86   1.000
+ 2011-04-01   -0.217              -3.14               2.70   0.919
+ 2011-05-01    1.045              -1.88               3.97   0.629
+ 2011-06-01   -0.577              -3.50               2.34   0.619
+ 2011-07-01   -0.232              -3.15               2.69   0.856
+ 2011-08-01    1.456              -1.46               4.38   0.313
+ 2011-09-01   -0.423              -3.34               2.50   0.694
+ 2011-10-01    3.774               0.00               6.70   0.148
+ 2011-11-01    0.914              -2.01               3.83   0.607
+ 2011-12-01    2.169              -0.75               5.09   0.141
+ 2012-01-01   -0.738              -3.66               2.18   0.614
+ 2012-02-01    1.759              -1.16               4.68   0.227
+ 2012-03-01   -0.352              -3.27               2.57   0.756
+ 2012-04-01    2.085              -0.84               5.00   0.228
+ 2012-05-01    2.125              -0.80               5.05   0.216
+ 2012-06-01    0.973              -1.95               3.89   0.608
+ 2012-07-01    1.894              -1.03               4.82   0.235
+ 2012-08-01   -0.391              -3.31               2.53   0.586
+ 2012-09-01    0.846              -2.07               3.77   0.609
+ 2012-10-01   -0.209              -3.13               2.71   0.916
+ 2012-11-01    0.483              -2.44               3.40   0.621
+ 2012-12-01    1.707              -1.21               4.63   0.224
+ 2013-01-01    2.274              -0.65               5.20   0.221
+ 2013-02-01    2.587              -0.33               5.51   0.230
+ 2013-03-01    0.896              -2.02               3.82   0.623
+ 2013-04-01    1.943              -0.98               4.86   0.221
+ 2013-05-01    1.727              -1.19               4.65   0.266
+ 2013-06-01    0.260              -2.66               3.18   0.914
+ 2013-07-01    1.970              -0.95               4.89   0.224
+ 2013-08-01    0.312              -2.61               3.23   0.764
+ 2013-09-01    2.841              -0.08               5.76   0.290
+ 2013-10-01    2.698              -0.22               5.62   0.089
+ 2013-11-01    1.322              -1.60               4.24   0.618
+ 2013-12-01    1.105              -1.82               4.03   0.391</code></pre>
+</div>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">sc_summ</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><a href="week_12_files/figure-html/unnamed-chunk-4-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1"><img src="week_12_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:75.0%"></a></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell" data-layout-align="center">
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">att_augsc</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/augsynth/man/augsynth.html">augsynth</a></span><span class="op">(</span></span>
+<span>  <span class="va">revenue</span> <span class="op">~</span> <span class="va">treat_post</span> <span class="op">|</span> <span class="va">gdp</span> <span class="op">+</span> <span class="va">population</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span><span class="op">(</span><span class="va">gdp</span><span class="op">)</span>,</span>
+<span>  unit <span class="op">=</span> <span class="va">city</span>,</span>
+<span>  time <span class="op">=</span> <span class="va">period</span>,</span>
+<span>  data <span class="op">=</span> <span class="va">ride</span>,</span>
+<span>  progfunc <span class="op">=</span> <span class="st">"Ridge"</span>,</span>
+<span>  scm <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output cell-output-stderr">
+<pre><code>One outcome and one treatment time found. Running single_augsynth.</code></pre>
+</div>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">augsc_summ</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">att_augsc</span><span class="op">)</span></span>
+<span><span class="va">augsc_summ</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+single_augsynth(form = form, unit = !!enquo(unit), time = !!enquo(time), 
+    t_int = t_int, data = data, progfunc = "Ridge", scm = TRUE)
+
+Average ATT Estimate (p Value for Joint Null):  1   ( 0.83 )
+L2 Imbalance: 3.629
+Percent improvement from uniform weights: 29%
+
+Covariate L2 Imbalance: 4.254
+Percent improvement from uniform weights: 22%
+
+Avg Estimated Bias: -0.082
+
+Inference type: Conformal inference
+
+       Time Estimate 95% CI Lower Bound 95% CI Upper Bound p Value
+ 2010-01-01    0.983             -2.086                4.1   0.596
+ 2010-02-01    0.217             -2.852                3.3   0.923
+ 2010-03-01    0.521             -2.548                3.6   0.601
+ 2010-04-01    1.497             -1.572                4.6   0.323
+ 2010-05-01   -1.844             -4.912                1.2   0.315
+ 2010-06-01    1.125             -1.943                4.2   0.591
+ 2010-07-01    0.681             -2.388                3.8   0.619
+ 2010-08-01   -0.843             -3.912                2.2   0.633
+ 2010-09-01    0.382             -2.687                3.5   0.735
+ 2010-10-01   -0.107             -3.176                3.0   0.938
+ 2010-11-01   -0.518             -3.586                2.6   0.848
+ 2010-12-01    1.715             -1.354                4.8   0.390
+ 2011-01-01    1.796             -1.273                4.9   0.245
+ 2011-02-01    0.706             -2.362                3.8   0.625
+ 2011-03-01    0.007             -3.062                3.1   1.000
+ 2011-04-01   -0.141             -3.210                2.9   0.920
+ 2011-05-01    1.105             -1.963                4.2   0.535
+ 2011-06-01   -0.360             -3.429                2.7   0.837
+ 2011-07-01   -0.196             -3.265                2.9   0.914
+ 2011-08-01    1.645             -1.424                4.7   0.326
+ 2011-09-01   -0.445             -3.514                2.6   0.849
+ 2011-10-01    3.894              0.000                7.0   0.151
+ 2011-11-01    1.040             -2.029                4.1   0.466
+ 2011-12-01    2.349             -0.720                5.4   0.086
+ 2012-01-01   -0.548             -3.617                2.5   0.678
+ 2012-02-01    1.986             -1.083                5.1   0.239
+ 2012-03-01   -0.235             -3.303                2.8   0.929
+ 2012-04-01    2.267             -0.801                5.3   0.245
+ 2012-05-01    2.266             -0.803                5.3   0.253
+ 2012-06-01    1.135             -1.934                4.2   0.399
+ 2012-07-01    1.932             -1.137                5.0   0.230
+ 2012-08-01   -0.281             -3.349                2.8   0.942
+ 2012-09-01    0.912             -2.157                4.0   0.544
+ 2012-10-01   -0.012             -3.081                3.1   0.907
+ 2012-11-01    0.521             -2.548                3.6   0.688
+ 2012-12-01    1.786             -1.283                4.9   0.236
+ 2013-01-01    2.423             -0.646                5.5   0.136
+ 2013-02-01    2.718             -0.351                5.8   0.238
+ 2013-03-01    0.941             -2.128                4.0   0.508
+ 2013-04-01    2.020             -1.048                5.1   0.242
+ 2013-05-01    1.948             -1.121                5.0   0.219
+ 2013-06-01    0.321             -2.748                3.4   0.848
+ 2013-07-01    1.950             -1.118                5.0   0.218
+ 2013-08-01    0.404             -2.665                3.5   0.934
+ 2013-09-01    3.013             -0.056                6.1   0.324
+ 2013-10-01    2.818             -0.251                5.9   0.083
+ 2013-11-01    1.422             -1.647                4.5   0.395
+ 2013-12-01    1.174             -1.895                4.2   0.387</code></pre>
+</div>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">augsc_summ</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><a href="week_12_files/figure-html/unnamed-chunk-5-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2"><img src="week_12_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:75.0%"></a></p>
+</figure>
+</div>
+</div>
+</div>
 </section><section id="staggered-timing" class="level2"><h2 class="anchored" data-anchor-id="staggered-timing">Staggered timing</h2>
 <p>Historically, synthetic control methods have been applied to single treated units, while difference-in-differences estimators were typically used for multiple treated units and staggered treatments. However, if we are unwilling to assume parallel trends and prefer to use the synthetic control approach, we can utilize the <code>augsynth</code> package again.</p>
 <p>But first, let’s get the <a href="https://cloud.tuhh.de/index.php/s/RJFyT6PFqNTEmwt">data</a> where the new feature for the ride sharing platform were rolled out at multiple cities at different points of time and explore the data. A package that helps with visualization of staggered rollouts is <code>panelView</code>.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span></span>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">ride_multi</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html">readRDS</a></span><span class="op">(</span><span class="st">"ride_12_multi.rds"</span><span class="op">)</span></span>
 <span></span>
@@ -406,6 +586,63 @@ window.Quarto = {
 </div>
 </div>
 <p><span style="color:#FF7E15"><strong>Task 2:</strong></span> Read through the <a href="https://yiqingxu.org/packages/panelview/articles/tutorial.html">tutorial</a> and reproduce the following plots. Describe what you can see.</p>
+<div class="cell" data-layout-align="center">
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st"><a href="https://yiqingxu.org/packages/panelview/index.html">"panelView"</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/panelView/man/panelView.html">panelview</a></span><span class="op">(</span><span class="va">revenue</span> <span class="op">~</span> <span class="va">post</span>, </span>
+<span>          data <span class="op">=</span> <span class="va">ride_multi</span>,</span>
+<span>          index <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"city"</span>,<span class="st">"period"</span><span class="op">)</span>, </span>
+<span>          xlab <span class="op">=</span> <span class="st">"Period"</span>, </span>
+<span>          ylab <span class="op">=</span> <span class="st">"City"</span>,</span>
+<span>          cex.axis <span class="op">=</span> <span class="fl">3</span>,</span>
+<span>          by.timing <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>          pre.post <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span>          <span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><a href="week_12_files/figure-html/unnamed-chunk-7-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-3"><img src="week_12_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:75.0%"></a></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell" data-layout-align="center">
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/panelView/man/panelView.html">panelview</a></span><span class="op">(</span></span>
+<span>  <span class="va">revenue</span> <span class="op">~</span> <span class="va">post</span>,</span>
+<span>  data <span class="op">=</span> <span class="va">ride_multi</span>,</span>
+<span>  index <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"city"</span>,<span class="st">"period"</span><span class="op">)</span>,</span>
+<span>  cex.axis <span class="op">=</span> <span class="fl">3</span>,</span>
+<span>  type <span class="op">=</span> <span class="st">"outcome"</span>,</span>
+<span>  main <span class="op">=</span> <span class="st">"Revenue"</span>,</span>
+<span>  xlab <span class="op">=</span> <span class="st">"Period"</span>,</span>
+<span>  ylab <span class="op">=</span> <span class="st">"Revenue"</span></span>
+<span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><a href="week_12_files/figure-html/unnamed-chunk-8-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-4"><img src="week_12_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:75.0%"></a></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell" data-layout-align="center">
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb19"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/panelView/man/panelView.html">panelview</a></span><span class="op">(</span></span>
+<span>  <span class="va">revenue</span> <span class="op">~</span> <span class="va">post</span>,</span>
+<span>  data <span class="op">=</span> <span class="va">ride_multi</span>,</span>
+<span>  index <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"city"</span>,<span class="st">"period"</span><span class="op">)</span>, </span>
+<span>  cex.axis <span class="op">=</span> <span class="fl">3</span>,</span>
+<span>  type <span class="op">=</span> <span class="st">"outcome"</span>,</span>
+<span>  main <span class="op">=</span> <span class="st">"Revenue"</span>,</span>
+<span>  xlab <span class="op">=</span> <span class="st">"Period"</span>,</span>
+<span>  ylab <span class="op">=</span> <span class="st">"Revenue"</span>, </span>
+<span>  id <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Chicago"</span>, <span class="st">"Phoenix"</span>, <span class="st">"Las Vegas"</span>, <span class="st">"Seattle"</span>, <span class="st">"Houston"</span>, <span class="st">"Washington"</span><span class="op">)</span>,</span>
+<span>  by.group <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><a href="week_12_files/figure-html/unnamed-chunk-9-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-5"><img src="week_12_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:75.0%"></a></p>
+</figure>
+</div>
+</div>
+</div>
 <p>However, the problem that arises is that aggregate multiple synthetic controls into a single parameter estimate. We need to find the balance between simply estimating a synthetic control for each treated unit and pooled synthetic control for all treated units. The answer is the partially-pooled synthetic control that minimizes a weighted average of the two imbalances and includes an intercept to account for level differences.</p>
 <p>Equation highlights two equivalent interpretations: average of unit-specific SCM estimates or SCM estimate of the average treated unit.</p>
 <p><span class="math display">\[
@@ -426,7 +663,7 @@ q_X^{\text{pool}}(\mathbf{W}) = \left\| \frac{1}{J} \sum_{j=1}^J \mathbf{X}_j - 
 \mathbf{W}^* = \arg\min_{\mathbf{W}} \left( \nu \left( \tilde{q}^{\text{pool}}(\mathbf{W}) \right)^2 + (1 - \nu) \left( \tilde{q}^{\text{sep}}(\mathbf{W}) \right)^2 + \lambda \| \Gamma \|_F^2 \right)
 \]</span></p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Synthetic control with multiple treatment periods</span></span>
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Synthetic control with multiple treatment periods</span></span>
 <span><span class="va">att_msc</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/augsynth/man/multisynth.html">multisynth</a></span><span class="op">(</span><span class="va">revenue</span> <span class="op">~</span> <span class="va">post</span> <span class="op">|</span> <span class="va">gdp</span> <span class="op">+</span> <span class="va">population</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span><span class="op">(</span><span class="va">gdp</span><span class="op">)</span>, </span>
 <span>                             unit <span class="op">=</span> <span class="va">city</span>, </span>
 <span>                             time <span class="op">=</span> <span class="va">period</span>, </span>
@@ -437,7 +674,7 @@ q_X^{\text{pool}}(\mathbf{W}) = \left\| \frac{1}{J} \sum_{j=1}^J \mathbf{X}_j - 
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">msc_summ</span>, levels <span class="op">=</span> <span class="st">"Average"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><a href="week_12_files/figure-html/unnamed-chunk-10-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1"><img src="week_12_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:75.0%"></a></p>
+<figure class="figure"><p><a href="week_12_files/figure-html/unnamed-chunk-10-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-6"><img src="week_12_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:75.0%"></a></p>
 </figure>
 </div>
 </div>
@@ -449,7 +686,7 @@ q_X^{\text{pool}}(\mathbf{W}) = \left\| \frac{1}{J} \sum_{j=1}^J \mathbf{X}_j - 
 \hat{\tau}^{sdid} = \arg \min_{\tau, \mu, \alpha, \beta} \{ \sum_{i = 1}^N \sum_{t = 1}^T (Y_{it} - \mu - \alpha_i - \beta_ t - D_{it} \tau)^2 \hat{w}_i^{sdid} \hat{\lambda}_t^{sdid} \}
 \]</span> For now, let’s go back to the first setting, where we had only one treated unit. Let’s build the 4 blocks as we did last week.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Split and extract 4 matrices</span></span>
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Split and extract 4 matrices</span></span>
 <span><span class="va">y0_pre</span> <span class="op">&lt;-</span> <span class="va">ride</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">post</span> <span class="op">==</span> <span class="fl">0</span>, <span class="va">treated</span> <span class="op">==</span> <span class="fl">0</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://tidyr.tidyverse.org/reference/pivot_wider.html">pivot_wider</a></span><span class="op">(</span>id_cols <span class="op">=</span> <span class="st">"period"</span>, names_from <span class="op">=</span> <span class="st">"city"</span>, values_from <span class="op">=</span> <span class="st">"revenue"</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
@@ -477,7 +714,7 @@ q_X^{\text{pool}}(\mathbf{W}) = \left\| \frac{1}{J} \sum_{j=1}^J \mathbf{X}_j - 
 <p>Step-by-step, we build a synthetic DiD estimator, which slightly differs from the one proposed by <a href="https://arxiv.org/pdf/1812.09970">Arkhangelsky et al.</a>, but gives you the intuition of the inner workings.</p>
 <p>The first step is just to get the unit weights as we did for the synthetic control method last week.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://cvxr.rbind.io">CVXR</a></span><span class="op">)</span></span>
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://cvxr.rbind.io">CVXR</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Optimization procedure</span></span>
 <span><span class="va">w</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://www.cvxgrp.org/CVXR/reference/Variable-class.html">Variable</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">ncol</a></span><span class="op">(</span><span class="va">y0_pre</span><span class="op">)</span><span class="op">)</span></span>
@@ -488,7 +725,7 @@ q_X^{\text{pool}}(\mathbf{W}) = \left\| \frac{1}{J} \sum_{j=1}^J \mathbf{X}_j - 
 </div>
 <p>Now, instead of retrieving the ATT via matrix multiplication, we store the unit weights in our data frame. For the treated unit, the weights we store are just the average of the treatment share.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">unit_w</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span><span class="op">(</span>city <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span><span class="op">(</span><span class="va">y0_pre</span><span class="op">)</span>, unit_weight <span class="op">=</span> <span class="va">w_star</span><span class="op">)</span></span>
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">unit_w</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span><span class="op">(</span>city <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span><span class="op">(</span><span class="va">y0_pre</span><span class="op">)</span>, unit_weight <span class="op">=</span> <span class="va">w_star</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">ride_w</span> <span class="op">&lt;-</span> <span class="va">ride</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">left_join</a></span><span class="op">(</span><span class="va">unit_w</span>, by <span class="op">=</span> <span class="st">"city"</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
@@ -496,7 +733,7 @@ q_X^{\text{pool}}(\mathbf{W}) = \left\| \frac{1}{J} \sum_{j=1}^J \mathbf{X}_j - 
 </div>
 <p>With this data, we could compute an equivalent ATT by running a regression with time fixed effects that the ATT we got from matrix multiplication.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mod_w</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">revenue</span> <span class="op">~</span> <span class="va">treat_post</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">period</span><span class="op">)</span>,</span>
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mod_w</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">revenue</span> <span class="op">~</span> <span class="va">treat_post</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">period</span><span class="op">)</span>,</span>
 <span>          data <span class="op">=</span> <span class="va">ride_w</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">unit_weight</span> <span class="op">&gt;</span> <span class="fl">1e-10</span><span class="op">)</span>, </span>
 <span>          weights <span class="op">=</span> <span class="va">unit_weight</span><span class="op">)</span></span>
 <span><span class="va">mod_w</span><span class="op">$</span><span class="va">coefficients</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -504,7 +741,7 @@ q_X^{\text{pool}}(\mathbf{W}) = \left\| \frac{1}{J} \sum_{j=1}^J \mathbf{X}_j - 
 <pre><code>treat_post 
        1.2 </code></pre>
 </div>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">y1_post</span> <span class="op">-</span> <span class="op">(</span><span class="va">y0_post</span> <span class="op"><a href="https://rdrr.io/r/base/matmult.html">%*%</a></span> <span class="va">w_star</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">y1_post</span> <span class="op">-</span> <span class="op">(</span><span class="va">y0_post</span> <span class="op"><a href="https://rdrr.io/r/base/matmult.html">%*%</a></span> <span class="va">w_star</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 1.2</code></pre>
 </div>
@@ -512,13 +749,40 @@ q_X^{\text{pool}}(\mathbf{W}) = \left\| \frac{1}{J} \sum_{j=1}^J \mathbf{X}_j - 
 <p>However, we don’t want to have the estimate from the synthetic control method, but we want to additionally exploit information of the time dependence and get time weights. Therefore, we want to regress the average of the post-treatment outcome on the pre-treatment outcomes of the control group. Similar as before, this yields time weights for the pre-treatment period, i.e.&nbsp;the weight we should put on each pre-treatment period when constructing our estimator.</p>
 <p>While we again restrict, the weights to be non-negative and sum to 1, we also allow for the inclusion of an intercept. Therefore, we’ll just add a column of ones to the matrix.</p>
 <p><span class="math display">\[
-\{\hat{\lambda}_0, \hat{\lambda}\} = \sum_{i = 1}^{N_c}(\lambda_0 + \sum_{t = 1}^{T_{pre}} \lambda_t Y_{it} - \frac{1}{T_{post}} \sum_{t = T_{pre} + 1}^T Y_{it})^2
+\{\hat{\lambda}_0, \hat{\lambda}\} = \sum_{i = 2}^{N_c}(\lambda_0 + \sum_{t = 1}^{T_{pre}} \lambda_t Y_{it} - \frac{1}{T_{post}} \sum_{t = T_{pre} + 1}^T Y_{it})^2
 \]</span></p>
 <p><span style="color:#FF7E15"><strong>Task 3:</strong></span> Run the regression to obtain the time weights. (Hint: you might need <code><a href="https://rdrr.io/r/base/t.html">t()</a></code> and <code><a href="https://rdrr.io/r/base/colSums.html">colMeans()</a></code>).</p>
+<div class="cell" data-layout-align="center">
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb28"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Initialize weights and add intercept</span></span>
+<span><span class="va">t_y0_pre</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/t.html">t</a></span><span class="op">(</span><span class="va">y0_pre</span><span class="op">)</span> <span class="co"># transpose to get time coefficients/weights</span></span>
+<span><span class="va">l</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://www.cvxgrp.org/CVXR/reference/Variable-class.html">Variable</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">ncol</a></span><span class="op">(</span><span class="va">t_y0_pre</span><span class="op">)</span> <span class="op">+</span> <span class="fl">1</span><span class="op">)</span> <span class="co"># one more column due to intercept</span></span>
+<span><span class="va">icept</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">t_y0_pre</span><span class="op">)</span><span class="op">)</span>, ncol <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="co"># create intercept</span></span>
+<span><span class="va">t_y0_pre</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html">cbind</a></span><span class="op">(</span><span class="va">icept</span>, <span class="va">t_y0_pre</span><span class="op">)</span> <span class="co"># add intercept to matrix</span></span>
+<span></span>
+<span><span class="va">objective</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://www.cvxgrp.org/CVXR/reference/Minimize-class.html">Minimize</a></span><span class="op">(</span><span class="fu"><a href="https://www.cvxgrp.org/CVXR/reference/sum_squares.html">sum_squares</a></span><span class="op">(</span><span class="va">t_y0_pre</span> <span class="op"><a href="https://rdrr.io/r/base/matmult.html">%*%</a></span> <span class="va">l</span> <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/base/colSums.html">colMeans</a></span><span class="op">(</span><span class="va">y0_post</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">constraints</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">l</span><span class="op">[</span><span class="fl">2</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">ncol</a></span><span class="op">(</span><span class="va">t_y0_pre</span><span class="op">)</span><span class="op">]</span><span class="op">)</span> <span class="op">==</span> <span class="fl">1</span>, <span class="va">l</span><span class="op">[</span><span class="fl">2</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">ncol</a></span><span class="op">(</span><span class="va">t_y0_pre</span><span class="op">)</span><span class="op">]</span> <span class="op">&gt;=</span> <span class="fl">0</span><span class="op">)</span></span>
+<span><span class="va">problem</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://www.cvxgrp.org/CVXR/reference/Problem-class.html">Problem</a></span><span class="op">(</span><span class="va">objective</span>, <span class="va">constraints</span><span class="op">)</span></span>
+<span><span class="va">l_star</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/vector.html">as.vector</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/solve.html">solve</a></span><span class="op">(</span><span class="va">problem</span><span class="op">)</span><span class="op">$</span><span class="fu">getValue</span><span class="op">(</span><span class="va">l</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell" data-layout-align="center">
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb29"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Remove intercept</span></span>
+<span><span class="va">l_star</span> <span class="op">&lt;-</span> <span class="va">l_star</span><span class="op">[</span><span class="fl">2</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">ncol</a></span><span class="op">(</span><span class="va">t_y0_pre</span><span class="op">)</span><span class="op">]</span></span>
+<span></span>
+<span><span class="co"># Table with period weights</span></span>
+<span><span class="va">pre_periods</span> <span class="op">&lt;-</span> <span class="va">ride</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">post</span> <span class="op">==</span> <span class="fl">0</span>, <span class="va">treated</span> <span class="op">==</span> <span class="fl">0</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/pull.html">pull</a></span><span class="op">(</span><span class="va">period</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="va">time_w</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span><span class="op">(</span>period <span class="op">=</span> <span class="va">pre_periods</span>, time_weight <span class="op">=</span> <span class="va">l_star</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Show weights</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="va">l_star</span>, <span class="fl">2</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output cell-output-stdout">
+<pre><code> [1] 0.00 0.13 0.26 0.14 0.00 0.00 0.03 0.00 0.00 0.11 0.04 0.28</code></pre>
+</div>
+</div>
 <p>Now, we also add the time weights to our data.frame. For post-treatment periods, we take the share of the post periods.</p>
 <p>Having obtained both unit and time weights, we multiply the weights to get the final weight each observation gets in the weighted regression.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Add weights to data</span></span>
+<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Add weights to data</span></span>
 <span><span class="va">ride_wl</span> <span class="op">&lt;-</span> <span class="va">ride_w</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">left_join</a></span><span class="op">(</span><span class="va">time_w</span>, by <span class="op">=</span> <span class="st">"period"</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>time_weight <span class="op">=</span> <span class="fu"><a href="https://tidyr.tidyverse.org/reference/replace_na.html">replace_na</a></span><span class="op">(</span><span class="va">time_weight</span>, <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">ride</span><span class="op">$</span><span class="va">post</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
@@ -527,7 +791,7 @@ q_X^{\text{pool}}(\mathbf{W}) = \left\| \frac{1}{J} \sum_{j=1}^J \mathbf{X}_j - 
 <p>Running the regression yields a synthetic DiD estimate.</p>
 <p><span style="color:#FF7E15"><strong>Task 4:</strong></span> Run the regression and return the estimated treatment effect.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Final regression</span></span>
+<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Final regression</span></span>
 <span><span class="va">mod_wl</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">revenue</span> <span class="op">~</span> <span class="va">treat_post</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">city</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">period</span><span class="op">)</span>, </span>
 <span>   data <span class="op">=</span> <span class="va">ride_wl</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">weight</span> <span class="op">&gt;</span> <span class="fl">1e-10</span><span class="op">)</span>, </span>
 <span>   weights <span class="op">=</span> <span class="va">weight</span><span class="op">)</span></span>
@@ -540,7 +804,7 @@ q_X^{\text{pool}}(\mathbf{W}) = \left\| \frac{1}{J} \sum_{j=1}^J \mathbf{X}_j - 
 </div>
 <p>In practice, the <code>synthdid</code> package does all the work. But please note, that this package is still at an early stage. It is a bit more advanced that what we just did, but the general idea is the same. It allows an intercept shift and adds an L2 penalty on the unit weights to make sure no control units gets a too large weight.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/synth-inference/synthdid">synthdid</a></span><span class="op">)</span></span>
+<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/synth-inference/synthdid">synthdid</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">setup</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/synthdid/man/panel.matrices.html">panel.matrices</a></span><span class="op">(</span></span>
 <span>  panel <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="va">ride</span><span class="op">)</span>,</span>
@@ -556,22 +820,28 @@ q_X^{\text{pool}}(\mathbf{W}) = \left\| \frac{1}{J} \sum_{j=1}^J \mathbf{X}_j - 
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "point estimate: 0.95"</code></pre>
 </div>
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/sprintf.html">sprintf</a></span><span class="op">(</span><span class="st">'95%% CI (%1.2f, %1.2f)'</span>, <span class="va">tau.hat</span> <span class="op">-</span> <span class="fl">1.96</span> <span class="op">*</span> <span class="va">se</span>, <span class="va">tau.hat</span> <span class="op">+</span> <span class="fl">1.96</span> <span class="op">*</span> <span class="va">se</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb36"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/sprintf.html">sprintf</a></span><span class="op">(</span><span class="st">'95%% CI (%1.2f, %1.2f)'</span>, <span class="va">tau.hat</span> <span class="op">-</span> <span class="fl">1.96</span> <span class="op">*</span> <span class="va">se</span>, <span class="va">tau.hat</span> <span class="op">+</span> <span class="fl">1.96</span> <span class="op">*</span> <span class="va">se</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "95% CI (0.10, 1.81)"</code></pre>
 </div>
-<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">tau.hat</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb38"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">tau.hat</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><a href="week_12_files/figure-html/unnamed-chunk-19-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2"><img src="week_12_files/figure-html/unnamed-chunk-19-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:75.0%"></a></p>
+<figure class="figure"><p><a href="week_12_files/figure-html/unnamed-chunk-19-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-7"><img src="week_12_files/figure-html/unnamed-chunk-19-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:75.0%"></a></p>
 </figure>
 </div>
 </div>
 </div>
 </section></section><section id="assignment" class="level1"><h1>Assignment</h1>
-<p>Coming soon.</p>
+<p>Accept the <a href="https://classroom.github.com/a/oQuAlVgM">Week 12 - Assignment</a> and follow the same steps as last week and as described in the organization chapter.</p>
+<p>Please also remember to fill out the <a href="https://evaluating.tuhh.de/evasys/online.php?pswd=597RW">course evaluation</a> if you have not done so already.</p>
 <div class="assignment">
-<p>…</p>
+<p>For the following tasks, you should use the <code>ride_12_multi.rds</code> data.</p>
+<ol type="1">
+<li><p>The <code>synthdid</code> packages does not yet provide an implementation for staggered adoption. Build your own implementation that applies the estimator once for every adoption date and report the treatment effects.</p></li>
+<li><p>Find an appropriate measure that summarizes the treatment effects. Discuss in 1-2 sentences, what you think should be considered when constructing such a measure.</p></li>
+<li><p>Report the short-term (1 year) and mid-term (3 years) treatment effects and compare them in an appropriate plot using the <code>ggplot2</code> package.</p></li>
+</ol>
 </div>
 
 
@@ -979,7 +1249,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       &nbsp;
     </div>
   </div>
-</footer><script>var lightboxQuarto = GLightbox({"selector":".lightbox","openEffect":"zoom","loop":false,"closeEffect":"zoom","descPosition":"bottom"});
+</footer><script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","loop":false,"selector":".lightbox","descPosition":"bottom","openEffect":"zoom"});
 window.onload = () => {
   lightboxQuarto.on('slide_before_load', (data) => {
     const { slideIndex, slideNode, slideConfig, player, trigger } = data;
